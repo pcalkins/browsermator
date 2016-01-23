@@ -4,6 +4,7 @@ package browsermator.com;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -29,7 +30,7 @@ public abstract class ActionView implements Listenable{
    JLabel JLabelIndex;
    JButton JButtonMoveUp;
    JButton JButtonMoveDown;
-   
+   JCheckBox JCheckBoxBoolVal1;
    ActionView()
    {
 
@@ -41,6 +42,7 @@ public abstract class ActionView implements Listenable{
       this.JTextFieldPassword = new JPasswordField("", 15);
       this.JLabelVariable1 = new JLabel("Generic");
       this.JLabelVariable2 = new JLabel("Generic");
+      this.JCheckBoxBoolVal1 = new JCheckBox("Press Enter Key");
     this.JButtonOK = new JButton("Lock");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
@@ -60,6 +62,10 @@ String stringactionindex = Integer.toString(this.index+1);
      public void setActionViewIndex (int newindex)
      {
          this.index = newindex;
+     }
+      public void addJCheckBoxBoolVal1ActionListener(ActionListener actlistener)
+     {
+         JCheckBoxBoolVal1.addActionListener(actlistener);
      }
       public void addJTextFieldPasswordActionListener(ActionListener actlistener)
      {

@@ -20,7 +20,7 @@ public class SwitchToTabOrWindowActionView extends ActionView
    {
       
        
-       this.JLabelVariable1 = new JLabel("Switch to Tab/Window by index (0 is first tab/window):");
+       this.JLabelVariable1 = new JLabel("Switch to Window by index (0 is first window):");
   this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1);
        this.JPanelAction.add(this.JButtonOK);

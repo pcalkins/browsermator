@@ -2,6 +2,7 @@
 package browsermator.com;
 
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.event.DocumentEvent;
@@ -19,6 +20,8 @@ public class TypePasswordAtInputNameActionView extends ActionView
       this.JPanelAction.add(this.JTextFieldVariable1); 
       this.JPanelAction.add(this.JLabelVariable2);
       this.JPanelAction.add(this.JTextFieldPassword);
+        this.JCheckBoxBoolVal1 = new JCheckBox("Press Enter Key");
+      this.JPanelAction.add(this.JCheckBoxBoolVal1);
        this.JPanelAction.add(this.JButtonOK);
       this.JPanelAction.add(this.JButtonDelete);
    }
@@ -26,7 +29,10 @@ public class TypePasswordAtInputNameActionView extends ActionView
  @Override  
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-   
+     addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
+          
+       });
    addJButtonMoveDownActionListener((ActionEvent evt) -> {
        Window.MoveAction(Window, newbug, newbugview, action.index, 1);
       

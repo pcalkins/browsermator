@@ -20,13 +20,14 @@ public class ClickAtLinkTextAction extends Action
         try
         {
      WebElement element = driver.findElement(By.linkText(this.Variable1));
-    element.click();
+   
+     element.click();
      this.Pass = true;
         }
      catch (NoSuchElementException e)
  {
   this.Pass = false;
-  
+   
  }
     }
 }

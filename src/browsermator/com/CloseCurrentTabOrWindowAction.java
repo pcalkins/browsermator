@@ -6,8 +6,10 @@
 package browsermator.com;
 
 import java.util.ArrayList;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-
+import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  *
  * @author pcalkins
@@ -21,13 +23,9 @@ public class CloseCurrentTabOrWindowAction extends Action
   @Override
     public void RunAction(WebDriver driver)
     {
-        driver.close();
-         ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());
-         if (tabs_windows.size()>0)
-         {
-         int FocusIndex = tabs_windows.size()-1;
-         driver.switchTo().window(tabs_windows.get(FocusIndex));
-         }
+
+      driver.findElement(By.tagName("html")).sendKeys(Keys.CONTROL,"w"); 
+        this.Pass = true;
     }
     
     

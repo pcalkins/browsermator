@@ -39,13 +39,14 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   Boolean changes;
   String TargetBrowser;
   String OSType;
+  int WaitTime;
   
   public SeleniumTestTool(String filename)
   {
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
   this.OSType = "Windows";
-
+  
   
 
   this.changes = false;
@@ -56,11 +57,13 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   this.BugPanel = new JPanel();
   this.setClosable(true);
   this.setMaximizable(true);
-  this.setTitle(filename);
+  this.setTitle("Browsermator - " + filename);
   this.setResizable(true);
   this.AllFieldValues = new ArrayList<>();
  
       initComponents();
+      
+      
        jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxEmailReportActionPerformed(evt);
@@ -203,11 +206,18 @@ public int GetWaitTime()
     return wait;
     
 }
+   public void setWaitTime (int wait_time)
+    {   
+    
+        this.WaitTime = wait_time;
+
+        this.jSpinnerWaitTime.setValue(wait_time);
+    }
 public void setProperties (String filename)
     {
 //  this.jLabelTHISFILENAME.setText(filename);
         
-    this.setTitle("BrowserMator - " + filename);
+    this.setTitle("Browsermator - " + filename);
   
   //  this.jLabelTHISSITEURL.setText(URL);
  //   this.jLabelTHISFILENAME.repaint();
@@ -303,7 +313,7 @@ bugindex++;
 
    // Window.URL = this.URL;
   //  Window.filename = this.filename;
-  this.setTitle(this.filename);
+  this.setProperties(this.filename);
      this.MainScrollPane.setViewportView(this.BugPanel);
 
  // Window.MainScrollPane.setBounds(null);
@@ -388,7 +398,7 @@ bugindex++;
             switch (ActionToAdd) {
                 case "Type at Input Name":
                     TypeAtInputNameActionView NewTypeAtInputNameActionView = new TypeAtInputNameActionView();
-                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction("", "");
+                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction("", "", false);
                     NewTypeAtInputNameActionView.AddListeners(NewTypeAtInputNameAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypeAtInputNameAction, NewTypeAtInputNameActionView,newbug, newbugview);
                     break;
@@ -463,7 +473,28 @@ bugindex++;
                     NewExecuteJavascriptActionView.AddListeners(NewExecuteJavascriptAction, Window, newbug, newbugview);
                     AddActionToArray (NewExecuteJavascriptAction, NewExecuteJavascriptActionView,newbug, newbugview);
                     break;
+                case "Enter Key":
                     
+                    EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
+                    EnterKeyAction NewEnterKeyAction = new EnterKeyAction();
+                    NewEnterKeyActionView.AddListeners(NewEnterKeyAction, Window, newbug, newbugview);
+                    AddActionToArray (NewEnterKeyAction, NewEnterKeyActionView,newbug, newbugview);
+                    break; 
+                    
+                case "Open New Tab":
+                    
+                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
+                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
+                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction, Window, newbug, newbugview);
+                    AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,newbug, newbugview);
+                    break; 
+                case "Next Tab":
+                    
+                    NextTabActionView NewNextTabActionView = new NextTabActionView();
+                    NextTabAction NewNextTabAction = new NextTabAction();
+                    NewNextTabActionView.AddListeners(NewNextTabAction, Window, newbug, newbugview);
+                    AddActionToArray (NewNextTabAction, NewNextTabActionView,newbug, newbugview);
+                    break;    
                 case "Pause":
                     PauseActionView NewPauseActionView = new PauseActionView();
                     PauseAction NewPauseAction = new PauseAction("", "");
@@ -493,14 +524,14 @@ bugindex++;
                     
                 case "Type at ID":
                     TypeAtIDActionView NewTypeAtIDActionView = new TypeAtIDActionView();
-                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction("", "");
+                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction("", "", false);
                     NewTypeAtIDActionView.AddListeners(NewTypeAtIDAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypeAtIDAction, NewTypeAtIDActionView,newbug, newbugview);
                     break;
                     
                 case "Type at XPATH":
                     TypeAtXPATHActionView NewTypeAtXPATHActionView = new TypeAtXPATHActionView();
-                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction("", "");
+                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction("", "", false);
                     NewTypeAtXPATHActionView.AddListeners(NewTypeAtXPATHAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypeAtXPATHAction, NewTypeAtXPATHActionView,newbug, newbugview);
                     break;
@@ -514,14 +545,14 @@ bugindex++;
                     
                 case "Type Password at XPATH":
                     TypePasswordAtXPATHActionView NewTypePasswordAtXPATHActionView = new TypePasswordAtXPATHActionView();
-                    TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction("", "");
+                    TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction("", "", false);
                     NewTypePasswordAtXPATHActionView.AddListeners(NewTypePasswordAtXPATHAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypePasswordAtXPATHAction, NewTypePasswordAtXPATHActionView,newbug, newbugview);
                     break;
                     
                  case "Type Password at Input Name":
                     TypePasswordAtInputNameActionView NewTypePasswordAtInputNameActionView = new TypePasswordAtInputNameActionView();
-                    TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction("", "");
+                    TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction("", "", false);
                     NewTypePasswordAtInputNameActionView.AddListeners(NewTypePasswordAtInputNameAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypePasswordAtInputNameAction, NewTypePasswordAtInputNameActionView,newbug, newbugview);
                     break;
@@ -977,17 +1008,17 @@ this.changes=true;
   private void jCheckBoxPromptToCloseActionPerformed(ActionEvent evt)
   {
   this.PromptToClose = jCheckBoxPromptToClose.isSelected();
-  this.changes=true;
+  // this.changes=true;
   }
   private void jCheckBoxShowReportActionPerformed(ActionEvent evt)
   {
   this.ShowReport = jCheckBoxShowReport.isSelected();
-  this.changes=true;
+  // this.changes=true;
   }
    private void jCheckBoxExitAfterActionPerformed(ActionEvent evt)
   {
   this.ExitAfter = jCheckBoxExitAfter.isSelected();
-  this.changes=true;
+  // this.changes=true;
   }
   private void jCheckBoxEmailReportActionPerformed(ActionEvent evt)
   {
@@ -997,7 +1028,7 @@ this.changes=true;
       jCheckBoxEmailReportFail.setSelected(false);
       this.EmailReportFail = false;
   }
-  this.changes=true;
+  // this.changes=true;
   }
   private void jCheckBoxEmailReportFailActionPerformed(ActionEvent evt)
   {
@@ -1007,7 +1038,7 @@ this.changes=true;
      jCheckBoxEmailReport.setSelected(false);
      this.EmailReport = false;
   }
-  this.changes=true;
+  // this.changes=true;
   }
  private void jCheckBoxOSTypeWindowsActionPerformed(ActionEvent evt)
  {

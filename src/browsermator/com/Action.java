@@ -19,7 +19,7 @@ Boolean NOT;
 String Type;
 String Variable1;
 String Variable2;
-// int BugNumber;
+Boolean BoolVal1;
 String BugURL;
 Boolean Locked;
 
@@ -33,6 +33,7 @@ Boolean Locked;
   this.Type = "";
   this.Variable1 = "";
   this.Variable2 = "";
+  this.BoolVal1 = false;
   this.Locked = false;
   this.BugURL = "http://www.browsermator.com";
    }
@@ -56,7 +57,11 @@ Boolean Locked;
   
  }
   }
-  
+  public void setBoolVal1 (Boolean BoolVal1)
+{
+    this.BoolVal1 = BoolVal1;
+    
+}
 public void setActionIndex (int newindex)
 {
     this.index = newindex;

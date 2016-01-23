@@ -35,6 +35,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -74,12 +75,12 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem aboutMenuItem;
      private JMenuItem newFileItem;
      private JMenuItem importFileItem;
-
+     private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "b1";
+private final String version = "b3";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "b1";
+   private final String ProgramVersion = "b3";
  
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
 
@@ -217,23 +218,25 @@ SeleniumToolDesktop.add(Navigator);
                  CurrentMDIWindowIndex = GetCurrentWindow();
                  if (CurrentMDIWindowIndex !=-1)
                  {
-              File newfile = BrowseForFile();
- if (newfile !=null)
+              File[] newfiles = BrowseForFile();
+ if (newfiles !=null)
  {
-   
+     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
+     {
  int MDI_CLASS_INDEX;
    
-      ImportFile(newfile, CurrentMDIWindowIndex);
-
+      ImportFile(newfiles[fileindex], CurrentMDIWindowIndex);
+    
    }    
-           } 
+ }     
+ } 
                  else
                   
   {
     JOptionPane.showMessageDialog (null, "No Active Window to import into. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
   }
-                 
-           }    });
+      }           
+           });
   
   addFileMenuSaveActionListener(
       new ActionListener() {
@@ -247,7 +250,7 @@ SeleniumToolDesktop.add(Navigator);
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
                      try {   
-                       int saved =   SaveFile(STAppFrame);
+                       int saved =   SaveFile(STAppFrame, false);
                      } catch (XMLStreamException ex) {
                          Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
                      }
@@ -267,7 +270,38 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
-  
+  addFileMenuSaveAsActionListener(
+      new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  try {
+       
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
+                 
+                     try {   
+                       int saved =   SaveFile(STAppFrame, true);
+                     } catch (XMLStreamException ex) {
+                         Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                  }
+               catch (IOException ex)
+               {
+                 
+        System.out.println ("Save IO error" + ex.toString());
+      
+   
+               }
+            
+           } 
+       });
   
  addFileMenuNewActionListener(
   new ActionListener()
@@ -393,13 +427,14 @@ SeleniumToolDesktop.add(Navigator);
           {
           
  
-   File newfile = BrowseForFile();
- if (newfile !=null)
+   File[] newfiles = BrowseForFile();
+ if (newfiles !=null)
  {
-   
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(newfile, MDIClasses);
+     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
+     {
+   try {
+        int MDI_CLASS_INDEX;
+           MDI_CLASS_INDEX = OpenFile(newfiles[fileindex], MDIClasses);
          if (MDI_CLASS_INDEX>=0)
      {
            DisplayWindow(MDI_CLASS_INDEX);
@@ -408,11 +443,10 @@ SeleniumToolDesktop.add(Navigator);
        catch (IOException | ClassNotFoundException ex) {
           System.out.println(ex.toString());
        } 
-      
+    
+   }    
+ }     
 
- 
-
-   } 
   
           
           }  });
@@ -669,22 +703,25 @@ SeleniumToolDesktop.add(Navigator);
           {
           public void actionPerformed (ActionEvent evt)
           {
-        File newfile = BrowseForFile();
- if (newfile !=null)
+        File[] newfiles = BrowseForFile();
+ if (newfiles !=null)
  {
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(newfile, MDIClasses);
-        if (MDI_CLASS_INDEX>=0)
+     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
+     {
+   try {
+        int MDI_CLASS_INDEX;
+           MDI_CLASS_INDEX = OpenFile(newfiles[fileindex], MDIClasses);
+         if (MDI_CLASS_INDEX>=0)
      {
            DisplayWindow(MDI_CLASS_INDEX);
      }
        }
        catch (IOException | ClassNotFoundException ex) {
-         System.out.println(ex.toString());
-       }
-
-   } 
+          System.out.println(ex.toString());
+       } 
+    
+   }    
+ }     
 
           
           }  });
@@ -813,7 +850,46 @@ SeleniumToolDesktop.add(Navigator);
   {
 
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
-
+AllFieldValuesCheck.add(STAppFrame.OSType);
+AllFieldValuesCheck.add(STAppFrame.TargetBrowser);
+String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
+AllFieldValuesCheck.add(stringWaitTime);
+AllFieldValuesCheck.add(STAppFrame.getSMTPHostname());
+AllFieldValuesCheck.add(STAppFrame.getEmailFrom());
+AllFieldValuesCheck.add(STAppFrame.getEmailLoginName());
+AllFieldValuesCheck.add(STAppFrame.getEmailPassword());
+AllFieldValuesCheck.add(STAppFrame.getEmailTo());
+AllFieldValuesCheck.add(STAppFrame.getSubject());
+String sthisbool = "false";
+if (STAppFrame.getEmailReport())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getEmailReportFail())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getExitAfter())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getPromptToClose())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getShowReport())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
@@ -823,7 +899,13 @@ for (Procedure thisproc: STAppFrame.BugArray)
         AllFieldValuesCheck.add(thisact.Variable1);
        
         AllFieldValuesCheck.add(thisact.Variable2);
-     
+        String checkingboolval1 = "false";
+        if (thisact.BoolVal1)
+        {
+            checkingboolval1 = "true";
+        }
+        
+        AllFieldValuesCheck.add(checkingboolval1);
     }
 }
 if (!STAppFrame.AllFieldValues.equals(AllFieldValuesCheck))
@@ -845,7 +927,7 @@ else
                       try
                       {
                           int saved = 0;
-                      saved = SaveFile(STAppFrame);
+                      saved = SaveFile(STAppFrame, false);
                       
                       return saved;
                       }
@@ -894,6 +976,7 @@ return 1;
         aboutMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
+        saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
         newFileItem.setMnemonic('n');
@@ -907,7 +990,43 @@ return 1;
         fileMenu.add(importMenuItem);
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
-        
+        saveAsMenuItem.setText("Save As");
+        saveAsMenuItem.setMnemonic('a');
+             
+                  LAFOptions = UIManager.getInstalledLookAndFeels();
+   LookAndFeelOptions = new JRadioButtonMenuItem[LAFOptions.length];
+   LookAndFeelGroup = new ButtonGroup();
+ 
+  for (int count = 0; count<LAFOptions.length; count++)
+  {    
+     LookAndFeelOptions[count] = new JRadioButtonMenuItem(LAFOptions[count].getName());
+     jMenuThemes.add(LookAndFeelOptions[count]);
+     LookAndFeelGroup.add(LookAndFeelOptions[count]);
+     LookAndFeelOptions[count].addItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+            for (int count = 0; count < LAFOptions.length; count++ )
+            {
+                if (LookAndFeelOptions[count].isSelected())
+                try
+                {
+                    UIManager.setLookAndFeel(LAFOptions[count].getClassName());
+                    SwingUtilities.updateComponentTreeUI( getContentPane()  );
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
+        }
+    });
+     
+   
+  
+  }
+  
+  LookAndFeelOptions[0].setSelected( true );
         fileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileMenuActionPerformed(evt);
@@ -922,11 +1041,7 @@ return 1;
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
-            }
-        });
+      
         fileMenu.add(exitMenuItem);
         
         
@@ -934,7 +1049,7 @@ return 1;
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Save");
         fileMenu.add(saveMenuItem);
-
+ fileMenu.add(saveAsMenuItem);
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -974,41 +1089,7 @@ return 1;
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
-        
-                  LAFOptions = UIManager.getInstalledLookAndFeels();
-   LookAndFeelOptions = new JRadioButtonMenuItem[LAFOptions.length];
-   LookAndFeelGroup = new ButtonGroup();
- 
-  for (int count = 0; count<LAFOptions.length; count++)
-  {    
-     LookAndFeelOptions[count] = new JRadioButtonMenuItem(LAFOptions[count].getName());
-     jMenuThemes.add(LookAndFeelOptions[count]);
-     LookAndFeelGroup.add(LookAndFeelOptions[count]);
-     LookAndFeelOptions[count].addItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-            for (int count = 0; count < LAFOptions.length; count++ )
-            {
-                if (LookAndFeelOptions[count].isSelected())
-                try
-                {
-                    UIManager.setLookAndFeel(LAFOptions[count].getClassName());
-                    SwingUtilities.updateComponentTreeUI( getContentPane()  );
-                }
-                catch (Exception exception)
-                {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    });
-     
    
-  
-  }
-  
-  LookAndFeelOptions[0].setSelected( true );
   
 
 
@@ -1024,7 +1105,7 @@ return 1;
        saveMenuItem.addActionListener(listener);
    }
    public void addFileMenuSaveAsActionListener (ActionListener listener) {
-  //     saveAsMenuItem.addActionListener(listener);
+    saveAsMenuItem.addActionListener(listener);
    }
    public void addFileMenuImportActionListener (ActionListener listener)
    {
@@ -1036,7 +1117,7 @@ return 1;
    }
    
 
-  public int SaveFile(SeleniumTestTool STAppFrame) throws IOException, XMLStreamException
+  public int SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs) throws IOException, XMLStreamException
     {
 
       final JFileChooser fc = new JFileChooser(){
@@ -1056,7 +1137,7 @@ return 1;
             switch(result){
                 case JOptionPane.YES_OPTION:
                     super.approveSelection();
-                    
+                 
                     return;
                 case JOptionPane.NO_OPTION:
                     return;
@@ -1071,28 +1152,48 @@ return 1;
     STAppFrame.changes = false;
     }
 };
-
-
-    if (STAppFrame.filename.contains("untitled")==false)
-    {  String noxtfilename = STAppFrame.filename.substring(0, STAppFrame.filename.length()-14);
-        File file = new File(noxtfilename);
-        fc.setSelectedFile(file); }
+File file;
+   
+    if (isSaveAs==true || STAppFrame.filename.contains("untitled") == true)
+    {
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
 
     fc.setFileFilter(filefilter);
-
-
+    if (STAppFrame.filename.contains("untitled") == false  && isSaveAs==true)
+    {
+          String[] left_side_of_dot = STAppFrame.filename.split("\\.");
+                
+                 file = new File(left_side_of_dot[0] + ".browsermation");
+        fc.setSelectedFile(file);
+        
+    }
 int returnVal = fc.showSaveDialog(STAppFrame);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
+                file = fc.getSelectedFile();
                 String filestring = file.toString();
                 
                 String[] left_side_of_dot = filestring.split("\\.");
                 
                  file = new File(left_side_of_dot[0] + ".browsermation");
+            
+            }
+            else
+            {
+               return 1;
+            }
+    }
+    else
+    {
+    
+         String filestring = STAppFrame.filename;
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 file = new File(left_side_of_dot[0] + ".browsermation");
+    }
+  
 
-                 
                XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
                               new FileOutputStream(file)));
      
@@ -1101,21 +1202,64 @@ xmlfile.writeStartElement("BrowserMatorWindow");
 xmlfile.writeAttribute("Filename",file.getAbsolutePath());
 xmlfile.writeAttribute("ProgramVersion", this.ProgramVersion);
 String ShowReport = Boolean.toString(STAppFrame.getShowReport());
-xmlfile.writeAttribute("ShowReport", ShowReport);
+
+xmlfile.writeStartElement("FileSettings");
+
+xmlfile.writeStartElement("ShowReport");
+    xmlfile.writeCharacters(ShowReport);
+    xmlfile.writeEndElement();
+// xmlfile.writeAttribute("ShowReport", ShowReport);
 String EmailReport = Boolean.toString(STAppFrame.getEmailReport());
-xmlfile.writeAttribute("EmailReport", EmailReport);
+  xmlfile.writeStartElement("EmailReport");
+    xmlfile.writeCharacters(EmailReport);
+    xmlfile.writeEndElement();
+// xmlfile.writeAttribute("EmailReport", EmailReport);
 String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
-xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
+xmlfile.writeStartElement("EmailReportFail");
+    xmlfile.writeCharacters(EmailReportFail);
+    xmlfile.writeEndElement();
+    
+// xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
 String ExitAfter = Boolean.toString(STAppFrame.getExitAfter());
-xmlfile.writeAttribute("ExitAfter", ExitAfter);
-xmlfile.writeAttribute("SMTPHostname", STAppFrame.getSMTPHostname());
-xmlfile.writeAttribute("EmailLoginName", STAppFrame.getEmailLoginName());
+xmlfile.writeStartElement("ExitAfter");
+    xmlfile.writeCharacters(ExitAfter);
+    xmlfile.writeEndElement();    
+// xmlfile.writeAttribute("ExitAfter", ExitAfter);
+   String SMTPHostname = STAppFrame.getSMTPHostname();
+xmlfile.writeStartElement("SMTPHostname");
+    xmlfile.writeCharacters(SMTPHostname);
+    xmlfile.writeEndElement(); 
+// xmlfile.writeAttribute("SMTPHostname", STAppFrame.getSMTPHostname());
+    
+  String EmailLoginName = STAppFrame.getEmailLoginName();
+xmlfile.writeStartElement("EmailLoginName");
+    xmlfile.writeCharacters(EmailLoginName);
+    xmlfile.writeEndElement();     
+// xmlfile.writeAttribute("EmailLoginName", STAppFrame.getEmailLoginName());
 String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
-xmlfile.writeAttribute("PromptToClose", PromptToClose);
+xmlfile.writeStartElement("PromptToClose");
+    xmlfile.writeCharacters(PromptToClose);
+    xmlfile.writeEndElement();     
+// String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
+//    xmlfile.writeAttribute("PromptToClose", PromptToClose);
 String TargetBrowser = STAppFrame.TargetBrowser;
-xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
+xmlfile.writeStartElement("TargetBrowser");
+    xmlfile.writeCharacters(TargetBrowser);
+    xmlfile.writeEndElement();   
+// xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
+    
+Integer WaitTime = STAppFrame.GetWaitTime();
+String WaitTimeString = WaitTime.toString();
+xmlfile.writeStartElement("WaitTime");
+    xmlfile.writeCharacters(WaitTimeString);
+    xmlfile.writeEndElement();   
+// xmlfile.writeAttribute("WaitTime", WaitTimeString);
+
 String OSType = STAppFrame.OSType;
-xmlfile.writeAttribute("OSType", OSType);
+xmlfile.writeStartElement("OSType");
+    xmlfile.writeCharacters(OSType);
+    xmlfile.writeEndElement();  
+// xmlfile.writeAttribute("OSType", OSType);
 String EmailPassword = "";
 EmailPassword = STAppFrame.getEmailPassword();
 
@@ -1129,10 +1273,27 @@ String une = "";
       System.out.println("Error encrypting emailpassword: " + e.toString());
       }
       EmailPassword = une;
-xmlfile.writeAttribute("EmailPassword", EmailPassword);
-xmlfile.writeAttribute("EmailTo", STAppFrame.getEmailTo());
-xmlfile.writeAttribute("EmailFrom", STAppFrame.getEmailFrom());
-xmlfile.writeAttribute("EmailSubject", STAppFrame.getSubject());
+xmlfile.writeStartElement("EmailPassword");
+    xmlfile.writeCharacters(EmailPassword);
+    xmlfile.writeEndElement();    
+// xmlfile.writeAttribute("EmailPassword", EmailPassword);
+String EmailTo = STAppFrame.getEmailTo();
+xmlfile.writeStartElement("EmailTo");
+    xmlfile.writeCharacters(EmailTo);
+    xmlfile.writeEndElement();  
+// xmlfile.writeAttribute("EmailTo", STAppFrame.getEmailTo());
+
+String EmailFrom = STAppFrame.getEmailFrom();
+xmlfile.writeStartElement("EmailFrom");
+    xmlfile.writeCharacters(EmailFrom);
+    xmlfile.writeEndElement(); 
+// xmlfile.writeAttribute("EmailFrom", STAppFrame.getEmailFrom());
+String EmailSubject = STAppFrame.getSubject();
+xmlfile.writeStartElement("EmailSubject");
+    xmlfile.writeCharacters(EmailSubject);
+    xmlfile.writeEndElement();     
+// xmlfile.writeAttribute("EmailSubject", STAppFrame.getSubject());
+xmlfile.writeEndElement();
 
 for (Procedure thisbug: STAppFrame.BugArray)
 {
@@ -1191,6 +1352,15 @@ xmlfile.writeAttribute("index", index);
     xmlfile.writeCharacters(thisaction.Variable2);
     xmlfile.writeEndElement();
     }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
     String ActionIndex = Integer.toString(thisaction.index);   
     xmlfile.writeStartElement("ActionIndex");
     xmlfile.writeCharacters(ActionIndex);
@@ -1217,36 +1387,53 @@ xmlfile.writeEndElement();
             xmlfile.close();
             STAppFrame.AllFieldValues.clear();
            
+STAppFrame.AllFieldValues.add(STAppFrame.OSType);
+STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
+String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
+STAppFrame.AllFieldValues.add(stringWaitTime);
+STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
+STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
+
 
 for (Procedure thisproc: STAppFrame.BugArray)
 {
+    
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
  
     for (Action thisact: thisproc.ActionsList)
     {
+        String checkingboolval1 = "false";
         STAppFrame.AllFieldValues.add(thisact.Variable1);
        
         STAppFrame.AllFieldValues.add(thisact.Variable2);
-     
+      
+        if (thisact.BoolVal1)
+        {
+            checkingboolval1 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval1);
     }
 }
 STAppFrame.changes = false;
         }
 
-this.filename = file.getName();
+this.filename = file.getAbsolutePath();
 STAppFrame.setProperties(this.filename);
 Navigator.addRecentFile(file.getAbsolutePath());
 
-         return 0;   } else {
-    return 1;
-            }
+         return 0;  
 
         }
-  public File BrowseForFile()
+  public File[] BrowseForFile()
   {
        
    //    boolean fileexists;
         final JFileChooser fc = new JFileChooser();
+fc.setMultiSelectionEnabled(true);
 
  FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
 
@@ -1255,24 +1442,27 @@ Navigator.addRecentFile(file.getAbsolutePath());
 int returnVal = fc.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();   
+                File[] files = fc.getSelectedFiles();   
   
-
- 
-  if (fc.getSelectedFile().getAbsoluteFile().getName().contains(".browsermation"))
+ for (int fileindex = 0; fileindex<files.length; fileindex++)
+        {
+    if (files[fileindex].getAbsoluteFile().getName().contains(".browsermation"))
 {
- return file;
+ 
 }
 else
 {
-   String path = fc.getSelectedFile().getAbsolutePath();
+   String path = files[fileindex].getAbsolutePath();
     
-file = new File(path + ".browsermation");
-return file;
+File newfile = new File(path + ".browsermation");
+ files[fileindex] = newfile;
+ 
 }  
   
      
     }
+ return files;
+            }
             else
             {
                
@@ -1339,9 +1529,6 @@ String full_filename = file.getAbsoluteFile().toString();
 
 int MDI_Index = -1;
 
- //  System.out.println("Reading XML from a file");  
- //  System.out.println("----------------------------");  
-
 
               Boolean PromptForSameFileName = false;
      String filealreadyopen ="";
@@ -1384,23 +1571,68 @@ finally
    STAppFrame = BuildNewWindow(doc);
     STAppFrame.UpdateDisplay();
    STAppFrame.setVisible(true);
-  
+  STAppFrame.setProperties(full_filename);
    Navigator.addRecentFile(full_filename);
  
 MDIClasses.add(STAppFrame);
 MDI_Index =  MDIClasses.size()-1;
 STAppFrame.AllFieldValues.clear();
-
+STAppFrame.AllFieldValues.add(STAppFrame.OSType);
+STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
+String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
+STAppFrame.AllFieldValues.add(stringWaitTime);
+STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
+STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
+String thisbool = "false";
+if (STAppFrame.getEmailReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getEmailReportFail())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getExitAfter())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getPromptToClose())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getShowReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
 
     for (Action thisact: thisproc.ActionsList)
     {
+        String checkingboolval1 = "false";
         STAppFrame.AllFieldValues.add(thisact.Variable1);
 
         STAppFrame.AllFieldValues.add(thisact.Variable2);
-
+        if (thisact.BoolVal1)
+        {
+            checkingboolval1 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval1);
+        
     }
 }
 
@@ -1459,12 +1691,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    String Variable1 = "";
    String Variable2 = "";
    String LOCKED = "false";
-  
+   String BoolVal1 = "false";
     String TimeOfTest;
     String ActionType = "none";
     String ActionIndex;
     String ActionPass;
-   
+   Boolean RealBoolVal1 = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
    thisActionNodeName = ActionNodes.item(k).getNodeName();
@@ -1486,6 +1718,13 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             break;
         case "Variable2":
             Variable2 = thisActionNodeValue;
+            break;
+        case "BoolVal1":
+            BoolVal1 = thisActionNodeValue;
+            if (BoolVal1.equals("true"))
+                    {
+                    RealBoolVal1 = true;
+                    }
             break;
         case "LOCKED":
             LOCKED = thisActionNodeValue;
@@ -1602,6 +1841,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewDragAndDropActionView.AddListeners(NewDragAndDropAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,NewProcedure, NewProcedureView);
                     break;
+                
+                case "Enter Key":
+                    
+                    EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
+                    EnterKeyAction NewEnterKeyAction = new EnterKeyAction();
+                    NewEnterKeyActionView.AddListeners(NewEnterKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewEnterKeyAction, NewEnterKeyActionView,NewProcedure, NewProcedureView);
+                    break;
                     
                 case "Execute Javascript":
                     ExecuteJavascriptActionView NewExecuteJavascriptActionView = new ExecuteJavascriptActionView();
@@ -1628,6 +1875,21 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewGoActionView.AddListeners(NewGoAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewGoAction, NewGoActionView, NewProcedure, NewProcedureView);
                     break;  
+                  
+                case "Open New Tab":
+                    
+                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
+                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
+                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,NewProcedure, NewProcedureView);
+                    break;  
+                case "Next Tab":
+                    
+                    NextTabActionView NewNextTabActionView = new NextTabActionView();
+                    NextTabAction NewNextTabAction = new NextTabAction();
+                    NewNextTabActionView.AddListeners(NewNextTabAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewNextTabAction, NewNextTabActionView,NewProcedure, NewProcedureView);
+                    break; 
                     
                 case "Pause":
                     PauseActionView NewPauseActionView = new PauseActionView();
@@ -1684,9 +1946,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     
                 case "Type at ID":
                     TypeAtIDActionView NewTypeAtIDActionView = new TypeAtIDActionView();
-                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction(Variable1, Variable2);
+                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtIDActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtIDActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtIDActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtIDActionView.UpdateActionView();
@@ -1696,9 +1959,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     break;
                   case "Type at Input Name":
                     TypeAtInputNameActionView NewTypeAtInputNameActionView = new TypeAtInputNameActionView();
-                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction(Variable1, Variable2);
+                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtInputNameActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtInputNameActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtInputNameActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtInputNameActionView.UpdateActionView();
@@ -1709,9 +1973,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                       
                 case "Type at XPATH":
                     TypeAtXPATHActionView NewTypeAtXPATHActionView = new TypeAtXPATHActionView();
-                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction(Variable1, Variable2);
+                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtXPATHActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtXPATHActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtXPATHActionView.UpdateActionView();
@@ -1889,9 +2154,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                  
                  case "Type Password at XPATH":
                      TypePasswordAtXPATHActionView NewTypePasswordAtXPATHActionView = new TypePasswordAtXPATHActionView();
-                     TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction(Variable1, Variable2);
+                     TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction(Variable1, Variable2, RealBoolVal1);
                      NewTypePasswordAtXPATHActionView.JTextFieldVariable1.setText(Variable1);
                      NewTypePasswordAtXPATHActionView.JTextFieldPassword.setText(Variable2);
+                     NewTypePasswordAtXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                        if (LOCKED.equals("true"))
                     {
                     NewTypePasswordAtXPATHActionView.UpdateActionView();
@@ -1903,9 +2169,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      
                  case "Type Password at Input Name":
                      TypePasswordAtInputNameActionView NewTypePasswordAtInputNameActionView = new TypePasswordAtInputNameActionView();
-                     TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction(Variable1, Variable2);
+                     TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction(Variable1, Variable2, RealBoolVal1);
                      NewTypePasswordAtInputNameActionView.JTextFieldVariable1.setText(Variable1);
                      NewTypePasswordAtInputNameActionView.JTextFieldPassword.setText(Variable2);
+                     NewTypePasswordAtInputNameActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                        if (LOCKED.equals("true"))
                     {
                     NewTypePasswordAtInputNameActionView.UpdateActionView();
@@ -1935,9 +2202,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
     
-     
-        // 1 = dont close 0 = close
-           int closed =  CheckToSaveChanges(STAppFrame);
+    
+      int closed =  CheckToSaveChanges(STAppFrame);
            
       if (closed==1)
       {
@@ -1951,66 +2217,139 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
      
       }
     });
-   String stShowReport = NewAttributes.getNamedItem("ShowReport").getNodeValue();
-   Boolean ShowReport = false;
+  NodeList FileSettingsNode = doc.getElementsByTagName("FileSettings");
+ 
+  String thisSettingsNodeName;
+  String thisSettingsNodeValue;
+  String stShowReport="false";
+  String stEmailReport = "false";
+  String stEmailReportFail = "false";
+  String stExitAfter = "false";
+  String SMTPHostname = "";
+  String EmailLoginName = "";
+  String stPromptToClose = "false";
+  String TargetBrowser = "Firefox";
+  String WaitTime = "3";
+  String OSType = "Windows";
+  String EmailPassword = "";
+  String unepassword = "";
+  String EmailTo = "";
+  String EmailFrom = "";
+  String EmailSubject = "";
+  
+  for (int ke = 0; ke<FileSettingsNode.getLength(); ke++)
+    {
+   thisSettingsNodeName = FileSettingsNode.item(ke).getNodeName();
+   thisSettingsNodeValue = FileSettingsNode.item(ke).getTextContent();
+   
+    switch(thisSettingsNodeName)
+    {
+        case "ShowReport":
+            stShowReport = thisSettingsNodeValue;
+           Boolean ShowReport = false;
    if (stShowReport.equals("true"))
    {
        ShowReport = true;
    }
    STAppFrame.setShowReport(ShowReport);
-   
-   String stEmailReport = NewAttributes.getNamedItem("EmailReport").getNodeValue();
+            break;
+        
+        case "EmailReport":
+   stEmailReport = thisSettingsNodeValue;
    Boolean EmailReport = false;
     if (stEmailReport.equals("true"))
    {
        EmailReport = true;
    }
-   STAppFrame.setEmailReport(EmailReport);
-    String stPromptToClose = NewAttributes.getNamedItem("PromptToClose").getNodeValue();
-      Boolean PromptToClose = false;
-    if (stPromptToClose.equals("true"))
-   {
-       PromptToClose = true;
-   }
-   STAppFrame.setPromptToClose(PromptToClose);
-     String stEmailReportFail = NewAttributes.getNamedItem("EmailReportFail").getNodeValue();
+       STAppFrame.setEmailReport(EmailReport);
+            break;
+      
+        case "EmailReportFail":
+   stEmailReportFail = thisSettingsNodeValue;
    Boolean EmailReportFail = false;
     if (stEmailReportFail.equals("true"))
    {
        EmailReportFail = true;
    }
-   STAppFrame.setEmailReportFail(EmailReportFail);
-   
-   
-   String stExitAfter = NewAttributes.getNamedItem("ExitAfter").getNodeValue();
+       STAppFrame.setEmailReport(EmailReportFail);
+            break;
+         
+        case "ExitAfter":
+   stExitAfter = thisSettingsNodeValue;
    Boolean ExitAfter = false;
-   if (stExitAfter.equals("true"))
+    if (stExitAfter.equals("true"))
    {
        ExitAfter = true;
    }
-   STAppFrame.setExitAfter(ExitAfter);
-   STAppFrame.setSMTPHostname(NewAttributes.getNamedItem("SMTPHostname").getNodeValue());
-   STAppFrame.setEmailLoginName(NewAttributes.getNamedItem("EmailLoginName").getNodeValue());
-  // STAppFrame.setEmailPassword(NewAttributes.getNamedItem("EmailPassword").getNodeValue());
- 
-   String password = NewAttributes.getNamedItem("EmailPassword").getNodeValue();
-   try
+       STAppFrame.setEmailReport(ExitAfter);
+            break;        
+       
+        case "SMTPHostname":
+ SMTPHostname = thisSettingsNodeValue;
+      STAppFrame.setSMTPHostname(SMTPHostname);
+            break;  
+
+        case "EmailLoginName":
+ EmailLoginName = thisSettingsNodeValue;
+      STAppFrame.setEmailLoginName(EmailLoginName);
+            break;  
+        
+        case "PromptToClose":
+ stPromptToClose = thisSettingsNodeValue;
+   Boolean PromptToClose = false;
+    if (stPromptToClose.equals("true"))
    {
-   password = Protector.decrypt(password);
+       PromptToClose = true;
+   }
+       STAppFrame.setPromptToClose(PromptToClose);
+            break; 
+          
+        case "TargetBrowser":
+ TargetBrowser = thisSettingsNodeValue;
+      STAppFrame.setTargetBrowser(TargetBrowser);
+            break;   
+            
+       case "WaitTime":
+ WaitTime = thisSettingsNodeValue;
+ int intWaitTime = Integer.parseInt(WaitTime);
+      STAppFrame.setWaitTime(intWaitTime);
+            break;   
+              
+       case "OSType":
+ OSType = thisSettingsNodeValue;
+      STAppFrame.setOSType(OSType);
+            break;   
+     
+       case "EmailPassword":
+ EmailPassword = thisSettingsNodeValue;
+  try
+   {
+   unepassword = Protector.decrypt(EmailPassword);
    }
    catch (GeneralSecurityException | IOException e)
            {
                System.out.println("decrypt error" + e.toString());
            }
-   String targetbrowser = NewAttributes.getNamedItem("TargetBrowser").getNodeValue();
-   STAppFrame.setTargetBrowser(targetbrowser);
-      String OSType = NewAttributes.getNamedItem("OSType").getNodeValue();
-   STAppFrame.setOSType(OSType);
-   STAppFrame.setEmailPassword(password);
-   STAppFrame.setEmailTo(NewAttributes.getNamedItem("EmailTo").getNodeValue());
-   STAppFrame.setEmailFrom(NewAttributes.getNamedItem("EmailFrom").getNodeValue());
-   STAppFrame.setSubject(NewAttributes.getNamedItem("EmailSubject").getNodeValue());
+      STAppFrame.setEmailPassword(unepassword);
+            break;  
+      
+       case "EmailTo":
+ EmailTo = thisSettingsNodeValue;
+      STAppFrame.setEmailTo(EmailTo);
+            break;    
+      
+       case "EmailFrom":
+ EmailFrom = thisSettingsNodeValue;
+      STAppFrame.setEmailFrom(EmailFrom);
+            break;   
+       
+       case "EmailSubject":
+ EmailSubject = thisSettingsNodeValue;
+      STAppFrame.setSubject(EmailSubject);
+            break; 
+    }
 
+    }
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
    
 for (int i = 0; i < ProcedureList.getLength(); ++i)
@@ -2036,8 +2375,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
     
     NodeList ActionsList = Procedure.getElementsByTagName("Action");
-   int thislength = ActionsList.getLength();
-
+  
     for (int j = 0; j <ActionsList.getLength(); j++)
     {
    Element Action = (Element) ActionsList.item(j);
@@ -2048,12 +2386,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    String Variable1 = "";
    String Variable2 = "";
    String LOCKED = "false";
-  
+   String BoolVal1 = "false";
     String TimeOfTest;
     String ActionType = "none";
     String ActionIndex;
     String ActionPass;
-   
+   Boolean RealBoolVal1 = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
    thisActionNodeName = ActionNodes.item(k).getNodeName();
@@ -2076,6 +2414,13 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         case "Variable2":
             Variable2 = thisActionNodeValue;
             break;
+        case "BoolVal1":
+            BoolVal1 = thisActionNodeValue;
+            if (BoolVal1.equals("true"))
+                    {
+                    RealBoolVal1 = true;
+                    }
+           break;
         case "LOCKED":
             LOCKED = thisActionNodeValue;
             break;
@@ -2193,6 +2538,13 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewCloseCurrentTabOrWindowActionView.AddListeners(NewCloseCurrentTabOrWindowAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewCloseCurrentTabOrWindowAction, NewCloseCurrentTabOrWindowActionView,NewProcedure, NewProcedureView);
                     break;
+                case "Enter Key":
+                    
+                    EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
+                    EnterKeyAction NewEnterKeyAction = new EnterKeyAction();
+                    NewEnterKeyActionView.AddListeners(NewEnterKeyAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewEnterKeyAction, NewEnterKeyActionView,NewProcedure, NewProcedureView);
+                    break;
                     
                 case "Execute Javascript":
                     ExecuteJavascriptActionView NewExecuteJavascriptActionView = new ExecuteJavascriptActionView();
@@ -2217,6 +2569,21 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     }
                     NewDragAndDropActionView.AddListeners(NewDragAndDropAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,NewProcedure, NewProcedureView);
+                    break;
+                 
+                 case "Open New Tab":
+                    
+                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
+                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
+                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,NewProcedure, NewProcedureView);
+                    break;   
+                 case "Next Tab":
+                    
+                    NextTabActionView NewNextTabActionView = new NextTabActionView();
+                    NextTabAction NewNextTabAction = new NextTabAction();
+                    NewNextTabActionView.AddListeners(NewNextTabAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewNextTabAction, NewNextTabActionView,NewProcedure, NewProcedureView);
                     break;
                      
                  case "Pause":
@@ -2270,22 +2637,25 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     
                 case "Type at ID":
                     TypeAtIDActionView NewTypeAtIDActionView = new TypeAtIDActionView();
-                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction(Variable1, Variable2);
+                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtIDActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtIDActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtIDActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtIDActionView.UpdateActionView();
                     }
+                
                     NewTypeAtIDActionView.AddListeners(NewTypeAtIDAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewTypeAtIDAction, NewTypeAtIDActionView,NewProcedure, NewProcedureView);
                     break;
                     
                   case "Type at Input Name":
                     TypeAtInputNameActionView NewTypeAtInputNameActionView = new TypeAtInputNameActionView();
-                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction(Variable1, Variable2);
+                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtInputNameActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtInputNameActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtInputNameActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtInputNameActionView.UpdateActionView();
@@ -2296,9 +2666,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                       
                 case "Type at XPATH":
                     TypeAtXPATHActionView NewTypeAtXPATHActionView = new TypeAtXPATHActionView();
-                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction(Variable1, Variable2);
+                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction(Variable1, Variable2, RealBoolVal1);
                     NewTypeAtXPATHActionView.JTextFieldVariable1.setText(Variable1);
                     NewTypeAtXPATHActionView.JTextFieldVariable2.setText(Variable2);
+                    NewTypeAtXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewTypeAtXPATHActionView.UpdateActionView();
@@ -2475,9 +2846,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                  
                  case "Type Password at XPATH":
                      TypePasswordAtXPATHActionView NewTypePasswordAtXPATHActionView = new TypePasswordAtXPATHActionView();
-                     TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction(Variable1, Variable2);
+                     TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction(Variable1, Variable2, RealBoolVal1);
                      NewTypePasswordAtXPATHActionView.JTextFieldVariable1.setText(Variable1);
                      NewTypePasswordAtXPATHActionView.JTextFieldPassword.setText(Variable2);
+                     NewTypePasswordAtXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                        if (LOCKED.equals("true"))
                     {
                     NewTypePasswordAtXPATHActionView.UpdateActionView();
@@ -2488,9 +2860,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      break;   
                  case "Type Password at Input Name":
                      TypePasswordAtInputNameActionView NewTypePasswordAtInputNameActionView = new TypePasswordAtInputNameActionView();
-                     TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction(Variable1, Variable2);
+                     TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction(Variable1, Variable2, RealBoolVal1);
                      NewTypePasswordAtInputNameActionView.JTextFieldVariable1.setText(Variable1);
                      NewTypePasswordAtInputNameActionView.JTextFieldPassword.setText(Variable2);
+                     NewTypePasswordAtInputNameActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                        if (LOCKED.equals("true"))
                     {
                     NewTypePasswordAtInputNameActionView.UpdateActionView();
@@ -2629,7 +3002,7 @@ STAppFrame.addjButtonDoStuffActionListener(
    {
        if (MDI_CLASS_INDEX>=0)
        {
-  MDIClasses.get(MDI_CLASS_INDEX).setTitle(MDIClasses.get(MDI_CLASS_INDEX).filename);
+  MDIClasses.get(MDI_CLASS_INDEX).setTitle("Browsermator - " + MDIClasses.get(MDI_CLASS_INDEX).filename);
   MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
   MDIClasses.get(MDI_CLASS_INDEX).setSize(1200,900);
   saveMenuItem.setEnabled(true);

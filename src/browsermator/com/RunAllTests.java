@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -33,13 +32,16 @@ SeleniumTestTool SiteTest;
 String report;
 String targetbrowser;
 String OSType;
-
+WebDriver driver;
+ 
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
    this.SiteTest = in_SiteTest;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
  }
+ 
+@Override 
 public String doInBackground()
  {
      
@@ -49,6 +51,7 @@ public String doInBackground()
      return donetext;
      
  }
+@Override
  protected void done()
  {
     try
@@ -88,15 +91,10 @@ public String doInBackground()
     System.exit(0);
     }
     }
-    catch (InterruptedException ex)
+    catch (InterruptedException | ExecutionException ex)
     {
         SiteTest.setRunActionsButtonName("Run All Procedures");
        System.out.println(ex.getLocalizedMessage());
-    }
-    catch (ExecutionException ex)
-    {
-       SiteTest.setRunActionsButtonName("Run All Procedures");
-      System.out.println(ex.getLocalizedMessage());
     }
      
  }
@@ -146,6 +144,8 @@ public String doInBackground()
     }
    
    }
+  
+@Override
  protected void process ( List <Integer> bugindex)
  {
     int updatebugindex = bugindex.size()-1;
@@ -157,12 +157,12 @@ public String doInBackground()
  {
 
 int NumberOfTestsPassed = 0;
-  WebDriver driver = null;
-// WebDriver driver = new FirefoxDriver();
+//  WebDriver driver = null;
+
   switch (TargetBrowser)
    {
      case "Firefox":
-     driver = new FirefoxDriver();
+      driver = new FirefoxDriver();
      break;
      
      case "Silent Mode (HTMLUnit)":
@@ -197,11 +197,18 @@ int NumberOfTestsPassed = 0;
      
      driver = new ChromeDriver();
      break;
+         
+         default: 
+            driver = new FirefoxDriver(); 
+                     break;
    }
   
   int WaitTime = SiteTest.GetWaitTime();
-driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
-int thisbugindex = 0;
+// driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+     int totalpause = WaitTime * 1000;
+        
+  
+  int thisbugindex = 0;
      for (Procedure thisbug : SiteTest.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
@@ -212,7 +219,16 @@ int actionsrun = 0;
    for( Action TheseActions : Actions ) {
 try
 {
+    
       TheseActions.RunAction(driver);
+            try
+        {
+Thread.sleep(totalpause);
+        }
+        catch (InterruptedException e)
+                {
+                    System.out.println("pause exception: " + e.toString());
+                }
 }
 catch (Exception ex)
    {

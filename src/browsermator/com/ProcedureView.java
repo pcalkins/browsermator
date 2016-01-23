@@ -69,9 +69,12 @@ public class ProcedureView {
      JComboBoxDoActions.addItem("Close Current Tab or Window");
      
      JComboBoxDoActions.addItem("Drag From XPATH to XPATH");
+     JComboBoxDoActions.addItem("Enter Key");
      JComboBoxDoActions.addItem("Execute Javascript");
      JComboBoxDoActions.addItem("Forward Action");
      JComboBoxDoActions.addItem("Go to URL");
+     JComboBoxDoActions.addItem("Open New Tab");
+     JComboBoxDoActions.addItem("Next Tab");
      JComboBoxDoActions.addItem("Pause");
      JComboBoxDoActions.addItem("Set Cookie");
      

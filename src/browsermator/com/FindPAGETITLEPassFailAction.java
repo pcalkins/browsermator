@@ -21,8 +21,7 @@ public class FindPAGETITLEPassFailAction extends Action
      public void RunAction(WebDriver driver)
     {
 
-        
-  
+     
     Boolean doespass = false;
     if(driver.getTitle().contains(this.Variable1))
     {
@@ -30,7 +29,7 @@ public class FindPAGETITLEPassFailAction extends Action
     }
    
     this.Pass = false;
-       if (doespass && this.NOT == false)
+       if (doespass == true && this.NOT == false)
     {
         this.Pass = true;
   

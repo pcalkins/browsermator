@@ -11,13 +11,13 @@ public class TypeAtXPATHAction extends Action
 
   
     
-  TypeAtXPATHAction (String TargetXPATH, String ToType)
+  TypeAtXPATHAction (String TargetXPATH, String ToType, Boolean BoolVal1)
     {
         this.Type = "Type at XPATH";
         
         this.Variable1 = TargetXPATH;
         this.Variable2 = ToType;
-        
+        this.BoolVal1 = BoolVal1;
     }
     @Override
     public void RunAction(WebDriver driver)
@@ -27,12 +27,14 @@ public class TypeAtXPATHAction extends Action
  {
         
         WebElement element = driver.findElement(By.xpath(this.Variable1));
-  //   if (this.Variable2.contains("\\n")) { this.Variable2 = this.Variable2.replace("\\n", ""); SendEnter = true; }
+
+ //    if (this.Variable2.contains("\\n")) { this.Variable2 = this.Variable2.replace("\\n", ""); SendEnter = true; }
   
         element.sendKeys(this.Variable2);
-        if (SendEnter)
+if (this.BoolVal1.equals(true))
 {
-    element.sendKeys(Keys.RETURN);
+ element.sendKeys(Keys.RETURN);
+ 
 }
         this.Pass = true;
  }
