@@ -6,19 +6,23 @@ import org.openqa.selenium.WebDriver;
 public class ClickXPATHAction extends Action 
 {
 
- 
-
     
-  ClickXPATHAction (String ToClick)
+  ClickXPATHAction (String ToClick, boolean BoolVal1)
     {
         this.Variable1 = ToClick;
         this.Type = "Click at XPATH";
+        this.BoolVal1 = BoolVal1;
     }
   @Override
     public void RunAction(WebDriver driver)
     {
-    
-        ClickCatchAction (driver, this.Variable1);
-        
+ if (this.BoolVal1.equals(true))
+{
+     RightClickCatchAction(driver, this.Variable1);
+ }
+ else
+ {
+ ClickCatchAction(driver, this.Variable1);
+ }
     }
 }

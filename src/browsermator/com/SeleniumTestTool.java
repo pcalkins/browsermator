@@ -13,11 +13,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.text.ParseException;
 
 
 public class SeleniumTestTool extends JInternalFrame {
@@ -202,7 +205,28 @@ catch (Exception e) {
     }
 public int GetWaitTime()
 {
-    int wait = (Integer)this.jSpinnerWaitTime.getValue();
+    int fallbackValue = 3;
+
+
+    
+    try {
+       jSpinnerWaitTime.commitEdit();
+   }
+   catch (ParseException pe) {
+       // Edited value is invalid, spinner.getValue() will return
+       // the last valid value, you could revert the spinner to show that:
+       JComponent editor =jSpinnerWaitTime.getEditor();
+       
+       if (editor instanceof DefaultEditor) {
+           ((DefaultEditor)editor).getTextField().setValue(jSpinnerWaitTime.getValue());
+       }
+       // reset the value to some known value:
+       jSpinnerWaitTime.setValue(fallbackValue);
+       // or treat the last valid value as the current, in which
+       // case you don't need to do anything.
+      
+   }
+   int wait = (Integer)this.jSpinnerWaitTime.getValue();
     return wait;
     
 }
@@ -215,14 +239,8 @@ public int GetWaitTime()
     }
 public void setProperties (String filename)
     {
-//  this.jLabelTHISFILENAME.setText(filename);
-        
-    this.setTitle("Browsermator - " + filename);
-  
-  //  this.jLabelTHISSITEURL.setText(URL);
- //   this.jLabelTHISFILENAME.repaint();
-    
-// this.jLabelTHISSITEURL.repaint();
+   
+    this.setTitle("Browsermator - " + filename); 
     
     }
    
@@ -430,25 +448,25 @@ bugindex++;
                     break;
                 case "Click at HREF":
                     ClickAtHREFActionView NewClickAtHREFActionView = new ClickAtHREFActionView();
-                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction("");
+                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction("", false);
                     NewClickAtHREFActionView.AddListeners(NewClickAtHREFAction, Window, newbug, newbugview);
                     AddActionToArray (NewClickAtHREFAction, NewClickAtHREFActionView,newbug, newbugview);
                     break;
                 case "Click at Image SRC":
                     ClickAtImageSRCActionView NewClickAtImageSRCActionView = new ClickAtImageSRCActionView();
-                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction("");
+                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction("", false);
                     NewClickAtImageSRCActionView.AddListeners(NewClickAtImageSRCAction, Window, newbug, newbugview);
                     AddActionToArray (NewClickAtImageSRCAction, NewClickAtImageSRCActionView,newbug, newbugview);
                     break;
                 case "Click at Link Text":
                     ClickAtLinkTextActionView NewClickAtLinkTextActionView = new ClickAtLinkTextActionView();
-                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction("");
+                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction("", false);
                     NewClickAtLinkTextActionView.AddListeners(NewClickAtLinkTextAction, Window, newbug, newbugview);
                     AddActionToArray (NewClickAtLinkTextAction, NewClickAtLinkTextActionView,newbug, newbugview);
                     break;
                 case "Click at ID":
                     ClickAtIDActionView NewClickAtIDActionView = new ClickAtIDActionView();
-                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction("");
+                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction("", false);
                     NewClickAtIDActionView.AddListeners(NewClickAtIDAction, Window, newbug, newbugview);
                     AddActionToArray (NewClickAtIDAction, NewClickAtIDActionView,newbug, newbugview);
                     break;
@@ -458,6 +476,20 @@ bugindex++;
                     CloseCurrentTabOrWindowAction NewCloseCurrentTabOrWindowAction = new CloseCurrentTabOrWindowAction();
                     NewCloseCurrentTabOrWindowActionView.AddListeners(NewCloseCurrentTabOrWindowAction, Window, newbug, newbugview);
                     AddActionToArray (NewCloseCurrentTabOrWindowAction, NewCloseCurrentTabOrWindowActionView,newbug, newbugview);
+                    break;
+                case "Down Arrow Key":
+                    
+                    DownArrowKeyActionView NewDownArrowKeyActionView = new DownArrowKeyActionView();
+                    DownArrowKeyAction NewDownArrowKeyAction = new DownArrowKeyAction();
+                    NewDownArrowKeyActionView.AddListeners(NewDownArrowKeyAction, Window, newbug, newbugview);
+                    AddActionToArray (NewDownArrowKeyAction, NewDownArrowKeyActionView,newbug, newbugview);
+                    break; 
+                    
+                case "Drag From XPATH Distance X and Y Pixels":
+                   DragAndDropByActionView NewDragAndDropByActionView = new DragAndDropByActionView();
+                    DragAndDropByAction NewDragAndDropByAction = new DragAndDropByAction("", "");
+                    NewDragAndDropByActionView.AddListeners(NewDragAndDropByAction, Window, newbug, newbugview);
+                    AddActionToArray (NewDragAndDropByAction, NewDragAndDropByActionView,newbug, newbugview);
                     break;
                     
                 case "Drag From XPATH to XPATH":
@@ -480,7 +512,21 @@ bugindex++;
                     NewEnterKeyActionView.AddListeners(NewEnterKeyAction, Window, newbug, newbugview);
                     AddActionToArray (NewEnterKeyAction, NewEnterKeyActionView,newbug, newbugview);
                     break; 
+                case "Left Arrow Key":
                     
+                    LeftArrowKeyActionView NewLeftArrowKeyActionView = new LeftArrowKeyActionView();
+                    LeftArrowKeyAction NewLeftArrowKeyAction = new LeftArrowKeyAction();
+                    NewLeftArrowKeyActionView.AddListeners(NewLeftArrowKeyAction, Window, newbug, newbugview);
+                    AddActionToArray (NewLeftArrowKeyAction, NewLeftArrowKeyActionView,newbug, newbugview);
+                    break;     
+                
+                case "Next Tab":
+                    
+                    NextTabActionView NewNextTabActionView = new NextTabActionView();
+                    NextTabAction NewNextTabAction = new NextTabAction();
+                    NewNextTabActionView.AddListeners(NewNextTabAction, Window, newbug, newbugview);
+                    AddActionToArray (NewNextTabAction, NewNextTabActionView,newbug, newbugview);
+                    break;  
                 case "Open New Tab":
                     
                     OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
@@ -488,20 +534,27 @@ bugindex++;
                     NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction, Window, newbug, newbugview);
                     AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,newbug, newbugview);
                     break; 
-                case "Next Tab":
-                    
-                    NextTabActionView NewNextTabActionView = new NextTabActionView();
-                    NextTabAction NewNextTabAction = new NextTabAction();
-                    NewNextTabActionView.AddListeners(NewNextTabAction, Window, newbug, newbugview);
-                    AddActionToArray (NewNextTabAction, NewNextTabActionView,newbug, newbugview);
-                    break;    
                 case "Pause":
                     PauseActionView NewPauseActionView = new PauseActionView();
                     PauseAction NewPauseAction = new PauseAction("", "");
                     NewPauseActionView.AddListeners(NewPauseAction, Window, newbug, newbugview);
                     AddActionToArray (NewPauseAction, NewPauseActionView,newbug, newbugview);
                     break;
-                
+                case "Right-Click":
+                    
+                    RightClickActionView NewRightClickActionView = new RightClickActionView();
+                    RightClickAction NewRightClickAction = new RightClickAction();
+                    NewRightClickActionView.AddListeners(NewRightClickAction, Window, newbug, newbugview);
+                    AddActionToArray (NewRightClickAction, NewRightClickActionView,newbug, newbugview);
+                    break;  
+                case "Right Arrow Key":
+                    
+                    RightArrowKeyActionView NewRightArrowKeyActionView = new RightArrowKeyActionView();
+                    RightArrowKeyAction NewRightArrowKeyAction = new RightArrowKeyAction();
+                    NewRightArrowKeyActionView.AddListeners(NewRightArrowKeyAction, Window, newbug, newbugview);
+                    AddActionToArray (NewRightArrowKeyAction, NewRightArrowKeyActionView,newbug, newbugview);
+                    break;   
+                    
                 case "Set Cookie":
                     SetCookieActionView NewSetCookieActionView = new SetCookieActionView();
                     SetCookieAction NewSetCookieAction = new SetCookieAction("", "");
@@ -538,7 +591,7 @@ bugindex++;
                     
                 case "Click at XPATH":
                     ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
-                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction("");
+                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction("", false);
                     NewClickXPATHActionView.AddListeners(NewClickXPATHAction, Window, newbug, newbugview);
                     AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,newbug, newbugview);
                     break;
@@ -556,6 +609,12 @@ bugindex++;
                     NewTypePasswordAtInputNameActionView.AddListeners(NewTypePasswordAtInputNameAction, Window, newbug, newbugview);
                     AddActionToArray (NewTypePasswordAtInputNameAction, NewTypePasswordAtInputNameActionView,newbug, newbugview);
                     break;
+                 case "Up Arrow Key":  
+                    UpArrowKeyActionView NewUpArrowKeyActionView = new UpArrowKeyActionView();
+                    UpArrowKeyAction NewUpArrowKeyAction = new UpArrowKeyAction();
+                    NewUpArrowKeyActionView.AddListeners(NewUpArrowKeyAction, Window, newbug, newbugview);
+                    AddActionToArray (NewUpArrowKeyAction, NewUpArrowKeyActionView,newbug, newbugview);
+                    break;   
                     
             }
             
@@ -789,7 +848,7 @@ this.changes=true;
         MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         MainScrollPane.setName(""); // NOI18N
 
-        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(3, 0, 9, 1));
+        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(3, 0, 99, 1));
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
 

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -204,7 +205,7 @@ int NumberOfTestsPassed = 0;
    }
   
   int WaitTime = SiteTest.GetWaitTime();
-// driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+ driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
      int totalpause = WaitTime * 1000;
         
   
@@ -221,14 +222,14 @@ try
 {
     
       TheseActions.RunAction(driver);
-            try
-        {
-Thread.sleep(totalpause);
-        }
-        catch (InterruptedException e)
-                {
-                    System.out.println("pause exception: " + e.toString());
-                }
+//            try
+//        {
+// Thread.sleep(totalpause);
+//        }
+//        catch (InterruptedException e)
+ //               {
+  //                  System.out.println("pause exception: " + e.toString());
+  //              }
 }
 catch (Exception ex)
    {

@@ -35,7 +35,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -78,9 +77,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "b3";
+private final String version = "0.0.4";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "b3";
+   private final String ProgramVersion = "0.0.4";
  
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
 
@@ -811,7 +810,7 @@ SeleniumToolDesktop.add(Navigator);
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
            STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome")
+           if ("Chrome".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -1330,6 +1329,7 @@ xmlfile.writeAttribute("index", index);
     xmlfile.writeEndElement();
     
     xmlfile.writeStartElement("Variable1");
+    
     xmlfile.writeCharacters(thisaction.Variable1);
     xmlfile.writeEndElement();
     if (thisaction.Type.contains("Password"))
@@ -1385,6 +1385,8 @@ xmlfile.writeEndElement();
         } finally {
             xmlfile.flush();
             xmlfile.close();
+       STAppFrame.filename = file.getAbsolutePath();
+    STAppFrame.setProperties(file.getAbsolutePath());
             STAppFrame.AllFieldValues.clear();
            
 STAppFrame.AllFieldValues.add(STAppFrame.OSType);
@@ -1397,8 +1399,36 @@ STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
 STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
-
-
+String thisbool = "false";
+if (STAppFrame.getEmailReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getEmailReportFail())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getExitAfter())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getPromptToClose())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getShowReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     
@@ -1674,10 +1704,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     }
      MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).Pass = Pass;
 
-    
-    
- 
-    
     NodeList ActionsList = Procedure.getElementsByTagName("Action");
    int thislength = ActionsList.getLength();
 
@@ -1757,16 +1783,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
    switch(ActionType)
            {
-                case "Forward Action":
-                    
-                    ForwardActionView NewForwardActionView = new ForwardActionView();
-                    ForwardAction NewForwardAction = new ForwardAction();
-                    NewForwardActionView.AddListeners(NewForwardAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-                    
-                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewForwardAction, NewForwardActionView, NewProcedure, NewProcedureView);
-                   
-                    
-                    break;
+                
                 case "Back Action":
                     
                     BackActionView NewBackActionView = new BackActionView();
@@ -1777,8 +1794,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
          
                 case "Click at HREF":
                     ClickAtHREFActionView NewClickAtHREFActionView = new ClickAtHREFActionView();
-                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction(Variable1);
+                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction(Variable1, RealBoolVal1);
                     NewClickAtHREFActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtHREFActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtHREFActionView.UpdateActionView();
@@ -1789,8 +1807,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     
                  case "Click at Image SRC":
                     ClickAtImageSRCActionView NewClickAtImageSRCActionView = new ClickAtImageSRCActionView();
-                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction(Variable1);
+                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction(Variable1, RealBoolVal1);
                     NewClickAtImageSRCActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtImageSRCActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtImageSRCActionView.UpdateActionView();
@@ -1801,8 +1820,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      
                 case "Click at Link Text":
                     ClickAtLinkTextActionView NewClickAtLinkTextActionView = new ClickAtLinkTextActionView();
-                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction(Variable1);
+                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction(Variable1, RealBoolVal1);
                     NewClickAtLinkTextActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtLinkTextActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtLinkTextActionView.UpdateActionView();
@@ -1812,8 +1832,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     break;
                 case "Click at ID":
                     ClickAtIDActionView NewClickAtIDActionView = new ClickAtIDActionView();
-                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction(Variable1);
+                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction(Variable1, RealBoolVal1);
                     NewClickAtIDActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtIDActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtIDActionView.UpdateActionView();
@@ -1821,14 +1842,45 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewClickAtIDActionView.AddListeners(NewClickAtIDAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewClickAtIDAction, NewClickAtIDActionView, NewProcedure, NewProcedureView);
                     break;
-                    
+                 case "Click at XPATH":
+                    ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
+                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction(Variable1, RealBoolVal1);
+                    NewClickXPATHActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
+                    NewClickXPATHActionView.AddListeners(NewClickXPATHAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                    if (LOCKED.equals("true"))
+                    {
+                    NewClickXPATHActionView.UpdateActionView();
+                    }
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,NewProcedure, NewProcedureView);
+                    break;
+                     
                 case "Close Current Tab or Window":
                     CloseCurrentTabOrWindowActionView NewCloseCurrentTabOrWindowActionView = new CloseCurrentTabOrWindowActionView();
                     CloseCurrentTabOrWindowAction NewCloseCurrentTabOrWindowAction = new CloseCurrentTabOrWindowAction();
                     NewCloseCurrentTabOrWindowActionView.AddListeners(NewCloseCurrentTabOrWindowAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewCloseCurrentTabOrWindowAction, NewCloseCurrentTabOrWindowActionView,NewProcedure, NewProcedureView);
                     break;
-                     
+                case "Down Arrow Key":
+                    DownArrowKeyActionView NewDownArrowKeyActionView = new DownArrowKeyActionView();
+                    DownArrowKeyAction NewDownArrowKeyAction = new DownArrowKeyAction();
+                    NewDownArrowKeyActionView.AddListeners(NewDownArrowKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewDownArrowKeyAction, NewDownArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
+                case "Drag From XPATH Distance X and Y Pixels":
+                    DragAndDropByActionView NewDragAndDropByActionView = new DragAndDropByActionView();
+                    DragAndDropByAction NewDragAndDropByAction = new DragAndDropByAction(Variable1, Variable2);
+                    NewDragAndDropByActionView.JTextFieldVariable1.setText(Variable1);
+                    NewDragAndDropByActionView.JTextFieldVariable2.setText(Variable2);
+                    if (LOCKED.equals("true"))
+                    {
+                    NewDragAndDropByActionView.UpdateActionView();
+                    }
+                    NewDragAndDropByActionView.AddListeners(NewDragAndDropByAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                    MDIClasses.get(MDI_INDEX).AddActionToArray (NewDragAndDropByAction, NewDragAndDropByActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
                 case "Drag From XPATH to XPATH":
                     DragAndDropActionView NewDragAndDropActionView = new DragAndDropActionView();
                     DragAndDropAction NewDragAndDropAction = new DragAndDropAction(Variable1, Variable2);
@@ -1842,8 +1894,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,NewProcedure, NewProcedureView);
                     break;
                 
-                case "Enter Key":
                     
+                case "Enter Key":
                     EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
                     EnterKeyAction NewEnterKeyAction = new EnterKeyAction();
                     NewEnterKeyActionView.AddListeners(NewEnterKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
@@ -1861,7 +1913,16 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewExecuteJavascriptActionView.AddListeners(NewExecuteJavascriptAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewExecuteJavascriptAction, NewExecuteJavascriptActionView, NewProcedure, NewProcedureView);
                     break;   
+                case "Forward Action":
                     
+                    ForwardActionView NewForwardActionView = new ForwardActionView();
+                    ForwardAction NewForwardAction = new ForwardAction();
+                    NewForwardActionView.AddListeners(NewForwardAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                    
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewForwardAction, NewForwardActionView, NewProcedure, NewProcedureView);
+                   
+                    
+                    break;   
                 case "Go to URL":
                     GoActionView NewGoActionView = new GoActionView();
                     GoAction NewGoAction = new GoAction(Variable1);
@@ -1870,26 +1931,32 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     {
                     NewGoActionView.UpdateActionView();
                     }
-                    NewGoAction.setVariable1(Variable1);
-                
+                    NewGoAction.setVariable1(Variable1);              
                     NewGoActionView.AddListeners(NewGoAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewGoAction, NewGoActionView, NewProcedure, NewProcedureView);
                     break;  
-                  
-                case "Open New Tab":
                     
-                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
-                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
-                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,NewProcedure, NewProcedureView);
-                    break;  
+                case "Left Arrow Key":
+                    LeftArrowKeyActionView NewLeftArrowKeyActionView = new LeftArrowKeyActionView();
+                    LeftArrowKeyAction NewLeftArrowKeyAction = new LeftArrowKeyAction();
+                    NewLeftArrowKeyActionView.AddListeners(NewLeftArrowKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewLeftArrowKeyAction, NewLeftArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
+                
                 case "Next Tab":
-                    
                     NextTabActionView NewNextTabActionView = new NextTabActionView();
                     NextTabAction NewNextTabAction = new NextTabAction();
                     NewNextTabActionView.AddListeners(NewNextTabAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewNextTabAction, NewNextTabActionView,NewProcedure, NewProcedureView);
                     break; 
+                    
+                case "Open New Tab":
+                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
+                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
+                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,NewProcedure, NewProcedureView);
+                    break;  
                     
                 case "Pause":
                     PauseActionView NewPauseActionView = new PauseActionView();
@@ -1903,7 +1970,19 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewPauseActionView.AddListeners(NewPauseAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewPauseAction, NewPauseActionView,NewProcedure, NewProcedureView);
                     break;
+                case "Right-Click":
+                    RightClickActionView NewRightClickActionView = new RightClickActionView();
+                    RightClickAction NewRightClickAction = new RightClickAction();
+                    NewRightClickActionView.AddListeners(NewRightClickAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewRightClickAction, NewRightClickActionView,NewProcedure, NewProcedureView);
+                    break; 
                     
+                case "Right Arrow Key":
+                    RightArrowKeyActionView NewRightArrowKeyActionView = new RightArrowKeyActionView();
+                    RightArrowKeyAction NewRightArrowKeyAction = new RightArrowKeyAction();
+                    NewRightArrowKeyActionView.AddListeners(NewRightArrowKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewRightArrowKeyAction, NewRightArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;     
                 case "Set Cookie":
                     SetCookieActionView NewSetCookieActionView = new SetCookieActionView();
                     SetCookieAction NewSetCookieAction = new SetCookieAction(Variable1, Variable2);
@@ -1929,7 +2008,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewSwitchToFrameActionView.AddListeners(NewSwitchToFrameAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewSwitchToFrameAction, NewSwitchToFrameActionView, NewProcedure, NewProcedureView);
                     break;  
-                    
                 case "Switch To Tab or Window":
                     SwitchToTabOrWindowActionView NewSwitchToTabOrWindowActionView = new SwitchToTabOrWindowActionView();
                     SwitchToTabOrWindowAction NewSwitchToTabOrWindowAction = new SwitchToTabOrWindowAction(Variable1);
@@ -1943,7 +2021,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewSwitchToTabOrWindowActionView.AddListeners(NewSwitchToTabOrWindowAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewSwitchToTabOrWindowAction, NewSwitchToTabOrWindowActionView, NewProcedure, NewProcedureView);
                     break;  
-                    
                 case "Type at ID":
                     TypeAtIDActionView NewTypeAtIDActionView = new TypeAtIDActionView();
                     TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction(Variable1, Variable2, RealBoolVal1);
@@ -1969,8 +2046,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     }
                     NewTypeAtInputNameActionView.AddListeners(NewTypeAtInputNameAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewTypeAtInputNameAction, NewTypeAtInputNameActionView,NewProcedure, NewProcedureView);
-                    break;
-                      
+                    break;  
                 case "Type at XPATH":
                     TypeAtXPATHActionView NewTypeAtXPATHActionView = new TypeAtXPATHActionView();
                     TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction(Variable1, Variable2, RealBoolVal1);
@@ -1984,20 +2060,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewTypeAtXPATHActionView.AddListeners(NewTypeAtXPATHAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                      MDIClasses.get(MDI_INDEX).AddActionToArray (NewTypeAtXPATHAction, NewTypeAtXPATHActionView,NewProcedure, NewProcedureView);
                     break;
-                 
-                    
-                case "Click at XPATH":
-                    ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
-                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction(Variable1);
-                    NewClickXPATHActionView.JTextFieldVariable1.setText(Variable1);
-                    NewClickXPATHActionView.AddListeners(NewClickXPATHAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-                    if (LOCKED.equals("true"))
-                    {
-                    NewClickXPATHActionView.UpdateActionView();
-                    }
-                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,NewProcedure, NewProcedureView);
-                    break;
-                    
+                case "Up Arrow Key":
+                    UpArrowKeyActionView NewUpArrowKeyActionView = new UpArrowKeyActionView();
+                    UpArrowKeyAction NewUpArrowKeyAction = new UpArrowKeyAction();
+                    NewUpArrowKeyActionView.AddListeners(NewUpArrowKeyAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+                     MDIClasses.get(MDI_INDEX).AddActionToArray (NewUpArrowKeyAction, NewUpArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break; 
                   case "Yes/No Prompt":
                      YesNoPromptPassFailActionView NewYesNoPromptPassFailActionView = new YesNoPromptPassFailActionView();
                      YesNoPromptPassFailAction NewYesNoPromptPassFailAction = new YesNoPromptPassFailAction(Variable1);
@@ -2009,7 +2077,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewYesNoPromptPassFailActionView.AddListeners(NewYesNoPromptPassFailAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewYesNoPromptPassFailAction, NewYesNoPromptPassFailActionView, NewProcedure, NewProcedureView);
                      break;
-                     
                  case "Find HREF":
                      FindHREFPassFailActionView NewFindHREFPassFailActionView = new FindHREFPassFailActionView();
                      FindHREFPassFailAction NewFindHREFPassFailAction = new FindHREFPassFailAction(Variable1, false);
@@ -2021,7 +2088,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewFindHREFPassFailActionView.AddListeners(NewFindHREFPassFailAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewFindHREFPassFailAction, NewFindHREFPassFailActionView,NewProcedure, NewProcedureView);
                      break;
-                     
                  case "Do NOT Find HREF":
                      NOTFindHREFPassFailActionView NewNOTFindHREFPassFailActionView = new NOTFindHREFPassFailActionView();
                      FindHREFPassFailAction NewNOTFindHREFPassFailAction = new FindHREFPassFailAction(Variable1, true);
@@ -2055,7 +2121,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewNOTFindIFrameSRCPassFailActionView.AddListeners(NewNOTFindIFrameSRCPassFailAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewNOTFindIFrameSRCPassFailAction, NewNOTFindIFrameSRCPassFailActionView,NewProcedure, NewProcedureView);
                      break;
-                     
                  case "Find Image SRC":
                      FindImageSRCPassFailActionView NewFindImageSRCPassFailActionView = new FindImageSRCPassFailActionView();
                      FindImageSRCPassFailAction NewFindImageSRCPassFailAction = new FindImageSRCPassFailAction(Variable1, false);
@@ -2067,7 +2132,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewFindImageSRCPassFailActionView.AddListeners(NewFindImageSRCPassFailAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewFindImageSRCPassFailAction, NewFindImageSRCPassFailActionView, NewProcedure, NewProcedureView);
                      break;
-                     
                  case "Do NOT Find Image SRC":
                      NOTFindImageSRCPassFailActionView NewNOTFindImageSRCPassFailActionView = new NOTFindImageSRCPassFailActionView();
                      FindImageSRCPassFailAction NewNOTFindImageSRCPassFailAction = new FindImageSRCPassFailAction(Variable1, true);
@@ -2079,7 +2143,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewNOTFindImageSRCPassFailActionView.AddListeners(NewNOTFindImageSRCPassFailAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewNOTFindImageSRCPassFailAction, NewNOTFindImageSRCPassFailActionView, NewProcedure, NewProcedureView);
                      break;
-                     
                  case "Find Page Title":
                      FindPAGETITLEPassFailActionView NewFindPAGETITLEPassFailActionView = new FindPAGETITLEPassFailActionView();
                      FindPAGETITLEPassFailAction NewFindPAGETITLEPassFailAction = new FindPAGETITLEPassFailAction(Variable1, false);
@@ -2180,10 +2243,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      NewTypePasswordAtInputNameActionView.AddListeners(NewTypePasswordAtInputNameAction,  MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                       MDIClasses.get(MDI_INDEX).AddActionToArray (NewTypePasswordAtInputNameAction, NewTypePasswordAtInputNameActionView,NewProcedure, NewProcedureView);
         
-                     break;   
-                     
+                     break;       
            }    
-  
  MDIClasses.get(MDI_INDEX).UpdateDisplay();
         }   
      
@@ -2237,11 +2298,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   String EmailFrom = "";
   String EmailSubject = "";
   
-  for (int ke = 0; ke<FileSettingsNode.getLength(); ke++)
+
+    NodeList SettingsNodes = FileSettingsNode.item(0).getChildNodes();
+    for (int k = 0; k<SettingsNodes.getLength(); k++)
     {
-   thisSettingsNodeName = FileSettingsNode.item(ke).getNodeName();
-   thisSettingsNodeValue = FileSettingsNode.item(ke).getTextContent();
-   
+   thisSettingsNodeName = SettingsNodes.item(k).getNodeName();
+   thisSettingsNodeValue = SettingsNodes.item(k).getTextContent();
     switch(thisSettingsNodeName)
     {
         case "ShowReport":
@@ -2429,7 +2491,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         case "TimeOfTest":
             TimeOfTest = thisActionNodeValue;
             break;
-           
     }  
                 
     } 
@@ -2452,16 +2513,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
    switch(ActionType)
            {
-                case "Forward Action":
-                    
-                    ForwardActionView NewForwardActionView = new ForwardActionView();
-                    ForwardAction NewForwardAction = new ForwardAction();
-                    NewForwardActionView.AddListeners(NewForwardAction, STAppFrame, NewProcedure, NewProcedureView);
-                    
-                    STAppFrame.AddActionToArray (NewForwardAction, NewForwardActionView, NewProcedure, NewProcedureView);
-                   
-                    
-                    break;
+               
                 case "Back Action":
                     
                     BackActionView NewBackActionView = new BackActionView();
@@ -2469,26 +2521,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewBackActionView.AddListeners(NewBackAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewBackAction, NewBackActionView,NewProcedure, NewProcedureView);
                     break;
-                    
-                    
-                case "Go to URL":
-                    GoActionView NewGoActionView = new GoActionView();
-                    GoAction NewGoAction = new GoAction(Variable1);
-                    NewGoActionView.JTextFieldVariable1.setText(Variable1);
-                    if (LOCKED.equals("true"))
-                    {
-                    NewGoActionView.UpdateActionView();
-                    }
-                    NewGoAction.setVariable1(Variable1);
-                
-                    NewGoActionView.AddListeners(NewGoAction, STAppFrame, NewProcedure, NewProcedureView);
-                    STAppFrame.AddActionToArray (NewGoAction, NewGoActionView, NewProcedure, NewProcedureView);
-                    break;
-                    
+                                
                 case "Click at HREF":
                     ClickAtHREFActionView NewClickAtHREFActionView = new ClickAtHREFActionView();
-                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction(Variable1);
+                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction(Variable1, RealBoolVal1);
                     NewClickAtHREFActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtHREFActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtHREFActionView.UpdateActionView();
@@ -2499,8 +2537,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     
                  case "Click at Image SRC":
                     ClickAtImageSRCActionView NewClickAtImageSRCActionView = new ClickAtImageSRCActionView();
-                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction(Variable1);
+                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction(Variable1, RealBoolVal1);
                     NewClickAtImageSRCActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtImageSRCActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtImageSRCActionView.UpdateActionView();
@@ -2511,8 +2550,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                      
                 case "Click at Link Text":
                     ClickAtLinkTextActionView NewClickAtLinkTextActionView = new ClickAtLinkTextActionView();
-                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction(Variable1);
+                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction(Variable1, RealBoolVal1);
                     NewClickAtLinkTextActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtLinkTextActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtLinkTextActionView.UpdateActionView();
@@ -2522,14 +2562,27 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     break;
                 case "Click at ID":
                     ClickAtIDActionView NewClickAtIDActionView = new ClickAtIDActionView();
-                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction(Variable1);
+                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction(Variable1, RealBoolVal1);
                     NewClickAtIDActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickAtIDActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
                     if (LOCKED.equals("true"))
                     {
                     NewClickAtIDActionView.UpdateActionView();
                     }
                     NewClickAtIDActionView.AddListeners(NewClickAtIDAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewClickAtIDAction, NewClickAtIDActionView, NewProcedure, NewProcedureView);
+                    break;
+                case "Click at XPATH":
+                    ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
+                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction(Variable1, RealBoolVal1);
+                    NewClickXPATHActionView.JTextFieldVariable1.setText(Variable1);
+                    NewClickXPATHActionView.JCheckBoxBoolVal1.setSelected(RealBoolVal1);
+                    NewClickXPATHActionView.AddListeners(NewClickXPATHAction, STAppFrame, NewProcedure, NewProcedureView);
+                    if (LOCKED.equals("true"))
+                    {
+                    NewClickXPATHActionView.UpdateActionView();
+                    }
+                    STAppFrame.AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,NewProcedure, NewProcedureView);
                     break;
                     
                 case "Close Current Tab or Window":
@@ -2538,6 +2591,40 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewCloseCurrentTabOrWindowActionView.AddListeners(NewCloseCurrentTabOrWindowAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewCloseCurrentTabOrWindowAction, NewCloseCurrentTabOrWindowActionView,NewProcedure, NewProcedureView);
                     break;
+                case "Down Arrow Key":
+                    
+                    DownArrowKeyActionView NewDownArrowKeyActionView = new DownArrowKeyActionView();
+                    DownArrowKeyAction NewDownArrowKeyAction = new DownArrowKeyAction();
+                    NewDownArrowKeyActionView.AddListeners(NewDownArrowKeyAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewDownArrowKeyAction, NewDownArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
+                case "Drag From XPATH Distance X and Y Pixels":
+                    DragAndDropByActionView NewDragAndDropByActionView = new DragAndDropByActionView();
+                    DragAndDropByAction NewDragAndDropByAction = new DragAndDropByAction(Variable1, Variable2);
+                    NewDragAndDropByActionView.JTextFieldVariable1.setText(Variable1);
+                    NewDragAndDropByActionView.JTextFieldVariable2.setText(Variable2);
+                    if (LOCKED.equals("true"))
+                    {
+                    NewDragAndDropByActionView.UpdateActionView();
+                    }
+                    NewDragAndDropByActionView.AddListeners(NewDragAndDropByAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewDragAndDropByAction, NewDragAndDropByActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
+                case "Drag From XPATH to XPATH":
+                    DragAndDropActionView NewDragAndDropActionView = new DragAndDropActionView();
+                    DragAndDropAction NewDragAndDropAction = new DragAndDropAction(Variable1, Variable2);
+                    NewDragAndDropActionView.JTextFieldVariable1.setText(Variable1);
+                    NewDragAndDropActionView.JTextFieldVariable2.setText(Variable2);
+                    if (LOCKED.equals("true"))
+                    {
+                    NewDragAndDropActionView.UpdateActionView();
+                    }
+                    NewDragAndDropActionView.AddListeners(NewDragAndDropAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
                 case "Enter Key":
                     
                     EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
@@ -2557,18 +2644,37 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewExecuteJavascriptActionView.AddListeners(NewExecuteJavascriptAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewExecuteJavascriptAction, NewExecuteJavascriptActionView, NewProcedure, NewProcedureView);
                     break; 
+                 
+                case "Forward Action":
                     
-                 case "Drag From XPATH to XPATH":
-                    DragAndDropActionView NewDragAndDropActionView = new DragAndDropActionView();
-                    DragAndDropAction NewDragAndDropAction = new DragAndDropAction(Variable1, Variable2);
-                    NewDragAndDropActionView.JTextFieldVariable1.setText(Variable1);
-                    NewDragAndDropActionView.JTextFieldVariable2.setText(Variable2);
+                    ForwardActionView NewForwardActionView = new ForwardActionView();
+                    ForwardAction NewForwardAction = new ForwardAction();
+                    NewForwardActionView.AddListeners(NewForwardAction, STAppFrame, NewProcedure, NewProcedureView);
+                    
+                    STAppFrame.AddActionToArray (NewForwardAction, NewForwardActionView, NewProcedure, NewProcedureView);
+                   
+                    
+                    break;   
+                    
+                case "Go to URL":
+                    GoActionView NewGoActionView = new GoActionView();
+                    GoAction NewGoAction = new GoAction(Variable1);
+                    NewGoActionView.JTextFieldVariable1.setText(Variable1);
                     if (LOCKED.equals("true"))
                     {
-                    NewDragAndDropActionView.UpdateActionView();
+                    NewGoActionView.UpdateActionView();
                     }
-                    NewDragAndDropActionView.AddListeners(NewDragAndDropAction, STAppFrame, NewProcedure, NewProcedureView);
-                    STAppFrame.AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,NewProcedure, NewProcedureView);
+                    NewGoAction.setVariable1(Variable1);
+                
+                    NewGoActionView.AddListeners(NewGoAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewGoAction, NewGoActionView, NewProcedure, NewProcedureView);
+                    break;   
+                 case "Left Arrow Key":
+                    
+                    LeftArrowKeyActionView NewLeftArrowKeyActionView = new LeftArrowKeyActionView();
+                    LeftArrowKeyAction NewLeftArrowKeyAction = new LeftArrowKeyAction();
+                    NewLeftArrowKeyActionView.AddListeners(NewLeftArrowKeyAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewLeftArrowKeyAction, NewLeftArrowKeyActionView,NewProcedure, NewProcedureView);
                     break;
                  
                  case "Open New Tab":
@@ -2599,6 +2705,21 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     STAppFrame.AddActionToArray (NewPauseAction, NewPauseActionView,NewProcedure, NewProcedureView);
                     break;
                 
+                 case "Right-Click":
+                    RightClickActionView NewRightClickActionView = new RightClickActionView();
+                    RightClickAction NewRightClickAction = new RightClickAction();
+                    NewRightClickActionView.AddListeners(NewRightClickAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewRightClickAction, NewRightClickActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
+                case "Right Arrow Key":
+                    
+                    RightArrowKeyActionView NewRightArrowKeyActionView = new RightArrowKeyActionView();
+                    RightArrowKeyAction NewRightArrowKeyAction = new RightArrowKeyAction();
+                    NewRightArrowKeyActionView.AddListeners(NewRightArrowKeyAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewRightArrowKeyAction, NewRightArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;
+                    
                  case "Set Cookie":
                     SetCookieActionView NewSetCookieActionView = new SetCookieActionView();
                     SetCookieAction NewSetCookieAction = new SetCookieAction(Variable1, Variable2);
@@ -2677,18 +2798,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     NewTypeAtXPATHActionView.AddListeners(NewTypeAtXPATHAction, STAppFrame, NewProcedure, NewProcedureView);
                     STAppFrame.AddActionToArray (NewTypeAtXPATHAction, NewTypeAtXPATHActionView,NewProcedure, NewProcedureView);
                     break;
+                 case "Up Arrow Key":
                     
-                case "Click at XPATH":
-                    ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
-                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction(Variable1);
-                    NewClickXPATHActionView.JTextFieldVariable1.setText(Variable1);
-                    NewClickXPATHActionView.AddListeners(NewClickXPATHAction, STAppFrame, NewProcedure, NewProcedureView);
-                    if (LOCKED.equals("true"))
-                    {
-                    NewClickXPATHActionView.UpdateActionView();
-                    }
-                    STAppFrame.AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,NewProcedure, NewProcedureView);
-                    break;
+                    UpArrowKeyActionView NewUpArrowKeyActionView = new UpArrowKeyActionView();
+                    UpArrowKeyAction NewUpArrowKeyAction = new UpArrowKeyAction();
+                    NewUpArrowKeyActionView.AddListeners(NewUpArrowKeyAction, STAppFrame, NewProcedure, NewProcedureView);
+                    STAppFrame.AddActionToArray (NewUpArrowKeyAction, NewUpArrowKeyActionView,NewProcedure, NewProcedureView);
+                    break;   
+
                     
                   case "Yes/No Prompt":
                      YesNoPromptPassFailActionView NewYesNoPromptPassFailActionView = new YesNoPromptPassFailActionView();
@@ -3161,7 +3278,7 @@ try {
   {
    
       STAppController app = new STAppController(args); 
-   app.setVisible(true); 
+      app.setVisible(true); 
  
   }
   catch (PropertyVetoException e)

@@ -67,15 +67,19 @@ public class ProcedureView {
      JComboBoxDoActions.addItem("Click at XPATH");
      JComboBoxDoActions.addItem("Click at Image SRC");
      JComboBoxDoActions.addItem("Close Current Tab or Window");
-     
+     JComboBoxDoActions.addItem("Drag From XPATH Distance X and Y Pixels");
      JComboBoxDoActions.addItem("Drag From XPATH to XPATH");
+     JComboBoxDoActions.addItem("Down Arrow Key");
      JComboBoxDoActions.addItem("Enter Key");
      JComboBoxDoActions.addItem("Execute Javascript");
      JComboBoxDoActions.addItem("Forward Action");
      JComboBoxDoActions.addItem("Go to URL");
-     JComboBoxDoActions.addItem("Open New Tab");
+     JComboBoxDoActions.addItem("Left Arrow Key");
      JComboBoxDoActions.addItem("Next Tab");
+     JComboBoxDoActions.addItem("Open New Tab");
      JComboBoxDoActions.addItem("Pause");
+     JComboBoxDoActions.addItem("Right-Click");
+     JComboBoxDoActions.addItem("Right Arrow Key");
      JComboBoxDoActions.addItem("Set Cookie");
      
      JComboBoxDoActions.addItem("Switch To Frame");
@@ -86,7 +90,7 @@ public class ProcedureView {
      JComboBoxDoActions.addItem("Type at XPATH");
      JComboBoxDoActions.addItem("Type Password at Input Name");
      JComboBoxDoActions.addItem("Type Password at XPATH");
-     
+     JComboBoxDoActions.addItem("Up Arrow Key");
      JComboBoxPassFailActions.addItem("Choose a Pass/Fail Condition");
      JComboBoxPassFailActions.addItem("Yes/No Prompt");
      JComboBoxPassFailActions.addItem("Find Text");

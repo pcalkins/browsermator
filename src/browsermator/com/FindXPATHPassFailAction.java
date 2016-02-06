@@ -21,9 +21,10 @@ public class FindXPATHPassFailAction extends Action
   @Override
     public void RunAction(WebDriver driver)
     {
+         this.Pass = false;
    List<WebElement> element = driver.findElements(By.xpath(this.Variable1));
        
-    this.Pass = false;
+   
        if (element.size() > 0 && this.NOT == false)
     {
         this.Pass = true;

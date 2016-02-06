@@ -22,7 +22,7 @@ public class TypeAtXPATHAction extends Action
     @Override
     public void RunAction(WebDriver driver)
     {
-        Boolean SendEnter = false;
+      
  try
  {
         

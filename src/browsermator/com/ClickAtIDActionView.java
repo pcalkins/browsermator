@@ -2,6 +2,7 @@ package browsermator.com;
 
 
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -17,13 +18,19 @@ public class ClickAtIDActionView extends ActionView
        
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
+          this.JCheckBoxBoolVal1 = new JCheckBox("Right Click");
+          this.JPanelAction.add(this.JCheckBoxBoolVal1);
+      this.JPanelAction.add(this.JCheckBoxBoolVal1);
       this.JPanelAction.add(this.JButtonOK);
         this.JPanelAction.add(this.JButtonDelete);
    }
    @Override  
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-   
+    addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
+          
+       });
    addJButtonMoveDownActionListener((ActionEvent evt) -> {
        Window.MoveAction(Window, newbug, newbugview, action.index, 1);
       

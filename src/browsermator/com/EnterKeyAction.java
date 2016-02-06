@@ -5,9 +5,9 @@
  */
 package browsermator.com;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 /**
  *
@@ -21,7 +21,10 @@ public class EnterKeyAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
-       driver.findElement(By.tagName("body")).sendKeys(Keys.RETURN); 
+        Actions actions = new Actions(driver);
+ 
+ actions.sendKeys(Keys.RETURN).perform(); 
+ 
      
     }
 }

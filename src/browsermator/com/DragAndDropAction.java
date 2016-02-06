@@ -6,7 +6,6 @@
 package browsermator.com;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -27,18 +26,23 @@ public class DragAndDropAction extends Action {
     @Override
     public void RunAction(WebDriver driver)
     {
-        Boolean SendEnter = false;
+    
  try
  {
-    WebElement element = driver.findElement(By.xpath(this.Variable1));
-WebElement target = driver.findElement(By.xpath(this.Variable2));
 
-(new Actions(driver)).dragAndDrop(element, target).perform();
-        this.Pass = true;
+ WebElement dragElement = driver.findElement(By.xpath(this.Variable1));
+ WebElement dropElement = driver.findElement(By.xpath(this.Variable2));
+ 
+  
+    Actions actions = new Actions(driver);
+  actions.dragAndDrop(dragElement, dropElement).perform();
+
+     this.Pass = true;
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
+  System.out.println("Exception: " + e);
   
  }
     }  
