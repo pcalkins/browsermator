@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
+import java.util.HashMap;
+
 
 
 public class SeleniumTestTool extends JInternalFrame {
@@ -43,6 +46,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   String TargetBrowser;
   String OSType;
   int WaitTime;
+ 
   
   public SeleniumTestTool(String filename)
   {
@@ -63,7 +67,8 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   this.setTitle("Browsermator - " + filename);
   this.setResizable(true);
   this.AllFieldValues = new ArrayList<>();
- 
+
+  
       initComponents();
       
       
@@ -135,9 +140,10 @@ public void setAllFieldValues(ArrayList<String> allfieldvalues)
       public final void LoadGlobalEmailSettings() throws IOException 
  {
      Properties applicationProps = new Properties();
+    String userdir = System.getProperty("user.home");
 try
 {
-         try (FileInputStream input = new FileInputStream("browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
              applicationProps.load(input);
          }
          catch (Exception e)
@@ -318,7 +324,7 @@ int bugindex = 0;
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(900, 38*actionindex+40));
+     BV.ActionScrollPane.setPreferredSize(new Dimension(1024, 38*actionindex+40));
           }
       
 BV.ActionScrollPane.setVisible(true);
@@ -335,7 +341,7 @@ bugindex++;
      this.MainScrollPane.setViewportView(this.BugPanel);
 
  // Window.MainScrollPane.setBounds(null);
- this.MainScrollPane.setVisible(true);
+     this.MainScrollPane.setVisible(true);
   this.revalidate();
 // this.changes = true;
  }
@@ -400,223 +406,87 @@ bugindex++;
       }
       }
            );
-
-           newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
+           
+ newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
                DeleteBug(newbugview.index);
            
                UpdateDisplay();
-               Window.changes=true;
+
            });
+ 
+           newbugview.addJButtonGoActionActionListener((ActionEvent evt) -> {
+              GoAction thisActionToAdd = new GoAction("");
+               GoActionView thisActionViewToAdd = new GoActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+            newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
+              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false);
+              ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
+              TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
+              TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
+             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
+             FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
+             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
+             NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+               newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
+             YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
+             YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+            ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           
     newbugview.addDoActionItemListener((ItemEvent e) -> {
         if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String ActionToAdd = ActionType.toString();
+            ActionsMaster newActionsMaster = new ActionsMaster();
+            HashMap<String, Action> ActionHashMap = newActionsMaster.ActionHashMap;
+            HashMap<String, ActionView> ActionViewHashMap = newActionsMaster.ActionViewHashMap;
             
             newbugview.JComboBoxDoActions.setSelectedIndex(0);
-            switch (ActionToAdd) {
-                case "Type at Input Name":
-                    TypeAtInputNameActionView NewTypeAtInputNameActionView = new TypeAtInputNameActionView();
-                    TypeAtInputNameAction NewTypeAtInputNameAction = new TypeAtInputNameAction("", "", false);
-                    NewTypeAtInputNameActionView.AddListeners(NewTypeAtInputNameAction, Window, newbug, newbugview);
-                    AddActionToArray (NewTypeAtInputNameAction, NewTypeAtInputNameActionView,newbug, newbugview);
-                    break;
-
-                case "Forward Action":
-                    
-                    ForwardActionView NewForwardActionView = new ForwardActionView();
-                    ForwardAction NewForwardAction = new ForwardAction();
-                    NewForwardActionView.AddListeners(NewForwardAction, Window, newbug, newbugview);
-                    AddActionToArray (NewForwardAction, NewForwardActionView,newbug, newbugview);
-                    
-                    break;
-                case "Back Action":
-                    
-                    BackActionView NewBackActionView = new BackActionView();
-                    BackAction NewBackAction = new BackAction();
-                    NewBackActionView.AddListeners(NewBackAction, Window, newbug, newbugview);
-                    AddActionToArray (NewBackAction, NewBackActionView,newbug, newbugview);
-                    break;
-                    
-                    
-                case "Go to URL":
-                    GoActionView NewGoActionView = new GoActionView();
-                    GoAction NewGoAction = new GoAction("");
-                    NewGoActionView.JTextFieldVariable1.setText(URL);
-                    NewGoAction.setVariable1(URL);
-                    NewGoActionView.AddListeners(NewGoAction, Window, newbug, newbugview);
-                    AddActionToArray (NewGoAction, NewGoActionView,newbug, newbugview);
-                    break;
-                case "Click at HREF":
-                    ClickAtHREFActionView NewClickAtHREFActionView = new ClickAtHREFActionView();
-                    ClickAtHREFAction NewClickAtHREFAction = new ClickAtHREFAction("", false);
-                    NewClickAtHREFActionView.AddListeners(NewClickAtHREFAction, Window, newbug, newbugview);
-                    AddActionToArray (NewClickAtHREFAction, NewClickAtHREFActionView,newbug, newbugview);
-                    break;
-                case "Click at Image SRC":
-                    ClickAtImageSRCActionView NewClickAtImageSRCActionView = new ClickAtImageSRCActionView();
-                    ClickAtImageSRCAction NewClickAtImageSRCAction = new ClickAtImageSRCAction("", false);
-                    NewClickAtImageSRCActionView.AddListeners(NewClickAtImageSRCAction, Window, newbug, newbugview);
-                    AddActionToArray (NewClickAtImageSRCAction, NewClickAtImageSRCActionView,newbug, newbugview);
-                    break;
-                case "Click at Link Text":
-                    ClickAtLinkTextActionView NewClickAtLinkTextActionView = new ClickAtLinkTextActionView();
-                    ClickAtLinkTextAction NewClickAtLinkTextAction = new ClickAtLinkTextAction("", false);
-                    NewClickAtLinkTextActionView.AddListeners(NewClickAtLinkTextAction, Window, newbug, newbugview);
-                    AddActionToArray (NewClickAtLinkTextAction, NewClickAtLinkTextActionView,newbug, newbugview);
-                    break;
-                case "Click at ID":
-                    ClickAtIDActionView NewClickAtIDActionView = new ClickAtIDActionView();
-                    ClickAtIDAction NewClickAtIDAction = new ClickAtIDAction("", false);
-                    NewClickAtIDActionView.AddListeners(NewClickAtIDAction, Window, newbug, newbugview);
-                    AddActionToArray (NewClickAtIDAction, NewClickAtIDActionView,newbug, newbugview);
-                    break;
-                    
-                case "Close Current Tab or Window":
-                    CloseCurrentTabOrWindowActionView NewCloseCurrentTabOrWindowActionView = new CloseCurrentTabOrWindowActionView();
-                    CloseCurrentTabOrWindowAction NewCloseCurrentTabOrWindowAction = new CloseCurrentTabOrWindowAction();
-                    NewCloseCurrentTabOrWindowActionView.AddListeners(NewCloseCurrentTabOrWindowAction, Window, newbug, newbugview);
-                    AddActionToArray (NewCloseCurrentTabOrWindowAction, NewCloseCurrentTabOrWindowActionView,newbug, newbugview);
-                    break;
-                case "Down Arrow Key":
-                    
-                    DownArrowKeyActionView NewDownArrowKeyActionView = new DownArrowKeyActionView();
-                    DownArrowKeyAction NewDownArrowKeyAction = new DownArrowKeyAction();
-                    NewDownArrowKeyActionView.AddListeners(NewDownArrowKeyAction, Window, newbug, newbugview);
-                    AddActionToArray (NewDownArrowKeyAction, NewDownArrowKeyActionView,newbug, newbugview);
-                    break; 
-                    
-                case "Drag From XPATH Distance X and Y Pixels":
-                   DragAndDropByActionView NewDragAndDropByActionView = new DragAndDropByActionView();
-                    DragAndDropByAction NewDragAndDropByAction = new DragAndDropByAction("", "");
-                    NewDragAndDropByActionView.AddListeners(NewDragAndDropByAction, Window, newbug, newbugview);
-                    AddActionToArray (NewDragAndDropByAction, NewDragAndDropByActionView,newbug, newbugview);
-                    break;
-                    
-                case "Drag From XPATH to XPATH":
-                    DragAndDropActionView NewDragAndDropActionView = new DragAndDropActionView();
-                    DragAndDropAction NewDragAndDropAction = new DragAndDropAction("", "");
-                    NewDragAndDropActionView.AddListeners(NewDragAndDropAction, Window, newbug, newbugview);
-                    AddActionToArray (NewDragAndDropAction, NewDragAndDropActionView,newbug, newbugview);
-                    break;
-                 
-                case "Execute Javascript":
-                    ExecuteJavascriptActionView NewExecuteJavascriptActionView = new ExecuteJavascriptActionView();
-                    ExecuteJavascriptAction NewExecuteJavascriptAction = new ExecuteJavascriptAction("");
-                    NewExecuteJavascriptActionView.AddListeners(NewExecuteJavascriptAction, Window, newbug, newbugview);
-                    AddActionToArray (NewExecuteJavascriptAction, NewExecuteJavascriptActionView,newbug, newbugview);
-                    break;
-                case "Enter Key":
-                    
-                    EnterKeyActionView NewEnterKeyActionView = new EnterKeyActionView();
-                    EnterKeyAction NewEnterKeyAction = new EnterKeyAction();
-                    NewEnterKeyActionView.AddListeners(NewEnterKeyAction, Window, newbug, newbugview);
-                    AddActionToArray (NewEnterKeyAction, NewEnterKeyActionView,newbug, newbugview);
-                    break; 
-                case "Left Arrow Key":
-                    
-                    LeftArrowKeyActionView NewLeftArrowKeyActionView = new LeftArrowKeyActionView();
-                    LeftArrowKeyAction NewLeftArrowKeyAction = new LeftArrowKeyAction();
-                    NewLeftArrowKeyActionView.AddListeners(NewLeftArrowKeyAction, Window, newbug, newbugview);
-                    AddActionToArray (NewLeftArrowKeyAction, NewLeftArrowKeyActionView,newbug, newbugview);
-                    break;     
-                
-                case "Next Tab":
-                    
-                    NextTabActionView NewNextTabActionView = new NextTabActionView();
-                    NextTabAction NewNextTabAction = new NextTabAction();
-                    NewNextTabActionView.AddListeners(NewNextTabAction, Window, newbug, newbugview);
-                    AddActionToArray (NewNextTabAction, NewNextTabActionView,newbug, newbugview);
-                    break;  
-                case "Open New Tab":
-                    
-                    OpenNewTabActionView NewOpenNewTabActionView = new OpenNewTabActionView();
-                    OpenNewTabAction NewOpenNewTabAction = new OpenNewTabAction();
-                    NewOpenNewTabActionView.AddListeners(NewOpenNewTabAction, Window, newbug, newbugview);
-                    AddActionToArray (NewOpenNewTabAction, NewOpenNewTabActionView,newbug, newbugview);
-                    break; 
-                case "Pause":
-                    PauseActionView NewPauseActionView = new PauseActionView();
-                    PauseAction NewPauseAction = new PauseAction("", "");
-                    NewPauseActionView.AddListeners(NewPauseAction, Window, newbug, newbugview);
-                    AddActionToArray (NewPauseAction, NewPauseActionView,newbug, newbugview);
-                    break;
-                case "Right-Click":
-                    
-                    RightClickActionView NewRightClickActionView = new RightClickActionView();
-                    RightClickAction NewRightClickAction = new RightClickAction();
-                    NewRightClickActionView.AddListeners(NewRightClickAction, Window, newbug, newbugview);
-                    AddActionToArray (NewRightClickAction, NewRightClickActionView,newbug, newbugview);
-                    break;  
-                case "Right Arrow Key":
-                    
-                    RightArrowKeyActionView NewRightArrowKeyActionView = new RightArrowKeyActionView();
-                    RightArrowKeyAction NewRightArrowKeyAction = new RightArrowKeyAction();
-                    NewRightArrowKeyActionView.AddListeners(NewRightArrowKeyAction, Window, newbug, newbugview);
-                    AddActionToArray (NewRightArrowKeyAction, NewRightArrowKeyActionView,newbug, newbugview);
-                    break;   
-                    
-                case "Set Cookie":
-                    SetCookieActionView NewSetCookieActionView = new SetCookieActionView();
-                    SetCookieAction NewSetCookieAction = new SetCookieAction("", "");
-                    NewSetCookieActionView.AddListeners(NewSetCookieAction, Window, newbug, newbugview);
-                    AddActionToArray (NewSetCookieAction, NewSetCookieActionView,newbug, newbugview);
-                    break;
-                case "Switch To Frame":
-                    SwitchToFrameActionView NewSwitchToFrameActionView = new SwitchToFrameActionView();
-                    SwitchToFrameAction NewSwitchToFrameAction = new SwitchToFrameAction("");
-                    NewSwitchToFrameActionView.AddListeners(NewSwitchToFrameAction, Window, newbug, newbugview);
-                    AddActionToArray (NewSwitchToFrameAction, NewSwitchToFrameActionView,newbug, newbugview);
-                    break;
-                    
-                case "Switch To Tab or Window":
-                    SwitchToTabOrWindowActionView NewSwitchToTabOrWindowActionView = new SwitchToTabOrWindowActionView();
-                    SwitchToTabOrWindowAction NewSwitchToTabOrWindowAction = new SwitchToTabOrWindowAction("");
-                    NewSwitchToTabOrWindowActionView.AddListeners(NewSwitchToTabOrWindowAction, Window, newbug, newbugview);
-                    AddActionToArray (NewSwitchToTabOrWindowAction, NewSwitchToTabOrWindowActionView,newbug, newbugview);
-                    break;
-                    
-                case "Type at ID":
-                    TypeAtIDActionView NewTypeAtIDActionView = new TypeAtIDActionView();
-                    TypeAtIDAction NewTypeAtIDAction = new TypeAtIDAction("", "", false);
-                    NewTypeAtIDActionView.AddListeners(NewTypeAtIDAction, Window, newbug, newbugview);
-                    AddActionToArray (NewTypeAtIDAction, NewTypeAtIDActionView,newbug, newbugview);
-                    break;
-                    
-                case "Type at XPATH":
-                    TypeAtXPATHActionView NewTypeAtXPATHActionView = new TypeAtXPATHActionView();
-                    TypeAtXPATHAction NewTypeAtXPATHAction = new TypeAtXPATHAction("", "", false);
-                    NewTypeAtXPATHActionView.AddListeners(NewTypeAtXPATHAction, Window, newbug, newbugview);
-                    AddActionToArray (NewTypeAtXPATHAction, NewTypeAtXPATHActionView,newbug, newbugview);
-                    break;
-                    
-                case "Click at XPATH":
-                    ClickXPATHActionView NewClickXPATHActionView = new ClickXPATHActionView();
-                    ClickXPATHAction NewClickXPATHAction = new ClickXPATHAction("", false);
-                    NewClickXPATHActionView.AddListeners(NewClickXPATHAction, Window, newbug, newbugview);
-                    AddActionToArray (NewClickXPATHAction, NewClickXPATHActionView,newbug, newbugview);
-                    break;
-                    
-                case "Type Password at XPATH":
-                    TypePasswordAtXPATHActionView NewTypePasswordAtXPATHActionView = new TypePasswordAtXPATHActionView();
-                    TypePasswordAtXPATHAction NewTypePasswordAtXPATHAction = new TypePasswordAtXPATHAction("", "", false);
-                    NewTypePasswordAtXPATHActionView.AddListeners(NewTypePasswordAtXPATHAction, Window, newbug, newbugview);
-                    AddActionToArray (NewTypePasswordAtXPATHAction, NewTypePasswordAtXPATHActionView,newbug, newbugview);
-                    break;
-                    
-                 case "Type Password at Input Name":
-                    TypePasswordAtInputNameActionView NewTypePasswordAtInputNameActionView = new TypePasswordAtInputNameActionView();
-                    TypePasswordAtInputNameAction NewTypePasswordAtInputNameAction = new TypePasswordAtInputNameAction("", "", false);
-                    NewTypePasswordAtInputNameActionView.AddListeners(NewTypePasswordAtInputNameAction, Window, newbug, newbugview);
-                    AddActionToArray (NewTypePasswordAtInputNameAction, NewTypePasswordAtInputNameActionView,newbug, newbugview);
-                    break;
-                 case "Up Arrow Key":  
-                    UpArrowKeyActionView NewUpArrowKeyActionView = new UpArrowKeyActionView();
-                    UpArrowKeyAction NewUpArrowKeyAction = new UpArrowKeyAction();
-                    NewUpArrowKeyActionView.AddListeners(NewUpArrowKeyAction, Window, newbug, newbugview);
-                    AddActionToArray (NewUpArrowKeyAction, NewUpArrowKeyActionView,newbug, newbugview);
-                    break;   
-                    
-            }
+           if (ActionHashMap.containsKey(ActionToAdd))
+           {
+               Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
+               ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);
+               
+           }      
+         
             
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -627,97 +497,19 @@ bugindex++;
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
              Object PassFailActionType = e.getItem();
              String PassFailActionToAdd = PassFailActionType.toString();
+             ActionsMaster newActionsMaster = new ActionsMaster();
+             HashMap<String, Action> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
+             HashMap<String, ActionView> PassFailActionViewHashMap = newActionsMaster.PassFailActionViewHashMap;
              
              newbugview.JComboBoxPassFailActions.setSelectedIndex(0);
-             switch (PassFailActionToAdd) {
-                 case "Yes/No Prompt":
-                     YesNoPromptPassFailActionView NewYesNoPromptPassFailActionView = new YesNoPromptPassFailActionView();
-                     YesNoPromptPassFailAction NewYesNoPromptPassFailAction = new YesNoPromptPassFailAction("");
-                     NewYesNoPromptPassFailActionView.AddListeners(NewYesNoPromptPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewYesNoPromptPassFailAction, NewYesNoPromptPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Find HREF":
-                     FindHREFPassFailActionView NewFindHREFPassFailActionView = new FindHREFPassFailActionView();
-                     FindHREFPassFailAction NewFindHREFPassFailAction = new FindHREFPassFailAction("", false);
-                     NewFindHREFPassFailActionView.AddListeners(NewFindHREFPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewFindHREFPassFailAction, NewFindHREFPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Do Not Find HREF":
-                     NOTFindHREFPassFailActionView NewNOTFindHREFPassFailActionView = new NOTFindHREFPassFailActionView();
-                     FindHREFPassFailAction NewNOTFindHREFPassFailAction = new FindHREFPassFailAction("", true);
-                     NewNOTFindHREFPassFailActionView.AddListeners(NewNOTFindHREFPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewNOTFindHREFPassFailAction, NewNOTFindHREFPassFailActionView,newbug, newbugview);
-                     break;
-                 case "Find IFrame SRC":
-                     FindIFrameSRCPassFailActionView NewFindIFrameSRCPassFailActionView = new FindIFrameSRCPassFailActionView();
-                     FindIFrameSRCPassFailAction NewFindIFrameSRCPassFailAction = new FindIFrameSRCPassFailAction("", false);
-                     NewFindIFrameSRCPassFailActionView.AddListeners(NewFindIFrameSRCPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewFindIFrameSRCPassFailAction, NewFindIFrameSRCPassFailActionView,newbug, newbugview);
-                     break;
-                 case "Do Not Find IFrame SRC":
-                     NOTFindIFrameSRCPassFailActionView NewNOTFindIFrameSRCPassFailActionView = new NOTFindIFrameSRCPassFailActionView();
-                     FindIFrameSRCPassFailAction NewNOTFindIFrameSRCPassFailAction = new FindIFrameSRCPassFailAction("", true);
-                     NewNOTFindIFrameSRCPassFailActionView.AddListeners(NewNOTFindIFrameSRCPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewNOTFindIFrameSRCPassFailAction, NewNOTFindIFrameSRCPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Find Image SRC":
-                     FindImageSRCPassFailActionView NewFindImageSRCPassFailActionView = new FindImageSRCPassFailActionView();
-                     FindImageSRCPassFailAction NewFindImageSRCPassFailAction = new FindImageSRCPassFailAction("", false);
-                     NewFindImageSRCPassFailActionView.AddListeners(NewFindImageSRCPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewFindImageSRCPassFailAction, NewFindImageSRCPassFailActionView,newbug, newbugview);
-                     break;
-                 case "Do Not Find Image SRC":
-                     NOTFindImageSRCPassFailActionView NewNOTFindImageSRCPassFailActionView = new NOTFindImageSRCPassFailActionView();
-                     FindImageSRCPassFailAction NewNOTFindImageSRCPassFailAction = new FindImageSRCPassFailAction("", true);
-                     NewNOTFindImageSRCPassFailActionView.AddListeners(NewNOTFindImageSRCPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewNOTFindImageSRCPassFailAction, NewNOTFindImageSRCPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Find Page Title":
-                     FindPAGETITLEPassFailActionView NewFindPAGETITLEPassFailActionView = new FindPAGETITLEPassFailActionView();
-                     FindPAGETITLEPassFailAction NewFindPAGETITLEPassFailAction = new FindPAGETITLEPassFailAction("", false);
-                     NewFindPAGETITLEPassFailActionView.AddListeners(NewFindPAGETITLEPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewFindPAGETITLEPassFailAction, NewFindPAGETITLEPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Do Not Find Page Title":
-                     NOTFindPAGETITLEPassFailActionView NewNOTFindPAGETITLEPassFailActionView = new NOTFindPAGETITLEPassFailActionView();
-                     FindPAGETITLEPassFailAction NewNOTFindPAGETITLEPassFailAction = new FindPAGETITLEPassFailAction("", true);
-                     NewNOTFindPAGETITLEPassFailActionView.AddListeners(NewNOTFindPAGETITLEPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewNOTFindPAGETITLEPassFailAction, NewNOTFindPAGETITLEPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Find Text":
-                     FindTextPassFailActionView NewFindTextPassFailActionView = new FindTextPassFailActionView();
-                     FindTextPassFailAction NewFindTextPassFailAction = new FindTextPassFailAction("", false);
-                     NewFindTextPassFailActionView.AddListeners(NewFindTextPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewFindTextPassFailAction, NewFindTextPassFailActionView,newbug, newbugview);
-                     break;
-                     
-                 case "Do Not Find Text":
-                     NOTFindTextPassFailActionView NewNOTFindTextPassFailActionView = new NOTFindTextPassFailActionView();
-                     FindTextPassFailAction NewNOTFindTextPassFailAction = new FindTextPassFailAction("", true);
-                     NewNOTFindTextPassFailActionView.AddListeners(NewNOTFindTextPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray(NewNOTFindTextPassFailAction, NewNOTFindTextPassFailActionView, newbug, newbugview);
-                     break;
-                 case "Find XPATH":
-                     FindXPATHPassFailActionView NewFindXPATHPassFailActionView = new FindXPATHPassFailActionView();
-                     FindXPATHPassFailAction NewFindXPATHPassFailAction =  new FindXPATHPassFailAction("", false);
-                     NewFindXPATHPassFailActionView.AddListeners(NewFindXPATHPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray(NewFindXPATHPassFailAction, NewFindXPATHPassFailActionView, newbug, newbugview);
-                     break;
-                     
-                 case "Do Not Find XPATH":
-                     NOTFindXPATHPassFailActionView NewNOTFindXPATHPassFailActionView = new NOTFindXPATHPassFailActionView();
-                     FindXPATHPassFailAction NewNOTFindXPATHPassFailAction =  new FindXPATHPassFailAction("", true);
-                     NewNOTFindXPATHPassFailActionView.AddListeners(NewNOTFindXPATHPassFailAction, Window, newbug, newbugview);
-                     AddActionToArray (NewNOTFindXPATHPassFailAction, NewNOTFindXPATHPassFailActionView, newbug, newbugview);
-                     break;
-                     
+             if (PassFailActionHashMap.containsKey(PassFailActionToAdd))
+             {
+                 Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
+               ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview); 
              }
+          
              
              UpdateDisplay();
              ScrollActionPaneDown(newbugview);
@@ -833,6 +625,7 @@ this.changes=true;
         jButtonClearEmailSettings = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1226, 834));
 
         jButtonDoStuff.setText("Run All Procedures");
         jButtonDoStuff.setActionCommand("AddAction");
@@ -852,7 +645,7 @@ this.changes=true;
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
 
-        jLabel1.setText("Wait Time* (seconds)");
+        jLabel1.setText("Timeout* (seconds)");
 
         jLabel2.setText("*if set to zero all tests will fail. Need to wait for page to load.");
 
@@ -916,7 +709,7 @@ this.changes=true;
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1190, Short.MAX_VALUE)
+                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)

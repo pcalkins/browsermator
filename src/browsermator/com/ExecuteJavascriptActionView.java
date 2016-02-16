@@ -41,11 +41,7 @@ public class ExecuteJavascriptActionView extends ActionView {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();
    });
-    addJTextFieldVariable1ActionListener((ActionEvent e) -> {
-           UpdateActionView();
-           action.Locked= true;
-       });
-
+  
 
 
      addJTextFieldVariable1DocListener(

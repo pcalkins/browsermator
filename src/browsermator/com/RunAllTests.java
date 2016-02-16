@@ -62,10 +62,10 @@ public String doInBackground()
     if (SiteTest.getShowReport())
     {
      JFrame ReportJFrame = new JFrame();
-      JTextArea ReportArea = new JTextArea();
-      ReportJFrame.add(ReportArea);
+     JTextArea ReportArea = new JTextArea();
+     ReportJFrame.add(ReportArea);
      ReportArea.setText(this.report);
-        ReportJFrame.setSize(400, 800);
+     ReportJFrame.setSize(800, 800);
      
         
         ReportJFrame.setVisible(true);
@@ -217,11 +217,13 @@ int NumberOfTestsPassed = 0;
 
 
 int actionsrun = 0;
-   for( Action TheseActions : Actions ) {
-try
+   for( Action ThisAction : Actions ) {
+if (!ThisAction.Locked)
+{
+       try
 {
     
-      TheseActions.RunAction(driver);
+      ThisAction.RunAction(driver);
 //            try
 //        {
 // Thread.sleep(totalpause);
@@ -238,7 +240,7 @@ catch (Exception ex)
   
         }
 
-
+}
 }
   
    publish(thisbugindex);
@@ -346,7 +348,7 @@ catch (Exception ex)
   public String OutPutReport()
   {
      
-      String ReportText=SiteTest.URL + "Procedure report: " + SiteTest.filename + "\n";
+      String ReportText= "Procedure report: " + SiteTest.filename + "\n";
       
         for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
      {

@@ -1,6 +1,5 @@
 package browsermator.com;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
@@ -8,7 +7,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-public abstract class Action implements Serializable {
+public abstract class Action implements Initializable {
   
   
     
@@ -23,7 +22,7 @@ String Variable2;
 Boolean BoolVal1;
 String BugURL;
 Boolean Locked;
-
+String Password;
     
    
    Action ()
@@ -34,6 +33,7 @@ Boolean Locked;
   this.Type = "";
   this.Variable1 = "";
   this.Variable2 = "";
+  this.Password = "";
   this.BoolVal1 = false;
   this.Locked = false;
   this.BugURL = "http://www.browsermator.com";
@@ -92,8 +92,14 @@ public void setActionIndex (int newindex)
        this.Variable2 = variable;
    
    }
-
-   
+@Override
+ public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1)
+ {
+     this.Variable1 = Variable1;
+     this.Variable2 = Variable2;
+     this.Password = Password;
+     this.BoolVal1 = BoolVal1;
+ }
   
 
     

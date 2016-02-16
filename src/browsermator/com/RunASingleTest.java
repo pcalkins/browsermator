@@ -61,7 +61,6 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  {
    
  
-int actionsrun = 0;
   WebDriver driver = null; 
  //  WebDriver driver = new FirefoxDriver();
    switch (TargetBrowser)
@@ -108,18 +107,19 @@ int actionsrun = 0;
 driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
 
 
-    for( Action TheseActions : bugtorun.ActionsList ) {
-
+    for( Action ThisAction : bugtorun.ActionsList ) {
+   if (!ThisAction.Locked)
+   {
    try
    {
-       TheseActions.RunAction(driver);
+       ThisAction.RunAction(driver);
        
    }
    catch (Exception ex)
    {
      System.out.println(ex);
         }
-   actionsrun++;
+   }
 
 
 }

@@ -18,10 +18,10 @@ import javax.xml.bind.DatatypeConverter;
 
 public class Protector {
 
-    private static final char[] PASSWORD = "takenoprisonerstakenoshit".toCharArray();
+    private static final char[] PASSWORD = "There was a time when I was in a hurry as you are I was like you There was a day when I just had to tell my point of view I was like you".toCharArray();
     private static final byte[] SALT = {
-        (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12,
-        (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12
+        (byte) 0xae, (byte) 0x11, (byte) 0x13, (byte) 0xaa,
+        (byte) 0xce, (byte) 0x10, (byte) 0x10, (byte) 0xac
     };
   
 

@@ -8,6 +8,7 @@ package browsermator.com;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 /**
  *
@@ -21,7 +22,10 @@ public class OpenNewTabAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
-             driver.findElement(By.cssSelector("html")).sendKeys(Keys.CONTROL +"t");
+         Actions actions = new Actions(driver);
+ 
+ actions.sendKeys(Keys.CONTROL + "t").perform(); 
+ //       driver.findElement(By.cssSelector("html")).sendKeys(Keys.CONTROL +"t");
            
        String tab_handle = driver.getWindowHandle();
         driver.switchTo().window(tab_handle); 

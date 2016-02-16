@@ -9,11 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+
 
 /**
  *
@@ -23,7 +19,7 @@ public class DragAndDropByActionView extends ActionView {
      DragAndDropByActionView()
    {
        this.JLabelVariable1 = new JLabel("Drag From XPATH:");
-    this.JLabelVariable2 = new JLabel("Drag distance in pixels x, y (-x is left, -y is up):");
+    this.JLabelVariable2 = new JLabel("Distance in pixels x, y (-x is left, -y is up):");
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
       this.JPanelAction.add(this.JLabelVariable2);
@@ -47,11 +43,7 @@ public class DragAndDropByActionView extends ActionView {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();
    });
-    addJTextFieldVariable1ActionListener((ActionEvent e) -> {
-           UpdateActionView();
-           action.Locked= true;
-       });
-
+  
 
 
      addJTextFieldVariable1DocListener(

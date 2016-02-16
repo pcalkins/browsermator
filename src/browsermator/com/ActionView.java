@@ -11,7 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
-public abstract class ActionView implements Listenable{
+public abstract class ActionView implements Listenable, Initializable{
 
      int index;
      int bugindex;
@@ -43,7 +43,7 @@ public abstract class ActionView implements Listenable{
       this.JLabelVariable1 = new JLabel("Generic");
       this.JLabelVariable2 = new JLabel("Generic");
       this.JCheckBoxBoolVal1 = new JCheckBox("Press Enter Key");
-    this.JButtonOK = new JButton("Lock");
+    this.JButtonOK = new JButton("Disable");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
        this.JButtonMoveDown = new JButton("\\/");
@@ -115,7 +115,7 @@ String stringactionindex = Integer.toString(this.index+1);
    this.JTextFieldVariable2.setEditable(false);
    this.JTextFieldPassword.setEnabled(false);
    this.JTextFieldPassword.setEditable(false);
-   this.JButtonOK.setText("Edit");
+   this.JButtonOK.setText("Enable");
    this.JButtonOK.setActionCommand("Edit");
        }
        public void EditActionView()
@@ -127,9 +127,21 @@ String stringactionindex = Integer.toString(this.index+1);
    this.JTextFieldVariable2.setEditable(true);
    this.JTextFieldPassword.setEnabled(true);
    this.JTextFieldPassword.setEditable(true);
-   this.JButtonOK.setText("Lock");
+   this.JButtonOK.setText("Disable");
    this.JButtonOK.setActionCommand("Update");
   
+       }
+       @Override
+       public void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1)
+       {
+         this.JTextFieldVariable1.setText(Variable1);
+         this.JTextFieldVariable2.setText(Variable2);
+         this.JTextFieldPassword.setText(Password);
+         
+         if (BoolVal1)
+         {
+             this.JCheckBoxBoolVal1.setSelected(true);
+         }
        }
        public void SetIndexes(int bugindex, int actionindex)
        {
