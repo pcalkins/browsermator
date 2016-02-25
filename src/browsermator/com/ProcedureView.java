@@ -34,8 +34,8 @@ public class ProcedureView {
   //    JLabel JLabelBugNumber = new JLabel("Bug Number: ");
    JLabel JLabelBugTitle = new JLabel ("Procedure Title: ");
      JTextField JTextFieldBugTitle = new JTextField("", 35);
-    
-    
+  
+       JLabel JLabelAddFieldInstructions = new JLabel (" ");
  
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
      JTextField JTextFieldBugURL = new JTextField("", 15);
@@ -68,7 +68,12 @@ public class ProcedureView {
    // JButton JButtonDoNotFindPageTitlePassFail = new JButton ("Do Not Find Page Title");
     JButton JButtonYesNoPromptPassFail = new JButton ("Yes/No Question (Yes Passes Test)");
     JLabel JLabelQuickActions = new JLabel ("Quick Select Action Buttons:");
+    JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Action Buttons:");
   //  JLabel JLabelQuickActionsPassFail = new JLabel ("Quick Select Pass/Fail Action Buttons:");
+    MyTable myTable = null;
+    int last_selected_procedure_index = 0;
+    int last_selected_action_index = 0;
+    int last_selected_jtextfield_variable_number = 0;
      ProcedureView()
      {
 
@@ -129,16 +134,13 @@ for (String passfailaction_name : passfailaction_keys)
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      LeftSideButtonsPanel.add(JButtonTypeAtXPATH);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
-   //  LeftSideButtonsPanel.add(JButtonTypePasswordAtXPATH);
-   //  LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
+     LeftSideButtonsPanel.add(JLabelQuickPassFailActions);
+     LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      LeftSideButtonsPanel.add(JButtonFindXPATHPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      LeftSideButtonsPanel.add(JButtonDoNotFindXPATHPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
-   //  LeftSideButtonsPanel.add(JButtonFindPageTitlePassFail);
-   //  LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
-   //  LeftSideButtonsPanel.add(JButtonDoNotFindPageTitlePassFail);
-   //  LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
+ 
      LeftSideButtonsPanel.add(JButtonYesNoPromptPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      
@@ -146,66 +148,76 @@ for (String passfailaction_name : passfailaction_keys)
      LeftSideButtonsPanel.setLayout(LeftSideButtonsLayout);
      
      
-  //   AddToGrid(JLabelBugIndex, 1, 0, 1, 1, global_weightx, global_weighty);
-     
-  //JPanelBug.add(JLabelBugIndex);
-  //   JPanelBug.add(JTextFieldBugNumber);
-     
-  //   JPanelBug.add(JLabelBugTitle);
+ 
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
   
-//   JPanelBug.add(JTextFieldBugTitle);
      AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty );
    
 
   AddToGrid(JButtonDeleteBug, 1, 3, 1, 1, global_weightx, global_weighty);
  
-  //JPanelBug.add(JButtonRunTest);
   AddToGrid(JButtonRunTest, 1, 4, 1, 1, global_weightx, global_weighty);
 
      JLabelPass.setVisible(false);
-  //   JPanelBug.add(JLabelPass);
+
     AddToGrid(JLabelPass, 1, 5, 1, 1, global_weightx, global_weighty);  
  
-    //   JPanelBug.add(JComboBoxDoActions);
+   
     BugConstraints.insets = new Insets(2,2,4,2);
     JPanel DoActionComboPanel = new JPanel();
     DoActionComboPanel.add(JLabelDoActions);
     DoActionComboPanel.add(JComboBoxDoActions);
     
     AddToGrid (DoActionComboPanel, 2, 1, 2, 1, global_weightx, global_weighty);
-  //  AddToGrid (JComboBoxDoActions, 2, 2, 1, 1, global_weightx, global_weighty);
-    
-//   JPanelBug.add(JComboBoxPassFailActions);
     AddToGrid (JLabelPassFailActions, 2, 3, 1, 1, global_weightx, global_weighty);
     AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty); 
- //  global_weighty = 1/24;
- //   AddToGrid (JButtonGoAction, 3, 0, 1, 0, global_weightx, global_weighty);
- //   AddToGrid (JButtonClickAtXPATH, 4, 0, 1, 0, global_weightx, global_weighty);
- //   AddToGrid (JButtonTypeAtXPATH, 5, 0, 1, 0, global_weightx, global_weighty);
- //   AddToGrid (JButtonTypePasswordAtXPATH, 6, 0, 1, 0, global_weightx, global_weighty);
- //   AddToGrid (JButtonFindXPATHPassFail, 7, 7, 1, 0, global_weightx, global_weighty);
- //   AddToGrid (JButtonFindPageTitlePassFail, 8, 7, 1, 0, global_weightx, global_weighty);
+
     BugConstraints.insets = new Insets(10,10,10,10);
    AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, global_weightx, global_weighty); 
   ActionScrollPane.setVisible(false);
   ActionScrollPane.setSize(new Dimension(1024, 840));
 
     AddToGrid (ActionScrollPanel, 3, 1, 6, 5, global_weightx, global_weighty);
-   
-      
-    
-     
-       ActionScrollPanel.add(ActionScrollPane);
+    ActionScrollPanel.add(ActionScrollPane);
   
     
  JButtonSubmitBug.setActionCommand("Update");
     
      }
+     
+     public void clearLastSelectedValues ()
+     {
+         last_selected_procedure_index = 0;
+         last_selected_action_index = 0;
+         last_selected_jtextfield_variable_number = 0;
+     }
+     public void setLastSelectedField (int variable_number, int procedure_index, int action_index)
+     {
+         last_selected_procedure_index = procedure_index;
+         last_selected_action_index = action_index;
+         last_selected_jtextfield_variable_number = variable_number;
+     }
       public final void setStandardButtonSize(JButton thisbutton)
      {
      //    thisbutton.setSize(new Dimension(5000, 5000));
          thisbutton.setMaximumSize(new Dimension(500, 500));
+     }
+     public void ShowFieldInstructions(boolean showit, int textfieldindex, int bugindex, int actionindex)
+     {
+         bugindex++;
+         actionindex++;
+         String stringactionindex = Integer.toString(actionindex);
+        String stringbugindex = Integer.toString(bugindex);
+        String textfieldindex_char = Integer.toString(textfieldindex);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+         if (showit)
+         {
+             this.JLabelAddFieldInstructions.setText("Click ColumnName to set Field" + textfieldindex_char + " of " + bugdashactionindex);
+         }
+         else
+         {
+             this.JLabelAddFieldInstructions.setText(" ");
+         }
      }
      public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty)
      {

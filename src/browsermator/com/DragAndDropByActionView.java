@@ -15,7 +15,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author pcalkins
  */
-public class DragAndDropByActionView extends ActionView {
+public class DragAndDropByActionView extends ActionView  {
      DragAndDropByActionView()
    {
        this.JLabelVariable1 = new JLabel("Drag From XPATH:");

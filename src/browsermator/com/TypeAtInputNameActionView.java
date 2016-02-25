@@ -8,7 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class TypeAtInputNameActionView extends ActionView
+public class TypeAtInputNameActionView extends ActionView 
 {
  TypeAtInputNameActionView()
    {
@@ -101,6 +101,5 @@ public class TypeAtInputNameActionView extends ActionView
       }
                  );
    } 
-       
-     
+  
 }

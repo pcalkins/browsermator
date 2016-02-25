@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class NOTFindImageSRCPassFailActionView extends ActionView 
+public class NOTFindImageSRCPassFailActionView extends ActionView implements Loopable
 {
   
    NOTFindImageSRCPassFailActionView()

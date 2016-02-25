@@ -1,8 +1,13 @@
 package browsermator.com;
 
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -59,9 +64,38 @@ String stringactionindex = Integer.toString(this.index+1);
  
          
    }
+     public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
+     {
+         
+         String data_field_string = "[dataloop-field-start]"+field_number+","+columnindex+"," + selected_name+"[dataloop-field-end]";
+         switch (field_number)
+         {
+             
+             case 1:
+                 JTextFieldVariable1.setText(data_field_string);
+                 break;
+             case 2:
+                 JTextFieldVariable2.setText(data_field_string);
+                 break;
+             case 3:
+                 JTextFieldPassword.setText(data_field_string);
+                 break;
+                 
+         }
+              
+     }
      public void setActionViewIndex (int newindex)
      {
          this.index = newindex;
+     }
+
+     public void addJTextFieldFocusListener(FocusListener focuslistener)
+     {
+        JTextFieldVariable1.addFocusListener(focuslistener);
+     }
+     public void addJTextField2FocusListener(FocusListener focuslistener)
+     {
+         JTextFieldVariable2.addFocusListener(focuslistener);
      }
       public void addJCheckBoxBoolVal1ActionListener(ActionListener actlistener)
      {
@@ -174,4 +208,47 @@ String stringactionindex = Integer.toString(this.index+1);
            
 
    } 
+
+
+  public void AddLoopListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+   {
+
+if (newbugview.myTable!=null)
+{
+  
+
+     addJTextFieldFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+            
+                newbugview.ShowFieldInstructions(true, 1, newbugview.index, action.index);
+                newbugview.setLastSelectedField (1, newbugview.index, action.index);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            newbugview.ShowFieldInstructions(false, 1, newbugview.index, action.index);
+               newbugview.clearLastSelectedValues();
+            }
+        });
+      addJTextField2FocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+            
+                newbugview.ShowFieldInstructions(true, 2, newbugview.index, action.index);
+                newbugview.setLastSelectedField (2, newbugview.index, action.index);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            newbugview.ShowFieldInstructions(false, 2, newbugview.index, action.index);
+               newbugview.clearLastSelectedValues();
+            }
+        });
+   }
+}
 }

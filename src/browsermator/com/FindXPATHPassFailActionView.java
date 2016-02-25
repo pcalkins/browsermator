@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class FindXPATHPassFailActionView extends ActionView
+public class FindXPATHPassFailActionView extends ActionView 
 {
   
    FindXPATHPassFailActionView()
@@ -79,5 +79,5 @@ public class FindXPATHPassFailActionView extends ActionView
          } });        
 
    } 
-   
+ 
 }

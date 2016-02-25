@@ -51,7 +51,6 @@ public class ClickXPATHActionView extends ActionView
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
       action.setVariable1(JTextFieldVariable1.getText());
-
       }
 @Override
       public void insertUpdate(DocumentEvent documentEvent) {
@@ -82,6 +81,7 @@ public class ClickXPATHActionView extends ActionView
          } });        
 
    } 
- 
+
+
    
 }

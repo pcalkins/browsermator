@@ -5,7 +5,6 @@
  */
 package browsermator.com;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -24,7 +23,11 @@ public class NextTabAction extends Action {
     {
             Actions actions = new Actions(driver);
  
- actions.sendKeys(Keys.CONTROL, Keys.TAB).perform(); 
+
+ actions.keyDown(Keys.CONTROL).perform();
+ actions.keyDown(Keys.TAB).perform();
+ actions.keyUp(Keys.TAB).perform();
+ actions.keyUp(Keys.CONTROL).perform();
    //    driver.findElement(By.tagName("html")).sendKeys(Keys.CONTROL, Keys.TAB); 
        String tab_handle = driver.getWindowHandle();
         driver.switchTo().window(tab_handle); 

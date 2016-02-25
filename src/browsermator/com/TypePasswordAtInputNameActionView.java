@@ -8,7 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class TypePasswordAtInputNameActionView extends ActionView
+public class TypePasswordAtInputNameActionView extends ActionView 
 {
    TypePasswordAtInputNameActionView()
    {
@@ -151,6 +151,6 @@ public class TypePasswordAtInputNameActionView extends ActionView
            }
                  );
    }    
- 
+  
     
 }

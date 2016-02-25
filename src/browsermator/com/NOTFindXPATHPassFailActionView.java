@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class NOTFindXPATHPassFailActionView extends ActionView
+public class NOTFindXPATHPassFailActionView extends ActionView 
 {
   
    NOTFindXPATHPassFailActionView()

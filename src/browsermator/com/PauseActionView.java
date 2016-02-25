@@ -14,7 +14,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author pcalkins
  */
-public class PauseActionView extends ActionView {
+public class PauseActionView extends ActionView implements Loopable {
   PauseActionView()
    {
  
@@ -101,6 +101,6 @@ public class PauseActionView extends ActionView {
       }
                  );
    } 
-       
+ 
         
 }

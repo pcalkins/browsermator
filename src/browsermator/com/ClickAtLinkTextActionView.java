@@ -8,7 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class ClickAtLinkTextActionView extends ActionView
+public class ClickAtLinkTextActionView extends ActionView 
 {
   
    ClickAtLinkTextActionView()
@@ -81,6 +81,6 @@ public class ClickAtLinkTextActionView extends ActionView
          } });        
 
    } 
- 
+  
    
 }

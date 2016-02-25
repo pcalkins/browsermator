@@ -74,13 +74,12 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem contentsMenuItem;
      private JMenuItem aboutMenuItem;
      private JMenuItem newFileItem;
-     private JMenuItem importFileItem;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.4";
+private final String version = "0.0.6";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.4";
+   private final String ProgramVersion = "0.0.6";
 
   
   
@@ -414,6 +413,19 @@ SeleniumToolDesktop.add(Navigator);
     
    STAppFrame.AddNewBug();  
 
+        }
+                                          
+      }
+    );
+     STAppFrame.addjButtonNewDataLoopActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+   File chosenCSVFile = BrowseForCSVFile();
+   if (chosenCSVFile!=null)
+   {
+   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+   }
         }
                                           
       }
@@ -837,6 +849,21 @@ SeleniumToolDesktop.add(Navigator);
     
    STAppFrame.AddNewBug();  
  
+ 
+  }
+                                          
+      }
+    );
+      STAppFrame.addjButtonNewDataLoopActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+   File chosenCSVFile = BrowseForCSVFile();
+   if (chosenCSVFile!=null)
+   {
+   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+   }
  
   }
                                           
@@ -1303,12 +1330,18 @@ xmlfile.writeEndElement();
 
 for (Procedure thisbug: STAppFrame.BugArray)
 {
+
 xmlfile.writeStartElement("Procedure");
 xmlfile.writeAttribute("Title", thisbug.BugTitle);
 xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
+if (!"".equals(thisbug.DataFile))
+{
+xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+}
+
 
     for (Action thisaction: thisbug.ActionsList)
     {
@@ -1465,6 +1498,38 @@ Navigator.addRecentFile(file.getAbsolutePath());
          return 0;  
 
         }
+ public File BrowseForCSVFile()
+    {
+                    final JFileChooser CSVFileChooser = new JFileChooser();
+
+ FileNameExtensionFilter filefilter = new FileNameExtensionFilter("CSV file (*.csv)","csv");
+
+    CSVFileChooser.setFileFilter(filefilter);
+
+int returnVal = CSVFileChooser.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+    if (file.getAbsoluteFile().getName().contains(".csv"))
+{
+ 
+}
+else
+{
+   String path = file.getAbsolutePath();
+    
+File newfile = new File(path + ".csv");
+ file = newfile;
+ 
+}  
+    return file;
+            }
+            else
+            {
+            return null;
+            }
+    }
   public File[] BrowseForFile()
   {
        
@@ -1697,9 +1762,28 @@ for (Procedure thisproc: STAppFrame.BugArray)
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     int newbug_index = MDIClasses.get(MDI_INDEX).BugArray.size();
+   Element Procedure = (Element) ProcedureList.item(i);
+   
+    String DataFile = Procedure.getAttribute("DataLoopFile");
+    if (!"".equals(DataFile))
+    {
+        File DataFile_file = new File(DataFile);
+        if (DataFile_file.exists())
+        {
+            MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
+        }
+        else
+        {
+           MDIClasses.get(MDI_INDEX).AddNewBug();  
+        }
+    }
+    else
+    {
     MDIClasses.get(MDI_INDEX).AddNewBug(); 
+    }
     
-    Element Procedure = (Element) ProcedureList.item(i);
+    
+   
      MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).BugTitle = Procedure.getAttribute("Title");
      MDIClasses.get(MDI_INDEX).BugViewArray.get(newbug_index).JTextFieldBugTitle.setText(Procedure.getAttribute("Title"));
      MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).BugURL = Procedure.getAttribute("URL");
@@ -1804,6 +1888,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
                
            }      
@@ -1815,6 +1900,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
              }
             
@@ -2001,9 +2087,31 @@ try
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
-    STAppFrame.AddNewBug(); 
+    
+    
    
     Element Procedure = (Element) ProcedureList.item(i);
+   
+    String DataFile = Procedure.getAttribute("DataLoopFile");
+    if (!"".equals(DataFile))
+    {
+        
+        File DataFile_file = new File(DataFile);
+         if (DataFile_file.exists())
+        {
+            STAppFrame.AddNewDataLoop(DataFile_file);
+        }
+        else
+        {
+           STAppFrame.AddNewBug();
+        }
+       
+    }
+    else
+    {
+     STAppFrame.AddNewBug();    
+    }
+    
     STAppFrame.BugArray.get(i).BugTitle = Procedure.getAttribute("Title");
     STAppFrame.BugViewArray.get(i).JTextFieldBugTitle.setText(Procedure.getAttribute("Title"));
     STAppFrame.BugArray.get(i).BugURL = Procedure.getAttribute("URL");
@@ -2109,6 +2217,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
                
            }      
@@ -2120,6 +2229,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
               STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
              }
  
@@ -2188,6 +2298,21 @@ STAppFrame.addjButtonDoStuffActionListener(
     
    STAppFrame.AddNewBug();  
  
+ 
+  }
+                                          
+      }
+    );
+     STAppFrame.addjButtonNewDataLoopActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+   File chosenCSVFile = BrowseForCSVFile();
+   if (chosenCSVFile!=null)
+   {
+   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+   }
  
   }
                                           

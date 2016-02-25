@@ -14,7 +14,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author pcalkins
  */
-public class ExecuteJavascriptActionView extends ActionView {
+public class ExecuteJavascriptActionView extends ActionView implements Loopable {
    ExecuteJavascriptActionView()
    {
 
@@ -80,5 +80,6 @@ public class ExecuteJavascriptActionView extends ActionView {
              
          } });        
 
-   }     
+   } 
+
 }

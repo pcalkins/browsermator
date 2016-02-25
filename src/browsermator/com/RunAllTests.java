@@ -217,31 +217,72 @@ int NumberOfTestsPassed = 0;
 
 
 int actionsrun = 0;
-   for( Action ThisAction : Actions ) {
-if (!ThisAction.Locked)
+ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
+
+if (thisbugview.myTable==null)
 {
-       try
-{
-    
-      ThisAction.RunAction(driver);
-//            try
-//        {
-// Thread.sleep(totalpause);
-//        }
-//        catch (InterruptedException e)
- //               {
-  //                  System.out.println("pause exception: " + e.toString());
-  //              }
-}
-catch (Exception ex)
+   for( Action ThisAction : thisbug.ActionsList ) {
+           String original_value = ThisAction.Variable2;
+ 
+           if (!ThisAction.Locked)
    {
-
-        System.out.println(ex);
-  
+   try
+   {
+       ThisAction.RunAction(driver);
+       
+   }
+   catch (Exception ex)
+   {
+     System.out.println("normal action" + ex);
         }
+   }   
+   }  
 
 }
-}
+else
+{
+ int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ 
+     for (int x = 0; x<number_of_rows; x++)
+    {
+    for( Action ThisAction : thisbug.ActionsList ) {
+           String original_value1 = ThisAction.Variable1;
+           String original_value2 = ThisAction.Variable2;
+      if (!ThisAction.Locked)
+   {
+   
+   
+               DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
+        ThisAction.RunAction(driver);
+    }
+    else
+    {
+  
+       
+            String concat_variable;
+            String concat_variable2;
+ concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
+ if (!"".equals(concat_variable))
+ {
+      ThisAction.Variable1 = concat_variable;
+ }
+      concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+     if (!"".equals(concat_variable2))
+     {
+      ThisAction.Variable2 = concat_variable2;  
+     }
+      ThisAction.RunAction(driver);
+   ThisAction.Variable1 = original_value1;
+   ThisAction.Variable2 = original_value2;
+  }
+   
+      }
+     }
+    }
+   }
   
    publish(thisbugindex);
     thisbugindex++;

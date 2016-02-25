@@ -1,11 +1,11 @@
 package browsermator.com;
 
 
-import java.io.Serializable;
+import com.opencsv.CSVReader;
 import java.util.ArrayList;
 
 
-public class Procedure implements Serializable{
+public class Procedure {
   
   
 
@@ -14,7 +14,13 @@ String BugURL;
 String BugTitle;
 int index;
 String TargetBrowser;
+MyTable DataSet;
+String DataFile;
 
+
+CSVReader CSVFileReader;
+int number_of_columns;
+int number_of_records;
    ArrayList<Action> ActionsList = new ArrayList();    
   
    Procedure ()
@@ -24,7 +30,8 @@ this.BugURL = "http://www.browsermator.com";
 this.BugTitle = "";
 this.index = 0;
 this.TargetBrowser = "Firefox";
-
+this.DataSet=null;
+this.DataFile="";
    }
   
    
@@ -32,6 +39,11 @@ this.TargetBrowser = "Firefox";
    public void setProcedureTitle(String title)
    {
        this.BugTitle = title;
+   }
+    public void setDataFile(String dataFile)
+   {
+       DataFile = dataFile;
+       DataSet = new MyTable(DataFile);
    }
    
 }

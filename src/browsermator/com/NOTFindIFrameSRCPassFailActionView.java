@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class NOTFindIFrameSRCPassFailActionView extends ActionView
+public class NOTFindIFrameSRCPassFailActionView extends ActionView 
 {
   
    NOTFindIFrameSRCPassFailActionView()

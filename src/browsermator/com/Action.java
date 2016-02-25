@@ -1,6 +1,7 @@
 package browsermator.com;
 
 import java.time.LocalDateTime;
+import javax.swing.JTable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -23,8 +24,7 @@ Boolean BoolVal1;
 String BugURL;
 Boolean Locked;
 String Password;
-    
-   
+Boolean Loopable; 
    Action ()
    {
   this.Pass = true;
@@ -37,12 +37,16 @@ String Password;
   this.BoolVal1 = false;
   this.Locked = false;
   this.BugURL = "http://www.browsermator.com";
+  this.Loopable = false;
    }
    public void RunAction(WebDriver driver)
    {
-    driver.get("http://news.google.com");
-    this.TimeOfTest = LocalDateTime.now();
+  
     
+   }
+   public void RunDataLoopAction (WebDriver driver, JTable dataLoopTable)
+   {
+       
    }
   public void ClickCatchAction(WebDriver driver, String xpather)
   {

@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class FindIFrameSRCPassFailActionView extends ActionView
+public class FindIFrameSRCPassFailActionView extends ActionView implements Loopable
 {
   
    FindIFrameSRCPassFailActionView()

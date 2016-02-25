@@ -9,7 +9,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class TypePasswordAtXPATHActionView extends ActionView
+public class TypePasswordAtXPATHActionView extends ActionView 
 {
   
    TypePasswordAtXPATHActionView()

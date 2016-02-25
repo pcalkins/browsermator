@@ -84,6 +84,5 @@ public class ClickAtIDActionView extends ActionView
          } });        
 
    }   
-
-   
+ 
 }

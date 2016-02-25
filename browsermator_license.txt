@@ -1,0 +1,21 @@
+Copyright (c) 2016, Pete Calkins
+All rights reserved.
+
+The BrowserMator license falls under the terms of CDDL license and the Apache license:
+https://opensource.org/licenses/CDDL-1.0
+http://www.apache.org/licenses/LICENSE-2.0
+
+All of the disclaimers and warranties of the above licenses apply to the Browsermator.
+
+The licenses are appended as follows:
+
+Distribution of Browsermator code or binaries via the World Wide Web is strictly prohibited except 
+for sites owned by Pete Calkins or the public GitHub repository.
+At the time of this writing those sites are:
+http://www.browsermator.com 
+https://github.com/pcalkins/browsermator
+
+If you'd like to create a branch of the Browsermator, contact me and I'll give you access to the GitHub repo: pcalkins@mvd.com
+
+
+

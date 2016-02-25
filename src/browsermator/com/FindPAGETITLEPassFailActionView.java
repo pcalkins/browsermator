@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class FindPAGETITLEPassFailActionView extends ActionView
+public class FindPAGETITLEPassFailActionView extends ActionView 
 {
   
    FindPAGETITLEPassFailActionView()
@@ -76,6 +76,6 @@ public class FindPAGETITLEPassFailActionView extends ActionView
          } });        
 
    } 
- 
+  
    
 }

@@ -82,19 +82,19 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      driver = new InternetExplorerDriver();
      break;
      case "Chrome":
-     if (OSType == "Windows")
+     if ("Windows".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "chromedriver_win32\\chromedriver.exe");
      }
-     if (OSType == "Mac")
+     if ("Mac".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "chromedriver_mac32\\chromedriver-mac32");
      }
-     if (OSType == "Linux-32")
+     if ("Linux-32".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "chromedriver_linux32\\chromedriver-linux32");
      }
-     if (OSType == "Linux-64")
+     if ("Linux-64".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "chromedriver_linux64\\chromedriver-linux64");
      }
@@ -103,12 +103,16 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
    }
  
-  int WaitTime = 5;
-driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
-
-
-    for( Action ThisAction : bugtorun.ActionsList ) {
-   if (!ThisAction.Locked)
+  int WaitTime = 3;
+ driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+     int totalpause = WaitTime * 1000;
+     
+if (thisbugview.myTable==null)
+{
+   for( Action ThisAction : bugtorun.ActionsList ) {
+           String original_value = ThisAction.Variable2;
+ 
+           if (!ThisAction.Locked)
    {
    try
    {
@@ -117,12 +121,56 @@ driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
    }
    catch (Exception ex)
    {
-     System.out.println(ex);
+     System.out.println("normal action" + ex);
         }
-   }
-
+   }   
+   }  
 
 }
+else
+{
+ int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ 
+     for (int x = 0; x<number_of_rows; x++)
+    {
+    for( Action ThisAction : bugtorun.ActionsList ) {
+           String original_value1 = ThisAction.Variable1;
+           String original_value2 = ThisAction.Variable2;
+      if (!ThisAction.Locked)
+   {
+   
+   
+               DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
+        ThisAction.RunAction(driver);
+    }
+    else
+    {
+  
+       
+            String concat_variable;
+            String concat_variable2;
+ concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
+ if (!"".equals(concat_variable))
+ {
+      ThisAction.Variable1 = concat_variable;
+ }
+      concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+     if (!"".equals(concat_variable2))
+     {
+      ThisAction.Variable2 = concat_variable2;  
+     }
+      ThisAction.RunAction(driver);
+   ThisAction.Variable1 = original_value1;
+   ThisAction.Variable2 = original_value2;
+  }
+   
+      }
+     }
+    }
+   }
      
     driver.close();  
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;

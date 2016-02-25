@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class NOTFindHREFPassFailActionView extends ActionView
+public class NOTFindHREFPassFailActionView extends ActionView 
 {
   
    NOTFindHREFPassFailActionView()

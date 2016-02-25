@@ -23,6 +23,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -53,8 +55,6 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
   this.OSType = "Windows";
-  
-  
 
   this.changes = false;
   this.PromptToClose = false;
@@ -70,7 +70,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
 
   
       initComponents();
-      
+      this.setSize(1400,900);
       
        jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -329,8 +329,8 @@ int bugindex = 0;
       
 BV.ActionScrollPane.setVisible(true);
        BV.ActionScrollPane.setViewportView(ActionPanel);
-  //     this.BugPanel.add(ActionScrollPanel);
-             
+ 
+    
 bugindex++;
      }
 
@@ -373,10 +373,75 @@ bugindex++;
         UpdateDisplay();
  JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
-// this.changes = true;
-        }
-        
 
+        }
+           public void AddNewDataLoop(File CSVFile)
+        {
+         DataLoop newdataloop = new DataLoop();
+         DataLoopView newdataloopview = new DataLoopView();
+         newdataloopview.setJTableSource(CSVFile.getAbsolutePath());
+         newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         BugArray.add(newdataloop);
+         BugViewArray.add(newdataloopview);
+         newdataloop.index = BugArray.size();
+         newdataloopview.index = BugViewArray.size();
+        AddNewHandlers(this, newdataloopview, newdataloop);
+        AddLoopHandlers(this, newdataloopview, newdataloop);
+        UpdateDisplay();
+ JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+
+        }
+      public void AddLoopHandlers (SeleniumTestTool Window, DataLoopView newbugview, DataLoop newbug) 
+      {
+            
+            newbugview.addJButtonBrowseForDataFileActionListener((ActionEvent evt) -> {
+             File chosenCSVFile = ChangeCSVFile();
+   if (chosenCSVFile!=null)
+   {
+  
+   newbugview.setJTableSource(chosenCSVFile.getAbsolutePath());
+   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
+   UpdateDisplay();
+   }
+          });
+      
+      }
+      public File ChangeCSVFile()
+      {
+   
+  final JFileChooser CSVFileChooser = new JFileChooser();
+
+ FileNameExtensionFilter filefilter = new FileNameExtensionFilter("CSV file (*.csv)","csv");
+
+    CSVFileChooser.setFileFilter(filefilter);
+
+int returnVal = CSVFileChooser.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+    if (file.getAbsoluteFile().getName().contains(".csv"))
+{
+ 
+}
+else
+{
+   String path = file.getAbsolutePath();
+    
+File newfile = new File(path + ".csv");
+ file = newfile;
+ 
+ 
+}  
+ return file;
+            }
+            else
+            {
+           return null;
+            }
+
+      }
       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
       {
   
@@ -418,6 +483,7 @@ bugindex++;
               GoAction thisActionToAdd = new GoAction("");
                GoActionView thisActionViewToAdd = new GoActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -427,6 +493,8 @@ bugindex++;
               ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false);
               ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+             
+                     thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -436,6 +504,7 @@ bugindex++;
               TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
               TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+                  thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -445,6 +514,7 @@ bugindex++;
              FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
              FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -454,6 +524,7 @@ bugindex++;
              FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
              NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -463,6 +534,7 @@ bugindex++;
              YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
              YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
             ScrollActionPaneDown(newbugview);
@@ -483,6 +555,7 @@ bugindex++;
                Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);
                
            }      
@@ -507,6 +580,7 @@ bugindex++;
                  Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
                ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview); 
              }
           
@@ -525,7 +599,7 @@ bugindex++;
             action.index = newbug.ActionsList.size()-1;
 }
 
-
+ 
    public void MoveAction (SeleniumTestTool Window, Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
    {
 
@@ -623,9 +697,10 @@ this.changes=true;
         jCheckBoxOSTypeLinux32 = new javax.swing.JCheckBox();
         jCheckBoxOSTypeLinux64 = new javax.swing.JCheckBox();
         jButtonClearEmailSettings = new javax.swing.JButton();
+        jButtonNewDataLoop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1226, 834));
+        setPreferredSize(new java.awt.Dimension(1280, 834));
 
         jButtonDoStuff.setText("Run All Procedures");
         jButtonDoStuff.setActionCommand("AddAction");
@@ -698,6 +773,13 @@ this.changes=true;
 
         jButtonClearEmailSettings.setText("Clear Email Settings");
 
+        jButtonNewDataLoop.setText("Add Data Loop Procedure");
+        jButtonNewDataLoop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNewDataLoopActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -709,10 +791,13 @@ this.changes=true;
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -781,11 +866,13 @@ this.changes=true;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(jButtonNewBug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTHISSITEURL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -857,6 +944,10 @@ this.changes=true;
     private void jButtonNewBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewBugActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNewBugActionPerformed
+
+    private void jButtonNewDataLoopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewDataLoopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonNewDataLoopActionPerformed
   private void jCheckBoxPromptToCloseActionPerformed(ActionEvent evt)
   {
   this.PromptToClose = jCheckBoxPromptToClose.isSelected();
@@ -867,6 +958,7 @@ this.changes=true;
   this.ShowReport = jCheckBoxShowReport.isSelected();
   // this.changes=true;
   }
+  
    private void jCheckBoxExitAfterActionPerformed(ActionEvent evt)
   {
   this.ExitAfter = jCheckBoxExitAfter.isSelected();
@@ -961,6 +1053,9 @@ public void addTargetBrowserItemListener (ItemListener listener)
 }
 public void addjButtonNewBugActionListener(ActionListener listener) {
      jButtonNewBug.addActionListener(listener);
+  }
+public void addjButtonNewDataLoopActionListener(ActionListener listener) {
+    jButtonNewDataLoop.addActionListener(listener);  
   }
    public void addjButtonDoStuffActionListener(ActionListener listener) {
        jButtonDoStuff.addActionListener(listener);
@@ -1129,6 +1224,7 @@ public void addjButtonNewBugActionListener(ActionListener listener) {
     private javax.swing.JButton jButtonClearEmailSettings;
     private javax.swing.JButton jButtonDoStuff;
     private javax.swing.JButton jButtonNewBug;
+    private javax.swing.JButton jButtonNewDataLoop;
     private javax.swing.JCheckBox jCheckBoxEmailReport;
     private javax.swing.JCheckBox jCheckBoxEmailReportFail;
     private javax.swing.JCheckBox jCheckBoxExitAfter;

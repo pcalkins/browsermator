@@ -8,7 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class TypeAtXPATHActionView extends ActionView
+public class TypeAtXPATHActionView extends ActionView 
 {
   
    TypeAtXPATHActionView()
@@ -100,5 +100,5 @@ public class TypeAtXPATHActionView extends ActionView
                  );
    }    
  
-   
+ 
 }
