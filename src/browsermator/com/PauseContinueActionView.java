@@ -9,25 +9,20 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openqa.selenium.WebDriver;
 
 /**
  *
  * @author pcalkins
  */
-public class PauseActionView extends ActionView {
-  PauseActionView()
-   {
+class PauseContinueActionView extends ActionView {
+
+    public PauseContinueActionView()  {
  
     
-    this.JLabelVariable1 = new JLabel("Minutes to Pause:");
-    this.JLabelVariable2 = new JLabel("Seconds to Pause:");
-  
-    this.JPanelAction.add(this.JLabelVariable1);
-      this.JPanelAction.add(this.JTextFieldVariable1); 
-      this.JPanelAction.add(this.JLabelVariable2);
-      this.JPanelAction.add(this.JTextFieldVariable2);
-       this.JPanelAction.add(this.JButtonOK);
-  this.JPanelAction.add(this.JButtonDelete);
+       this.JLabelVariable1 = new JLabel("Pause with Continue Button");
+ this.JPanelAction.add(this.JLabelVariable1);
+   this.JPanelAction.add(this.JButtonDelete);
   
    }
  @Override  
@@ -102,5 +97,5 @@ public class PauseActionView extends ActionView {
                  );
    } 
  
-        
+    
 }

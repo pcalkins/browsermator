@@ -24,7 +24,8 @@ Boolean BoolVal1;
 String BugURL;
 Boolean Locked;
 String Password;
-Boolean Loopable; 
+Boolean Loopable;
+String pause_message;
    Action ()
    {
   this.Pass = true;
@@ -38,13 +39,14 @@ Boolean Loopable;
   this.Locked = false;
   this.BugURL = "http://www.browsermator.com";
   this.Loopable = false;
+  this.pause_message = "";
    }
    public void RunAction(WebDriver driver)
    {
   
     
    }
-   public void RunDataLoopAction (WebDriver driver, JTable dataLoopTable)
+   public void RunAction (WebDriver driver, String message)
    {
        
    }
@@ -104,7 +106,7 @@ public void setActionIndex (int newindex)
      this.Password = Password;
      this.BoolVal1 = BoolVal1;
  }
-  
+ 
 
     
        

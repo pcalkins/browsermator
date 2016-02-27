@@ -256,7 +256,16 @@ else
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
+        if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+           String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
+          ThisAction.RunAction(driver, pause_message);
+        }
+       else
+        {
         ThisAction.RunAction(driver);
+    
+        }
     }
     else
     {
@@ -367,12 +376,7 @@ else
      {
          SiteTest.AllTestsPassed = false;
      }
-  //   if (SiteTest.GetLoop())
-  //   {
-  //     if (SiteTest.AllTestsPassed == false) 
-  //     {
-  //     RunAllActions(SiteTest);    
-  //     }
+
        if (SiteTest.getShowReport())
        {
     

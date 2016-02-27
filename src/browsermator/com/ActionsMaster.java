@@ -44,9 +44,11 @@ public class ActionsMaster {
     ActionViewHashMap.put("Next Tab", new NextTabActionView());
     ActionViewHashMap.put("Open New Tab", new OpenNewTabActionView());
     ActionViewHashMap.put("Pause", new PauseActionView());
+    ActionViewHashMap.put("Pause with Continue Button", new PauseContinueActionView());
     ActionViewHashMap.put("Right Arrow Key", new RightArrowKeyActionView());
     ActionViewHashMap.put("Right-Click", new RightClickActionView());
     ActionViewHashMap.put("Set Cookie", new SetCookieActionView());
+    
     ActionViewHashMap.put("Switch To Frame", new SwitchToFrameActionView());
     ActionViewHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowActionView());
     ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
@@ -74,6 +76,7 @@ public class ActionsMaster {
   ActionHashMap.put("Next Tab", new NextTabAction());
   ActionHashMap.put("Open New Tab", new OpenNewTabAction());
   ActionHashMap.put("Pause", new PauseAction("", ""));
+  ActionHashMap.put("Pause with Continue Button", new PauseContinueAction());
   ActionHashMap.put("Right Arrow Key", new RightArrowKeyAction());
   ActionHashMap.put("Right-Click", new RightClickAction());
   ActionHashMap.put("Set Cookie", new SetCookieAction("", ""));
@@ -93,12 +96,12 @@ public class ActionsMaster {
    PassFailActionViewHashMap.put("Find Image SRC", new FindImageSRCPassFailActionView());
    PassFailActionViewHashMap.put("Find Page Title", new FindPAGETITLEPassFailActionView());
    PassFailActionViewHashMap.put("Find XPATH", new FindXPATHPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Text", new FindTextPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find HREF", new FindHREFPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find IFrame SRC", new FindIFrameSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Image SRC", new FindImageSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Page Title", new FindPAGETITLEPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find XPATH", new FindXPATHPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find Text", new NOTFindTextPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find HREF", new NOTFindHREFPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find IFrame SRC", new NOTFindIFrameSRCPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find Image SRC", new NOTFindImageSRCPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find Page Title", new NOTFindPAGETITLEPassFailActionView());
+   PassFailActionViewHashMap.put("Do Not Find XPATH", new NOTFindXPATHPassFailActionView());
    
  PassFailActionHashMap.put("Yes/No Prompt", new YesNoPromptPassFailAction(""));
  PassFailActionHashMap.put("Find Text", new FindTextPassFailAction("", false));
