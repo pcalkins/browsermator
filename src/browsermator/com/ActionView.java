@@ -1,13 +1,10 @@
 package browsermator.com;
 
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -36,6 +33,7 @@ public abstract class ActionView implements Listenable, Initializable{
    JButton JButtonMoveUp;
    JButton JButtonMoveDown;
    JCheckBox JCheckBoxBoolVal1;
+   JButton JButtonBrowseForFile;
    ActionView()
    {
 
@@ -125,6 +123,11 @@ String stringactionindex = Integer.toString(this.index+1);
        {
        JButtonOK.addActionListener(listener);
    
+       }
+       
+        public void addJButtonBrowseForFile(ActionListener listener)
+       {
+           JButtonBrowseForFile.addActionListener(listener);
        }
        public void addJButtonMoveUpActionListener(ActionListener listener)
        {

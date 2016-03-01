@@ -74,7 +74,8 @@ public class ProcedureView {
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
     int last_selected_jtextfield_variable_number = 0;
-     ProcedureView()
+      
+    ProcedureView()
      {
 
        JComboBoxBugSeverity.addItem("Trivial");

@@ -44,6 +44,7 @@ public void setVariable1(String variable)
      }
        catch (Exception e)
  {
+
   this.Pass = false;
   
  }

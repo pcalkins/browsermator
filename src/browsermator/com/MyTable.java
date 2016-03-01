@@ -9,7 +9,6 @@ import com.opencsv.CSVReader;
 import java.awt.Dimension;
 import java.io.FileReader;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,7 +25,7 @@ public class MyTable {
    String DataFile;
    JTable DataTable;
    Object[] columnnames;
-   
+  
 
  MyTable (String csvFile)
  {
@@ -42,8 +41,10 @@ public class MyTable {
           columnnames = (String[]) myEntries.get(0);
           DefaultTableModel tableModel = new DefaultTableModel(columnnames, myEntries.size()-1); 
            int rowcount = tableModel.getRowCount();
+          this.number_of_records = rowcount;
           for (int x = 0; x<rowcount+1; x++)
            {
+             
               int columnnumber = 0;
              if (x>0)
              {
@@ -57,7 +58,7 @@ public class MyTable {
           
            }
         
-   
+           
            DataTable = new JTable(tableModel);
      
   //     DataTable.setAutoCreateRowSorter(true);

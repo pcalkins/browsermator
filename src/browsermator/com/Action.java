@@ -1,7 +1,6 @@
 package browsermator.com;
 
 import java.time.LocalDateTime;
-import javax.swing.JTable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -26,6 +25,8 @@ Boolean Locked;
 String Password;
 Boolean Loopable;
 String pause_message;
+Boolean[] loop_pass_values;
+LocalDateTime[] loop_time_of_test;
    Action ()
    {
   this.Pass = true;
@@ -40,6 +41,17 @@ String pause_message;
   this.BugURL = "http://www.browsermator.com";
   this.Loopable = false;
   this.pause_message = "";
+   }
+   public void InitializeLoopTestVars(int number_of_rows)
+   {
+       this.loop_pass_values = new Boolean[number_of_rows];
+       this.loop_time_of_test = new LocalDateTime[number_of_rows];
+       
+       for (int x = 0; x<number_of_rows; x++)
+       {
+        this.loop_pass_values[x] = false;
+        this.loop_time_of_test[x] = LocalDateTime.now();
+       }
    }
    public void RunAction(WebDriver driver)
    {

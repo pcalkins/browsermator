@@ -29,6 +29,7 @@ while(thisContinuePrompt.isVisible() == true){
         try
         {
 Thread.sleep(200);
+this.Pass = true;
         }
         catch (InterruptedException e)
                 {

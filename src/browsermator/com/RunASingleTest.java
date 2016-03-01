@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 
@@ -110,8 +111,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
 if (thisbugview.myTable==null)
 {
    for( Action ThisAction : bugtorun.ActionsList ) {
-           String original_value = ThisAction.Variable2;
- 
+       
            if (!ThisAction.Locked)
    {
    try
@@ -119,9 +119,12 @@ if (thisbugview.myTable==null)
        ThisAction.RunAction(driver);
        
    }
-   catch (Exception ex)
+   catch (UnreachableBrowserException ex)
    {
-     System.out.println("normal action" + ex);
+     
+     driver.close();
+        break;
+     
         }
    }   
    }  
@@ -144,8 +147,20 @@ else
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
+       try
+       {
         ThisAction.RunAction(driver);
-    }
+       }
+        catch (UnreachableBrowserException ex)
+     {
+   
+        driver.close();
+       
+          break;
+       
+     }
+       
+       }
     else
     {
   
@@ -162,9 +177,24 @@ else
      {
       ThisAction.Variable2 = concat_variable2;  
      }
+     try
+     {
       ThisAction.RunAction(driver);
-   ThisAction.Variable1 = original_value1;
+       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
+
+     }
+     catch (UnreachableBrowserException ex)
+     {
+   
+       ThisAction.Variable1 = original_value1;
+       ThisAction.Variable2 = original_value2;
+          driver.close();
+       
+          break;
+       
+     }
+     
   }
    
       }

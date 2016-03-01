@@ -24,6 +24,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 
@@ -95,6 +96,39 @@ public String doInBackground()
     catch (InterruptedException | ExecutionException ex)
     {
         SiteTest.setRunActionsButtonName("Run All Procedures");
+        this.report = OutPutReport();
+        if (SiteTest.getShowReport())
+    {
+     JFrame ReportJFrame = new JFrame();
+     JTextArea ReportArea = new JTextArea();
+     ReportJFrame.add(ReportArea);
+     ReportArea.setText(this.report);
+     ReportJFrame.setSize(800, 800);
+     
+        
+        ReportJFrame.setVisible(true);
+    }
+    if (SiteTest.getEmailReportFail())
+    {
+        if (SiteTest.AllTestsPassed)
+        {
+            
+        }
+        else
+        {
+            EmailReport();
+        }
+    }
+    if (SiteTest.getEmailReport())
+    {
+ 
+        EmailReport();
+  
+    }
+    if (SiteTest.getExitAfter())
+    {
+    System.exit(0);
+    }
        System.out.println(ex.getLocalizedMessage());
     }
      
@@ -141,7 +175,8 @@ public String doInBackground()
         msg.setText(this.report);
         Transport.send(msg, login_name, password);
     } catch (MessagingException mex) {
-        System.out.println("send failed, exception: " + mex);
+    //    System.out.println("send failed, exception: " + mex);
+     Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.");    
     }
    
    }
@@ -157,8 +192,6 @@ public String doInBackground()
   public void RunAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
  {
 
-int NumberOfTestsPassed = 0;
-//  WebDriver driver = null;
 
   switch (TargetBrowser)
    {
@@ -231,10 +264,18 @@ if (thisbugview.myTable==null)
        ThisAction.RunAction(driver);
        
    }
-   catch (Exception ex)
-   {
-     System.out.println("normal action" + ex);
-        }
+  catch (UnreachableBrowserException ex)
+     {
+   
+      ThisAction.Pass = false;
+       
+  FillReport();
+              driver.close();
+              publish(thisbugindex);
+          break;
+      
+       
+     }
    }   
    }  
 
@@ -242,11 +283,16 @@ if (thisbugview.myTable==null)
 else
 {
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
- 
-     for (int x = 0; x<number_of_rows; x++)
+  for( Action ThisAction : thisbug.ActionsList ) { 
+ ThisAction.InitializeLoopTestVars(number_of_rows);
+  } 
+ for (int x = 0; x<number_of_rows; x++)
     {
+        int action_index = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
-           String original_value1 = ThisAction.Variable1;
+      
+        
+        String original_value1 = ThisAction.Variable1;
            String original_value2 = ThisAction.Variable2;
       if (!ThisAction.Locked)
    {
@@ -260,11 +306,29 @@ else
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
           ThisAction.RunAction(driver, pause_message);
+        ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
         }
        else
         {
+            try
+            {
         ThisAction.RunAction(driver);
-    
+        ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+            }
+             catch (UnreachableBrowserException ex)
+     {
+   
+          ThisAction.loop_pass_values[x] = false;
+          ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+        
+  FillReport();
+               driver.close();
+               publish(thisbugindex);
+          break;
+       
+     }
         }
     }
     else
@@ -283,14 +347,56 @@ else
      {
       ThisAction.Variable2 = concat_variable2;  
      }
+     try
+             {
       ThisAction.RunAction(driver);
-   ThisAction.Variable1 = original_value1;
+
+      ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
-  }
+   ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+             }
+      catch (UnreachableBrowserException ex)
+     {
+   
+       ThisAction.Variable1 = original_value1;
+       ThisAction.Variable2 = original_value2;
+       ThisAction.loop_pass_values[x] = false;
+        ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+        
+  FillReport();
+               driver.close();
+               publish(thisbugindex);
+          break;
+       
+     }
+             }
    
       }
+      action_index++;
      }
+    
+    
     }
+     //check if all actions passed
+    for( Action ThisAction : thisbug.ActionsList )
+    {   
+        ThisAction.Pass = false;
+        Boolean all_actions_passed = false;
+        int actions_passed = 0;
+        for (Boolean passvalue: ThisAction.loop_pass_values)
+        {
+            if (passvalue)
+            {
+                actions_passed++;
+            }
+        }
+        if (actions_passed == ThisAction.loop_pass_values.length)
+        {
+            ThisAction.Pass = true;
+        }
+    }
+     
    }
   
    publish(thisbugindex);
@@ -315,6 +421,15 @@ else
      {
     driver.close();
      }
+ 
+     FillReport();
+  
+     
+ }
+
+  public void FillReport()
+  {
+      int NumberOfTestsPassed = 0;   
       int BugIndex = 0;
   
     Boolean BugPass = false;
@@ -322,8 +437,11 @@ else
       {
         ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
 
- int ActionIndex = 0;
+
  int NumberOfActionsPassed = 0;
+  if (thisbugview.myTable==null)
+  {
+       int ActionIndex = 0;
    for( ActionView TheseActionViews : ActionView ) {
 
 
@@ -343,10 +461,42 @@ else
        ActionIndex++;
 
 }
-    if (NumberOfActionsPassed == thisbugview.ActionsViewList.size())
+     if (NumberOfActionsPassed == thisbugview.ActionsViewList.size())
     {
         BugPass = true;
     }
+  }
+  else
+  {
+      int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+    for (int x = 0; x<number_of_rows; x++)
+    {
+        
+ int ActionIndex = 0;
+    for( ActionView TheseActionViews : ActionView ) {
+
+
+    LocalDateTime stringtime = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).TimeOfTest;
+       boolean TestState = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).loop_pass_values[x];
+       if (TestState==true)
+       {
+           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+           NumberOfActionsPassed++;
+       }
+       else
+       {
+           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
+           
+       }
+
+       ActionIndex++;   
+  }
+    }
+     if (NumberOfActionsPassed == thisbugview.ActionsViewList.size()*number_of_rows)
+    {
+        BugPass = true;
+    }
+  }
     int LastActionIndex = SiteTest.BugArray.get(BugIndex).ActionsList.size()-1;
    if (BugPass.equals(true))
    {
@@ -367,7 +517,7 @@ else
    SiteTest.BugViewArray.get(BugIndex).JButtonRunTest.setText("Run");
    BugIndex++;
       }
- // STAppFrame.jButtonDoStuff.setText("Run Tests");
+
      if (NumberOfTestsPassed==SiteTest.BugArray.size())
      {
      SiteTest.AllTestsPassed = true;
@@ -381,15 +531,11 @@ else
        {
     
    this.report = OutPutReport();
-    
+ 
      
        }
 
-     
-  
-     
- }
-
+  }
   public String OutPutReport()
   {
      
@@ -398,28 +544,135 @@ else
         for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
      {
         ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + "\n";
-        
-        for (int ActionViewIndex = 0; ActionViewIndex<SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size(); ActionViewIndex++)
+        int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
+              int passvalueslength = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values.length;
+            if (passvalueslength>0)
+            {
+                for (int passindex = 0; passindex<passvalueslength; passindex++)
+                {
+        for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
         {
-       
-              if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
-              {
-                   ReportText = ReportText + "Action Performed: " + 
-                SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type + " " + SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1
-                + " " +  "*******" +
-                     
-                SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.get(ActionViewIndex).JLabelPassFail.getText() + "\n";    
-              }
-              else
-              {
-                   ReportText = ReportText + "Action Performed: " + 
-                SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type + " " + SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1
-                + " " +  SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2 + " " +
-                     
-                SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.get(ActionViewIndex).JLabelPassFail.getText() + "\n";
-        }}
-     }
+      
+                Boolean ThisPassValue = false;
+            LocalDateTime ThisTimeValue = LocalDateTime.now();
+            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String pass_string = " has failed at ";
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
+        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
         
-   return ReportText;    
+        if (ThisPassValue)
+        {
+            pass_string = " has passed at ";
+        }
+         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+              {
+             ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " ########" + 
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+         else
+         {
+              ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " " + ThisValue2 +
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+      
+    }
+    else
+    {
+  
+         if (ThisPassValue)
+        {
+            pass_string = " has passed at ";
+        }
+            String concat_variable;
+            String concat_variable2;
+ concat_variable = var1Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+ if (!"".equals(concat_variable))
+ {
+     ThisValue1 = concat_variable;
+ }
+      concat_variable2 = var2Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+     if (!"".equals(concat_variable2))
+     {
+    ThisValue2 = concat_variable2;  
+     }
+ if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+              {
+             ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " ########" + 
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+         else
+         {
+              ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " " + ThisValue2 +
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+    
+          
+                }
+            }
+            }
+            }
+            else
+            {
+                   for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
+        {
+      
+                Boolean ThisPassValue = false;
+            LocalDateTime ThisTimeValue = LocalDateTime.now();
+            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String pass_string = " has failed at ";
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Pass;
+        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
+  
+        
+        if (ThisPassValue)
+        {
+            pass_string = " has passed at ";
+        }
+         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+              {
+             ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " ########" + 
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+         else
+         {
+              ReportText = ReportText + "Action Performed: " + 
+                ThisType + " " + ThisValue1
+                + " " + ThisValue2 +
+                     
+               pass_string + ThisTimeValue.toString() + "\n";    
+              }
+      
+   
+            }
+    
+        }
+  
+     }
+         return ReportText;    
   }  
 }

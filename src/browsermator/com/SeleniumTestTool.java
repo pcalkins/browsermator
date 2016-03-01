@@ -599,6 +599,38 @@ File newfile = new File(path + ".csv");
             action.index = newbug.ActionsList.size()-1;
 }
 
+   public File BrowseForJSFileAction ()
+   {
+           final JFileChooser CSVFileChooser = new JFileChooser();
+
+ FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Javascript file (*.js)","js");
+
+    CSVFileChooser.setFileFilter(filefilter);
+
+int returnVal = CSVFileChooser.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+    if (file.getAbsoluteFile().getName().contains(".js"))
+{
+ 
+}
+else
+{
+   String path = file.getAbsolutePath();
+    
+File newfile = new File(path + ".js");
+ file = newfile;
+ 
+}  
+    return file;
+            }
+            else
+            {
+            return null;
+            }   
+   }
  
    public void MoveAction (SeleniumTestTool Window, Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
    {
