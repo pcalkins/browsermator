@@ -62,58 +62,66 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   this.filename = filename;
   this.URL = "";
   this.BugPanel = new JPanel();
-  this.setClosable(true);
-  this.setMaximizable(true);
-  this.setTitle("Browsermator - " + filename);
-  this.setResizable(true);
+ 
   this.AllFieldValues = new ArrayList<>();
 
   
       initComponents();
-      this.setSize(1400,900);
-      
+     this.setClosable(true);
+  this.setMaximizable(true);
+  this.setTitle("Browsermator - " + filename);
+  this.setResizable(true);
        jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxEmailReportActionPerformed(evt);
             }
         });
        jCheckBoxExitAfter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxExitAfterActionPerformed(evt);
             }
         });
         jCheckBoxEmailReportFail.addActionListener(new java.awt.event.ActionListener() {
+           @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxEmailReportFailActionPerformed(evt);
             }
         });
          jCheckBoxPromptToClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+          @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxPromptToCloseActionPerformed(evt);
             }
         });
                   jCheckBoxShowReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+                      public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxShowReportActionPerformed(evt);
             }
         });
          jCheckBoxOSTypeWindows.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxOSTypeWindowsActionPerformed(evt);
             }
         });
           jCheckBoxOSTypeMac.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+              public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxOSTypeMacActionPerformed(evt);
             }
         });
            jCheckBoxOSTypeLinux32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxOSTypeLinux32ActionPerformed(evt);
             }
         });
             jCheckBoxOSTypeLinux64.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxOSTypeLinux64ActionPerformed(evt);
             }
         });
@@ -300,7 +308,7 @@ int bugindex = 0;
     //  FlowLayout ActionLayout = new ModifiedFlowLayout(1);
             
       ActionPanel.setLayout(ActionLayout); 
-     
+      
      ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;
     
@@ -330,7 +338,7 @@ int bugindex = 0;
 BV.ActionScrollPane.setVisible(true);
        BV.ActionScrollPane.setViewportView(ActionPanel);
  
-    
+   
 bugindex++;
      }
 
@@ -343,6 +351,7 @@ bugindex++;
  // Window.MainScrollPane.setBounds(null);
      this.MainScrollPane.setVisible(true);
   this.revalidate();
+  
 // this.changes = true;
  }
 
@@ -597,6 +606,7 @@ File newfile = new File(path + ".csv");
             newbug.ActionsList.add(action);
             actionview.index = newbugview.ActionsViewList.size()-1;
             action.index = newbug.ActionsList.size()-1;
+         
 }
 
    public File BrowseForJSFileAction ()
@@ -648,7 +658,31 @@ File newfile = new File(path + ".js");
   thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
   thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
   thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
+   //  GridBagConstraints ActionConstraints = new GridBagConstraints();
+         
+      
+   //  ActionConstraints.fill = GridBagConstraints.NONE;
+   //  ActionConstraints.anchor = GridBagConstraints.WEST;            
 
+   //     AV.SetIndexes(newbugview.index, actionindex);
+   //     ActionConstraints.gridx = 1;
+   //      ActionConstraints.gridy = SwapIndex;
+   //      ActionConstraints.gridwidth = 1;
+   //      ActionConstraints.gridheight = 1;
+   //     JPanel theActionPanel = thisBugView.ActionScrollPanel;
+    
+ //      Component theddseaction = thisBugView.ActionScrollPane.getViewport().getView();
+ //    thisBugView.ActionScrollPane.getViewport().remove(theddseaction.getComponentAt(e.getPoint()));
+ //    thisBugView.ActionScrollPane.getViewport().revalidate();
+ //    thisBugView.ActionScrollPane.getViewport().repaint();
+ //    thisBugView.ActionScrollPane.revalidate();
+ //    thisBugView.ActionScrollPane.repaint();
+ // int test=0;
+      
+
+
+      
+  
     }
 
        }
@@ -663,9 +697,10 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
   thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
   thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
 
+
        }
    }
-       UpdateDisplay();
+  
        this.changes=true;
    }
    
