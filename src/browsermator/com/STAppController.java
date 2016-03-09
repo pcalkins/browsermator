@@ -1,6 +1,9 @@
 package browsermator.com;
 
-
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
@@ -89,9 +92,48 @@ private final String version = "0.0.8";
   public STAppController(String[] args) throws PropertyVetoException {
   
      super ("Browermator");
+                 Properties newProps = new Properties();
+         Boolean file_exists = false;
+              String userdir = System.getProperty("user.home");
+    try
+{
+    File f = new File(userdir + File.separator + "browsermator_config.properties");
+if(f.exists() && !f.isDirectory()) { 
+   file_exists = true;
+}
+if (file_exists == false)
+{
+    CreateConfigFile();
+}
+     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+   newProps.load(input);
+ 
+   int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
+   int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
+   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1000"));
+   int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "800"));
+      Point startPosition = new Point(winLocY, winLocX);
+            if (isLocationInScreenBounds(startPosition) )
+        {
+        super.setLocation(startPosition);
+        super.setSize(winWidth, winHeight);
+        }
+       
+      else
+      {
+      super.setLocation(0,0);
     super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
- //   this.setSize(1024, 768);
-     super.setVisible(true);
+      }
+    input.close();
+
+    
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} 
+   // super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+   //  super.setVisible(true);
  
     Navigator = new SiteTestView();
   //  String RecentFiles[] = null;
@@ -118,10 +160,43 @@ private final String version = "0.0.8";
        openwindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
        System.exit(0);
       }
-      
+ 
+
     }
+        
     if (MDIClasses.size()==0)
     {
+            Properties newProps = new Properties();
+         Boolean file_exists = false;
+              String userdir = System.getProperty("user.home");
+    try
+{
+    File f = new File(userdir + File.separator + "browsermator_config.properties");
+
+     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+   newProps.load(input);
+        if (isLocationInScreenBounds(windowEvent.getWindow().getLocation()) )
+      {
+      newProps.setProperty("main_window_locationY", Integer.toString(windowEvent.getWindow().getY()));
+      newProps.setProperty("main_window_locationX", Integer.toString(windowEvent.getWindow().getX()));
+      newProps.setProperty("main_window_sizeWidth", Integer.toString(windowEvent.getWindow().getWidth()));
+      newProps.setProperty("main_window_sizeHeight", Integer.toString(windowEvent.getWindow().getHeight()));
+      }
+      else
+      {
+          
+      }
+    
+    FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+    newProps.store(writer, "browsermator_settings");
+    writer.close();
+   
+    
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} 
       System.exit(0);
     }
         }
@@ -879,6 +954,69 @@ SeleniumToolDesktop.add(Navigator);
   
   
   }
+   public static boolean isLocationInScreenBounds(Point location) 
+    {
+      
+      // Check if the location is in the bounds of one of the graphics devices.
+    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+    Rectangle graphicsConfigurationBounds = new Rectangle();
+    
+    // Iterate over the graphics devices.
+    for (int j = 0; j < graphicsDevices.length; j++) {
+      
+      // Get the bounds of the device.
+      GraphicsDevice graphicsDevice = graphicsDevices[j];
+      graphicsConfigurationBounds.setRect(graphicsDevice.getDefaultConfiguration().getBounds());
+      
+        // Is the location in this bounds?
+      graphicsConfigurationBounds.setRect(graphicsConfigurationBounds.x, graphicsConfigurationBounds.y,
+          graphicsConfigurationBounds.width, graphicsConfigurationBounds.height);
+      if (graphicsConfigurationBounds.contains(location.x, location.y)) {
+        
+        // The location is in this screengraphics.
+        return true;
+        
+      }
+      
+    }
+    
+    // We could not find a device that contains the given point.
+    return false;
+    
+    }
+   public final void CreateConfigFile()
+  {
+    String userdir = System.getProperty("user.home");
+      File newconfig = new File(userdir + File.separator + "browsermator_config.properties");
+      Properties newProps = new Properties();
+
+       newProps.setProperty("main_window_locationY", "0");
+      newProps.setProperty("main_window_locationX", "0");
+      newProps.setProperty("main_window_sizeWidth", "1000");
+      newProps.setProperty("main_window_sizeHeight", "800");   
+   
+      newProps.setProperty("email_subect", "");
+      newProps.setProperty("email_to", "");
+      newProps.setProperty("email_login_password", "");
+      newProps.setProperty("email_from", "");
+      newProps.setProperty("email_login_name", "");
+      newProps.setProperty("smtp_hostname", "");
+     newProps.setProperty("recentfiles", " , , , , , ");
+              try {
+  
+    
+    
+    FileWriter writer = new FileWriter(newconfig);
+    newProps.store(writer, "browsermator_settings");
+    writer.close();
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception writing config: " + e);
+		}    
+      
+  }
   private int CheckToSaveChanges(SeleniumTestTool STAppFrame) 
   {
 
@@ -1584,7 +1722,6 @@ if(!file.exists()) {
 else
 {
         
-String full_filename = file.getAbsoluteFile().toString();
 
 
    
