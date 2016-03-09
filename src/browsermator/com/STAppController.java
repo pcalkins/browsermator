@@ -112,12 +112,10 @@ if (file_exists == false)
    int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
    int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1000"));
    int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "800"));
-      Point startPosition = new Point(winLocY, winLocX);
+      Point startPosition = new Point(winLocX, winLocY);
             if (isLocationInScreenBounds(startPosition) )
         {
-              int Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-int Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-super.setSize(Width-300,Height-300);
+
         super.setLocation(startPosition);
         super.setSize(winWidth, winHeight);
         }
