@@ -115,12 +115,18 @@ if (file_exists == false)
       Point startPosition = new Point(winLocY, winLocX);
             if (isLocationInScreenBounds(startPosition) )
         {
+              int Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+int Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+super.setSize(Width-300,Height-300);
         super.setLocation(startPosition);
         super.setSize(winWidth, winHeight);
         }
        
       else
       {
+  int Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+int Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+super.setSize(Width-300,Height-300);
       super.setLocation(0,0);
     super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
       }
@@ -175,17 +181,14 @@ if (file_exists == false)
 
      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
    newProps.load(input);
-        if (isLocationInScreenBounds(windowEvent.getWindow().getLocation()) )
-      {
+ 
+   
+      
       newProps.setProperty("main_window_locationY", Integer.toString(windowEvent.getWindow().getY()));
       newProps.setProperty("main_window_locationX", Integer.toString(windowEvent.getWindow().getX()));
       newProps.setProperty("main_window_sizeWidth", Integer.toString(windowEvent.getWindow().getWidth()));
       newProps.setProperty("main_window_sizeHeight", Integer.toString(windowEvent.getWindow().getHeight()));
-      }
-      else
-      {
-          
-      }
+    
     
     FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
     newProps.store(writer, "browsermator_settings");
