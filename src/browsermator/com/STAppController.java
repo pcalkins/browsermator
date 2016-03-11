@@ -1639,29 +1639,30 @@ Navigator.addRecentFile(file.getAbsolutePath());
         }
  public File BrowseForCSVFile()
     {
-                    final JFileChooser CSVFileChooser = new JFileChooser();
+ final JFileChooser CSVFileChooser = new JFileChooser();
 
- FileNameExtensionFilter filefilter = new FileNameExtensionFilter("CSV file (*.csv)","csv");
+   CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
+                    "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
 
-    CSVFileChooser.setFileFilter(filefilter);
+    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".CSV" },
+                    "Comma Delimited File (*.CSV)"));
+    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
+                    "Excel File (*.XLSX|XLSXM|XLS|XLSM)"));
+
+
+    // Turn off 'All Files' capability of file chooser,
+    // so only our custom filter is used.
+    CSVFileChooser.setAcceptAllFileFilterUsed(false);
+
 
 int returnVal = CSVFileChooser.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = CSVFileChooser.getSelectedFile();   
 
-    if (file.getAbsoluteFile().getName().contains(".csv"))
-{
- 
-}
-else
-{
-   String path = file.getAbsolutePath();
-    
-File newfile = new File(path + ".csv");
- file = newfile;
- 
-}  
     return file;
             }
             else
