@@ -30,19 +30,13 @@ public class ClickXPATHActionView extends ActionView
           action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
           
        });
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
-
-                        addJButtonDeleteActionActionListener((ActionEvent evt) -> {
+    AddDraggers(action, Window, newbug, newbugview);
+                       addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();
    });
   
+
 
 
      addJTextFieldVariable1DocListener(
@@ -51,6 +45,7 @@ public class ClickXPATHActionView extends ActionView
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
       action.setVariable1(JTextFieldVariable1.getText());
+
       }
 @Override
       public void insertUpdate(DocumentEvent documentEvent) {
@@ -81,7 +76,5 @@ public class ClickXPATHActionView extends ActionView
          } });        
 
    } 
-
-
    
 }

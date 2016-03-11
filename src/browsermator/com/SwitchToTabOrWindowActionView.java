@@ -30,13 +30,7 @@ public class SwitchToTabOrWindowActionView extends ActionView implements Loopabl
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
    
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
+     AddDraggers(action, Window, newbug, newbugview);
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
@@ -82,63 +76,5 @@ public class SwitchToTabOrWindowActionView extends ActionView implements Loopabl
          } });        
 
    }
-  public void AddLoopListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
-   {
-   addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
-          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
-          
-       }); 
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
-
-                        addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
-   });
-   
-
-
-
-     addJTextFieldVariable1DocListener(
-             new DocumentListener()
-           {
-@Override
-       public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
-   
-      }
-@Override
-      public void insertUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
-      }
-@Override
-      public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
-      }
-      }
-                 );
-
-     addJButtonOKActionActionListener((ActionEvent evt) -> {
-         String ACommand = evt.getActionCommand();
-         
-         if (ACommand.equals("Update"))
-         {
-             
-             UpdateActionView();
-             action.Locked= true;
-             
-         }
-         if (ACommand.equals("Edit"))
-         {
-             EditActionView();
-             action.Locked= false;
-             
-         } });        
-
-   }  
+  
 }

@@ -24,26 +24,17 @@ public class ClickAtHREFActionView extends ActionView
        this.JPanelAction.add(this.JButtonDelete);
        
    }
- @Override  
+  @Override  
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-   addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
-          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
-          
-       }); 
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
-
+   
+   AddDraggers(action, Window, newbug, newbugview);
+   
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();
    });
-   
+  
 
 
 
@@ -53,7 +44,7 @@ public class ClickAtHREFActionView extends ActionView
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
       action.setVariable1(JTextFieldVariable1.getText());
-   
+
       }
 @Override
       public void insertUpdate(DocumentEvent documentEvent) {
@@ -84,5 +75,8 @@ public class ClickAtHREFActionView extends ActionView
          } });        
 
    } 
+ 
+
+	
  
 }

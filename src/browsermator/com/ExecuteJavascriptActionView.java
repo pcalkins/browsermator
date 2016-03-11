@@ -39,14 +39,8 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
        this.JTextFieldVariable1.setText(jsFile.getAbsolutePath());
       }
    });
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
-
+     AddDraggers(action, Window, newbug, newbugview);
+     
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();

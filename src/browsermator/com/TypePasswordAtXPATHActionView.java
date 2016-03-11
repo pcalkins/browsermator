@@ -35,13 +35,8 @@ public class TypePasswordAtXPATHActionView extends ActionView
           action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
           
        });
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
+     AddDraggers(action, Window, newbug, newbugview);
+     
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
@@ -138,17 +133,9 @@ public class TypePasswordAtXPATHActionView extends ActionView
      {
          Password = Password + temp[x];
      }
-    //  try
-    //  {
-    //     Password = Protector.encrypt(Password);
-    //      action.setVariable2(Password);
-    //  }
-    //  catch (Exception e)
-    //  {
-    //   System.out.println("Encrypt error: " + e.toString());
+ 
           action.setVariable2(Password);
-    //  }
-    //  }
+   
       }
            }
                  );

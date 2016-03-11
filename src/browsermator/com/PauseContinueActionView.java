@@ -5,11 +5,12 @@
  */
 package browsermator.com;
 
+
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.openqa.selenium.WebDriver;
+
 
 /**
  *
@@ -22,6 +23,7 @@ class PauseContinueActionView extends ActionView {
     
        this.JLabelVariable1 = new JLabel("Pause with Continue Button");
  this.JPanelAction.add(this.JLabelVariable1);
+ this.JPanelAction.add(this.JButtonOK);
    this.JPanelAction.add(this.JButtonDelete);
   
    }
@@ -29,13 +31,7 @@ class PauseContinueActionView extends ActionView {
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
    
-   addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
+     AddDraggers(action, Window, newbug, newbugview);
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);

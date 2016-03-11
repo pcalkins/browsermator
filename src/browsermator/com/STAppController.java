@@ -80,9 +80,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.8";
+private final String version = "0.0.10";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.8";
+   private final String ProgramVersion = "0.0.10";
 
   
   

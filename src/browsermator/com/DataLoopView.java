@@ -36,7 +36,7 @@ JPanel panelForTable;
 JTextFieldDataFile = new JTextField();
 JTextFieldDataFile.setVisible(true);
  JButtonBrowseForDataFile = new JButton();
- JButtonBrowseForDataFile.setText("Change CSV File");
+ JButtonBrowseForDataFile.setText("Change Data File");
  JButtonBrowseForDataFile.setVisible(true);
 panelForTable = new JPanel();
 JLabelBugTitle.setText("Data Loop Title: ");
@@ -69,8 +69,6 @@ JLabelBugTitle.setText("Data Loop Title: ");
       JTableScrollPane.setSize(new Dimension(1024, 840));
      JTableScrollPane.setVisible(true);
      
-       
-   // JTableScrollPane.setColumnHeaderView(JTableScrollPaneTitle);
   
    panelForTable.setLayout(new BorderLayout());
   //  panelForTable.add(JLabelAddFieldInstructions, BorderLayout.PAGE_START);

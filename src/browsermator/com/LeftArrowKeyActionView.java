@@ -19,6 +19,7 @@ public class LeftArrowKeyActionView extends ActionView {
         
        this.JLabelVariable1 = new JLabel("Left Arrow Key");
  this.JPanelAction.add(this.JLabelVariable1);
+ this.JPanelAction.add(this.JButtonOK);
    this.JPanelAction.add(this.JButtonDelete);
  
      

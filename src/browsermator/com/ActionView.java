@@ -1,12 +1,26 @@
 package browsermator.com;
 
 
+
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -30,14 +44,14 @@ public abstract class ActionView implements Listenable, Initializable{
    JButton JButtonOK;
    JButton JButtonDelete;
    JLabel JLabelIndex;
-   JButton JButtonMoveUp;
-   JButton JButtonMoveDown;
+
    JCheckBox JCheckBoxBoolVal1;
    JButton JButtonBrowseForFile;
+   JButton JButtonDragIt;
    ActionView()
    {
 
-     
+      this.JButtonDragIt = new JButton("=");
       this.JPanelAction = new JPanel();
       this.JLabelPassFail = new JLabel("");
       this.JTextFieldVariable1 =  new JTextField("", 15);
@@ -49,17 +63,17 @@ public abstract class ActionView implements Listenable, Initializable{
     this.JButtonOK = new JButton("Disable");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
-       this.JButtonMoveDown = new JButton("\\/");
-       this.JButtonMoveUp = new JButton("/\\");
+
 String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
       this.JLabelIndex = new JLabel(bugdashactionindex);
     
       this.JPanelAction.add(this.JLabelIndex);
-             this.JPanelAction.add(this.JButtonMoveUp);
-             this.JPanelAction.add(this.JButtonMoveDown);
- 
+      this.JPanelAction.add(this.JButtonDragIt);
+
+                
+  
          
    }
      public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
@@ -129,14 +143,18 @@ String stringactionindex = Integer.toString(this.index+1);
        {
            JButtonBrowseForFile.addActionListener(listener);
        }
-       public void addJButtonMoveUpActionListener(ActionListener listener)
+   
+ 
+        public void addJButtonDragItMouseAdapter(MouseAdapter listener)
        {
-           JButtonMoveUp.addActionListener(listener);
+       JButtonDragIt.addMouseListener(listener);
+           
        }
-       public void addJButtonMoveDownActionListener(ActionListener listener)
-       {
-           JButtonMoveDown.addActionListener(listener);
-       }
+        public void removeJButtonDragItMouserAdapter(MouseAdapter listener)
+        {
+            JButtonDragIt.removeMouseListener(listener);
+        }
+     
           public void addJButtonDeleteActionActionListener(ActionListener listener)
        {
        JButtonDelete.addActionListener(listener);
@@ -192,23 +210,325 @@ String stringactionindex = Integer.toString(this.index+1);
            this.JLabelIndex.setText(bugdashactionindex);
            
        }
-   @Override
+       
+       public void AddDraggers(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+       {
+             this.addJButtonDragItMouseAdapter(new MouseAdapter() {
+
+ 
+     Insets dragInsets = new Insets(0, 0, 0, 0);
+	Dimension snapSize = new Dimension(380, 36);
+	 Insets edgeInsets = new Insets(0, 0, 0, 0);
+     boolean changeCursor = true;
+     boolean autoLayout = true;
+
+     Class destinationClass;
+     Component destinationComponent;
+     Component destination;
+     Component source;
+
+     Point pressed;
+     Point location;
+
+	Cursor originalCursor;
+	boolean autoscrolls;
+	 boolean potentialDrag;
+       int places_moved;
+       int original_locationY;
+       
+
+	public boolean isAutoLayout()
+	{
+		return autoLayout;
+	}
+
+	
+	public void setAutoLayout(boolean autoLayout)
+	{
+		this.autoLayout = autoLayout;
+	}
+
+	
+	public boolean isChangeCursor()
+	{
+		return changeCursor;
+	}
+
+	public void setChangeCursor(boolean changeCursor)
+	{
+		this.changeCursor = changeCursor;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		destinationComponent = newbugview.ActionsViewList.get(action.index).JPanelAction;
+	destination = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
+            source = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
+		int width  = source.getSize().width  - dragInsets.left - dragInsets.right;
+		int height = source.getSize().height - dragInsets.top - dragInsets.bottom;
+		Rectangle r = new Rectangle(dragInsets.left, dragInsets.top, width, height);
+
+		if (r.contains(e.getPoint()))
+			setupForDragging(e);
+           
+	}
+
+	private void setupForDragging(MouseEvent e)
+	{
+            	destinationComponent = newbugview.ActionsViewList.get(action.index).JPanelAction;
+	destination = newbugview.ActionsViewList.get(action.index).JPanelAction;
+            source = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
+
+newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListener(this);
+
+                potentialDrag = true;
+
+		//  Determine the component that will ultimately be moved
+
+		if (destinationComponent != null)
+		{
+			destination = destinationComponent;
+		}
+		else if (destinationClass == null)
+		{
+			destination = source;
+		}
+		else  //  forward events to destination component
+		{
+//			destination = SwingUtilities.getAncestorOfClass(destinationClass, source);
+		}
+
+		pressed = e.getLocationOnScreen();
+		location = destination.getLocation();
+
+		if (changeCursor)
+		{
+			originalCursor = source.getCursor();
+			source.setCursor( Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR) );
+		}
+
+		
+		if (destination instanceof JComponent)
+		{
+			JComponent jc = (JComponent)destination;
+			autoscrolls = jc.getAutoscrolls();
+			jc.setAutoscrolls( false );
+		}
+                original_locationY = destination.getY();
+	}
+
+
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+          //      newbugview.ActionScrollPanel.setAutoscrolls(false);
+          //      newbugview.ActionScrollPane.setAutoscrolls(false);
+                newbugview.ActionsViewList.get(action.index).JPanelAction.setAutoscrolls(true);
+          //      newbugview.ActionsViewList.get(action.index).JButtonDragIt.setAutoscrolls(false);
+		Point dragged = e.getLocationOnScreen();
+		int dragX = getDragDistance(dragged.x, pressed.x, snapSize.width);
+		int dragY = getDragDistance(dragged.y, pressed.y, snapSize.height);
+            
+		int locationX = location.x + dragX;
+		int locationY = location.y + dragY;
+		while (locationX < edgeInsets.left)
+     	        locationX += snapSize.width;
+
+		while (locationY < edgeInsets.top)
+			locationY += snapSize.height;
+
+		Dimension d = getBoundingSize( newbugview.ActionsViewList.get(action.index).JPanelAction );
+
+		while (locationX + destination.getSize().width + edgeInsets.right > d.width)
+			locationX -= snapSize.width;
+
+		while (locationY + destination.getSize().height + edgeInsets.bottom > d.height)
+			locationY -= snapSize.height;
+                
+		 newbugview.ActionsViewList.get(action.index).JPanelAction.setLocation(locationX, locationY);
+          
+                int snapped_locationY = newbugview.ActionsViewList.get(action.index).JPanelAction.getY();
+
+                places_moved = (original_locationY - snapped_locationY)/36;
+     
+                if (places_moved==1)
+                {
+
+                     Window.MoveAction(Window, newbug, newbugview, action.index, -1);
+                    
+                     
+                     original_locationY = snapped_locationY;
+  
+ UpdateScrollPane();
+ int ymoved = scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+     
+
+                }
+              
+                if (places_moved==-1)
+                {
+                         
+                   Window.MoveAction(Window, newbug, newbugview, action.index, 1); 
+                 
+          original_locationY = snapped_locationY;
+  
+     
+  UpdateScrollPane();    
+  int ymoved =  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
+
+ 
+     }
+               
+	}
+ 
+     public int scroll(JComponent c, String dir)
+{
+    Rectangle visible = c.getVisibleRect();
+    Rectangle bounds = c.getBounds();
+if ("up".equals(dir))
+{
+     visible.y = 0;
+}
+else
+{
+     visible.y = bounds.height - visible.height;  
+}
+ 
+
+    c.scrollRectToVisible(visible);
+    return visible.y;
+}    
+     public void UpdateScrollPane()
+     {
+              GridBagConstraints ActionConstraints = new GridBagConstraints();
+           // JPanel ActionPanel = new JPanel();
+             
+            JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
+            ActionPanel.removeAll();
+              GridBagLayout ActionLayout = new GridBagLayout();
+      ActionPanel.setLayout(ActionLayout); 
+      
+     ActionConstraints.fill = GridBagConstraints.NONE;
+     ActionConstraints.anchor = GridBagConstraints.WEST;            
+         int actionindex = 0;
+      for (ActionView AV : newbugview.ActionsViewList )
+        {
+
+       
+         ActionConstraints.gridx = 1;
+         ActionConstraints.gridy = actionindex;
+         ActionConstraints.gridwidth = 1;
+         ActionConstraints.gridheight = 1;
+         ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
+         
+         ActionPanel.add(AV.JPanelAction);
+    
+         actionindex++;
+
+        }
+      if (actionindex < 9)
+      {
+     newbugview.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));
+          }
+      newbugview.ActionScrollPane.setVisible(true);
+
+       newbugview.ActionScrollPane.setViewportView(ActionPanel);
+
+     }
+	private int getDragDistance(int larger, int smaller, int snapSize)
+	{
+		int halfway = snapSize / 2;
+		int drag = larger - smaller;
+		drag += (drag < 0) ? -halfway : halfway;
+		drag = (drag / snapSize) * snapSize;
+
+		return drag;
+	}
+
+
+	private Dimension getBoundingSize(Component source)
+	{
+		if (source instanceof Window)
+		{
+			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			Rectangle bounds = env.getMaximumWindowBounds();
+			return new Dimension(bounds.width, bounds.height);
+		}
+		else
+		{
+              
+			return source.getParent().getSize();
+		}
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+              
+if (!potentialDrag) return;
+
+		source.removeMouseMotionListener( this );
+		potentialDrag = false;
+
+		if (changeCursor)
+			source.setCursor( originalCursor );
+
+		if (destination instanceof JComponent)
+		{
+			((JComponent)destination).setAutoscrolls( autoscrolls );
+		}
+
+
+
+		if (autoLayout)
+		{
+			if (destination instanceof JComponent)
+			{
+				((JComponent)destination).revalidate();
+			}
+			else
+			{
+				destination.validate();
+			}
+		}
+ 
+	}
+
+
+
+   });
+       }
+ @Override
    public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
    
-   this.addJButtonMoveDownActionListener((ActionEvent evt) -> {
-       Window.MoveAction(Window, newbug, newbugview, action.index, 1);
-      
-   });
-     this.addJButtonMoveUpActionListener((ActionEvent evt) -> {
-         Window.MoveAction(Window, newbug, newbugview, action.index, -1);
-   });
-
+    
+    AddDraggers(action, Window, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateDisplay();
    });
-           
+                         addJButtonOKActionActionListener((ActionEvent evt) -> {
+         String ACommand = evt.getActionCommand();
+         
+         if (ACommand.equals("Update"))
+         {
+             
+             UpdateActionView();
+             action.Locked= true;
+             
+         }
+         if (ACommand.equals("Edit"))
+         {
+             EditActionView();
+             action.Locked= false;
+             
+         } });      
+    
+  
+   
 
    } 
 
@@ -254,4 +574,5 @@ if (newbugview.myTable!=null)
         });
    }
 }
+
 }
