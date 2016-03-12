@@ -4,6 +4,8 @@ package browsermator.com;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -67,10 +69,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
 
   
       initComponents();
-     this.setClosable(true);
-  this.setMaximizable(true);
-  this.setTitle("Browsermator - " + filename);
-  this.setResizable(true);
+
        jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
           @Override
            public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +126,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
         });
       
         
-  this.setVisible(true);
+ // this.setVisible(true);
   this.EmailReport = false;
   this.EmailReportFail = false;
   this.ExitAfter = false;
@@ -332,7 +331,7 @@ int bugindex = 0;
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(1024, 38*actionindex+40));
+     BV.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));
           }
       
 BV.ActionScrollPane.setVisible(true);
@@ -343,18 +342,55 @@ bugindex++;
      }
 
 
-   // Window.URL = this.URL;
-  //  Window.filename = this.filename;
+
   this.setProperties(this.filename);
      this.MainScrollPane.setViewportView(this.BugPanel);
 
- // Window.MainScrollPane.setBounds(null);
      this.MainScrollPane.setVisible(true);
   this.revalidate();
   
 // this.changes = true;
  }
+     public void UpdateScrollPane(ProcedureView newbugview)
+     {
+              GridBagConstraints ActionConstraints = new GridBagConstraints();
+        
+          
+            JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
+            ActionPanel.removeAll();
+              GridBagLayout ActionLayout = new GridBagLayout();
+      ActionPanel.setLayout(ActionLayout); 
+      
+     ActionConstraints.fill = GridBagConstraints.NONE;
+     ActionConstraints.anchor = GridBagConstraints.WEST;            
+         int actionindex = 0;
+      for (ActionView AV : newbugview.ActionsViewList )
+        {
 
+       
+         ActionConstraints.gridx = 1;
+         ActionConstraints.gridy = actionindex;
+         ActionConstraints.gridwidth = 1;
+         ActionConstraints.gridheight = 1;
+         ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
+         
+         ActionPanel.add(AV.JPanelAction);
+    
+         actionindex++;
+
+        }
+      if (actionindex < 9)
+      {
+          
+     newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
+   
+          }
+      
+      newbugview.ActionScrollPane.setVisible(true);
+
+       newbugview.ActionScrollPane.setViewportView(ActionPanel);
+
+     }
  public void RunActions()
  {
     RunAllTests REFSYNCH = new RunAllTests(this);
@@ -719,6 +755,15 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
      thisBugView.ActionsViewList.get(BugIndex).index--;
      }
      }
+  if (atIndex != 0)
+  {
+  Point visible_location = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getLocation();
+  Dimension visible_size = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getSize();
+  Rectangle visible = new Rectangle (visible_location.x, visible_location.y, visible_size.width, visible_size.height);
+ 
+  thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.scrollRectToVisible(visible);     
+  }
+ 
   this.changes=true;
    }
    public void DeleteBug (int BugIndex)
