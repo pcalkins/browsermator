@@ -361,7 +361,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                      original_locationY = snapped_locationY;
   
  UpdateScrollPane();
- int ymoved = scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
                 }
@@ -375,14 +375,14 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
   
      
   UpdateScrollPane();    
-  int ymoved =  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
+ scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
 
  
      }
                
 	}
  
-     public int scroll(JComponent c, String dir)
+     public void scroll(JComponent c, String dir)
 {
     Rectangle visible = c.getVisibleRect();
     Rectangle bounds = c.getBounds();
@@ -395,9 +395,9 @@ else
      visible.y = bounds.height - visible.height;  
 }
  
-
+//why does this work??
     c.scrollRectToVisible(visible);
-    return visible.y;
+    
 }    
      public void UpdateScrollPane()
      {
@@ -508,7 +508,7 @@ if (!potentialDrag) return;
     AddDraggers(action, Window, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                            Window.UpdateScrollPane(newbugview);
    });
                          addJButtonOKActionActionListener((ActionEvent evt) -> {
          String ACommand = evt.getActionCommand();
