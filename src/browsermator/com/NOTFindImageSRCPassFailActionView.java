@@ -31,7 +31,7 @@ public class NOTFindImageSRCPassFailActionView extends ActionView implements Loo
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                           Window.UpdateScrollPane(newbugview);
    });
   
 

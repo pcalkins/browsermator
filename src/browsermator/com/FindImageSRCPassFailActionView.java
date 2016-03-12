@@ -27,7 +27,7 @@ public class FindImageSRCPassFailActionView extends ActionView
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                            Window.UpdateScrollPane(newbugview);
    });
   
 

@@ -80,9 +80,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.10";
+private final String version = "0.0.11";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.10";
+   private final String ProgramVersion = "0.0.11";
 
   
   
@@ -110,8 +110,8 @@ if (file_exists == false)
  
    int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
    int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
-   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1000"));
-   int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "800"));
+   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1025"));
+   int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "802"));
       Point startPosition = new Point(winLocX, winLocY);
             if (isLocationInScreenBounds(startPosition) )
         {
@@ -266,7 +266,7 @@ super.setSize(Width-300,Height-300);
     CurrentMDIWindowIndex = -1;
      
 Navigator.setVisible(true);
-Navigator.setSize(1000,750);
+Navigator.setSize(1000,800);
 //Navigator.pack();
  initComponents();
 
@@ -400,12 +400,24 @@ SeleniumToolDesktop.add(Navigator);
   
  
       SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
-
+   STAppFrame.setClosable(true);
+  STAppFrame.setMaximizable(true);
+  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setResizable(true);
+ 
+ 
   SeleniumToolDesktop.add(STAppFrame);
   STAppFrame.moveToFront();
+
+
   try
   {
-  STAppFrame.setSelected(true);
+       STAppFrame.setMaximum(true);
+    
+
+  STAppFrame.setVisible(true);
+    STAppFrame.setSelected(true);
+ 
   }
   catch (PropertyVetoException e)
   {
@@ -841,11 +853,22 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+     STAppFrame.setClosable(true);
+  STAppFrame.setMaximizable(true);
+  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setResizable(true);
+  STAppFrame.setSize(1024, 800);
    SeleniumToolDesktop.add(STAppFrame);
   STAppFrame.moveToFront();
+  
+
   try
   {
-  STAppFrame.setSelected(true);
+  
+   STAppFrame.setMaximum(true);
+   STAppFrame.setVisible(true);
+   STAppFrame.setSelected(true);
+  
   }
   catch (PropertyVetoException e)
   {
@@ -1092,7 +1115,7 @@ if (STAppFrame.changes==false)
 }
 else
 {
-  int result = JOptionPane.showConfirmDialog(STAppFrame,"Do you wish to save changes to " + filename + "?","Browsermator",JOptionPane.YES_NO_CANCEL_OPTION);
+  int result = JOptionPane.showConfirmDialog(STAppFrame,"Do you wish to save changes to " + STAppFrame.filename + "?","Browsermator",JOptionPane.YES_NO_CANCEL_OPTION);
             switch(result){
                   case JOptionPane.YES_OPTION:
                  //   SaveFile
@@ -2057,6 +2080,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
    STAppFrame.filename = filename_read;
+      STAppFrame.setClosable(true);
+  STAppFrame.setMaximizable(true);
+  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setResizable(true);
+  STAppFrame.setSize(1024, 800);
+   STAppFrame.setClosable(true);
+  STAppFrame.setMaximizable(true);
+
     STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {

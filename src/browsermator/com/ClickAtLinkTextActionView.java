@@ -32,7 +32,7 @@ public class ClickAtLinkTextActionView extends ActionView
        AddDraggers(action, Window, newbug, newbugview);
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                           Window.UpdateScrollPane(newbugview);
    });
   
 

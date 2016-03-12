@@ -34,7 +34,7 @@ public class SwitchToTabOrWindowActionView extends ActionView implements Loopabl
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                           Window.UpdateScrollPane(newbugview);
    });
   
 
