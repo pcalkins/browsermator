@@ -55,14 +55,12 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jButtonNewFile" min="-2" pref="258" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
-                              <Component id="jLabelRecentFiles" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jButtonOpenFile" alignment="0" min="-2" pref="258" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButtonOpenFile" pref="183" max="32767" attributes="0"/>
+                          <Component id="jButtonNewFile" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="194" max="-2" attributes="0"/>
+                      <Component id="jLabelRecentFiles" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabelRecentFile5" min="-2" max="-2" attributes="0"/>
@@ -105,7 +103,7 @@
                   <Component id="jButtonOpenFile" min="-2" pref="83" max="-2" attributes="0"/>
                   <Component id="jLabelRecentFile5" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="50" max="32767" attributes="0"/>
+              <EmptySpace pref="54" max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -189,12 +187,18 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonNewFile">
       <Properties>
-        <Property name="text" type="java.lang.String" value="New File"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/browsermator/com/Resources/newFile.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="New File "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonOpenFile">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Open File"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/browsermator/com/Resources/openFile.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Open File "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonSaveEmailConfig">

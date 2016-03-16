@@ -14,12 +14,14 @@ public class Prompter extends JFrame implements ActionListener
               
                 
                 ContinueButton = new JButton("Continue");
-          
+                
              
                 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                GridLayout flo = new GridLayout();
+                FlowLayout flo = new FlowLayout();
                 setLayout(flo);
-             
+                JLabel messageText = new JLabel(messagetodisplay);
+                
+                add(messageText);
                 add(ContinueButton);
                 setSize(400, 200);
                 this.setTitle(messagetodisplay);
@@ -29,7 +31,7 @@ public class Prompter extends JFrame implements ActionListener
                 setVisible(true);
                 ContinueButton.addActionListener(this);
               
-
+               pack();
             }
  @Override
      public void actionPerformed(ActionEvent event)
