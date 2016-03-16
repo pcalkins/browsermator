@@ -38,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -80,9 +81,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.11";
+private final String version = "0.0.12";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.11";
+   private final String ProgramVersion = "0.0.12";
 
   
   
@@ -2436,6 +2437,31 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
         }
         
         });
+STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
+new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+        JFileChooser FindFireFoxExe = new JFileChooser("Browse for Firefox executable");
+ FindFireFoxExe.setDialogTitle("Browse for Firefox executable (Selenium had a problem loading Firefox... this may fix it.)");
+
+ JPanel newJPanel = new JPanel();
+ int returnVal = FindFireFoxExe.showOpenDialog(newJPanel);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = FindFireFoxExe.getSelectedFile();   
+
+   WriteFireFoxPathToProperties(file.getAbsolutePath());
+  
+ 
+  
+  
+            }
+            else
+            {
+            
+            }
+    }
+});
 
 STAppFrame.addjButtonDoStuffActionListener(
       new ActionListener() {
@@ -2728,6 +2754,61 @@ try {
   }
   
   
-    
+  public void LoadFirefoxPath()
+  {
+          Properties applicationProps = new Properties();
+    String userdir = System.getProperty("user.home");
+try
+{
+         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+             applicationProps.load(input);
+         }
+         catch (Exception e)
+         {
+             System.out.println(e);
+           
+             
+         }
+}
+catch (Exception e) {
+			System.out.println("Exception loading firefox path: " + e);
+                        
+		} 
+
+   
+ 
+ 
+   
+        
+  }
+  public void WriteFireFoxPathToProperties(String pathtofirefox)
+  {
+      String userdir = System.getProperty("user.home");
+      Properties applicationProps = new Properties();
+      try
+{
+
+      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+applicationProps.load(input);
+input.close();
+}
+      catch (Exception ex)
+      {
+          
+      }
+      applicationProps.setProperty("firefox_exe", pathtofirefox);
+           try {
+       FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+    applicationProps.store(writer, "browsermator_settings");
+    writer.close();
+         
+  
+   
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception writing firefox path: " + e);
+		}      
+  }    
                          
 }
