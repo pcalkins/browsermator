@@ -355,7 +355,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                 if (places_moved==1)
                 {
 
-                     Window.MoveAction(Window, newbug, newbugview, action.index, -1);
+                     Window.MoveAction(newbug, newbugview, action.index, -1);
                     
                      
                      original_locationY = snapped_locationY;
@@ -369,7 +369,7 @@ scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");
                 if (places_moved==-1)
                 {
                          
-                   Window.MoveAction(Window, newbug, newbugview, action.index, 1); 
+                   Window.MoveAction(newbug, newbugview, action.index, 1); 
                  
           original_locationY = snapped_locationY;
   
