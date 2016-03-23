@@ -6,6 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureRecognizer;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -51,9 +55,9 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList();
   String OSType;
   int WaitTime;
  
-  
   public SeleniumTestTool(String filename)
   {
+      
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
   this.OSType = "Windows";
@@ -264,6 +268,10 @@ public void setProperties (String filename)
  {
      jButtonDoStuff.setText(newtext);
  }
+ public void setFlattenFileButtonName (String newtext)
+ {
+     jButtonFlattenFile.setText(newtext);
+ }
  public void ScrollActionPaneDown(ProcedureView bugview)
  {
   
@@ -318,6 +326,7 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
+  //      AV.AddDraggers(this, this.BugArray.get(bugindex), BV, AV);
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
@@ -398,6 +407,7 @@ bugindex++;
     
     this.report = REFSYNCH.report;
  }
+
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
  {
       RunASingleTest REFSYNCH = new RunASingleTest(bugtorun, thisbugview, this.TargetBrowser, this.OSType);
@@ -435,7 +445,7 @@ bugindex++;
         UpdateDisplay();
  JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
-
+   jButtonFlattenFile.setEnabled(true);
         }
       public void AddLoopHandlers (SeleniumTestTool Window, DataLoopView newbugview, DataLoop newbug) 
       {
@@ -643,7 +653,8 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
             newbug.ActionsList.add(action);
             actionview.index = newbugview.ActionsViewList.size()-1;
             action.index = newbug.ActionsList.size()-1;
-         
+  //          actionview.AddDraggers(this, newbug, newbugview, actionview);
+          
 }
 
    public File BrowseForJSFileAction ()
@@ -679,7 +690,7 @@ File newfile = new File(path + ".js");
             }   
    }
  
-   public void MoveAction (SeleniumTestTool Window, Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
+   public void MoveAction (Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
    {
 
     int SwapIndex = toMoveIndex + Direction;
@@ -812,6 +823,7 @@ this.changes=true;
         jButtonClearEmailSettings = new javax.swing.JButton();
         jButtonNewDataLoop = new javax.swing.JButton();
         jButtonBrowseForFireFoxExe = new javax.swing.JButton();
+        jButtonFlattenFile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -897,6 +909,10 @@ this.changes=true;
         });
 
         jButtonBrowseForFireFoxExe.setText("...");
+        jButtonBrowseForFireFoxExe.setEnabled(false);
+
+        jButtonFlattenFile.setText("Flatten to New File");
+        jButtonFlattenFile.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -918,45 +934,48 @@ this.changes=true;
                                 .addComponent(jButtonNewDataLoop))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addComponent(jButtonDoStuff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxShowReport)
-                                            .addComponent(jCheckBoxEmailReport))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxExitAfter)
-                                            .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jCheckBoxPromptToClose)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonBrowseForFireFoxExe))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxOSTypeWindows)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jCheckBoxOSTypeMac)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBoxOSTypeLinux32)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBoxOSTypeLinux64))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(8, 8, 8)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGap(6, 6, 6)
+                                                    .addComponent(jLabel1)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(jButtonDoStuff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jCheckBoxShowReport)
+                                                .addComponent(jCheckBoxEmailReport))
+                                            .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jCheckBoxExitAfter)
+                                                .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jCheckBoxPromptToClose)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(jButtonFlattenFile))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(6, 6, 6)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel2)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel8)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(jButtonBrowseForFireFoxExe)))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jCheckBoxOSTypeWindows)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jCheckBoxOSTypeMac)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jCheckBoxOSTypeLinux32)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jCheckBoxOSTypeLinux64))
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(22, 22, 22)
+                                .addGap(145, 145, 145)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
                                     .addGroup(layout.createSequentialGroup()
@@ -972,15 +991,15 @@ this.changes=true;
                                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonClearEmailSettings)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                 .addComponent(jTextFieldSMTPHostName)
                                                 .addComponent(jTextFieldEmailLoginName)
                                                 .addComponent(jTextFieldEmailTo)
                                                 .addComponent(jTextFieldEmailFrom)
                                                 .addComponent(jTextFieldSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                                                .addComponent(jTextFieldEmailPassword)))))))
-                        .addGap(156, 156, 156))))
+                                                .addComponent(jTextFieldEmailPassword))
+                                            .addComponent(jButtonClearEmailSettings))))))
+                        .addContainerGap(77, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -992,7 +1011,7 @@ this.changes=true;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTHISSITEURL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -1001,7 +1020,8 @@ this.changes=true;
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jCheckBoxShowReport)
-                                    .addComponent(jCheckBoxPromptToClose))
+                                    .addComponent(jCheckBoxPromptToClose)
+                                    .addComponent(jButtonFlattenFile))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jCheckBoxEmailReport)
@@ -1021,13 +1041,13 @@ this.changes=true;
                                 .addComponent(jLabel8)
                                 .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButtonBrowseForFireFoxExe, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBoxOSTypeWindows)
                             .addComponent(jCheckBoxOSTypeMac)
                             .addComponent(jCheckBoxOSTypeLinux32)
                             .addComponent(jCheckBoxOSTypeLinux64))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -1188,6 +1208,9 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    public void addjButtonDoStuffActionListener(ActionListener listener) {
        jButtonDoStuff.addActionListener(listener);
    }
+      public void addjButtonFlattenFileActionListener(ActionListener listener) {
+       jButtonFlattenFile.addActionListener(listener);
+   }
   public void addjButtonClearEmailSettingsListener(ActionListener listener) {
        jButtonClearEmailSettings.addActionListener(listener);
    }
@@ -1300,6 +1323,25 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             
             jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
             this.TargetBrowser = targetbrowser;
+            
+            switch (targetbrowser)
+            {
+                case "Firefox":
+                    jButtonBrowseForFireFoxExe.setEnabled(true);
+                    break;
+                case "Internet Explorer-32":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;
+                case "Internet Explorer-64":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;  
+                case "Chrome":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;
+                case "Silent Mode (HTMLUnit)":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;
+            }
         }
         public String getTargetBrowser ()
         {
@@ -1346,12 +1388,74 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
+         public void SortActionView (Procedure thisProc, ProcedureView thisProcView, int dropped_index, int draggedLocationY)
+   {
+     int dragIndex = draggedLocationY/36;
+   //  System.out.println (dropIndex);
+     MoveActionFromTo (thisProc, thisProcView, dragIndex, dropped_index);
+   }
+          public void MoveActionFromTo (Procedure thisBug, ProcedureView thisBugView, int MoveFromIndex, int MoveToIndex)
+   {
+
+  
+   System.out.println("From: "+MoveFromIndex + " To: "+MoveToIndex);
+   
+  // ArrayList<ActionView> ActionViewArrayCopy =  thisBugView.ActionsViewList;
+  // ArrayList<Action> ActionArrayCopy = thisBug.ActionsList;
+   
+    int diff = MoveFromIndex - MoveToIndex;
+    int number_of_places_to_move = Math.abs(diff);
+    
+    if (diff<0)
+    {
+                if (MoveFromIndex<thisBug.ActionsList.size()-1)
+     {
+        int SwapIndex = 0; 
+for (int x = 1; x<=number_of_places_to_move; x++)
+{
+    SwapIndex = MoveFromIndex+1;
+         Collections.swap(thisBug.ActionsList, MoveFromIndex, SwapIndex);
+  Collections.swap(thisBugView.ActionsViewList, MoveFromIndex, SwapIndex);
+  thisBugView.ActionsViewList.get(MoveFromIndex).SetIndexes(thisBugView.index, SwapIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, MoveFromIndex);
+  thisBug.ActionsList.get(MoveFromIndex).setActionIndex(SwapIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(MoveFromIndex);
+    MoveFromIndex++;
+  
+    }
+
+       }
+    }
+    else
+    {
+      if (MoveFromIndex<0)
+     {  
+                int SwapIndex = 0; 
+for (int x = 1; x<=number_of_places_to_move; x++)
+{
+    SwapIndex = MoveFromIndex-1;
+         Collections.swap(thisBug.ActionsList, MoveFromIndex, SwapIndex);
+  Collections.swap(thisBugView.ActionsViewList, MoveFromIndex, SwapIndex);
+  thisBugView.ActionsViewList.get(MoveFromIndex).SetIndexes(thisBugView.index, SwapIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, MoveFromIndex);
+  thisBug.ActionsList.get(MoveFromIndex).setActionIndex(SwapIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(MoveFromIndex);
+    MoveFromIndex--;
+  
+    }
+         
+     }
+    }
+  UpdateDisplay(); 
+  
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane MainScrollPane;
     private javax.swing.JButton jButtonBrowseForFireFoxExe;
     private javax.swing.JButton jButtonClearEmailSettings;
     private javax.swing.JButton jButtonDoStuff;
+    private javax.swing.JButton jButtonFlattenFile;
     private javax.swing.JButton jButtonNewBug;
     private javax.swing.JButton jButtonNewDataLoop;
     private javax.swing.JCheckBox jCheckBoxEmailReport;

@@ -19,6 +19,8 @@ import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
@@ -99,8 +101,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     if (this.firefox_path!=null)
       {
            System.setProperty("webdriver.firefox.bin", this.firefox_path);
+         
       }
-         driver = new FirefoxDriver();
+
+       driver = new FirefoxDriver();
      break;
      
      case "Silent Mode (HTMLUnit)":

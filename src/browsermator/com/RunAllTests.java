@@ -3,9 +3,7 @@ package browsermator.com;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,10 +15,8 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
@@ -40,9 +36,11 @@ String targetbrowser;
 String OSType;
 WebDriver driver;
 String firefox_path;
+FireFoxProperties FFprops;
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
-  
+  FFprops = new FireFoxProperties();
+  this.firefox_path = FFprops.LoadFirefoxPath();
    this.SiteTest = in_SiteTest;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
@@ -51,7 +49,7 @@ String firefox_path;
 @Override 
 public String doInBackground()
  {
-      LoadFirefoxPath();
+    
     SiteTest.setRunActionsButtonName("Running...");
     RunAllActions(SiteTest, targetbrowser, OSType);
     String donetext = "Run All Procedures";
@@ -102,27 +100,8 @@ public String doInBackground()
     {
         if (ex.toString().contains("Cannot find firefox"))
         {
-            System.out.println("Cannot find binary for Firefox");
-  
- JFileChooser FindFireFoxExe = new JFileChooser("Browse for Firefox executable");
- FindFireFoxExe.setDialogTitle("Browse for Firefox executable (Selenium had a problem loading Firefox... this may fix it.)");
-
- JPanel newJPanel = new JPanel();
- int returnVal = FindFireFoxExe.showOpenDialog(newJPanel);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = FindFireFoxExe.getSelectedFile();   
-
-   WriteFireFoxPathToProperties(file.getAbsolutePath());
-  
- Prompter closeDown = new Prompter("Close and re-open the Browsermator to update Firefox executable path.");
-  
-  
-            }
-            else
-            {
-            
-            }
+        FFprops.BrowseforFFPath();
+        
  
         }
         SiteTest.setRunActionsButtonName("Run All Procedures");
@@ -323,7 +302,7 @@ else
   } 
  for (int x = 0; x<number_of_rows; x++)
     {
-        int action_index = 0;
+      
     for( Action ThisAction : thisbug.ActionsList ) {
       
         
@@ -408,7 +387,7 @@ else
              }
    
       }
-      action_index++;
+     
      }
     
     
@@ -714,61 +693,5 @@ else
      }
          return ReportText;    
   }  
-  public void LoadFirefoxPath()
-  {
-          Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
-try
-{
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
-             applicationProps.load(input);
-         }
-         catch (Exception e)
-         {
-             System.out.println("error loading firefox path:" + e.toString());
-           
-             
-         }
-}
-catch (Exception e) {
-			System.out.println("Exception loading firefox path: " + e);
-                        
-		} 
 
-    this.firefox_path = applicationProps.getProperty("firefox_exe");
-   
- 
- 
-   
-        
-  }
-  public void WriteFireFoxPathToProperties(String pathtofirefox)
-  {
-      String userdir = System.getProperty("user.home");
-      Properties applicationProps = new Properties();
-      try
-{
-
-      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-      catch (Exception ex)
-      {
-          
-      }
-      applicationProps.setProperty("firefox_exe", pathtofirefox);
-           try {
-       FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
-    applicationProps.store(writer, "browsermator_settings");
-    writer.close();
-         
-  
-   
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception writing firefox path: " + e);
-		}      
-  }
 }

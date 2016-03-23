@@ -38,7 +38,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -81,9 +80,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.12";
+private final String version = "0.0.13";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.12";
+   private final String ProgramVersion = "0.0.13";
 
   
   
@@ -332,7 +331,7 @@ SeleniumToolDesktop.add(Navigator);
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
                      try {   
-                       int saved =   SaveFile(STAppFrame, false);
+                       int saved =   SaveFile(STAppFrame, false, false);
                      } catch (XMLStreamException ex) {
                          Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
                      }
@@ -364,7 +363,7 @@ SeleniumToolDesktop.add(Navigator);
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
                      try {   
-                       int saved =   SaveFile(STAppFrame, true);
+                       int saved =   SaveFile(STAppFrame, true, false);
                      } catch (XMLStreamException ex) {
                          Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
                      }
@@ -1123,7 +1122,7 @@ else
                       try
                       {
                           int saved = 0;
-                      saved = SaveFile(STAppFrame, false);
+                      saved = SaveFile(STAppFrame, false, false);
                       
                       return saved;
                       }
@@ -1313,7 +1312,7 @@ return 1;
    }
    
 
-  public int SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs) throws IOException, XMLStreamException
+  public int SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
     {
 
       final JFileChooser fc = new JFileChooser(){
@@ -1358,8 +1357,14 @@ File file;
     if (STAppFrame.filename.contains("untitled") == false  && isSaveAs==true)
     {
           String[] left_side_of_dot = STAppFrame.filename.split("\\.");
-                
+                if (isFlatten)
+                {
+                 file = new File(left_side_of_dot[0] + "-flat.browsermation");   
+                }
+                else
+                {
                  file = new File(left_side_of_dot[0] + ".browsermation");
+                }
         fc.setSelectedFile(file);
         
     }
@@ -1502,10 +1507,15 @@ String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
 if (!"".equals(thisbug.DataFile))
 {
+    if (isFlatten==false)
+    {
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+    }
+
 }
 
-
+  if (isFlatten==false)
+  {
     for (Action thisaction: thisbug.ActionsList)
     {
     xmlfile.writeStartElement("Action");
@@ -1571,7 +1581,170 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
     
     xmlfile.writeEndElement();  
     }
+  }
+  else
+  {
+       int number_of_rows = thisbug.DataSet.DataTable.getRowCount();
+  for( Action ThisAction : thisbug.ActionsList ) { 
+ ThisAction.InitializeLoopTestVars(number_of_rows);
+  } 
+
+ for (int x = 0; x<number_of_rows; x++)
+    {
+     for (Action thisaction: thisbug.ActionsList)
+    {
+         String original_value1 = thisaction.Variable1;
+           String original_value2 = thisaction.Variable2;
+               DataLoopVarParser var1Parser = new DataLoopVarParser(thisaction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(thisaction.Variable2);
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
+        xmlfile.writeStartElement("Action");
+
+    String LOCKED = Boolean.toString(thisaction.Locked);
+   
+    xmlfile.writeStartElement("LOCKED");
+    xmlfile.writeCharacters(LOCKED);
+    xmlfile.writeEndElement();
     
+   
+        
+    String Pass = Boolean.toString(thisaction.Pass);
+    xmlfile.writeStartElement("Pass");
+    xmlfile.writeCharacters(Pass);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("TimeOfTest");
+    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Type");
+    xmlfile.writeCharacters(thisaction.Type);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Variable1");
+    
+    xmlfile.writeCharacters(thisaction.Variable1);
+    xmlfile.writeEndElement();
+    if (thisaction.Type.contains("Password"))
+    {
+    xmlfile.writeStartElement("Variable2");
+    try
+    {
+    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+    }
+    catch (Exception e)
+            {
+            System.out.println("encrypt error.. passvar2: " + e.toString());
+            }
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
+    }
+    else
+    {
+    xmlfile.writeStartElement("Variable2");
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement();
+    }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
+    String ActionIndex = Integer.toString(thisaction.index);   
+    xmlfile.writeStartElement("ActionIndex");
+    xmlfile.writeCharacters(ActionIndex);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeEndElement();  
+    }
+    else
+    {
+               String concat_variable;
+            String concat_variable2;
+ concat_variable = var1Parser.GetFullValue(x, thisbug.DataSet);
+ if (!"".equals(concat_variable))
+ {
+      thisaction.Variable1 = concat_variable;
+ }
+      concat_variable2 = var2Parser.GetFullValue(x, thisbug.DataSet);
+     if (!"".equals(concat_variable2))
+     {
+      thisaction.Variable2 = concat_variable2;  
+     }   
+           xmlfile.writeStartElement("Action");
+
+    String LOCKED = Boolean.toString(thisaction.Locked);
+   
+    xmlfile.writeStartElement("LOCKED");
+    xmlfile.writeCharacters(LOCKED);
+    xmlfile.writeEndElement();
+    
+   
+        
+    String Pass = Boolean.toString(thisaction.Pass);
+    xmlfile.writeStartElement("Pass");
+    xmlfile.writeCharacters(Pass);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("TimeOfTest");
+    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Type");
+    xmlfile.writeCharacters(thisaction.Type);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Variable1");
+    
+    xmlfile.writeCharacters(thisaction.Variable1);
+    xmlfile.writeEndElement();
+    if (thisaction.Type.contains("Password"))
+    {
+    xmlfile.writeStartElement("Variable2");
+    try
+    {
+    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+    }
+    catch (Exception e)
+            {
+            System.out.println("encrypt error.. passvar2: " + e.toString());
+            }
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
+    }
+    else
+    {
+    xmlfile.writeStartElement("Variable2");
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement();
+    }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
+    String ActionIndex = Integer.toString(thisaction.index);   
+    xmlfile.writeStartElement("ActionIndex");
+    xmlfile.writeCharacters(ActionIndex);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeEndElement();    
+        thisaction.Variable1 = original_value1;
+   thisaction.Variable2 = original_value2;
+    }
+  
+    }
+    }
+  }
     xmlfile.writeEndElement();
   
 }
@@ -1588,6 +1761,22 @@ xmlfile.writeEndElement();
         } finally {
             xmlfile.flush();
             xmlfile.close();
+            if (isFlatten)
+            {
+   try {
+        int MDI_CLASS_INDEX;
+           MDI_CLASS_INDEX = OpenFile(file, MDIClasses);
+         if (MDI_CLASS_INDEX>=0)
+     {
+           DisplayWindow(MDI_CLASS_INDEX);
+     }
+       }
+       catch (IOException | ClassNotFoundException ex) {
+          System.out.println("error opening flat file: " + ex.toString());
+       } 
+            }
+            else
+            {
        STAppFrame.filename = file.getAbsolutePath();
     STAppFrame.setProperties(file.getAbsolutePath());
             STAppFrame.AllFieldValues.clear();
@@ -1652,14 +1841,20 @@ for (Procedure thisproc: STAppFrame.BugArray)
     }
 }
 STAppFrame.changes = false;
+            }
         }
-
+if (isFlatten==false)
+{
 this.filename = file.getAbsolutePath();
 STAppFrame.setProperties(this.filename);
 Navigator.addRecentFile(file.getAbsolutePath());
 
-         return 0;  
-
+}
+else
+{
+   
+}
+      return 0;  
         }
  public File BrowseForCSVFile()
     {
@@ -1934,6 +2129,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         if (DataFile_file.exists())
         {
             MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
+         
         }
         else
         {
@@ -2441,25 +2637,9 @@ STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
 new ActionListener() {
     public void actionPerformed (ActionEvent evt)
     {
-        JFileChooser FindFireFoxExe = new JFileChooser("Browse for Firefox executable");
- FindFireFoxExe.setDialogTitle("Browse for Firefox executable (Selenium had a problem loading Firefox... this may fix it.)");
-
- JPanel newJPanel = new JPanel();
- int returnVal = FindFireFoxExe.showOpenDialog(newJPanel);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = FindFireFoxExe.getSelectedFile();   
-
-   WriteFireFoxPathToProperties(file.getAbsolutePath());
-  
+    FireFoxProperties FFProperties = new FireFoxProperties();
+    FFProperties.BrowseforFFPath();
  
-  
-  
-            }
-            else
-            {
-            
-            }
     }
 });
 
@@ -2474,7 +2654,22 @@ STAppFrame.addjButtonDoStuffActionListener(
         }
       }
     );
+   STAppFrame.addjButtonFlattenFileActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
    
+                   try {   
+                       int saved =   SaveFile(STAppFrame, true, true);
+                     } catch (Exception ex)
+                     {
+                         Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+ 
+  
+        }
+      }
+    );
       STAppFrame.addjButtonClearEmailSettingsListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -2520,6 +2715,12 @@ STAppFrame.addjButtonDoStuffActionListener(
  return STAppFrame;
 
   }
+   public void FlattenFile(SeleniumTestTool windowToFlatten)
+ {
+  //   FlattenLoop FlatREF = new FlattenLoop(DataLoop );
+  //  FlatREF.execute();
+    
+ }
   public int GetCurrentWindow()
   {
      
