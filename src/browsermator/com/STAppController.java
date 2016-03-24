@@ -1588,7 +1588,7 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
-
+int action_index_for_flatten = 0;
  for (int x = 0; x<number_of_rows; x++)
     {
      for (Action thisaction: thisbug.ActionsList)
@@ -1655,9 +1655,11 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
     }
     xmlfile.writeCharacters(tempstringbool);
     xmlfile.writeEndElement();
-    String ActionIndex = Integer.toString(thisaction.index);   
+    String ActionIndex = Integer.toString(action_index_for_flatten);   
+    
     xmlfile.writeStartElement("ActionIndex");
     xmlfile.writeCharacters(ActionIndex);
+    action_index_for_flatten++;
     xmlfile.writeEndElement();
     
     xmlfile.writeEndElement();  
@@ -1732,9 +1734,10 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
     }
     xmlfile.writeCharacters(tempstringbool);
     xmlfile.writeEndElement();
-    String ActionIndex = Integer.toString(thisaction.index);   
+    String ActionIndex = Integer.toString(action_index_for_flatten);   
     xmlfile.writeStartElement("ActionIndex");
     xmlfile.writeCharacters(ActionIndex);
+    action_index_for_flatten++;
     xmlfile.writeEndElement();
     
     xmlfile.writeEndElement();    
