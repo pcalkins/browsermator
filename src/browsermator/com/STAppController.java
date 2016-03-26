@@ -4,10 +4,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -16,22 +13,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import static javax.swing.JFileChooser.SAVE_DIALOG;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -49,9 +41,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -61,7 +50,7 @@ import org.xml.sax.SAXException;
 
 public final class STAppController extends JFrame {
  
-private final SiteTestView Navigator;
+public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 private UIManager.LookAndFeelInfo LAFOptions[];
 private JRadioButtonMenuItem LookAndFeelOptions[];
@@ -80,9 +69,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.13";
+private final String version = "0.0.14";
     private int CurrentMDIWindowIndex;
-   private final String ProgramVersion = "0.0.13";
+   public final String ProgramVersion = "0.0.14";
 
   
   
@@ -322,64 +311,43 @@ SeleniumToolDesktop.add(Navigator);
   addFileMenuSaveActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
-                  try {
-       
+                 
          
                  CurrentMDIWindowIndex = GetCurrentWindow();
                  if (CurrentMDIWindowIndex !=-1)
                  {
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
-                     try {   
-                       int saved =   SaveFile(STAppFrame, false, false);
-                     } catch (XMLStreamException ex) {
-                         Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                    SaveFile(STAppFrame, false, false);
+                    
                  }
                    else
   {
     JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
   }
-                  }
-               catch (IOException ex)
-               {
                  
-        System.out.println ("Save IO error" + ex.toString());
-      
-   
-               }
             
            } 
        });
   addFileMenuSaveAsActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
-                  try {
-       
+                  
          
                  CurrentMDIWindowIndex = GetCurrentWindow();
                  if (CurrentMDIWindowIndex !=-1)
                  {
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
-                     try {   
-                       int saved =   SaveFile(STAppFrame, true, false);
-                     } catch (XMLStreamException ex) {
-                         Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                    SaveFile(STAppFrame, true, false);
+                    
                  }
                    else
   {
     JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
   }
-                  }
-               catch (IOException ex)
-               {
                  
-        System.out.println ("Save IO error" + ex.toString());
-      
-   
-               }
+              
             
            } 
        });
@@ -538,17 +506,8 @@ SeleniumToolDesktop.add(Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-   try {
-        int MDI_CLASS_INDEX;
-           MDI_CLASS_INDEX = OpenFile(newfiles[fileindex], MDIClasses);
-         if (MDI_CLASS_INDEX>=0)
-     {
-           DisplayWindow(MDI_CLASS_INDEX);
-     }
-       }
-       catch (IOException | ClassNotFoundException ex) {
-          System.out.println(ex.toString());
-       } 
+    OpenFile(newfiles[fileindex], MDIClasses);
+     
     
    }    
  }     
@@ -585,24 +544,12 @@ SeleniumToolDesktop.add(Navigator);
  {
      
      
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(RecentFile, MDIClasses);
-        if (MDI_CLASS_INDEX>=0)
-             {
 
-        DisplayWindow(MDI_CLASS_INDEX);
-               }
-               else
-               {
-               JOptionPane.showMessageDialog (null, "The file " + RecentFile, "does not exist or is corrupt", JOptionPane.INFORMATION_MESSAGE);    
-               }
+      OpenFile(RecentFile, MDIClasses);
+       
           
        }
-       catch (IOException | ClassNotFoundException | HeadlessException ex) {
-          System.out.println(ex.toString());
-       }
-            }
+      
      
 
           
@@ -635,17 +582,9 @@ SeleniumToolDesktop.add(Navigator);
  {
      
      
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(RecentFile, MDIClasses);
- if (MDI_CLASS_INDEX>=0)
-     {
-        DisplayWindow(MDI_CLASS_INDEX);
-           }
-       }
-       catch (IOException | ClassNotFoundException | HeadlessException ex) {
-          System.out.println(ex.toString());
-       }
+
+       OpenFile(RecentFile, MDIClasses);
+ 
             }
      
 
@@ -679,17 +618,9 @@ SeleniumToolDesktop.add(Navigator);
  {
      
      
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(RecentFile, MDIClasses);
-        if (MDI_CLASS_INDEX>=0)
-     {
-        DisplayWindow(MDI_CLASS_INDEX);
-           }
-       }
-       catch (Exception ex) {
-          System.out.println(ex.toString());
-       }
+
+    OpenFile(RecentFile, MDIClasses);
+     
             }
      
 
@@ -724,17 +655,9 @@ SeleniumToolDesktop.add(Navigator);
  {
      
      
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(RecentFile, MDIClasses);
-  if (MDI_CLASS_INDEX>=0)
-     {
-        DisplayWindow(MDI_CLASS_INDEX);
-           }
-       }
-       catch (IOException | ClassNotFoundException ex) {
-          System.out.println(ex.toString());
-       }
+
+     OpenFile(RecentFile, MDIClasses);
+  
        
             }
      
@@ -770,17 +693,9 @@ SeleniumToolDesktop.add(Navigator);
  {
      
      
- int MDI_CLASS_INDEX;
-       try {
-           MDI_CLASS_INDEX = OpenFile(RecentFile, MDIClasses);
-       if (MDI_CLASS_INDEX>=0)
-     {
-        DisplayWindow(MDI_CLASS_INDEX);
-           }
-       }
-       catch (IOException | ClassNotFoundException | HeadlessException ex) {
-          System.out.println(ex.toString());
-       }
+
+     OpenFile(RecentFile, MDIClasses);
+    
             }
      
 
@@ -814,17 +729,8 @@ SeleniumToolDesktop.add(Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-   try {
-        int MDI_CLASS_INDEX;
-           MDI_CLASS_INDEX = OpenFile(newfiles[fileindex], MDIClasses);
-         if (MDI_CLASS_INDEX>=0)
-     {
-           DisplayWindow(MDI_CLASS_INDEX);
-     }
-       }
-       catch (IOException | ClassNotFoundException ex) {
-          System.out.println(ex.toString());
-       } 
+  OpenFile(newfiles[fileindex], MDIClasses);
+    
     
    }    
  }     
@@ -1041,7 +947,7 @@ SeleniumToolDesktop.add(Navigator);
 		}    
       
   }
-  private int CheckToSaveChanges(SeleniumTestTool STAppFrame) 
+  public int CheckToSaveChanges(SeleniumTestTool STAppFrame) 
   {
 
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
@@ -1119,18 +1025,10 @@ else
             switch(result){
                   case JOptionPane.YES_OPTION:
                  //   SaveFile
-                      try
-                      {
-                          int saved = 0;
-                      saved = SaveFile(STAppFrame, false, false);
+                     
+                         SaveFile(STAppFrame, false, false);
                       
-                      return saved;
-                      }
-                      catch (Exception e)
-                      {
-                        System.out.println("Save Changes exception:" + e.toString());  
-                        return 0;
-                      }
+                     
                      
                 case JOptionPane.NO_OPTION:
                 // close window  
@@ -1312,554 +1210,7 @@ return 1;
    }
    
 
-  public int SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
-    {
-
-      final JFileChooser fc = new JFileChooser(){
-    @Override
-    public void approveSelection(){
-        
-        File f = getSelectedFile();
-                String filestring = f.toString();
-                
-                String[] left_side_of_dot = filestring.split("\\.");
-                
-                 f = new File(left_side_of_dot[0] + ".browsermation");
-       
-       
-        if(f.exists() && getDialogType() == SAVE_DIALOG){
-            int result = JOptionPane.showConfirmDialog(STAppFrame,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
-            switch(result){
-                case JOptionPane.YES_OPTION:
-                    super.approveSelection();
-                 
-                    return;
-                case JOptionPane.NO_OPTION:
-                    return;
-                case JOptionPane.CLOSED_OPTION:
-                    return;
-                case JOptionPane.CANCEL_OPTION:
-                    cancelSelection();
-                    return;
-            }
-        }
-        super.approveSelection();
-    STAppFrame.changes = false;
-    }
-};
-File file;
-   
-    if (isSaveAs==true || STAppFrame.filename.contains("untitled") == true)
-    {
-     FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
-
-    fc.setFileFilter(filefilter);
-    if (STAppFrame.filename.contains("untitled") == false  && isSaveAs==true)
-    {
-          String[] left_side_of_dot = STAppFrame.filename.split("\\.");
-                if (isFlatten)
-                {
-                 file = new File(left_side_of_dot[0] + "-flat.browsermation");   
-                }
-                else
-                {
-                 file = new File(left_side_of_dot[0] + ".browsermation");
-                }
-        fc.setSelectedFile(file);
-        
-    }
-int returnVal = fc.showSaveDialog(STAppFrame);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                file = fc.getSelectedFile();
-                String filestring = file.toString();
-                
-                String[] left_side_of_dot = filestring.split("\\.");
-                
-                 file = new File(left_side_of_dot[0] + ".browsermation");
-            
-            }
-            else
-            {
-               return 1;
-            }
-    }
-    else
-    {
-    
-         String filestring = STAppFrame.filename;
-                
-                String[] left_side_of_dot = filestring.split("\\.");
-                
-                 file = new File(left_side_of_dot[0] + ".browsermation");
-    }
-  
-
-               XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
-                              new FileOutputStream(file)));
-     
-             try {
-xmlfile.writeStartElement("BrowserMatorWindow");
-xmlfile.writeAttribute("Filename",file.getAbsolutePath());
-xmlfile.writeAttribute("ProgramVersion", this.ProgramVersion);
-String ShowReport = Boolean.toString(STAppFrame.getShowReport());
-
-xmlfile.writeStartElement("FileSettings");
-
-xmlfile.writeStartElement("ShowReport");
-    xmlfile.writeCharacters(ShowReport);
-    xmlfile.writeEndElement();
-// xmlfile.writeAttribute("ShowReport", ShowReport);
-String EmailReport = Boolean.toString(STAppFrame.getEmailReport());
-  xmlfile.writeStartElement("EmailReport");
-    xmlfile.writeCharacters(EmailReport);
-    xmlfile.writeEndElement();
-// xmlfile.writeAttribute("EmailReport", EmailReport);
-String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
-xmlfile.writeStartElement("EmailReportFail");
-    xmlfile.writeCharacters(EmailReportFail);
-    xmlfile.writeEndElement();
-    
-// xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
-String ExitAfter = Boolean.toString(STAppFrame.getExitAfter());
-xmlfile.writeStartElement("ExitAfter");
-    xmlfile.writeCharacters(ExitAfter);
-    xmlfile.writeEndElement();    
-// xmlfile.writeAttribute("ExitAfter", ExitAfter);
-   String SMTPHostname = STAppFrame.getSMTPHostname();
-xmlfile.writeStartElement("SMTPHostname");
-    xmlfile.writeCharacters(SMTPHostname);
-    xmlfile.writeEndElement(); 
-// xmlfile.writeAttribute("SMTPHostname", STAppFrame.getSMTPHostname());
-    
-  String EmailLoginName = STAppFrame.getEmailLoginName();
-xmlfile.writeStartElement("EmailLoginName");
-    xmlfile.writeCharacters(EmailLoginName);
-    xmlfile.writeEndElement();     
-// xmlfile.writeAttribute("EmailLoginName", STAppFrame.getEmailLoginName());
-String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
-xmlfile.writeStartElement("PromptToClose");
-    xmlfile.writeCharacters(PromptToClose);
-    xmlfile.writeEndElement();     
-// String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
-//    xmlfile.writeAttribute("PromptToClose", PromptToClose);
-String TargetBrowser = STAppFrame.TargetBrowser;
-xmlfile.writeStartElement("TargetBrowser");
-    xmlfile.writeCharacters(TargetBrowser);
-    xmlfile.writeEndElement();   
-// xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
-    
-Integer WaitTime = STAppFrame.GetWaitTime();
-String WaitTimeString = WaitTime.toString();
-xmlfile.writeStartElement("WaitTime");
-    xmlfile.writeCharacters(WaitTimeString);
-    xmlfile.writeEndElement();   
-// xmlfile.writeAttribute("WaitTime", WaitTimeString);
-
-String OSType = STAppFrame.OSType;
-xmlfile.writeStartElement("OSType");
-    xmlfile.writeCharacters(OSType);
-    xmlfile.writeEndElement();  
-// xmlfile.writeAttribute("OSType", OSType);
-String EmailPassword = "";
-EmailPassword = STAppFrame.getEmailPassword();
-
-String une = "";
-      try
-      {
-     une = Protector.encrypt(EmailPassword);
-      }
-      catch (Exception e)
-      {
-      System.out.println("Error encrypting emailpassword: " + e.toString());
-      }
-      EmailPassword = une;
-xmlfile.writeStartElement("EmailPassword");
-    xmlfile.writeCharacters(EmailPassword);
-    xmlfile.writeEndElement();    
-// xmlfile.writeAttribute("EmailPassword", EmailPassword);
-String EmailTo = STAppFrame.getEmailTo();
-xmlfile.writeStartElement("EmailTo");
-    xmlfile.writeCharacters(EmailTo);
-    xmlfile.writeEndElement();  
-// xmlfile.writeAttribute("EmailTo", STAppFrame.getEmailTo());
-
-String EmailFrom = STAppFrame.getEmailFrom();
-xmlfile.writeStartElement("EmailFrom");
-    xmlfile.writeCharacters(EmailFrom);
-    xmlfile.writeEndElement(); 
-// xmlfile.writeAttribute("EmailFrom", STAppFrame.getEmailFrom());
-String EmailSubject = STAppFrame.getSubject();
-xmlfile.writeStartElement("EmailSubject");
-    xmlfile.writeCharacters(EmailSubject);
-    xmlfile.writeEndElement();     
-// xmlfile.writeAttribute("EmailSubject", STAppFrame.getSubject());
-xmlfile.writeEndElement();
-
-for (Procedure thisbug: STAppFrame.BugArray)
-{
-
-xmlfile.writeStartElement("Procedure");
-xmlfile.writeAttribute("Title", thisbug.BugTitle);
-xmlfile.writeAttribute("URL", thisbug.BugURL);
-xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
-String index = String.valueOf(thisbug.index);
-xmlfile.writeAttribute("index", index);
-if (!"".equals(thisbug.DataFile))
-{
-    if (isFlatten==false)
-    {
-xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
-    }
-
-}
-
-  if (isFlatten==false)
-  {
-    for (Action thisaction: thisbug.ActionsList)
-    {
-    xmlfile.writeStartElement("Action");
-
-    String LOCKED = Boolean.toString(thisaction.Locked);
-   
-    xmlfile.writeStartElement("LOCKED");
-    xmlfile.writeCharacters(LOCKED);
-    xmlfile.writeEndElement();
-    
-   
-        
-    String Pass = Boolean.toString(thisaction.Pass);
-    xmlfile.writeStartElement("Pass");
-    xmlfile.writeCharacters(Pass);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("TimeOfTest");
-    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Type");
-    xmlfile.writeCharacters(thisaction.Type);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Variable1");
-    
-    xmlfile.writeCharacters(thisaction.Variable1);
-    xmlfile.writeEndElement();
-    if (thisaction.Type.contains("Password"))
-    {
-    xmlfile.writeStartElement("Variable2");
-    try
-    {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
-    }
-    catch (Exception e)
-            {
-            System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
-    }
-    else
-    {
-    xmlfile.writeStartElement("Variable2");
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement();
-    }
-    
-    xmlfile.writeStartElement("BoolVal1");
-    String tempstringbool = "false";
-    if (thisaction.BoolVal1)
-    {
-        tempstringbool = "true";
-    }
-    xmlfile.writeCharacters(tempstringbool);
-    xmlfile.writeEndElement();
-    String ActionIndex = Integer.toString(thisaction.index);   
-    xmlfile.writeStartElement("ActionIndex");
-    xmlfile.writeCharacters(ActionIndex);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeEndElement();  
-    }
-  }
-  else
-  {
-       int number_of_rows = thisbug.DataSet.DataTable.getRowCount();
-  for( Action ThisAction : thisbug.ActionsList ) { 
- ThisAction.InitializeLoopTestVars(number_of_rows);
-  } 
-int action_index_for_flatten = 0;
- for (int x = 0; x<number_of_rows; x++)
-    {
-     for (Action thisaction: thisbug.ActionsList)
-    {
-         String original_value1 = thisaction.Variable1;
-           String original_value2 = thisaction.Variable2;
-               DataLoopVarParser var1Parser = new DataLoopVarParser(thisaction.Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(thisaction.Variable2);
-    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
-    {
-        xmlfile.writeStartElement("Action");
-
-    String LOCKED = Boolean.toString(thisaction.Locked);
-   
-    xmlfile.writeStartElement("LOCKED");
-    xmlfile.writeCharacters(LOCKED);
-    xmlfile.writeEndElement();
-    
-   
-        
-    String Pass = Boolean.toString(thisaction.Pass);
-    xmlfile.writeStartElement("Pass");
-    xmlfile.writeCharacters(Pass);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("TimeOfTest");
-    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Type");
-    xmlfile.writeCharacters(thisaction.Type);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Variable1");
-    
-    xmlfile.writeCharacters(thisaction.Variable1);
-    xmlfile.writeEndElement();
-    if (thisaction.Type.contains("Password"))
-    {
-    xmlfile.writeStartElement("Variable2");
-    try
-    {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
-    }
-    catch (Exception e)
-            {
-            System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
-    }
-    else
-    {
-    xmlfile.writeStartElement("Variable2");
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement();
-    }
-    
-    xmlfile.writeStartElement("BoolVal1");
-    String tempstringbool = "false";
-    if (thisaction.BoolVal1)
-    {
-        tempstringbool = "true";
-    }
-    xmlfile.writeCharacters(tempstringbool);
-    xmlfile.writeEndElement();
-    String ActionIndex = Integer.toString(action_index_for_flatten);   
-    
-    xmlfile.writeStartElement("ActionIndex");
-    xmlfile.writeCharacters(ActionIndex);
-    action_index_for_flatten++;
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeEndElement();  
-    }
-    else
-    {
-               String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(x, thisbug.DataSet);
- if (!"".equals(concat_variable))
- {
-      thisaction.Variable1 = concat_variable;
- }
-      concat_variable2 = var2Parser.GetFullValue(x, thisbug.DataSet);
-     if (!"".equals(concat_variable2))
-     {
-      thisaction.Variable2 = concat_variable2;  
-     }   
-           xmlfile.writeStartElement("Action");
-
-    String LOCKED = Boolean.toString(thisaction.Locked);
-   
-    xmlfile.writeStartElement("LOCKED");
-    xmlfile.writeCharacters(LOCKED);
-    xmlfile.writeEndElement();
-    
-   
-        
-    String Pass = Boolean.toString(thisaction.Pass);
-    xmlfile.writeStartElement("Pass");
-    xmlfile.writeCharacters(Pass);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("TimeOfTest");
-    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Type");
-    xmlfile.writeCharacters(thisaction.Type);
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeStartElement("Variable1");
-    
-    xmlfile.writeCharacters(thisaction.Variable1);
-    xmlfile.writeEndElement();
-    if (thisaction.Type.contains("Password"))
-    {
-    xmlfile.writeStartElement("Variable2");
-    try
-    {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
-    }
-    catch (Exception e)
-            {
-            System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
-    }
-    else
-    {
-    xmlfile.writeStartElement("Variable2");
-    xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement();
-    }
-    
-    xmlfile.writeStartElement("BoolVal1");
-    String tempstringbool = "false";
-    if (thisaction.BoolVal1)
-    {
-        tempstringbool = "true";
-    }
-    xmlfile.writeCharacters(tempstringbool);
-    xmlfile.writeEndElement();
-    String ActionIndex = Integer.toString(action_index_for_flatten);   
-    xmlfile.writeStartElement("ActionIndex");
-    xmlfile.writeCharacters(ActionIndex);
-    action_index_for_flatten++;
-    xmlfile.writeEndElement();
-    
-    xmlfile.writeEndElement();    
-        thisaction.Variable1 = original_value1;
-   thisaction.Variable2 = original_value2;
-    }
-  
-    }
-    }
-  }
-    xmlfile.writeEndElement();
-  
-}
-xmlfile.writeEndElement();
-// STAppFrame.AllFieldValues.clear();
-
-
-// System.out.println("Successfully Created XML...");
-  
- 
-        } catch (Exception e) {
-           System.out.println("Write error:" + e.toString());
- 
-        } finally {
-            xmlfile.flush();
-            xmlfile.close();
-            if (isFlatten)
-            {
-   try {
-        int MDI_CLASS_INDEX;
-           MDI_CLASS_INDEX = OpenFile(file, MDIClasses);
-         if (MDI_CLASS_INDEX>=0)
-     {
-           DisplayWindow(MDI_CLASS_INDEX);
-     }
-       }
-       catch (IOException | ClassNotFoundException ex) {
-          System.out.println("error opening flat file: " + ex.toString());
-       } 
-            }
-            else
-            {
-       STAppFrame.filename = file.getAbsolutePath();
-    STAppFrame.setProperties(file.getAbsolutePath());
-            STAppFrame.AllFieldValues.clear();
-           
-STAppFrame.AllFieldValues.add(STAppFrame.OSType);
-STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
-String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
-STAppFrame.AllFieldValues.add(stringWaitTime);
-STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
-STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
-String thisbool = "false";
-if (STAppFrame.getEmailReport())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getEmailReportFail())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getExitAfter())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getPromptToClose())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getShowReport())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-for (Procedure thisproc: STAppFrame.BugArray)
-{
-    
-    STAppFrame.AllFieldValues.add(thisproc.BugTitle);
- 
-    for (Action thisact: thisproc.ActionsList)
-    {
-        String checkingboolval1 = "false";
-        STAppFrame.AllFieldValues.add(thisact.Variable1);
-       
-        STAppFrame.AllFieldValues.add(thisact.Variable2);
-      
-        if (thisact.BoolVal1)
-        {
-            checkingboolval1 = "true";
-        }
-        STAppFrame.AllFieldValues.add(checkingboolval1);
-    }
-}
-STAppFrame.changes = false;
-            }
-        }
-if (isFlatten==false)
-{
-this.filename = file.getAbsolutePath();
-STAppFrame.setProperties(this.filename);
-Navigator.addRecentFile(file.getAbsolutePath());
-
-}
-else
-{
-   
-}
-      return 0;  
-        }
- public File BrowseForCSVFile()
+  public File BrowseForCSVFile()
     {
  final JFileChooser CSVFileChooser = new JFileChooser();
 
@@ -1975,144 +1326,17 @@ finally
   }
 
   }
-     public int OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses) throws FileNotFoundException, IOException, ClassNotFoundException
+  public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
+  {
+     SaveFileThread SAVEREF = new SaveFileThread(this, STAppFrame, isSaveAs, isFlatten);
+  SAVEREF.execute();  
+  }
+     public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses) 
     {
    
+  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses);
+  OPENREF.execute();
   
-        
-if(!file.exists()) { 
- return -10;
- 
-}
-else
-{
-        filename = file.getName();
-String full_filename = file.getAbsoluteFile().toString();
-
-
-int MDI_Index = -1;
-
-
-              Boolean PromptForSameFileName = false;
-     String filealreadyopen ="";
-     for (SeleniumTestTool thisfile: MDIClasses)
-     {
-        String twoslashes = "\\" + "\\";
-        
-         String thisfilename = thisfile.filename.replace(twoslashes, "\\");
-        String browsedfile = file.getAbsolutePath();
-        
-                
-         if (browsedfile.equals(thisfilename))
-         {   
-          filealreadyopen = browsedfile;
-             PromptForSameFileName = true; }
-     }
-     if (PromptForSameFileName==false)
-    {
-
-SeleniumTestTool STAppFrame;
-Document doc=null;
-try
-{
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-DocumentBuilder builder = factory.newDocumentBuilder();
-
-doc = builder.parse(file.getAbsolutePath());
-
- 
-}
-catch (ParserConfigurationException | SAXException | IOException e)
-{
-    System.out.println("DocumentBuilder error:" + e.toString());
-   
-}
-    
-finally 
-{
-   STAppFrame = BuildNewWindow(doc);
-    STAppFrame.UpdateDisplay();
-   STAppFrame.setVisible(true);
-  STAppFrame.setProperties(full_filename);
-   Navigator.addRecentFile(full_filename);
- 
-MDIClasses.add(STAppFrame);
-MDI_Index =  MDIClasses.size()-1;
-STAppFrame.AllFieldValues.clear();
-STAppFrame.AllFieldValues.add(STAppFrame.OSType);
-STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
-String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
-STAppFrame.AllFieldValues.add(stringWaitTime);
-STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
-STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
-STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
-String thisbool = "false";
-if (STAppFrame.getEmailReport())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getEmailReportFail())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getExitAfter())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getPromptToClose())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-thisbool = "false";
-if (STAppFrame.getShowReport())
-{
-    thisbool = "true";
-}
-STAppFrame.AllFieldValues.add(thisbool);
-for (Procedure thisproc: STAppFrame.BugArray)
-{
-    STAppFrame.AllFieldValues.add(thisproc.BugTitle);
-
-    for (Action thisact: thisproc.ActionsList)
-    {
-        String checkingboolval1 = "false";
-        STAppFrame.AllFieldValues.add(thisact.Variable1);
-
-        STAppFrame.AllFieldValues.add(thisact.Variable2);
-        if (thisact.BoolVal1)
-        {
-            checkingboolval1 = "true";
-        }
-        STAppFrame.AllFieldValues.add(checkingboolval1);
-        
-    }
-}
-
-
-}
-
- return MDI_Index;
-    }
-   else
-     {
-  
-    JOptionPane.showMessageDialog (null, filealreadyopen + " is already open", "File is open", JOptionPane.INFORMATION_MESSAGE);
-                               
- 
- return -1;
-     }
-}
 
     }
   public void ImportNewWindow (Document doc, int MDI_INDEX)
@@ -2662,12 +1886,8 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
    
-                   try {   
-                       int saved =   SaveFile(STAppFrame, true, true);
-                     } catch (Exception ex)
-                     {
-                         Logger.getLogger(STAppController.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                   SaveFile(STAppFrame, true, true);
+                    
  
   
         }
@@ -2744,39 +1964,39 @@ STAppFrame.addjButtonDoStuffActionListener(
   public void CheckArgs(String[] args)
   {
 
-      if (args[0].equals("open"))
-     {
-     File file_to_open = new File(args[1]);
-     try {
-     int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
-     if (MDI_CLASS_INDEX>=0)
-     {
-     DisplayWindow(MDI_CLASS_INDEX);
-     }
-     }
-       catch (IOException | ClassNotFoundException ex) {
-          System.out.println(ex.toString());
-       }
+ //     if (args[0].equals("open"))
+ //    {
+ //    File file_to_open = new File(args[1]);
+ //    try {
+ //    int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
+ //    if (MDI_CLASS_INDEX>=0)
+ //    {
+ //    DisplayWindow(MDI_CLASS_INDEX);
+ //    }
+ //    }
+ //      catch (IOException | ClassNotFoundException ex) {
+ //         System.out.println(ex.toString());
+ //      }
     
      
-     }
-     if (args[0].equals("run"))
-     {
-    File file_to_open = new File(args[1]);
-     try {
-     int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
-      if (MDI_CLASS_INDEX>=0)
-     { 
-     DisplayWindow(MDI_CLASS_INDEX);
-          MDIClasses.get(MDI_CLASS_INDEX).RunActions(); 
-     }
-     }
-       catch (IOException | ClassNotFoundException ex) {
-         System.out.println(ex.toString());
-       }
+  //   }
+  //   if (args[0].equals("run"))
+  //   {
+  //  File file_to_open = new File(args[1]);
+  //   try {
+  //   int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
+  //    if (MDI_CLASS_INDEX>=0)
+  //   { 
+  //   DisplayWindow(MDI_CLASS_INDEX);
+  //        MDIClasses.get(MDI_CLASS_INDEX).RunActions(); 
+  //   }
+  //   }
+  //     catch (IOException | ClassNotFoundException ex) {
+  //       System.out.println(ex.toString());
+  //     }
      
     
-     }   
+  //   }   
   }
   
    public void DisplayWindow (int MDI_CLASS_INDEX)
@@ -3014,5 +2234,21 @@ input.close();
 			System.out.println("Exception writing firefox path: " + e);
 		}      
   }    
-                         
+public void setSaveMenuState(boolean enabled)
+{
+    saveMenuItem.setEnabled(enabled);
+}
+public int getJMenuViewItemCount()
+{
+    return jMenuView.getItemCount();
+}
+public String getJMenuViewItem(int index)
+{
+   return  jMenuView.getItem(index).getText();
+}
+public void addJMenuViewItem (JMenuItem item_to_add)
+{
+    jMenuView.add(item_to_add);
+}
+
 }
