@@ -361,7 +361,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                      original_locationY = snapped_locationY;
   
  UpdateScrollPane();
-scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
                 }
@@ -376,10 +376,12 @@ scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");
      
   UpdateScrollPane();    
  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
-
+ 
  
      }
-               
+  //   Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+  //     newbugview.ActionsViewList.get(action.index).JPanelAction.scrollRectToVisible(r);
+   
 	}
  
      public void scroll(JComponent c, String dir)
