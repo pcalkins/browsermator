@@ -39,12 +39,13 @@ public class OpenFileThread extends SwingWorker<String, Integer>{
 File file;
 ArrayList<SeleniumTestTool> MDIClasses;
 STAppController mainApp;
-    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses)
+int calling_MDI_Index;
+    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index)
 {
   this.mainApp = mainApp;
   this.file = file;
   this.MDIClasses = MDIClasses;
-
+  this.calling_MDI_Index = calling_MDI_Index;
 }
 @Override 
 public String doInBackground()
@@ -67,7 +68,10 @@ public String doInBackground()
 @Override
  protected void done()
  {
-  mainApp.Navigator.setCursor(Cursor.getDefaultCursor());   
+  mainApp.Navigator.setCursor(Cursor.getDefaultCursor()); 
+
+     //    MDIClasses.get(MDIClasses.size()-1).setFlattenFileButtonName("Flatten to New File");
+     
  }
  @Override
  protected void process ( List <Integer> bugindex)
@@ -235,6 +239,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
         else
         {
+           Prompter FileNoLongerExists = new Prompter ("The datafile " +DataFile_file.getAbsolutePath() + "does not exist.  This dataloop will be converted to a normal procedure."  );
+           
            MDIClasses.get(MDI_INDEX).AddNewBug();  
         }
     }
@@ -566,15 +572,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     {
         
         File DataFile_file = new File(DataFile);
-         if (DataFile_file.exists())
-        {
-            STAppFrame.AddNewDataLoop(DataFile_file);
-        }
-        else
-        {
-           STAppFrame.AddNewBug();
-        }
        
+            STAppFrame.AddNewDataLoop(DataFile_file);
+    
     }
     else
     {

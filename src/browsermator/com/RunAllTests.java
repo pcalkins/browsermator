@@ -4,6 +4,7 @@ package browsermator.com;
 
 
 
+import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,17 +16,16 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-
 
 
 public class RunAllTests extends SwingWorker<String, Integer>
@@ -37,6 +37,7 @@ String OSType;
 WebDriver driver;
 String firefox_path;
 FireFoxProperties FFprops;
+
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
   FFprops = new FireFoxProperties();
@@ -49,7 +50,7 @@ FireFoxProperties FFprops;
 @Override 
 public String doInBackground()
  {
-    
+    SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     SiteTest.setRunActionsButtonName("Running...");
     RunAllActions(SiteTest, targetbrowser, OSType);
     String donetext = "Run All Procedures";
@@ -59,20 +60,16 @@ public String doInBackground()
 @Override
  protected void done()
  {
+     
     try
     {
         String donetext = get();
+        SiteTest.setCursor(Cursor.getDefaultCursor());   
      SiteTest.setRunActionsButtonName(donetext);
     if (SiteTest.getShowReport())
     {
-     JFrame ReportJFrame = new JFrame();
-     JTextArea ReportArea = new JTextArea();
-     ReportJFrame.add(ReportArea);
-     ReportArea.setText(this.report);
-     ReportJFrame.setSize(800, 800);
-     
-        
-        ReportJFrame.setVisible(true);
+   BrowserMatorReport newReport = new BrowserMatorReport(this.report);
+    
     }
     if (SiteTest.getEmailReportFail())
     {
@@ -105,17 +102,11 @@ public String doInBackground()
  
         }
         SiteTest.setRunActionsButtonName("Run All Procedures");
-        this.report = OutPutReport();
+        this.report = OutPutReport(true);
         if (SiteTest.getShowReport())
     {
-     JFrame ReportJFrame = new JFrame();
-     JTextArea ReportArea = new JTextArea();
-     ReportJFrame.add(ReportArea);
-     ReportArea.setText(this.report);
-     ReportJFrame.setSize(800, 800);
-     
-        
-        ReportJFrame.setVisible(true);
+    BrowserMatorReport newReport = new BrowserMatorReport(this.report);
+ 
     }
     if (SiteTest.getEmailReportFail())
     {
@@ -162,7 +153,7 @@ public String doInBackground()
    {
        subject = subject + " - Some Procedures FAILED";
    }
-    this.report = OutPutReport();
+    this.report = OutPutReport(false);
     
        
    applicationProps.put("mail.smtp.host", this.SiteTest.getSMTPHostname());
@@ -276,7 +267,14 @@ if (thisbugview.myTable==null)
    try
    {
        ThisAction.RunAction(driver);
-       
+       try
+       {
+    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + thisbugindex+1 + "-" + ThisAction.index+1 + "\" class = \"report_screenshots\"></img>";
+       }
+       catch (Exception ex)
+       {
+           System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
    }
   catch (UnreachableBrowserException ex)
      {
@@ -544,20 +542,20 @@ else
        if (SiteTest.getShowReport())
        {
     
-   this.report = OutPutReport();
+   this.report = OutPutReport(true);
  
      
        }
 
   }
-  public String OutPutReport()
+  public String OutPutReport(boolean includescreens)
   {
      
-      String ReportText= "Procedure report: " + SiteTest.filename + "\n";
-      
+      String ReportText= "Procedure report: " + SiteTest.filename + "<BR>";
+    
         for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
      {
-        ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + "\n";
+        ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + "<BR>";
         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
         int passvalueslength = 0;
         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
@@ -576,11 +574,13 @@ else
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
             String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
             String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisScreenshot = "";
             String pass_string = " has failed at ";
                    DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
     ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
         ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
+        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
         
@@ -594,7 +594,12 @@ else
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+             if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }
+             
               }
          else
          {
@@ -602,7 +607,11 @@ else
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+               if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }
               }
       
     }
@@ -631,7 +640,11 @@ else
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+              if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }
               }
          else
          {
@@ -639,7 +652,12 @@ else
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+               if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }
+               
               }
     
           
@@ -657,12 +675,13 @@ else
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
             String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
             String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisScreenshot = "";
             String pass_string = " has failed at ";
                    DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
     ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Pass;
         ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
-  
+        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
         
         if (ThisPassValue)
         {
@@ -674,7 +693,11 @@ else
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+              if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }   
               }
          else
          {
@@ -682,7 +705,12 @@ else
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
-               pass_string + ThisTimeValue.toString() + "\n";    
+               pass_string + ThisTimeValue.toString() + "<BR>";
+               if (includescreens)
+             {
+                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+             }
+          
               }
       
    
@@ -691,6 +719,7 @@ else
         }
   
      }
+         ReportText = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML><HEAD><STYLE>#Report { height: 800; overflow-y: auto;} #Controls { }</STYLE><SCRIPT>function ShowAllScreens(){ alert('show all screens'); } function HideAllScreens(){alert('hide all screens');}</SCRIPT></HEAD><BODY><DIV ID = \"Controls\"><BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON></DIV><DIV ID=\"Report\">\n" + ReportText + "</DIV></BODY></HTML>";
          return ReportText;    
   }  
 

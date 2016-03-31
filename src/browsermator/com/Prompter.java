@@ -20,12 +20,16 @@ public class Prompter extends JFrame implements ActionListener
                 FlowLayout flo = new FlowLayout();
                 setLayout(flo);
                 JLabel messageText = new JLabel(messagetodisplay);
+                JPanel flowpanel = new JPanel();
                 
-                add(messageText);
-                add(ContinueButton);
+                flowpanel.add(messageText);
+                JPanel boxpanel = new JPanel();
+                boxpanel.setLayout(new BoxLayout(boxpanel, BoxLayout.Y_AXIS));
+                boxpanel.add(flowpanel);
+                boxpanel.add(ContinueButton);
                 setSize(400, 200);
                 this.setTitle(messagetodisplay);
-                
+                add(boxpanel);
              
                 
                 setVisible(true);

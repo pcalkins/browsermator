@@ -27,9 +27,10 @@ Boolean Loopable;
 String pause_message;
 Boolean[] loop_pass_values;
 LocalDateTime[] loop_time_of_test;
+ String ScreenshotBase64;
    Action ()
    {
-  this.Pass = true;
+  this.Pass = false;
   this.TimeOfTest = LocalDateTime.now();
   this.NOT = false;
   this.Type = "";

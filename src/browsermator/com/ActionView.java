@@ -48,6 +48,8 @@ public abstract class ActionView implements Listenable, Initializable{
    JCheckBox JCheckBoxBoolVal1;
    JButton JButtonBrowseForFile;
    JButton JButtonDragIt;
+  
+   
    ActionView()
    {
 

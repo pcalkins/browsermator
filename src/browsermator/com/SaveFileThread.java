@@ -30,18 +30,26 @@ public class SaveFileThread extends SwingWorker<String, Integer>{
  SeleniumTestTool STAppFrame;
  boolean isSaveAs;
  boolean isFlatten;
- 
-    public SaveFileThread(STAppController mainApp, SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
+ int calling_MDI_Index;
+    public SaveFileThread(STAppController mainApp, SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
  {
    this.mainApp = mainApp;  
    this.STAppFrame = STAppFrame;
    this.isSaveAs = isSaveAs;
    this.isFlatten = isFlatten;
+   this.calling_MDI_Index = calling_MDI_Index;
  }
     @Override 
 public String doInBackground()
  {
-     mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+   if (calling_MDI_Index == -1)
+   {
+       mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+   }
+   else
+   {
+     STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+   }
      if (isFlatten)
      {
          STAppFrame.setFlattenFileButtonName("Flattenning...");
@@ -61,11 +69,20 @@ public String doInBackground()
 @Override
  protected void done()
  {
+     if (calling_MDI_Index == -1)
+   { 
   mainApp.Navigator.setCursor(Cursor.getDefaultCursor());   
-   if (isFlatten)
+   }
+      else
+   {
+     STAppFrame.setCursor(Cursor.getDefaultCursor());
+   }
+     if (isFlatten)
      {
-         STAppFrame.setFlattenFileButtonName("Flatten to New File");
+         STAppFrame.setFlattenFileButtonName("Flattenning...");
+         
      }
+     
  }
  @Override
  protected void process ( List <Integer> bugindex)
@@ -526,8 +543,9 @@ xmlfile.writeEndElement();
             xmlfile.close();
             if (isFlatten)
             {
- mainApp.OpenFile(file, mainApp.MDIClasses);
-     
+
+     OpenFileThread OPENREF = new OpenFileThread(mainApp, file, mainApp.MDIClasses, calling_MDI_Index);
+  OPENREF.execute();
             }
             else
             {

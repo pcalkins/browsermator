@@ -35,7 +35,7 @@ public class MyTable {
    int number_of_records;
    String DataFile;
    JTable DataTable;
-   Object[] columnnames;
+   Object[] columnnames = {"", ""};
    int rowcount;
    List<String[]> myEntries;
    
@@ -44,6 +44,8 @@ public class MyTable {
         DataFile = csvFile;
         DataTable = new JTable();
         myEntries = new ArrayList<String[]>();
+        if (csvFile!="")
+        {
    String[] left_right_side_of_dot = csvFile.split("\\.");
    String file_extension = left_right_side_of_dot[left_right_side_of_dot.length-1];
    
@@ -263,4 +265,13 @@ catch (Exception ex)
         }
        
  }
+        else
+        {
+           DefaultTableModel tableModel = new DefaultTableModel(columnnames, 0); 
+        DataTable = new JTable(tableModel);
+        DataTable.setPreferredScrollableViewportSize(new Dimension (1200,0));
+        
+        }   
+        }
+
 }

@@ -38,8 +38,8 @@ public class SeleniumTestTool extends JInternalFrame {
 
 String URL;
 String filename;
-ArrayList<Procedure> BugArray = new ArrayList();
-ArrayList<ProcedureView> BugViewArray = new ArrayList();
+ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
+ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
     ArrayList<String> AllFieldValues;
   JPanel BugPanel;
   Thread ActionThread;
@@ -175,6 +175,14 @@ catch (Exception e) {
  
    setSMTPHostname(smtp_hostname);
    setEmailLoginName(login_name);
+   try
+   {
+   password = Protector.decrypt(password);
+   }
+   catch (Exception ex)
+   {
+       System.out.println("Exception getting email password: " + ex.toString());
+   }
    setEmailPassword(password);
    setEmailTo(to);
    setEmailFrom(from);
@@ -434,8 +442,16 @@ bugindex++;
         {
          DataLoop newdataloop = new DataLoop();
          DataLoopView newdataloopview = new DataLoopView();
+         if (CSVFile.exists())
+         {
          newdataloopview.setJTableSource(CSVFile.getAbsolutePath());
          newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         }
+         else
+         {
+          newdataloopview.setJTableSource("");
+         newdataloop.setDataFile("");   
+         }
          BugArray.add(newdataloop);
          BugViewArray.add(newdataloopview);
          newdataloop.index = BugArray.size();

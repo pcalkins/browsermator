@@ -80,6 +80,7 @@ JLabelBugTitle.setText("Data Loop Title: ");
    
     AddToGrid(panelForTable, 9, 0, 9, 1, 1, 1);
      JTextFieldDataFile.setText(sourceCSVfile);
+     if (sourceCSVfile == "") { JTextFieldDataFile.setText ("The data file no longer exists or is unreadable.");}
     myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {

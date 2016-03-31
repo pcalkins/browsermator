@@ -69,9 +69,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.14";
+private final String version = "0.0.15";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.14";
+   public final String ProgramVersion = "0.0.15";
 
   
   
@@ -1328,13 +1328,15 @@ finally
   }
   public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
-     SaveFileThread SAVEREF = new SaveFileThread(this, STAppFrame, isSaveAs, isFlatten);
+      int current_MDI_Index = GetCurrentWindow();
+      
+     SaveFileThread SAVEREF = new SaveFileThread(this, STAppFrame, isSaveAs, isFlatten, current_MDI_Index);
   SAVEREF.execute();  
   }
      public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses) 
     {
-   
-  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses);
+    int current_MDI_Index = GetCurrentWindow();
+  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index);
   OPENREF.execute();
   
 
@@ -1964,39 +1966,23 @@ STAppFrame.addjButtonDoStuffActionListener(
   public void CheckArgs(String[] args)
   {
 
- //     if (args[0].equals("open"))
- //    {
- //    File file_to_open = new File(args[1]);
- //    try {
- //    int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
- //    if (MDI_CLASS_INDEX>=0)
- //    {
- //    DisplayWindow(MDI_CLASS_INDEX);
- //    }
- //    }
- //      catch (IOException | ClassNotFoundException ex) {
- //         System.out.println(ex.toString());
- //      }
-    
-     
-  //   }
-  //   if (args[0].equals("run"))
-  //   {
-  //  File file_to_open = new File(args[1]);
-  //   try {
-  //   int MDI_CLASS_INDEX = OpenFile(file_to_open, MDIClasses);
-  //    if (MDI_CLASS_INDEX>=0)
-  //   { 
-  //   DisplayWindow(MDI_CLASS_INDEX);
-  //        MDIClasses.get(MDI_CLASS_INDEX).RunActions(); 
-  //   }
-  //   }
-  //     catch (IOException | ClassNotFoundException ex) {
-  //       System.out.println(ex.toString());
-  //     }
-     
-    
-  //   }   
+      if (args[0].equals("open"))
+     {
+     File file_to_open = new File(args[1]);
+   
+     OpenFile(file_to_open, MDIClasses);
+   
+     }
+  
+    if (args[0].equals("run"))
+    {
+   File file_to_open = new File(args[1]);
+    OpenFile(file_to_open, MDIClasses);
+   int current_MDI_Index = GetCurrentWindow();
+    if (current_MDI_Index>=0) {    MDIClasses.get(current_MDI_Index).RunActions(); }
+   
+    }
+       
   }
   
    public void DisplayWindow (int MDI_CLASS_INDEX)
