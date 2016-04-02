@@ -96,12 +96,12 @@ public class ActionsMaster {
    PassFailActionViewHashMap.put("Find Image SRC", new FindImageSRCPassFailActionView());
    PassFailActionViewHashMap.put("Find Page Title", new FindPAGETITLEPassFailActionView());
    PassFailActionViewHashMap.put("Find XPATH", new FindXPATHPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Text", new NOTFindTextPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find HREF", new NOTFindHREFPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find IFrame SRC", new NOTFindIFrameSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Image SRC", new NOTFindImageSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find Page Title", new NOTFindPAGETITLEPassFailActionView());
-   PassFailActionViewHashMap.put("Do Not Find XPATH", new NOTFindXPATHPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find Text", new NOTFindTextPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find HREF", new NOTFindHREFPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find IFrame SRC", new NOTFindIFrameSRCPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find Image SRC", new NOTFindImageSRCPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find Page Title", new NOTFindPAGETITLEPassFailActionView());
+   PassFailActionViewHashMap.put("Do NOT Find XPATH", new NOTFindXPATHPassFailActionView());
    
  PassFailActionHashMap.put("Yes/No Prompt", new YesNoPromptPassFailAction(""));
  PassFailActionHashMap.put("Find Text", new FindTextPassFailAction("", false));
@@ -110,11 +110,11 @@ public class ActionsMaster {
  PassFailActionHashMap.put("Find Image SRC", new FindImageSRCPassFailAction("", false));
  PassFailActionHashMap.put("Find Page Title", new FindPAGETITLEPassFailAction("", false));
  PassFailActionHashMap.put("Find XPATH", new FindXPATHPassFailAction("", false));
- PassFailActionHashMap.put("Do Not Find Text", new FindTextPassFailAction("", true));
- PassFailActionHashMap.put("Do Not Find HREF", new FindHREFPassFailAction("", true));
- PassFailActionHashMap.put("Do Not Find IFrame SRC", new FindIFrameSRCPassFailAction("", true));
- PassFailActionHashMap.put("Do Not Find Image SRC", new FindImageSRCPassFailAction("", true));
- PassFailActionHashMap.put("Do Not Find Page Title", new FindPAGETITLEPassFailAction("", true));
- PassFailActionHashMap.put("Do Not Find XPATH", new FindXPATHPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find Text", new FindTextPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find HREF", new FindHREFPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find IFrame SRC", new FindIFrameSRCPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find Image SRC", new FindImageSRCPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find Page Title", new FindPAGETITLEPassFailAction("", true));
+ PassFailActionHashMap.put("Do NOT Find XPATH", new FindXPATHPassFailAction("", true));
   }
 }
