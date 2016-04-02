@@ -18,6 +18,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -504,6 +505,7 @@ if (!potentialDrag) return;
 
    });
        }
+
  @Override
    public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
@@ -513,7 +515,11 @@ if (!potentialDrag) return;
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
                             Window.UpdateScrollPane(newbugview);
+                     
+   
    });
+              
+                        
                          addJButtonOKActionActionListener((ActionEvent evt) -> {
          String ACommand = evt.getActionCommand();
          
