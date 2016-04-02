@@ -6,10 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureRecognizer;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -44,7 +40,6 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   JPanel BugPanel;
   Thread ActionThread;
   Boolean AllTestsPassed;
-  String report;
   Boolean ShowReport;
   Boolean EmailReport;
   Boolean EmailReportFail;
@@ -384,11 +379,12 @@ bugindex++;
       for (ActionView AV : newbugview.ActionsViewList )
         {
 
-       
+         AV.SetIndexes(newbugview.index, actionindex);
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
+         
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
          
          ActionPanel.add(AV.JPanelAction);
@@ -413,7 +409,7 @@ bugindex++;
     RunAllTests REFSYNCH = new RunAllTests(this);
     REFSYNCH.execute();
     
-    this.report = REFSYNCH.report;
+    
  }
 
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
@@ -786,9 +782,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
   {
   Point visible_location = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getLocation();
   Dimension visible_size = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getSize();
-  Rectangle visible = new Rectangle (visible_location.x, visible_location.y, visible_size.width, visible_size.height);
  
-  thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.scrollRectToVisible(visible);     
   }
  
   this.changes=true;
