@@ -7,15 +7,8 @@ package browsermator.com;
 import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
@@ -31,15 +24,16 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 public class RunAllTests extends SwingWorker<String, Integer>
 {
 SeleniumTestTool SiteTest;
-String report;
 String targetbrowser;
 String OSType;
 WebDriver driver;
 String firefox_path;
 FireFoxProperties FFprops;
+BrowserMatorReport BrowserMatorReport;
 
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
+   this.BrowserMatorReport = new BrowserMatorReport(in_SiteTest);
   FFprops = new FireFoxProperties();
   this.firefox_path = FFprops.LoadFirefoxPath();
    this.SiteTest = in_SiteTest;
@@ -68,8 +62,8 @@ public String doInBackground()
      SiteTest.setRunActionsButtonName(donetext);
     if (SiteTest.getShowReport())
     {
-   BrowserMatorReport newReport = new BrowserMatorReport(this.report);
-    
+   BrowserMatorReport.OutPutReports();
+   BrowserMatorReport.ShowHTMLReport();
     }
     if (SiteTest.getEmailReportFail())
     {
@@ -79,13 +73,13 @@ public String doInBackground()
         }
         else
         {
-            EmailReport();
+            BrowserMatorReport.EmailReport();
         }
     }
     if (SiteTest.getEmailReport())
     {
  
-        EmailReport();
+        BrowserMatorReport.EmailReport();
   
     }
     if (SiteTest.getExitAfter())
@@ -102,10 +96,10 @@ public String doInBackground()
  
         }
         SiteTest.setRunActionsButtonName("Run All Procedures");
-        this.report = OutPutReport(true);
+        BrowserMatorReport.OutPutReports();
         if (SiteTest.getShowReport())
     {
-    BrowserMatorReport newReport = new BrowserMatorReport(this.report);
+    BrowserMatorReport.ShowHTMLReport();
  
     }
     if (SiteTest.getEmailReportFail())
@@ -116,13 +110,13 @@ public String doInBackground()
         }
         else
         {
-            EmailReport();
+            BrowserMatorReport.EmailReport();
         }
     }
     if (SiteTest.getEmailReport())
     {
  
-        EmailReport();
+        BrowserMatorReport.EmailReport();
   
     }
     if (SiteTest.getExitAfter())
@@ -133,53 +127,7 @@ public String doInBackground()
     }
      
  }
-  public void EmailReport ()
-   {
-            Properties applicationProps = new Properties();
-
-
-   // String smtp_hostname = this.SiteTest.getSMTPHostname();
-   String login_name = this.SiteTest.getEmailLoginName();
-   
-   String password = this.SiteTest.getEmailPassword();
-   String to = this.SiteTest.getEmailTo();
-   String from = this.SiteTest.getEmailFrom();
-   String subject = this.SiteTest.getSubject();
-   if (this.SiteTest.AllTestsPassed.equals(true))
-   {
-       subject = subject + " - All Procedures PASSED";
-   }
-   else
-   {
-       subject = subject + " - Some Procedures FAILED";
-   }
-    this.report = OutPutReport(false);
-    
-       
-   applicationProps.put("mail.smtp.host", this.SiteTest.getSMTPHostname());
-    applicationProps.put("email_login_name", this.SiteTest.getEmailLoginName());
-     applicationProps.put("email_login_password", this.SiteTest.getEmailPassword());
-      applicationProps.put("email_to", this.SiteTest.getEmailTo());
-       applicationProps.put("email_from", this.SiteTest.getEmailFrom());
-       applicationProps.put("email_subject", this.SiteTest.getSubject());
-       
-    Session session = Session.getInstance(applicationProps, null);
-
-    try {
-        MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(from);
-        msg.setRecipients(Message.RecipientType.TO,
-                          to);
-        msg.setSubject(subject);
-        msg.setSentDate(new Date());
-        msg.setText(this.report);
-        Transport.send(msg, login_name, password);
-    } catch (MessagingException mex) {
-    //    System.out.println("send failed, exception: " + mex);
-     Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.");    
-    }
-   
-   }
+ 
   
 @Override
  protected void process ( List <Integer> bugindex)
@@ -282,6 +230,13 @@ if (thisbugview.myTable==null)
       ThisAction.Pass = false;
        
   FillReport();
+         if (SiteTest.getShowReport())
+       {
+    
+       BrowserMatorReport.OutPutReports();
+       BrowserMatorReport.ShowHTMLReport();
+     
+       }
               driver.close();
               publish(thisbugindex);
           break;
@@ -336,6 +291,13 @@ else
           ThisAction.loop_time_of_test[x] = LocalDateTime.now();
         
   FillReport();
+       if (SiteTest.getShowReport())
+       {
+    
+       BrowserMatorReport.OutPutReports();
+       BrowserMatorReport.ShowHTMLReport();
+     
+       }
                driver.close();
                publish(thisbugindex);
           break;
@@ -377,6 +339,13 @@ else
         ThisAction.loop_time_of_test[x] = LocalDateTime.now();
         
   FillReport();
+       if (SiteTest.getShowReport())
+       {
+    
+       BrowserMatorReport.OutPutReports();
+       BrowserMatorReport.ShowHTMLReport();
+     
+       }
                driver.close();
                publish(thisbugindex);
           break;
@@ -539,188 +508,8 @@ else
          SiteTest.AllTestsPassed = false;
      }
 
-       if (SiteTest.getShowReport())
-       {
-    
-   this.report = OutPutReport(true);
- 
-     
-       }
+  
 
   }
-  public String OutPutReport(boolean includescreens)
-  {
-     
-      String ReportText= "Procedure report: " + SiteTest.filename + "<BR>";
-    
-        for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
-     {
-        ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + "<BR>";
-        int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
-        int passvalueslength = 0;
-        if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
-        {
-              passvalueslength = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values.length;
-        }
-              if (passvalueslength>0)
-            {
-                for (int passindex = 0; passindex<passvalueslength; passindex++)
-                {
-        for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
-        {
-      
-                Boolean ThisPassValue = false;
-            LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
-            String ThisScreenshot = "";
-            String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
-    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
-    {
-        
-        if (ThisPassValue)
-        {
-            pass_string = " has passed at ";
-        }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
-              {
-             ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " ########" + 
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-             if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }
-             
-              }
-         else
-         {
-              ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " " + ThisValue2 +
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-               if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }
-              }
-      
-    }
-    else
-    {
-  
-         if (ThisPassValue)
-        {
-            pass_string = " has passed at ";
-        }
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
- if (!"".equals(concat_variable))
- {
-     ThisValue1 = concat_variable;
- }
-      concat_variable2 = var2Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
-     if (!"".equals(concat_variable2))
-     {
-    ThisValue2 = concat_variable2;  
-     }
- if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
-              {
-             ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " ########" + 
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-              if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }
-              }
-         else
-         {
-              ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " " + ThisValue2 +
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-               if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }
-               
-              }
-    
-          
-                }
-            }
-            }
-            }
-            else
-            {
-                   for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
-        {
-      
-                Boolean ThisPassValue = false;
-            LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
-            String ThisScreenshot = "";
-            String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Pass;
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
-        
-        if (ThisPassValue)
-        {
-            pass_string = " has passed at ";
-        }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
-              {
-             ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " ########" + 
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-              if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }   
-              }
-         else
-         {
-              ReportText = ReportText + "Action Performed: " + 
-                ThisType + " " + ThisValue1
-                + " " + ThisValue2 +
-                     
-               pass_string + ThisTimeValue.toString() + "<BR>";
-               if (includescreens)
-             {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
-             }
-          
-              }
-      
-   
-            }
-    
-        }
-  
-     }
-         ReportText = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML><HEAD><STYLE>#Report { height: 800; overflow-y: auto;} #Controls { }</STYLE><SCRIPT>function ShowAllScreens(){ alert('show all screens'); } function HideAllScreens(){alert('hide all screens');}</SCRIPT></HEAD><BODY><DIV ID = \"Controls\"><BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON></DIV><DIV ID=\"Report\">\n" + ReportText + "</DIV></BODY></HTML>";
-         return ReportText;    
-  }  
-
+ 
 }
