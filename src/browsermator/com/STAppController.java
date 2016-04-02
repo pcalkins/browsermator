@@ -69,9 +69,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.15";
+private final String version = "0.0.16";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.15";
+   public final String ProgramVersion = "0.0.16";
 
   
   
