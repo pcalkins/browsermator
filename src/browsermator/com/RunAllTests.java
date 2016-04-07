@@ -96,29 +96,8 @@ public String doInBackground()
  
         }
         SiteTest.setRunActionsButtonName("Run All Procedures");
-        BrowserMatorReport.OutPutReports();
-        if (SiteTest.getShowReport())
-    {
-    BrowserMatorReport.ShowHTMLReport();
  
-    }
-    if (SiteTest.getEmailReportFail())
-    {
-        if (SiteTest.AllTestsPassed)
-        {
-            
-        }
-        else
-        {
-            BrowserMatorReport.EmailReport();
-        }
-    }
-    if (SiteTest.getEmailReport())
-    {
- 
-        BrowserMatorReport.EmailReport();
-  
-    }
+   
     if (SiteTest.getExitAfter())
     {
     System.exit(0);
@@ -196,20 +175,26 @@ public String doInBackground()
         
   
   int thisbugindex = 0;
+  int bug_INT = thisbugindex+1;
+  String bug_ID = Integer.toString(bug_INT);
+  
      for (Procedure thisbug : SiteTest.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
         ArrayList<Action> Actions = thisbug.ActionsList;
 
 
-int actionsrun = 0;
+int action_INT = 0;
+String action_ID = "";
 ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
 
 if (thisbugview.myTable==null)
 {
+    action_INT=0;
    for( Action ThisAction : thisbug.ActionsList ) {
            String original_value = ThisAction.Variable2;
- 
+ action_INT++;
+ action_ID = Integer.toString(action_INT);
            if (!ThisAction.Locked)
    {
    try
@@ -217,7 +202,8 @@ if (thisbugview.myTable==null)
        ThisAction.RunAction(driver);
        try
        {
-    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + thisbugindex+1 + "-" + ThisAction.index+1 + "\" class = \"report_screenshots\"></img>";
+    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+ //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
        }
        catch (Exception ex)
        {
@@ -253,12 +239,14 @@ else
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
+ 
  for (int x = 0; x<number_of_rows; x++)
     {
-      
+  action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
       
-        
+       action_INT++;
+ action_ID = Integer.toString(action_INT) + "-" + Integer.toString(x);   
         String original_value1 = ThisAction.Variable1;
            String original_value2 = ThisAction.Variable2;
       if (!ThisAction.Locked)
@@ -275,6 +263,9 @@ else
           ThisAction.RunAction(driver, pause_message);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+// ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+  
         }
        else
         {
@@ -283,6 +274,9 @@ else
         ThisAction.RunAction(driver);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+// ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+  
             }
              catch (UnreachableBrowserException ex)
      {

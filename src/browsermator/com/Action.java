@@ -28,6 +28,7 @@ String pause_message;
 Boolean[] loop_pass_values;
 LocalDateTime[] loop_time_of_test;
  String ScreenshotBase64;
+ String[] loop_ScreenshotsBase64;
    Action ()
    {
   this.Pass = false;
@@ -48,11 +49,12 @@ LocalDateTime[] loop_time_of_test;
    {
        this.loop_pass_values = new Boolean[number_of_rows];
        this.loop_time_of_test = new LocalDateTime[number_of_rows];
-       
+       this.loop_ScreenshotsBase64 = new String[number_of_rows];
        for (int x = 0; x<number_of_rows; x++)
        {
         this.loop_pass_values[x] = false;
         this.loop_time_of_test[x] = LocalDateTime.now();
+        this.loop_ScreenshotsBase64[x] = "<img src = \"\"></img>";
        }
    }
    public void RunAction(WebDriver driver)

@@ -111,16 +111,18 @@
                                           <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="jTextFieldSMTPHostName" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldEmailLoginName" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldEmailTo" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldEmailFrom" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldSubject" alignment="0" pref="286" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldEmailPassword" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jTextFieldSMTPHostName" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldEmailLoginName" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldEmailTo" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldEmailFrom" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldSubject" alignment="0" pref="286" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldEmailPassword" alignment="0" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jButtonClearEmailSettings" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jButtonLoadEmailSettings" max="32767" attributes="0"/>
                                           </Group>
-                                          <Component id="jButtonClearEmailSettings" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -225,7 +227,10 @@
                           <Component id="jTextFieldSubject" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButtonClearEmailSettings" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonClearEmailSettings" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonLoadEmailSettings" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
           </Group>
@@ -442,6 +447,11 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Flatten to New File"/>
         <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonLoadEmailSettings">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Load Default Settings"/>
       </Properties>
     </Component>
   </SubComponents>

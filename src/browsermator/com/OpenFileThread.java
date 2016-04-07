@@ -40,8 +40,10 @@ File file;
 ArrayList<SeleniumTestTool> MDIClasses;
 STAppController mainApp;
 int calling_MDI_Index;
-    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index)
+boolean isFlatten;
+    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten)
 {
+  this.isFlatten = isFlatten;
   this.mainApp = mainApp;
   this.file = file;
   this.MDIClasses = MDIClasses;
@@ -69,8 +71,11 @@ public String doInBackground()
  protected void done()
  {
   mainApp.Navigator.setCursor(Cursor.getDefaultCursor()); 
-
-     //    MDIClasses.get(MDIClasses.size()-1).setFlattenFileButtonName("Flatten to New File");
+  if (isFlatten)
+  {
+  MDIClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
+  }
+   
      
  }
  @Override
@@ -779,7 +784,22 @@ STAppFrame.addjButtonDoStuffActionListener(
         }
       }
     );
-      
+    STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+ STAppFrame.LoadGlobalEmailSettings();
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
+  
+        }
+      }
+    );    
     STAppFrame.addjButtonNewBugActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)

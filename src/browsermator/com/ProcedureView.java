@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -32,7 +33,8 @@ public class ProcedureView {
    //   JLabel JLabelAddActions = new JLabel("Add Actions:");
       JLabel JLabelBugIndex = new JLabel ("#");
   //    JLabel JLabelBugNumber = new JLabel("Bug Number: ");
-   JLabel JLabelBugTitle = new JLabel ("Procedure Title: ");
+   JLabel JLabelBugTitle = new JLabel ("Procedure");
+   JLabel JLabelBugTitle2 = new JLabel ("Title:");
      JTextField JTextFieldBugTitle = new JTextField("", 35);
   
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
@@ -74,6 +76,9 @@ public class ProcedureView {
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
     int last_selected_jtextfield_variable_number = 0;
+      JButton JButtonMoveProcedureUp = new JButton("/\\");
+      JButton JButtonMoveProcedureDown = new JButton ("\\/");
+      JPanel MoveButtonsPanel = new JPanel();
       
     ProcedureView()
      {
@@ -106,14 +111,17 @@ for (String passfailaction_name : passfailaction_keys)
   
 
      JPanelBug.setLayout(BugLayout);
+     JPanelBug.setSize(600, 252);
      BugConstraints.fill = GridBagConstraints.BOTH;
      BugConstraints.anchor = GridBagConstraints.WEST;
      BugConstraints.insets = new Insets(2,2,4,10); //top, left, bottom, right
      double global_weightx = 1/6;
      double global_weighty = 1/4;
      JPanel ProcedurePlusIndex = new JPanel();
-     ProcedurePlusIndex.add(JLabelBugIndex);
      ProcedurePlusIndex.add(JLabelBugTitle);
+     ProcedurePlusIndex.add(JLabelBugIndex);
+     ProcedurePlusIndex.add(JLabelBugTitle2);
+     
      
      JPanel LeftSideButtonsPanel = new JPanel();
      BoxLayout LeftSideButtonsLayout = new BoxLayout(LeftSideButtonsPanel, BoxLayout.PAGE_AXIS);
@@ -147,7 +155,8 @@ for (String passfailaction_name : passfailaction_keys)
      
   
      LeftSideButtonsPanel.setLayout(LeftSideButtonsLayout);
-     
+     MoveButtonsPanel.add(JButtonMoveProcedureUp);
+     MoveButtonsPanel.add(JButtonMoveProcedureDown);
      
  
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
@@ -158,7 +167,8 @@ for (String passfailaction_name : passfailaction_keys)
   AddToGrid(JButtonDeleteBug, 1, 3, 1, 1, global_weightx, global_weighty);
  
   AddToGrid(JButtonRunTest, 1, 4, 1, 1, global_weightx, global_weighty);
-
+  
+  AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
      JLabelPass.setVisible(false);
 
     AddToGrid(JLabelPass, 1, 5, 1, 1, global_weightx, global_weighty);  
@@ -231,7 +241,15 @@ for (String passfailaction_name : passfailaction_keys)
          BugLayout.setConstraints(component, BugConstraints);
          JPanelBug.add(component);
      }
-     
+         public void addJButtonMoveProcedureUpActionListener(ActionListener listener)
+       {
+       JButtonMoveProcedureUp.addActionListener(listener);
+           
+       }
+         public void addJButtonMoveProcedureDownActionListener(ActionListener listener)
+         {
+         JButtonMoveProcedureDown.addActionListener(listener);    
+         }
      public void addJButtonRunTestActionListener(ActionListener listener)
      {
          JButtonRunTest.addActionListener(listener);
@@ -294,5 +312,5 @@ for (String passfailaction_name : passfailaction_keys)
    
        
    }
-     
+  
 }

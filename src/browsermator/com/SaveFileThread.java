@@ -544,12 +544,12 @@ xmlfile.writeEndElement();
             if (isFlatten)
             {
 
-     OpenFileThread OPENREF = new OpenFileThread(mainApp, file, mainApp.MDIClasses, calling_MDI_Index);
+     OpenFileThread OPENREF = new OpenFileThread(mainApp, file, mainApp.MDIClasses, calling_MDI_Index, true);
   OPENREF.execute();
             }
             else
             {
-       STAppFrame.filename = file.getAbsolutePath();
+ 
     STAppFrame.setProperties(file.getAbsolutePath());
             STAppFrame.AllFieldValues.clear();
            

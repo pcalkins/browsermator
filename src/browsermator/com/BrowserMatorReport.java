@@ -175,8 +175,8 @@ mainPanel = new JPanel(new BorderLayout());
      if (includescreens)
      {
          LineBreak = "<BR>"; 
-         Header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML><HEAD><STYLE>#Report { height: 800; overflow-y: auto;} #Controls { }</STYLE><SCRIPT>function ShowAllScreens(){ alert('show all screens'); } function HideAllScreens(){alert('hide all screens');}</SCRIPT></HEAD><BODY><DIV ID = \"Controls\"><BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON></DIV><DIV ID=\"Report\">";
-         Footer = "</DIV></BODY></HTML>";
+         Header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML>\n<HEAD>\n<STYLE>#Report { height: 800; overflow-y: auto;}\n #Controls { }\n</STYLE>\n<SCRIPT>\nfunction ShowHideThisScreen(button_id)\n {alert(button_id); }\nfunction ShowAllScreens()\n{ alert('show all screens'); }\n function HideAllScreens()\n{alert('hide all screens');}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
+         Footer = "</DIV>\n</BODY>\n</HTML>";
      }
      else
      {
@@ -186,10 +186,15 @@ mainPanel = new JPanel(new BorderLayout());
      }
      
       String ReportText= "Procedure report: " + SiteTest.filename + LineBreak;
-    
+    int action_INT=0;
+    int bug_INT=0;
+    String bug_ID="";
+    String action_ID="";
         for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
      {
-        ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
+       bug_INT = BugViewIndex + 1;
+       bug_ID = Integer.toString(bug_INT);
+         ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
         int passvalueslength = 0;
         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
@@ -202,7 +207,9 @@ mainPanel = new JPanel(new BorderLayout());
                 {
         for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
         {
-      
+        action_INT = ActionViewIndex + 1;
+        action_ID = Integer.toString(action_INT) + "-" + passindex;
+       
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
@@ -214,7 +221,7 @@ mainPanel = new JPanel(new BorderLayout());
     DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
     ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
         ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
+        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
         
@@ -231,7 +238,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
              if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              
               }
@@ -244,7 +251,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
               }
       
@@ -277,7 +284,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
              }
               }
          else
@@ -289,7 +296,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON>"+LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>"+LineBreak + ThisScreenshot + LineBreak;
              }
                
               }
@@ -303,7 +310,10 @@ mainPanel = new JPanel(new BorderLayout());
             {
                    for (int ActionViewIndex = 0; ActionViewIndex<number_of_actions; ActionViewIndex++)
         {
-      
+        
+           action_INT = ActionViewIndex + 1;
+        action_ID = Integer.toString(action_INT);
+        
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
@@ -330,7 +340,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
              }   
               }
          else
@@ -342,7 +352,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "<BUTTON NAME =\"ShowHideButton" + BugViewIndex+1 + "-" + ActionViewIndex+1 + "\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
              }
           
               }

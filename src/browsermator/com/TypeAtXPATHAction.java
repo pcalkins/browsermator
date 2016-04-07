@@ -32,6 +32,7 @@ public class TypeAtXPATHAction extends Action
         element.sendKeys(this.Variable2);
 if (this.BoolVal1.equals(true))
 {
+    
  element.sendKeys(Keys.RETURN);
  
 }

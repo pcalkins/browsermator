@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -31,6 +32,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -60,6 +62,7 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem openMenuItem;
      private JMenuItem saveMenuItem;
      private JMenuItem exitMenuItem;
+     private JMenuItem closeMenuItem;
      private JMenu jMenuView;
      private JMenu jMenuThemes;
      private JMenu helpMenu;
@@ -69,9 +72,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.17";
+private final String version = "0.0.18";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.17";
+   public final String ProgramVersion = "0.0.18";
 
   
   
@@ -329,6 +332,33 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
+  
+  addFileMenuCloseActionListener( new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
+                 
+                  int closed =  CheckToSaveChanges(STAppFrame);
+           
+    
+       MDIClasses.remove(MDIClasses.size()-1); 
+       STAppFrame.dispose();
+      }
+                    
+              
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to close. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+              
+            
+           } 
+       });
   addFileMenuSaveAsActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
@@ -439,7 +469,22 @@ SeleniumToolDesktop.add(Navigator);
         }
       }
     );
-   
+       STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+ STAppFrame.LoadGlobalEmailSettings();
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
+  
+        }
+      }
+    );
    STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -825,6 +870,22 @@ SeleniumToolDesktop.add(Navigator);
         }
       }
     );
+          STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+ STAppFrame.LoadGlobalEmailSettings();
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
+  
+        }
+      }
+    );
   STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -1049,8 +1110,23 @@ return 1;
     }
    
       private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        System.exit(0);
+      int closure = 0;
+        for (SeleniumTestTool openwindow : MDIClasses)
+      { 
+        closure  =  CheckToSaveChanges(openwindow);
+           
+      if (closure==1)
+      {
+      openwindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      }
+      else
+      {
+       openwindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+       System.exit(0);
+      }
     }
+        System.exit(0);
+      }
   
       
         @SuppressWarnings("unchecked")
@@ -1071,11 +1147,13 @@ return 1;
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
+        closeMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
         newFileItem.setMnemonic('n');
         newFileItem.setText("New");
         openMenuItem.setMnemonic('o');
         openMenuItem.setText("Open");
+        closeMenuItem.setText("Close");
         importMenuItem.setMnemonic('i');
         importMenuItem.setText("Import");
         fileMenu.add(newFileItem);
@@ -1085,7 +1163,9 @@ return 1;
         fileMenu.setText("File");
         saveAsMenuItem.setText("Save As");
         saveAsMenuItem.setMnemonic('a');
-             
+           saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));  
+           openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); 
+           closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));  
                   LAFOptions = UIManager.getInstalledLookAndFeels();
    LookAndFeelOptions = new JRadioButtonMenuItem[LAFOptions.length];
    LookAndFeelGroup = new ButtonGroup();
@@ -1131,7 +1211,8 @@ return 1;
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Save");
         fileMenu.add(saveMenuItem);
-
+        fileMenu.add(closeMenuItem);
+        
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
       
@@ -1150,6 +1231,7 @@ return 1;
                 exitMenuItemActionPerformed(evt);
             }
         });
+        
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
@@ -1189,7 +1271,10 @@ return 1;
     //    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
     }  
-    
+   public void addFileMenuCloseActionListener (ActionListener listener)
+   {
+       closeMenuItem.addActionListener(listener);
+   }
    public void addFileMenuNewActionListener (ActionListener listener)
    {
        newFileItem.addActionListener(listener);
@@ -1336,7 +1421,7 @@ finally
      public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses) 
     {
     int current_MDI_Index = GetCurrentWindow();
-  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index);
+  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index, false);
   OPENREF.execute();
   
 
@@ -1902,6 +1987,22 @@ STAppFrame.addjButtonDoStuffActionListener(
  
  STAppFrame.ClearEmailSettings(); 
  
+  
+        }
+      }
+    );
+         STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+ STAppFrame.LoadGlobalEmailSettings();
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
   
         }
       }

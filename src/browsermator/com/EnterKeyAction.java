@@ -23,7 +23,8 @@ public class EnterKeyAction extends Action {
     {
         Actions actions = new Actions(driver);
  
- actions.sendKeys(Keys.RETURN).perform(); 
+ actions.keyDown(Keys.RETURN).perform(); 
+ actions.keyUp(Keys.RETURN).perform();
  
      
     }
