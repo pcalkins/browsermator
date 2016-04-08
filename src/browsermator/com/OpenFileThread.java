@@ -41,13 +41,15 @@ ArrayList<SeleniumTestTool> MDIClasses;
 STAppController mainApp;
 int calling_MDI_Index;
 boolean isFlatten;
-    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten)
+boolean RunIt;
+    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
 {
   this.isFlatten = isFlatten;
   this.mainApp = mainApp;
   this.file = file;
   this.MDIClasses = MDIClasses;
   this.calling_MDI_Index = calling_MDI_Index;
+  this.RunIt = RunIt;
 }
 @Override 
 public String doInBackground()
@@ -75,7 +77,11 @@ public String doInBackground()
   {
   MDIClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
   }
-   
+   if (RunIt)
+  {
+   int current_MDI_Index = mainApp.GetCurrentWindow();
+    if (current_MDI_Index>=0) {    MDIClasses.get(current_MDI_Index).RunActions(); }   
+  } 
      
  }
  @Override

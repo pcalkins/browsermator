@@ -5,25 +5,17 @@
  */
 package browsermator.com;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
+
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.UnreachableBrowserException;
+
 
 
 
@@ -32,9 +24,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     ProcedureView thisbugview;
     String targetbrowser;
     String OSType;
+    FireFoxProperties FFprops;
     String firefox_path;
-  public RunASingleTest (Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
+    SeleniumTestTool SiteTest;
+  public RunASingleTest (SeleniumTestTool in_SiteTest, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
+              this.SiteTest = in_SiteTest;
               this.bugtorun = in_bugtorun;
               this.thisbugview = in_thisbugview;
               this.targetbrowser = targetbrowser;
@@ -42,7 +37,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
           }
     public String doInBackground()
  {
-       LoadFirefoxPath();
+      FFprops = new FireFoxProperties();
+  this.firefox_path = FFprops.LoadFirefoxPath();
    thisbugview.JButtonRunTest.setText("Running...");
     RunSingleTest(bugtorun, thisbugview, targetbrowser, OSType);
     String donetext = "Run";
@@ -59,21 +55,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     {
             if (ex.toString().contains("Cannot find firefox"))
         {
-            System.out.println("Cannot find binary for Firefox");
-  
- JFileChooser FindFireFoxExe = new JFileChooser("Browse for Firefox executable");
- FindFireFoxExe.setDialogTitle("Browse for Firefox executable (Selenium had a problem loading Firefox... this may fix it.)");
-
- JPanel newJPanel = new JPanel();
- int returnVal = FindFireFoxExe.showOpenDialog(newJPanel);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = FindFireFoxExe.getSelectedFile();   
-
-   WriteFireFoxPathToProperties(file.getAbsolutePath());
-  
- Prompter closeDown = new Prompter("Close and re-open the Browsermator to update Firefox executable path.");
-  
+       FFprops.BrowseforFFPath();
   
             }
             
@@ -81,18 +63,18 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
             {
             
             }
-        }
+   
         thisbugview.JButtonRunTest.setText("Run"); 
-        System.out.println(ex);
+      
     }
-  
+   SiteTest.setCursor(Cursor.getDefaultCursor()); 
      
  }
  
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, String TargetBrowser, String OSType)
  {
    
- 
+  SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
   WebDriver driver = null; 
  //  WebDriver driver = new FirefoxDriver();
    switch (TargetBrowser)
@@ -141,10 +123,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
    }
  
-  int WaitTime = 3;
- driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+  int WaitTime = SiteTest.GetWaitTime();
+// driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
      int totalpause = WaitTime * 1000;
-     
+ 
 if (thisbugview.myTable==null)
 {
    for( Action ThisAction : bugtorun.ActionsList ) {
@@ -153,12 +135,20 @@ if (thisbugview.myTable==null)
    {
    try
    {
+        try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
        ThisAction.RunAction(driver);
        
    }
    catch (Exception ex)
    {
-  
+   SiteTest.setCursor(Cursor.getDefaultCursor()); 
      driver.close();
         break;
      
@@ -184,15 +174,25 @@ else
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
+         try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
        try
        {
         ThisAction.RunAction(driver);
        }
-        catch (UnreachableBrowserException ex)
+        catch (Exception ex)
      {
    
         driver.close();
-       
+        ThisAction.Variable1 = original_value1;
+        ThisAction.Variable2 = original_value2;
+        SiteTest.setCursor(Cursor.getDefaultCursor()); 
           break;
        
      }
@@ -205,29 +205,46 @@ else
             String concat_variable;
             String concat_variable2;
  concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
- if (!"".equals(concat_variable))
+ if (var1Parser.hasDataLoopVar)
  {
-      ThisAction.Variable1 = concat_variable;
+     ThisAction.Variable1 = concat_variable;
+        if ("".equals(ThisAction.Variable1))
+           {
+               ThisAction.Variable1 = " ";
+           }
  }
-      concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
-     if (!"".equals(concat_variable2))
-     {
-      ThisAction.Variable2 = concat_variable2;  
-     }
+
+           concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+   if (var2Parser.hasDataLoopVar)
+ {
+     ThisAction.Variable2 = concat_variable2;
+     if ("".equals(ThisAction.Variable2))
+           {
+               ThisAction.Variable2 = " ";
+           } 
+ }  
      try
      {
+                         try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
       ThisAction.RunAction(driver);
        ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
 
      }
-     catch (UnreachableBrowserException ex)
+     catch (Exception ex)
      {
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
           driver.close();
-       
+       SiteTest.setCursor(Cursor.getDefaultCursor()); 
           break;
        
      }
@@ -265,61 +282,5 @@ else
 }
     
  } 
-   public void LoadFirefoxPath()
-  {
-          Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
-try
-{
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
-             applicationProps.load(input);
-         }
-         catch (Exception e)
-         {
-             System.out.println(e);
-           
-             
-         }
-}
-catch (Exception e) {
-			System.out.println("Exception loading firefox path: " + e);
-                        
-		} 
 
-    this.firefox_path = applicationProps.getProperty("firefox_exe");
-   
- 
- 
-   
-        
-  }
-  public void WriteFireFoxPathToProperties(String pathtofirefox)
-  {
-      String userdir = System.getProperty("user.home");
-      Properties applicationProps = new Properties();
-      try
-{
-
-      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-      catch (Exception ex)
-      {
-          
-      }
-      applicationProps.setProperty("firefox_exe", pathtofirefox);
-           try {
-       FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
-    applicationProps.store(writer, "browsermator_settings");
-    writer.close();
-         
-  
-   
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception writing firefox path: " + e);
-		}      
-  }
 }

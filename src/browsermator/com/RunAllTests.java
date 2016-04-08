@@ -8,7 +8,6 @@ import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
@@ -18,8 +17,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.UnreachableBrowserException;
-
 
 public class RunAllTests extends SwingWorker<String, Integer>
 {
@@ -97,7 +94,7 @@ public String doInBackground()
         }
         SiteTest.setRunActionsButtonName("Run All Procedures");
  
-   
+   SiteTest.setCursor(Cursor.getDefaultCursor()); 
     if (SiteTest.getExitAfter())
     {
     System.exit(0);
@@ -170,7 +167,7 @@ public String doInBackground()
    }
   
   int WaitTime = SiteTest.GetWaitTime();
- driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+ //driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
      int totalpause = WaitTime * 1000;
         
   
@@ -199,10 +196,18 @@ if (thisbugview.myTable==null)
    {
    try
    {
+      try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
        ThisAction.RunAction(driver);
        try
        {
-    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
  //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
        }
        catch (Exception ex)
@@ -210,7 +215,7 @@ if (thisbugview.myTable==null)
            System.out.println("Exception creating screenshot: " + ex.toString());     
     }
    }
-  catch (UnreachableBrowserException ex)
+  catch (Exception ex)
      {
   
       ThisAction.Pass = false;
@@ -224,7 +229,9 @@ if (thisbugview.myTable==null)
      
        }
               driver.close();
+              SiteTest.setCursor(Cursor.getDefaultCursor()); 
               publish(thisbugindex);
+              
           break;
       
        
@@ -263,22 +270,30 @@ else
           ThisAction.RunAction(driver, pause_message);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-        ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
-// ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
+// ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
   
         }
        else
         {
             try
             {
+                  try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
         ThisAction.RunAction(driver);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-        ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot-" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
-// ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+      ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
+// ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\"></img>";
   
             }
-             catch (UnreachableBrowserException ex)
+             catch (Exception ex)
      {
    
           ThisAction.loop_pass_values[x] = false;
@@ -293,6 +308,7 @@ else
      
        }
                driver.close();
+               SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
        
@@ -306,17 +322,35 @@ else
             String concat_variable;
             String concat_variable2;
  concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
- if (!"".equals(concat_variable))
+ if (var1Parser.hasDataLoopVar)
  {
-      ThisAction.Variable1 = concat_variable;
+     ThisAction.Variable1 = concat_variable;
+        if ("".equals(ThisAction.Variable1))
+           {
+               ThisAction.Variable1 = " ";
+           }
  }
-      concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
-     if (!"".equals(concat_variable2))
-     {
-      ThisAction.Variable2 = concat_variable2;  
-     }
+
+           concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+   if (var2Parser.hasDataLoopVar)
+ {
+     ThisAction.Variable2 = concat_variable2;
+     if ("".equals(ThisAction.Variable2))
+           {
+               ThisAction.Variable2 = " ";
+           } 
+ }  
+ 
      try
              {
+                                 try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+  }
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
@@ -324,7 +358,7 @@ else
    ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
              }
-      catch (UnreachableBrowserException ex)
+      catch (Exception ex)
      {
    
        ThisAction.Variable1 = original_value1;
@@ -341,6 +375,7 @@ else
      
        }
                driver.close();
+               SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
        
@@ -357,7 +392,7 @@ else
     for( Action ThisAction : thisbug.ActionsList )
     {   
         ThisAction.Pass = false;
-        Boolean all_actions_passed = false;
+      
         int actions_passed = 0;
         for (Boolean passvalue: ThisAction.loop_pass_values)
         {

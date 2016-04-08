@@ -157,7 +157,7 @@ for (String passfailaction_name : passfailaction_keys)
      LeftSideButtonsPanel.setLayout(LeftSideButtonsLayout);
      MoveButtonsPanel.add(JButtonMoveProcedureUp);
      MoveButtonsPanel.add(JButtonMoveProcedureDown);
-     
+     MoveButtonsPanel.add(JLabelPass);
  
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
   
@@ -171,7 +171,7 @@ for (String passfailaction_name : passfailaction_keys)
   AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
      JLabelPass.setVisible(false);
 
-    AddToGrid(JLabelPass, 1, 5, 1, 1, global_weightx, global_weighty);  
+ //   AddToGrid(JLabelPass, 1, 5, 1, 1, global_weightx, global_weighty);  
  
    
     BugConstraints.insets = new Insets(2,2,4,2);

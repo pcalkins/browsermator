@@ -422,7 +422,7 @@ bugindex++;
 
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
  {
-      RunASingleTest REFSYNCH = new RunASingleTest(bugtorun, thisbugview, this.TargetBrowser, this.OSType);
+      RunASingleTest REFSYNCH = new RunASingleTest(this, bugtorun, thisbugview, this.TargetBrowser, this.OSType);
     REFSYNCH.execute();
  }
 

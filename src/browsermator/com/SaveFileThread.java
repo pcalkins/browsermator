@@ -544,7 +544,7 @@ xmlfile.writeEndElement();
             if (isFlatten)
             {
 
-     OpenFileThread OPENREF = new OpenFileThread(mainApp, file, mainApp.MDIClasses, calling_MDI_Index, true);
+     OpenFileThread OPENREF = new OpenFileThread(mainApp, file, mainApp.MDIClasses, calling_MDI_Index, true, false);
   OPENREF.execute();
             }
             else

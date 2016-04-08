@@ -72,9 +72,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.18";
+private final String version = "0.0.20";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.18";
+   public final String ProgramVersion = "0.0.20";
 
   
   
@@ -551,7 +551,7 @@ SeleniumToolDesktop.add(Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-    OpenFile(newfiles[fileindex], MDIClasses);
+    OpenFile(newfiles[fileindex], MDIClasses, false);
      
     
    }    
@@ -590,7 +590,7 @@ SeleniumToolDesktop.add(Navigator);
      
      
 
-      OpenFile(RecentFile, MDIClasses);
+      OpenFile(RecentFile, MDIClasses, false);
        
           
        }
@@ -628,7 +628,7 @@ SeleniumToolDesktop.add(Navigator);
      
      
 
-       OpenFile(RecentFile, MDIClasses);
+       OpenFile(RecentFile, MDIClasses, false);
  
             }
      
@@ -664,7 +664,7 @@ SeleniumToolDesktop.add(Navigator);
      
      
 
-    OpenFile(RecentFile, MDIClasses);
+    OpenFile(RecentFile, MDIClasses, false);
      
             }
      
@@ -701,7 +701,7 @@ SeleniumToolDesktop.add(Navigator);
      
      
 
-     OpenFile(RecentFile, MDIClasses);
+     OpenFile(RecentFile, MDIClasses, false);
   
        
             }
@@ -739,7 +739,7 @@ SeleniumToolDesktop.add(Navigator);
      
      
 
-     OpenFile(RecentFile, MDIClasses);
+     OpenFile(RecentFile, MDIClasses, false);
     
             }
      
@@ -774,7 +774,7 @@ SeleniumToolDesktop.add(Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-  OpenFile(newfiles[fileindex], MDIClasses);
+  OpenFile(newfiles[fileindex], MDIClasses, false);
     
     
    }    
@@ -1418,12 +1418,13 @@ finally
      SaveFileThread SAVEREF = new SaveFileThread(this, STAppFrame, isSaveAs, isFlatten, current_MDI_Index);
   SAVEREF.execute();  
   }
-     public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses) 
+     public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses, boolean RunIt) 
     {
+        
     int current_MDI_Index = GetCurrentWindow();
-  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index, false);
+  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index, false, RunIt);
   OPENREF.execute();
-  
+ 
 
     }
   public void ImportNewWindow (Document doc, int MDI_INDEX)
@@ -2071,16 +2072,15 @@ STAppFrame.addjButtonDoStuffActionListener(
      {
      File file_to_open = new File(args[1]);
    
-     OpenFile(file_to_open, MDIClasses);
+     OpenFile(file_to_open, MDIClasses, false);
    
      }
   
     if (args[0].equals("run"))
     {
    File file_to_open = new File(args[1]);
-    OpenFile(file_to_open, MDIClasses);
-   int current_MDI_Index = GetCurrentWindow();
-    if (current_MDI_Index>=0) {    MDIClasses.get(current_MDI_Index).RunActions(); }
+    OpenFile(file_to_open, MDIClasses, true);
+  
    
     }
        

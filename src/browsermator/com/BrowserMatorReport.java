@@ -238,7 +238,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
              if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              
               }
@@ -251,7 +251,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+        ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
               }
       
@@ -284,7 +284,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
+             ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
               }
          else
@@ -296,7 +296,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>"+LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
                
               }
@@ -340,7 +340,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON><BR>" + ThisScreenshot + "<BR>";
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }   
               }
          else
@@ -352,7 +352,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton" + bug_ID + "-" + action_ID + "\" onclick = \"ShowHideThisScreen(this.name)\">Hide</BUTTON>" + LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
           
               }
@@ -364,7 +364,8 @@ mainPanel = new JPanel(new BorderLayout());
   
      }
          ReportText = Header + LineBreak + ReportText + Footer;
-        return ReportText;  
+
+         return ReportText;  
   }  
 
     public void SaveAsHTMLFile()
