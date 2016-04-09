@@ -20,6 +20,29 @@ public class TypeAtXPATHAction extends Action
         this.BoolVal1 = BoolVal1;
         this.Loopable = true;
     }
+  @Override
+  public void SetGuts()
+  {
+      this.Guts = " try\n" +
+" {\n" +
+"        \n" +
+"        WebElement element = driver.findElement(By.xpath(this.Variable1));\n" +
+"  \n" +
+"        element.sendKeys(this.Variable2);";
+   if (this.BoolVal1.equals(true))
+{
+    
+ this.Guts+="element.sendKeys(Keys.RETURN);";
+ 
+}  
+   this.Guts+="this.Pass = true;\n" +
+" }\n" +
+" catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }";
+  }
     @Override
     public void RunAction(WebDriver driver)
     {

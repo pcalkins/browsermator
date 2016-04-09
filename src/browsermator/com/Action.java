@@ -29,6 +29,8 @@ Boolean[] loop_pass_values;
 LocalDateTime[] loop_time_of_test;
  String ScreenshotBase64;
  String[] loop_ScreenshotsBase64;
+ String Guts;
+
    Action ()
    {
   this.Pass = false;
@@ -66,8 +68,17 @@ LocalDateTime[] loop_time_of_test;
    {
        
    }
+   public void SetGuts()
+   {
+       
+   }
+  public String GetGuts()
+  {
+     return Guts; 
+  }
   public void ClickCatchAction(WebDriver driver, String xpather)
   {
+     
        try { 
  WebElement element = driver.findElement(By.xpath(xpather));
  element.click();

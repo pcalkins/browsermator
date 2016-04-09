@@ -506,7 +506,18 @@ SeleniumToolDesktop.add(Navigator);
         }
         
         });
-   
+    STAppFrame.addjButtonGutsViewActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+   STAppFrame.ShowGuts();
+
+        }
+                                          
+      }
+    );
+    
     STAppFrame.addjButtonNewBugActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -907,7 +918,17 @@ SeleniumToolDesktop.add(Navigator);
         }
         
         }); 
-      
+    STAppFrame.addjButtonGutsViewActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+   STAppFrame.ShowGuts();
+
+        }
+                                          
+      }
+    );
     STAppFrame.addjButtonNewBugActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -2006,6 +2027,17 @@ STAppFrame.addjButtonDoStuffActionListener(
  }
   
         }
+      }
+    );
+            STAppFrame.addjButtonGutsViewActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+   STAppFrame.ShowGuts();
+
+        }
+                                          
       }
     );
       

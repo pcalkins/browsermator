@@ -23,6 +23,28 @@ public class DragAndDropAction extends Action {
         this.Variable2 = ToTargetXPATH;
         
     }
+  @Override
+    public void SetGuts()
+    {
+        this.Guts = "try\n" +
+" {\n" +
+"\n" +
+" WebElement dragElement = driver.findElement(By.xpath(" + this.Variable1+ "));\n" +
+" WebElement dropElement = driver.findElement(By.xpath(" + this.Variable2+ "));\n" +
+" \n" +
+"  \n" +
+"    Actions actions = new Actions(driver);\n" +
+"  actions.dragAndDrop(dragElement, dropElement).perform();\n" +
+"\n" +
+"     this.Pass = true;\n" +
+" }\n" +
+" catch (Exception e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  System.out.println(\"Exception: \" + e);\n" +
+"  \n" +
+" }";
+    }
     @Override
     public void RunAction(WebDriver driver)
     {

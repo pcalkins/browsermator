@@ -9,8 +9,14 @@ public class BackAction extends Action
     
    BackAction() 
     {
-     this.Type = "Back Action";     
+     this.Type = "Back Action";   
+    
 }
+   @Override
+   public void SetGuts()
+   {
+      this.Guts = "driver.navigate().back();";
+   }
   @Override
     public void RunAction(WebDriver driver)
     {

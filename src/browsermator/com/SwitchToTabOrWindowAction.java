@@ -22,6 +22,16 @@ public class SwitchToTabOrWindowAction extends Action
        
         
     }
+     @Override
+     public void SetGuts()
+     {
+         if (this.Variable1!="")
+        {
+        this.Guts = "int_index =  Integer.parseInt("+this.Variable1+");";
+        }
+        this.Guts+="    ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());\n" +
+"    driver.switchTo().window(tabs_windows.get(int_index));";
+     }
     @Override
     public void RunAction(WebDriver driver)
     {

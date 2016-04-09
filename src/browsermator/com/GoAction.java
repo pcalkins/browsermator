@@ -13,6 +13,21 @@ public class GoAction extends Action
        this.Variable1 = URLTOGO;
        this.Type = "Go to URL";
     }
+    @Override
+    public void SetGuts()
+    {
+      this.Guts = "  try\n" +
+"     {\n" +
+"     driver.get("+this.Variable1+ ");\n" +
+"     this.Pass = true;\n" +
+"     }\n" +
+"       catch (Exception e)\n" +
+" {\n" +
+"\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }";  
+    }
 @Override  
 public void setVariable1(String variable)
     {

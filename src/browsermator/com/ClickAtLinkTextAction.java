@@ -16,6 +16,61 @@ public class ClickAtLinkTextAction extends Action
          this.BoolVal1 = BoolVal1;
     }
     @Override
+    public void SetGuts()
+ {
+   if (this.BoolVal1.equals(true))
+{
+
+    
+        this.Guts = " try\n" +
+"        {\nActions actions = new Actions(driver);\n"
+                + "WebElement element = driver.findElement(By.linkText(" + this.Variable1 + "));\n"
+                + "actions.contextClick(element).perform(); }\n" +
+"     catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"   \n" +
+" }\n" +
+" }\n" +
+" else\n" +
+" {\n" +
+"     try\n" +
+"        {\n" +
+"     WebElement element = driver.findElement(By.linkText(" + this.Variable1 + "));\n" +
+"   \n" +
+"     element.click();\n" +
+"     this.Pass = true;\n" +
+"        }\n" +
+"     catch (NoSuchElementException e)\n" +
+" {\n" +
+"  \n" +
+"   \n" +
+" }\n" +
+" }\n" +
+"    }";
+        
+ }
+    else
+ {
+   this.Guts = "  try\n" +
+"        {\n" +
+"     WebElement element = driver.findElement(By.linkText(" + this.Variable1+ "));\n" +
+"   \n" +
+"     element.click();\n" +
+"     this.Pass = true;\n" +
+"        }\n" +
+"     catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"   \n" +
+" }\n" +
+" }\n" +
+"    }";
+   
+ }
+  
+ }
+    @Override
      public void RunAction(WebDriver driver)
     {
     

@@ -22,6 +22,34 @@ public class ExecuteJavascriptAction extends Action {
         this.Variable1 = JavaScriptToExecute;
         
     }
+       @Override
+       public void SetGuts()
+       {
+           this.Guts="      File newJSFile = new File("+this.Variable1+");\n" +
+"        if (newJSFile.exists())\n" +
+"        {\n" +
+"            try\n" +
+"            {\n" +
+"                  Scanner sc = new Scanner(new FileInputStream(newJSFile));\n" +
+"        String js_TxtFile = \"\"; \n" +
+"            while (sc.hasNext()) {          \n" +
+"                String[] s = sc.next().split(\"\\r\\n\");   \n" +
+"                for (int i = 0; i < s.length; i++) {\n" +
+"                    js_TxtFile += s[i];\n" +
+"                    js_TxtFile += \" \";\n" +
+"                }    \n" +
+"                ((JavascriptExecutor)driver).executeScript(js_TxtFile);\n" +
+"            }\n" +
+"            \n" +
+"            }\n" +
+"            catch (Exception ex)\n" +
+"            {\n" +
+"            Prompter errorPrompt = new Prompter(\"Error occured executing script\");  \n" +
+"            System.out.println(ex.toString());\n" +
+"            }\n" +
+"        }\n" +
+"        ((JavascriptExecutor)driver).executeScript("+this.Variable1+");";
+       }
     @Override
      public void RunAction(WebDriver driver)
     {

@@ -17,6 +17,20 @@ public class YesNoPromptPassFailAction extends Action
               
     }
     @Override
+    public void SetGuts()
+    {
+      this.Guts = "int PromptResult = JOptionPane.showConfirmDialog(null, this.Variable1, \"Pass/Fail Prompt\", \n" +
+"                                JOptionPane.YES_NO_OPTION);\n" +
+"    if (PromptResult == 0)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"    }\n" +
+"    if (PromptResult == 1)\n" +
+"    {\n" +
+"     this.Pass = false;\n" +
+"    }";  
+    }
+    @Override
      public void RunAction(WebDriver driver)
     {
  int PromptResult = JOptionPane.showConfirmDialog(null, this.Variable1, "Pass/Fail Prompt", 

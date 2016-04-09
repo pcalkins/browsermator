@@ -17,6 +17,12 @@ public class RightClickAction extends Action {
     {
      this.Type = "Right-Click";     
 }
+       @Override
+       public void SetGuts()
+       {
+           this.Guts = "   Actions actions = new Actions(driver);\n" +
+" actions.contextClick().build().perform();";
+       }
   @Override
     public void RunAction(WebDriver driver)
     {

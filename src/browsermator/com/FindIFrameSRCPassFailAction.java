@@ -21,6 +21,23 @@ public class FindIFrameSRCPassFailAction extends Action
       
     }
     @Override
+    public void SetGuts()
+    {
+        String xpather = "//iframe[@src='" + this.Variable1 + "']";
+        this.Guts = " List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
+"    \n" +
+"    this.Pass = false;\n" +
+"    if (element.size() > 0 && this.NOT == false)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"  \n" +
+"    }\n" +
+"       if (element.isEmpty() && this.NOT==true)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"    }";
+    }
+    @Override
      public void RunAction(WebDriver driver)
     {
 

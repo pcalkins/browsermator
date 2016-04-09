@@ -19,18 +19,31 @@ public class TypePasswordAtXPATHAction extends Action
             this.Variable2 = ToType;
      this.BoolVal1 = BoolVal1;
     }
+  @Override
+    public void SetGuts()
+    {
+     this.Guts = "     WebElement element = driver.findElement(By.xpath(this.Variable1));\n" +
+"        element.sendKeys(this.Variable2);";
+     if (this.BoolVal1.equals(true))
+{
+    this.Guts+="element.sendKeys(Keys.RETURN);";
+}
+    this.Guts+="       this.Pass = true;\n" +
+" }\n" +
+" catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }";
+    }
     @Override
     public void RunAction(WebDriver driver)
     {
-        Boolean SendEnter = false;
+  
  try
  {
         
         WebElement element = driver.findElement(By.xpath(this.Variable1));
- //         if (this.Variable2.contains("\\n")) { this.Variable2 = this.Variable2.replace("\\n", ""); SendEnter = true; }
-  
-
-   
         element.sendKeys(this.Variable2);
 if (this.BoolVal1.equals(true))
 {

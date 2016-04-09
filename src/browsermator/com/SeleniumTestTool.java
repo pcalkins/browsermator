@@ -1,22 +1,14 @@
 
 package browsermator.com;
 
-import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,6 +25,8 @@ import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -879,6 +873,7 @@ this.changes=true;
         jButtonBrowseForFireFoxExe = new javax.swing.JButton();
         jButtonFlattenFile = new javax.swing.JButton();
         jButtonLoadEmailSettings = new javax.swing.JButton();
+        jButtonGutsView = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -971,6 +966,8 @@ this.changes=true;
 
         jButtonLoadEmailSettings.setText("Load Default Settings");
 
+        jButtonGutsView.setText("Show Guts");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -988,7 +985,9 @@ this.changes=true;
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonNewDataLoop))
+                                .addComponent(jButtonNewDataLoop)
+                                .addGap(272, 272, 272)
+                                .addComponent(jButtonGutsView))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -1063,7 +1062,9 @@ this.changes=true;
             .addGroup(layout.createSequentialGroup()
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonGutsView))
                     .addComponent(jButtonNewBug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTHISSITEURL)
@@ -1276,6 +1277,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    public void addjButtonLoadEmailSettingsListener(ActionListener listener) {
        jButtonLoadEmailSettings.addActionListener(listener);
    }
+   public void addjButtonGutsViewActionListener(ActionListener listener)
+   {
+       jButtonGutsView.addActionListener(listener);
+   }
  public void ClearEmailSettings ()
  {
      setSMTPHostname("");
@@ -1286,7 +1291,19 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
      setSubject("");
      
  }
-
+   public void ShowGuts()
+   {
+     
+        ViewGuts GUTSREF = new ViewGuts(this);
+  GUTSREF.execute();
+     
+       
+       
+   }
+    public void setGutsViewButtonName(String button_name)
+    {
+        jButtonGutsView.setText(button_name);
+    }
     public String getSMTPHostname ()
     {
         String SMTPHostname = jTextFieldSMTPHostName.getText();
@@ -1518,6 +1535,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JButton jButtonClearEmailSettings;
     private javax.swing.JButton jButtonDoStuff;
     private javax.swing.JButton jButtonFlattenFile;
+    private javax.swing.JButton jButtonGutsView;
     private javax.swing.JButton jButtonLoadEmailSettings;
     private javax.swing.JButton jButtonNewBug;
     private javax.swing.JButton jButtonNewDataLoop;

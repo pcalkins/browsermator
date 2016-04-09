@@ -19,7 +19,23 @@ String pause_message;
         this.Type = "Pause with Continue Button";
         this.pause_message = "Actions Paused...";
        }
-
+    @Override
+    public void SetGuts()
+    {
+        this.Guts = "Prompter thisContinuePrompt = new Prompter("+this.pause_message+");\n" +
+"    \n" +
+"while(thisContinuePrompt.isVisible() == true){\n" +
+"        try\n" +
+"        {\n" +
+"Thread.sleep(200);\n" +
+"this.Pass = true;\n" +
+"        }\n" +
+"        catch (InterruptedException e)\n" +
+"                {\n" +
+"                    System.out.println(\"pause exception: \" + e.toString());\n" +
+"                }\n" +
+"    }";
+    }
     @Override
     public void RunAction(WebDriver driver)
     {

@@ -8,6 +8,7 @@ package browsermator.com;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 /**
  *
  * @author pcalkins
@@ -19,10 +20,21 @@ public class CloseCurrentTabOrWindowAction extends Action
      this.Type = "Close Current Tab or Window";     
 }
   @Override
+  public void SetGuts()
+  {
+      this.Guts = " Actions actions = new Actions(driver);\n" +
+" actions.keyDown(Keys.CONTROL).perform();\n" +
+" actions.sendKeys(\"w\").perform();\n" +
+" actions.keyUp(Keys.CONTROL).perform();\n" +
+"        this.Pass = true;";
+  }
+  @Override
     public void RunAction(WebDriver driver)
     {
-
-      driver.findElement(By.tagName("html")).sendKeys(Keys.CONTROL,"w"); 
+       Actions actions = new Actions(driver);
+ actions.keyDown(Keys.CONTROL).perform();
+ actions.sendKeys("w").perform();
+ actions.keyUp(Keys.CONTROL).perform();
         this.Pass = true;
     }
     

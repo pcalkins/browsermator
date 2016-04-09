@@ -15,12 +15,17 @@ public class SetCookieAction extends Action
         this.Variable2 = Value;
         
     }
+ @Override
+ public void SetGuts()
+ {
+     this.Guts = "Cookie cookie = new Cookie("+this.Variable1+", " +this.Variable2+");\n" +
+"driver.manage().addCookie(cookie);";
+ }
     @Override
     public void RunAction(WebDriver driver)
     {
       
- 
-// Now set the cookie. This one's valid for the entire domain
+
 Cookie cookie = new Cookie(this.Variable1, this.Variable2);
 driver.manage().addCookie(cookie);
 

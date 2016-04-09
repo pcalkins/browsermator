@@ -18,11 +18,17 @@ public class UpArrowKeyAction extends Action {
     {
      this.Type = "Up Arrow Key";     
 }
+    @Override
+    public void SetGuts()
+    {
+   this.Guts = "        Actions actions = new Actions(driver);\n" +
+" actions.sendKeys(Keys.ARROW_UP).perform(); ";
+   
+    }
   @Override
     public void RunAction(WebDriver driver)
     {
         Actions actions = new Actions(driver);
- 
  actions.sendKeys(Keys.ARROW_UP).perform(); 
  
      

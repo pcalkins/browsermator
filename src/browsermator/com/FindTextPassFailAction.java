@@ -18,6 +18,25 @@ public class FindTextPassFailAction extends Action
     
     }
     @Override
+    public void SetGuts()
+    {
+       String xpather = "//*[contains(text(), '" + this.Variable1 + "')]";
+       this.Guts = " List<WebElement> element = driver.findElements(By.xpath(" + xpather+ "));\n" +
+"    \n" +
+"    this.Pass = false;\n" +
+"    if (element.size() > 0 && this.NOT == false)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"  \n" +
+"    }\n" +
+"       if (element.isEmpty() && this.NOT==true)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"    }\n" +
+"     \n" +
+"     ";
+    }
+    @Override
      public void RunAction(WebDriver driver)
     {
  String xpather = "//*[contains(text(), '" + this.Variable1 + "')]";

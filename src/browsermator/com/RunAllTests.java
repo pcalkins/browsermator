@@ -178,7 +178,7 @@ public String doInBackground()
      for (Procedure thisbug : SiteTest.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
-        ArrayList<Action> Actions = thisbug.ActionsList;
+   
 
 
 int action_INT = 0;

@@ -14,6 +14,21 @@ public class ClickAtIDAction extends Action
         this.BoolVal1 = BoolVal1;
     }
     @Override
+        public void SetGuts()
+ {
+  String xpather = "//*[@id='" + this.Variable1 + "']";
+ 
+   if (this.BoolVal1.equals(true))
+{
+   this.Guts = "RightClickCatchAction(driver, " + xpather + ");";
+   
+ }
+ else
+ {
+ this.Guts = "ClickCatchAction(driver, "+xpather + ");";
+ }
+ }
+    @Override
      public void RunAction(WebDriver driver)
     {
  String xpather = "//*[@id='" + this.Variable1 + "']";

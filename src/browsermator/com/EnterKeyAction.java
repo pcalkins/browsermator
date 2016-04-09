@@ -18,6 +18,14 @@ public class EnterKeyAction extends Action {
     {
      this.Type = "Enter Key";     
 }
+      @Override
+ public void SetGuts()
+ {
+    this.Guts = "    Actions actions = new Actions(driver);\n" +
+" \n" +
+" actions.keyDown(Keys.RETURN).perform(); \n" +
+" actions.keyUp(Keys.RETURN).perform();"; 
+ }
   @Override
     public void RunAction(WebDriver driver)
     {

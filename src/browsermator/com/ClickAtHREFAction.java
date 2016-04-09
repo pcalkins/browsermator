@@ -11,6 +11,7 @@ public class ClickAtHREFAction extends Action
         this.Type = "Click at HREF"; 
         this.Variable1 = HREFToClick;
          this.BoolVal1 = BoolVal1;
+       
     }
     
     @Override
@@ -26,5 +27,21 @@ public class ClickAtHREFAction extends Action
  ClickCatchAction(driver, xpather);
  }
  
+
 }
+     @Override
+      public void SetGuts()
+ {
+   String xpather = "//a[@href='" + this.Variable1 + "']";
+  
+   if (this.BoolVal1.equals(true))
+{
+   this.Guts = "RightClickCatchAction(driver, " + xpather + ");";
+   
+ }
+ else
+ {
+ this.Guts = "ClickCatchAction(driver, "+xpather + ");";
+ }
+ }
 }

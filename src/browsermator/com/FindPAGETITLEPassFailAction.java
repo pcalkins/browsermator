@@ -18,6 +18,26 @@ public class FindPAGETITLEPassFailAction extends Action
          
     }
     @Override
+    public void SetGuts()
+    {
+        this.Guts = "  Boolean doespass = false;\n" +
+"    if(driver.getTitle().contains("+this.Variable1+"))\n" +
+"    {\n" +
+"   doespass = true;\n" +
+"    }\n" +
+"   \n" +
+"    this.Pass = false;\n" +
+"       if (doespass == true && this.NOT == false)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"  \n" +
+"    }\n" +
+"       if (doespass==false && this.NOT==true)\n" +
+"    {\n" +
+"        this.Pass = true;\n" +
+"    }";
+    }
+    @Override
      public void RunAction(WebDriver driver)
     {
 

@@ -15,6 +15,19 @@ public class ClickXPATHAction extends Action
         this.Loopable = true;
     }
   @Override
+  public void SetGuts()
+  {
+    this.Guts = "if (this.BoolVal1.equals(true))\n" +
+"{\n" +
+"     RightClickCatchAction(driver, " + this.Variable1 + ");\n" +
+" }\n" +
+" else\n" +
+" {\n" +
+" ClickCatchAction(driver, "+ this.Variable1 + ");\n" +
+" }\n" +
+"    }";
+  }
+  @Override
     public void RunAction(WebDriver driver)
     {
         

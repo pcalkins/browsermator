@@ -12,6 +12,20 @@ public class ForwardAction extends Action
        this.Type = "Forward Action"; 
     }
   @Override
+  public void SetGuts()
+  {
+   this.Guts = "  try\n" +
+"      {\n" +
+"        driver.navigate().forward();\n" +
+"        this.Pass = true;\n" +
+"      }\n" +
+"        catch (Exception e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }";   
+  }
+  @Override
     public void RunAction(WebDriver driver)
     {
       try
