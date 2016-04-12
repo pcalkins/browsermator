@@ -23,12 +23,12 @@ public class TypeAtXPATHAction extends Action
   @Override
   public void SetGuts()
   {
-      this.Guts = " try\n" +
+      this.Guts = "\ntry\n" +
 " {\n" +
 "        \n" +
-"        WebElement element = driver.findElement(By.xpath(this.Variable1));\n" +
+"        WebElement element = driver.findElement(By.xpath(\"" + this.Variable1+ "\"));\n" +
 "  \n" +
-"        element.sendKeys(this.Variable2);";
+"        element.sendKeys(\"" + this.Variable2+ "\");";
    if (this.BoolVal1.equals(true))
 {
     

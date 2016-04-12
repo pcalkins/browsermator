@@ -21,7 +21,7 @@ public class FindXPATHPassFailAction extends Action
   @Override
   public void SetGuts()
   {
-      this.Guts = " this.Pass = false;\n" +
+      this.Guts = "\n this.Pass = false;\n" +
 "   List<WebElement> element = driver.findElements(By.xpath(" + this.Variable1+ "));\n" +
 "       \n" +
 "   \n" +

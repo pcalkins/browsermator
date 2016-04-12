@@ -20,12 +20,12 @@ public class ClickAtIDAction extends Action
  
    if (this.BoolVal1.equals(true))
 {
-   this.Guts = "RightClickCatchAction(driver, " + xpather + ");";
+   this.Guts = "\nRightClickCatchAction(driver, \"" + xpather + "\");";
    
  }
  else
  {
- this.Guts = "ClickCatchAction(driver, "+xpather + ");";
+ this.Guts = "\nClickCatchAction(driver, \""+xpather + "\");";
  }
  }
     @Override

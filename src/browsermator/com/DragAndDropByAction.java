@@ -19,7 +19,7 @@ public class DragAndDropByAction extends Action {
     @Override
     public void SetGuts()
     {
-        this.Guts = " String[] coords = "+this.Variable2.split(",")+ "\n" +
+        this.Guts = "\n String[] coords = "+this.Variable2.split(",")+ "\n" +
 "   int xtarget = 0;\n" +
 "   int ytarget = 0;\n" +
 "   \n" +
@@ -36,7 +36,7 @@ public class DragAndDropByAction extends Action {
 "   }\n" +
 " try\n" +
 " {\n" +
-"    WebElement element = driver.findElement(By.xpath(this.Variable1));\n" +
+"    WebElement element = driver.findElement(By.xpath("+this.Variable1+"));\n" +
 "  Actions actions = new Actions(driver);\n" +
 "\n" +
 "actions.dragAndDropBy(element, xtarget, ytarget).perform();\n" +

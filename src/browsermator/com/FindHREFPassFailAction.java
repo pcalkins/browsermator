@@ -23,7 +23,7 @@ public class FindHREFPassFailAction extends Action
     public void SetGuts()
     {
              String xpather = "//a[contains(@href='" + this.Variable1 + "')]"; 
-             this.Guts = " List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
+             this.Guts = "\n List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
 "    \n" +
 "    this.Pass = false;\n" +
 "       if (element.size() > 0 && this.NOT == false)\n" +

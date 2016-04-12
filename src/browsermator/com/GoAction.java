@@ -16,9 +16,9 @@ public class GoAction extends Action
     @Override
     public void SetGuts()
     {
-      this.Guts = "  try\n" +
+      this.Guts = "\n  try\n" +
 "     {\n" +
-"     driver.get("+this.Variable1+ ");\n" +
+"     driver.get(\""+this.Variable1+ "\");\n" +
 "     this.Pass = true;\n" +
 "     }\n" +
 "       catch (Exception e)\n" +

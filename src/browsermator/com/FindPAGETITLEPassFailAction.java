@@ -20,8 +20,8 @@ public class FindPAGETITLEPassFailAction extends Action
     @Override
     public void SetGuts()
     {
-        this.Guts = "  Boolean doespass = false;\n" +
-"    if(driver.getTitle().contains("+this.Variable1+"))\n" +
+        this.Guts = "\n  Boolean doespass = false;\n" +
+"    if(driver.getTitle().contains(\""+this.Variable1+"\"))\n" +
 "    {\n" +
 "   doespass = true;\n" +
 "    }\n" +

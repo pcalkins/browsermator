@@ -1,15 +1,16 @@
 
 package browsermator.com;
 
-
-
-
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 
@@ -38,7 +39,7 @@ String Guts;
 public String doInBackground()
  {
     SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    SiteTest.setGutsViewButtonName("Running...");
+    SiteTest.setGutsViewButtonName("Viewing...");
     DisplayAllActions(SiteTest, targetbrowser, OSType);
     String donetext = "View Guts";
      return donetext;
@@ -56,27 +57,122 @@ catch (Exception ex)
 {
     
 }
+this.Guts+="\ndriver.close();\n}" +
+" public void ClickCatchAction(WebDriver driver, String xpather)\n" +
+"  {\n" +
+"     \n" +
+"       try { \n" +
+" WebElement element = driver.findElement(By.xpath(xpather));\n" +
+" element.click();\n" +
+" this.Pass = true;\n" +
+" \n" +
+" }\n" +
+" catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }\n" +
+"  }\n" +
+"  public void RightClickCatchAction (WebDriver driver, String xpather)\n" +
+"  {\n" +
+"        try { \n" +
+"            Actions actions = new Actions(driver);\n" +
+" WebElement element = driver.findElement(By.xpath(xpather));\n" +
+" actions.contextClick(element).perform();\n" +
+" this.Pass = true;\n" +
+" \n" +
+" }\n" +
+" catch (NoSuchElementException e)\n" +
+" {\n" +
+"  this.Pass = false;\n" +
+"  \n" +
+" }    \n" +
+"  }\n" +
+"public class Prompter extends JFrame implements ActionListener \n" +
+"{\n" +
+"    JButton ContinueButton;\n" +
+"\n" +
+"    \n" +
+"     Prompter (String messagetodisplay)\n" +
+"            {\n" +
+"              \n" +
+"                \n" +
+"                ContinueButton = new JButton(\"Continue\");\n" +
+"                \n" +
+"             \n" +
+"                setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);\n" +
+"                FlowLayout flo = new FlowLayout();\n" +
+"                setLayout(flo);\n" +
+"                JLabel messageText = new JLabel(messagetodisplay);\n" +
+"                JPanel flowpanel = new JPanel();\n" +
+"                \n" +
+"                flowpanel.add(messageText);\n" +
+"                JPanel boxpanel = new JPanel();\n" +
+"                boxpanel.setLayout(new BoxLayout(boxpanel, BoxLayout.Y_AXIS));\n" +
+"                boxpanel.add(flowpanel);\n" +
+"                boxpanel.add(ContinueButton);\n" +
+"                setSize(400, 200);\n" +
+"                this.setTitle(messagetodisplay);\n" +
+"                add(boxpanel);\n" +
+"             \n" +
+"                \n" +
+"                setVisible(true);\n" +
+"                ContinueButton.addActionListener(this);\n" +
+"              \n" +
+"               pack();\n" +
+"            }\n" +
+" @Override\n" +
+"     public void actionPerformed(ActionEvent event)\n" +
+"     {\n" +
+"         Object source = event.getSource();\n" +
+"         if (source == ContinueButton)\n" +
+"         {\n" +
+"          this.setVisible(false);\n" +
+"          this.dispose();\n" +
+"     \n" +
+"     }\n" +
+"        \n" +
+"}\n" +
+"   }\n  } public static void main(String[] args) { \n" +
+"  try\n" +
+"  {\n" +
+"   \n" +
+"      SeleniumTest app = new SeleniumTest(args); \n" +
+" \n" +
+"  }\n" +
+"  catch (PropertyVetoException e)\n" +
+"          {\n" +
+"           System.out.println(\"Exception: \" + e);\n" +
+"          }\n" +
+"  \n" +
+"  }\n}";
+
         SiteTest.setCursor(Cursor.getDefaultCursor());   
      SiteTest.setGutsViewButtonName(donetext);
    
 
-
     JPanel GutsPanel = new JPanel();
-       JTextField GutsTextField = new JTextField();
-  GutsTextField.setText(Guts);
-      GutsTextField.setSize(1000,800);
+   
+       JTextArea GutsTextField = new JTextArea();
+   //    GutsTextField.setSize(900,800);
       GutsTextField.setVisible(true);
-       GutsPanel.add(GutsTextField);
-        GutsPanel.setSize(1000,800);
-       GutsPanel.setVisible(true);
-       JFrame GutsFrame = new JFrame("Guts View");
-      
-       
-       GutsFrame.add(GutsPanel);
-       
-       GutsFrame.setSize(1000,800);
-       GutsFrame.setVisible(true);
+  GutsTextField.setText(Guts);
      
+      
+     JScrollPane GutsScrollPane = new JScrollPane(GutsTextField, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+     GutsPanel.add(GutsTextField);
+  //      GutsPanel.setSize(1000,800);
+       GutsPanel.setVisible(true);
+  // GutsScrollPane.setPreferredSize(new Dimension(1000, 800));
+    GutsScrollPane.setViewportView(GutsPanel);   
+
+       JFrame GutsFrame = new JFrame("Guts View - approximation of underlying code, edits will not save or change behavior");
+  
+      GutsFrame.add(GutsScrollPane);
+       
+       GutsFrame.setSize(800,800);
+       GutsFrame.setVisible(true);
+    //   GutsFrame.pack();
  }
  
   
@@ -91,18 +187,20 @@ catch (Exception ex)
   public void DisplayAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
  {
 
- this.GutsHeader = "import java.awt.Cursor;\n" +
-"import java.time.LocalDateTime;\n" +
-"import java.util.ArrayList;\n" +
-"import java.util.List;\n" +
-"import javax.swing.JOptionPane;\n" +
+ this.Guts = 
+         "\nimport java.beans.PropertyVetoException;\nimport java.awt.*;\n" +
+"import javax.swing.*;\n" +
+"import java.awt.event.*;\n" +
+         "import javax.swing.JOptionPane;\n" +
 "import org.openqa.selenium.OutputType;\n" +
 "import org.openqa.selenium.TakesScreenshot;\n" +
 "import org.openqa.selenium.WebDriver;\n" +
 "import org.openqa.selenium.chrome.ChromeDriver;\n" +
 "import org.openqa.selenium.firefox.FirefoxDriver;\n" +
 "import org.openqa.selenium.htmlunit.HtmlUnitDriver;\n" +
-"import org.openqa.selenium.ie.InternetExplorerDriver;\n";
+"import org.openqa.selenium.ie.InternetExplorerDriver;\n" +
+         "\n public final class SeleniumTest extends JFrame { \n boolean Pass;\n public SeleniumTest(String[] args) throws PropertyVetoException {\n this.Pass = false;\n\n";
+         
   switch (TargetBrowser)
    {
      case "Firefox":
@@ -151,9 +249,9 @@ catch (Exception ex)
            this.Guts+="driver = new FirefoxDriver();"; 
                      break;
    }
-  
-this.Guts+=" int WaitTime = SiteTest.GetWaitTime();\n" +
-"     int totalpause = WaitTime * 1000;";
+ int WaitTime = SiteTest.GetWaitTime();
+int totalpause = WaitTime * 1000;
+
  
   
   int thisbugindex = 0;
@@ -182,6 +280,14 @@ if (thisbugview.myTable==null)
 
   
        ThisAction.SetGuts();
+       this.Guts+= "try\n" +
+"  {\n" +
+"   Thread.sleep(" + totalpause+ ");  \n" +
+"  }\n" +
+"  catch (Exception ex)\n" +
+"  {\n" +
+"      System.out.println (\"Exception when sleeping: \" + ex.toString());\n" +
+"  }";
        this.Guts+=ThisAction.GetGuts();
   
    }   
@@ -215,6 +321,14 @@ else
     
           
           ThisAction.SetGuts();
+          this.Guts+= "try\n" +
+"  {\n" +
+"   Thread.sleep(" + totalpause+ ");  \n" +
+"  }\n" +
+"  catch (Exception ex)\n" +
+"  {\n" +
+"      System.out.println (\"Exception when sleeping: \" + ex.toString());\n" +
+"  }";
     this.Guts+=ThisAction.GetGuts();
       
       
@@ -250,6 +364,14 @@ else
 
      
       ThisAction.SetGuts();
+      this.Guts+= "try\n" +
+"  {\n" +
+"   Thread.sleep(" + totalpause+ ");  \n" +
+"  }\n" +
+"  catch (Exception ex)\n" +
+"  {\n" +
+"      System.out.println (\"Exception when sleeping: \" + ex.toString());\n" +
+"  }";
  this.Guts+=ThisAction.GetGuts();
       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;

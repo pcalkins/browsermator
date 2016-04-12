@@ -24,7 +24,7 @@ public class FindImageSRCPassFailAction extends Action
     public void SetGuts()
     {
          String xpather = "//img[@src='" + this.Variable1 + "']";
-         this.Guts = "List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
+         this.Guts = "\nList<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
 "    \n" +
 "    this.Pass = false;\n" +
 "    if (element.size() > 0 && this.NOT == false)\n" +

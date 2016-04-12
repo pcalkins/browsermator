@@ -21,7 +21,7 @@ public class OpenNewTabAction extends Action {
       @Override
       public void SetGuts()
       {
-          this.Guts = "Actions actions = new Actions(driver);\n" +
+          this.Guts = "\nActions actions = new Actions(driver);\n" +
 " actions.keyDown(Keys.CONTROL).perform();\n" +
 " actions.sendKeys(\"t\").perform();\n" +
 " actions.keyUp(Keys.CONTROL).perform();\n" +

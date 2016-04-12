@@ -22,9 +22,9 @@ public class ClickAtLinkTextAction extends Action
 {
 
     
-        this.Guts = " try\n" +
+        this.Guts = "\n try\n" +
 "        {\nActions actions = new Actions(driver);\n"
-                + "WebElement element = driver.findElement(By.linkText(" + this.Variable1 + "));\n"
+                + "WebElement element = driver.findElement(By.linkText(\"" + this.Variable1 + "\"));\n"
                 + "actions.contextClick(element).perform(); }\n" +
 "     catch (NoSuchElementException e)\n" +
 " {\n" +
@@ -36,7 +36,7 @@ public class ClickAtLinkTextAction extends Action
 " {\n" +
 "     try\n" +
 "        {\n" +
-"     WebElement element = driver.findElement(By.linkText(" + this.Variable1 + "));\n" +
+"     WebElement element = driver.findElement(By.linkText(\"" + this.Variable1 + "\"));\n" +
 "   \n" +
 "     element.click();\n" +
 "     this.Pass = true;\n" +
@@ -54,7 +54,7 @@ public class ClickAtLinkTextAction extends Action
  {
    this.Guts = "  try\n" +
 "        {\n" +
-"     WebElement element = driver.findElement(By.linkText(" + this.Variable1+ "));\n" +
+"     WebElement element = driver.findElement(By.linkText(\"" + this.Variable1+ "\"));\n" +
 "   \n" +
 "     element.click();\n" +
 "     this.Pass = true;\n" +

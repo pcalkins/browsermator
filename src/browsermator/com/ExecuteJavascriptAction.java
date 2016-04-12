@@ -25,7 +25,7 @@ public class ExecuteJavascriptAction extends Action {
        @Override
        public void SetGuts()
        {
-           this.Guts="      File newJSFile = new File("+this.Variable1+");\n" +
+           this.Guts="\n      File newJSFile = new File("+this.Variable1+");\n" +
 "        if (newJSFile.exists())\n" +
 "        {\n" +
 "            try\n" +

@@ -19,7 +19,7 @@ public class SwitchToTabOrWindowAction extends Action
         this.Type = "Switch To Tab or Window";
         
         this.Variable1 = index;
-       
+    
         
     }
      @Override
@@ -27,9 +27,9 @@ public class SwitchToTabOrWindowAction extends Action
      {
          if (this.Variable1!="")
         {
-        this.Guts = "int_index =  Integer.parseInt("+this.Variable1+");";
+        this.Guts = "\nint_index =  Integer.parseInt(\""+this.Variable1+"\");";
         }
-        this.Guts+="    ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());\n" +
+        this.Guts+=" \n   ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());\n" +
 "    driver.switchTo().window(tabs_windows.get(int_index));";
      }
     @Override

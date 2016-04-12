@@ -22,7 +22,7 @@ String pause_message;
     @Override
     public void SetGuts()
     {
-        this.Guts = "Prompter thisContinuePrompt = new Prompter("+this.pause_message+");\n" +
+        this.Guts = "\nPrompter thisContinuePrompt = new Prompter(\""+this.pause_message+"\");\n" +
 "    \n" +
 "while(thisContinuePrompt.isVisible() == true){\n" +
 "        try\n" +
@@ -35,6 +35,7 @@ String pause_message;
 "                    System.out.println(\"pause exception: \" + e.toString());\n" +
 "                }\n" +
 "    }";
+        
     }
     @Override
     public void RunAction(WebDriver driver)

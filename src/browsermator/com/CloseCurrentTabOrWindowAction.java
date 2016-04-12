@@ -5,7 +5,6 @@
  */
 package browsermator.com;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -22,7 +21,7 @@ public class CloseCurrentTabOrWindowAction extends Action
   @Override
   public void SetGuts()
   {
-      this.Guts = " Actions actions = new Actions(driver);\n" +
+      this.Guts = "\n Actions actions = new Actions(driver);\n" +
 " actions.keyDown(Keys.CONTROL).perform();\n" +
 " actions.sendKeys(\"w\").perform();\n" +
 " actions.keyUp(Keys.CONTROL).perform();\n" +

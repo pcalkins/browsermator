@@ -21,10 +21,10 @@ public class TypeAtIDAction extends Action
   @Override
   public void SetGuts()
   {
-      this.Guts = "try\n" +
+      this.Guts = "\ntry\n" +
 "{\n" +
-"WebElement element = driver.findElement(By.id("+this.Variable1+"));          \n" +
-"element.sendKeys(this.Variable2);\n"; 
+"WebElement element = driver.findElement(By.id(\""+this.Variable1+"\"));          \n" +
+"element.sendKeys(\""+this.Variable2+"\");\n"; 
 if (this.BoolVal1.equals(true))
 {
     this.Guts+="element.sendKeys(Keys.RETURN);";

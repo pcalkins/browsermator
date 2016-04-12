@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;

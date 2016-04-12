@@ -21,7 +21,7 @@ public class EnterKeyAction extends Action {
       @Override
  public void SetGuts()
  {
-    this.Guts = "    Actions actions = new Actions(driver);\n" +
+    this.Guts = "\n    Actions actions = new Actions(driver);\n" +
 " \n" +
 " actions.keyDown(Keys.RETURN).perform(); \n" +
 " actions.keyUp(Keys.RETURN).perform();"; 

@@ -14,7 +14,7 @@ public class ForwardAction extends Action
   @Override
   public void SetGuts()
   {
-   this.Guts = "  try\n" +
+   this.Guts = "\n  try\n" +
 "      {\n" +
 "        driver.navigate().forward();\n" +
 "        this.Pass = true;\n" +

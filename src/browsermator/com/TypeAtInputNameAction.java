@@ -22,10 +22,10 @@ public class TypeAtInputNameAction extends Action
      @Override
      public void SetGuts()
      {
-    this.Guts = "try\n" +
+    this.Guts = "\ntry\n" +
 "{\n" +
-"WebElement element = driver.findElement(By.name(this.Variable1));    \n" +
-"element.sendKeys(this.Variable2);";
+"WebElement element = driver.findElement(By.name(\""+this.Variable1+"\"));    \n" +
+"element.sendKeys(\""+this.Variable2+"\");";
   if (this.BoolVal1.equals(true))
 {
    this.Guts+="element.sendKeys(Keys.RETURN);";

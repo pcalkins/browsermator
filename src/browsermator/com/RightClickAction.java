@@ -20,7 +20,7 @@ public class RightClickAction extends Action {
        @Override
        public void SetGuts()
        {
-           this.Guts = "   Actions actions = new Actions(driver);\n" +
+           this.Guts = "\n  Actions actions = new Actions(driver);\n" +
 " actions.contextClick().build().perform();";
        }
   @Override

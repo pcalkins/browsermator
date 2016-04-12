@@ -40,14 +40,12 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
 
 
 public final class STAppController extends JFrame {
@@ -72,9 +70,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.20";
+private final String version = "0.0.21";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.20";
+   public final String ProgramVersion = "0.0.21";
 
   
   
@@ -294,15 +292,12 @@ SeleniumToolDesktop.add(Navigator);
               File[] newfiles = BrowseForFile();
  if (newfiles !=null)
  {
-     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
-     {
- int MDI_CLASS_INDEX;
-   
-      ImportFile(newfiles[fileindex], CurrentMDIWindowIndex);
-    
+ 
+    ImportFileFunct(newfiles, CurrentMDIWindowIndex);
+
    }    
  }     
- } 
+
                  else
                   
   {
@@ -1392,46 +1387,7 @@ File newfile = new File(path + ".browsermation");
         
             
   }
-  public void ImportFile (File file, int MDI_INDEX)
-  {
-   
-        
-if(!file.exists()) { 
- 
- 
-}
-else
-{
-        
 
-
-   
-Document doc=null;
-try
-{
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-DocumentBuilder builder = factory.newDocumentBuilder();
-
-doc = builder.parse(file.getAbsolutePath());
-
- 
-}
-catch (ParserConfigurationException | SAXException | IOException e)
-{
-    System.out.println("DocumentBuilder error:" + e.toString());
-   
-}
-    
-finally 
-{
- ImportNewWindow(doc, MDI_INDEX);
- MDIClasses.get(MDI_INDEX).changes = true;
-}
-    
-  }
-
-  }
   public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
       int current_MDI_Index = GetCurrentWindow();
@@ -1448,162 +1404,12 @@ finally
  
 
     }
-  public void ImportNewWindow (Document doc, int MDI_INDEX)
-  {
-
-      NodeList ProcedureList = doc.getElementsByTagName("Procedure");
-   
-for (int i = 0; i < ProcedureList.getLength(); ++i)
-{
-    int newbug_index = MDIClasses.get(MDI_INDEX).BugArray.size();
-   Element Procedure = (Element) ProcedureList.item(i);
-   
-    String DataFile = Procedure.getAttribute("DataLoopFile");
-    if (!"".equals(DataFile))
-    {
-        File DataFile_file = new File(DataFile);
-        if (DataFile_file.exists())
-        {
-            MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
-         
-        }
-        else
-        {
-           MDIClasses.get(MDI_INDEX).AddNewBug();  
-        }
-    }
-    else
-    {
-    MDIClasses.get(MDI_INDEX).AddNewBug(); 
-    }
-    
-    
-   
-     MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).BugTitle = Procedure.getAttribute("Title");
-     MDIClasses.get(MDI_INDEX).BugViewArray.get(newbug_index).JTextFieldBugTitle.setText(Procedure.getAttribute("Title"));
-     MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).BugURL = Procedure.getAttribute("URL");
-    
-    String stPass = Procedure.getAttribute("Pass");
-    Boolean Pass = false;
-    if (stPass.equals("true"))
-    {
-        Pass = true;
-    }
-     MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).Pass = Pass;
-
-    NodeList ActionsList = Procedure.getElementsByTagName("Action");
-   int thislength = ActionsList.getLength();
-
-    for (int j = 0; j <ActionsList.getLength(); j++)
-    {
-   Element Action = (Element) ActionsList.item(j);
-   NodeList ActionNodes = Action.getChildNodes();
-   String thisActionNodeName = "none";
-   String thisActionNodeValue = "none";
-   
-   String Variable1 = "";
-   String Variable2 = "";
-   String Password = "";
-   String LOCKED = "false";
-   String BoolVal1 = "false";
-    String TimeOfTest;
-    String ActionType = "none";
-    String ActionIndex;
-    String ActionPass;
-    
-   Boolean RealBoolVal1 = false;
-    for (int k = 0; k<ActionNodes.getLength(); k++)
-    {
-   thisActionNodeName = ActionNodes.item(k).getNodeName();
-   thisActionNodeValue = ActionNodes.item(k).getTextContent();
-
-    switch(thisActionNodeName)
-    {
-        case "Pass":
-            ActionPass = thisActionNodeValue;
-            break;
-        case "ActionIndex":
-            ActionIndex = thisActionNodeValue;
-            break;
-        case "Type":
-            ActionType = thisActionNodeValue;
-            break;
-        case "Variable1":
-            Variable1 = thisActionNodeValue;
-            break;
-        case "Variable2":
-            Variable2 = thisActionNodeValue;
-            break;
-        case "BoolVal1":
-            BoolVal1 = thisActionNodeValue;
-            if (BoolVal1.equals("true"))
-                    {
-                    RealBoolVal1 = true;
-                    }
-            break;
-        case "LOCKED":
-            LOCKED = thisActionNodeValue;
-            break;
-       
-
-        case "TimeOfTest":
-            TimeOfTest = thisActionNodeValue;
-            break;
-           
-    }  
-                
-    } 
-    
-   Procedure NewProcedure =  MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index);
-   ProcedureView NewProcedureView =  MDIClasses.get(MDI_INDEX).BugViewArray.get(newbug_index);
+     public void ImportFileFunct (File[] files, int CurrentMDIWindowIndex)
+     {
+            ImportFileThread IMPORTREF = new ImportFileThread(this, files, CurrentMDIWindowIndex);
+   IMPORTREF.execute();
+     }
   
-   
-   if (ActionType.contains("Password"))
-   {
-       try
-       {
-       Password = Protector.decrypt(Variable2);
-     
-       }
-       catch (Exception e)
-       {
-        //   System.out.println("Load/decrypt error: " + e.toString());
-       }
-   }
-   ActionsMaster NewActionsMaster = new ActionsMaster();
-   
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionHashMap.containsKey(ActionType))
-           {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
-               
-           }      
- 
-     if (thisPassFailActionHashMap.containsKey(ActionType))
-             {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
-             }
-            
- MDIClasses.get(MDI_INDEX).UpdateDisplay();  
-        }   
-   
-    }     
-  }
   public SeleniumTestTool BuildNewWindow(Document doc)
   {
    

@@ -21,7 +21,7 @@ public class DownArrowKeyAction extends Action {
    @Override
    public void SetGuts()
    {
-       this.Guts = "Actions actions = new Actions(driver);\n" +
+       this.Guts = "\nActions actions = new Actions(driver);\n" +
 " \n" +
 " actions.sendKeys(Keys.ARROW_DOWN).perform();";
    }

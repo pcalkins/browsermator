@@ -15,7 +15,7 @@ public class BackAction extends Action
    @Override
    public void SetGuts()
    {
-      this.Guts = "driver.navigate().back();";
+      this.Guts = "\ndriver.navigate().back();";
    }
   @Override
     public void RunAction(WebDriver driver)

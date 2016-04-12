@@ -21,7 +21,7 @@ public class NextTabAction extends Action {
        @Override
        public void SetGuts()
        {
-           this.Guts = "  Actions actions = new Actions(driver);\n" +
+           this.Guts = "\n  Actions actions = new Actions(driver);\n" +
 " \n" +
 "\n" +
 " actions.keyDown(Keys.CONTROL).perform();\n" +

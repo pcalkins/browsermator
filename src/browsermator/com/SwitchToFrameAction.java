@@ -18,7 +18,7 @@ public class SwitchToFrameAction extends Action
   @Override
     public void SetGuts()
     {
-        this.Guts = "driver.switchTo().frame("+this.Variable1+");";
+        this.Guts = "\ndriver.switchTo().frame("+this.Variable1+");";
     }
     @Override
     public void RunAction(WebDriver driver)

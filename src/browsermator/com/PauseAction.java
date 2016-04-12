@@ -19,15 +19,15 @@ public class PauseAction extends Action {
     @Override
     public void SetGuts()
     {
-      this.Guts = " int intminutes = 0;\n" +
+      this.Guts = "\n int intminutes = 0;\n" +
 "        int intseconds = 0;";
         if (this.Variable1!="")
         {
-       this.Guts+= "intminutes =  Integer.parseInt("+this.Variable1+");\n";
+       this.Guts+= "intminutes =  Integer.parseInt(\""+this.Variable1+"\");\n";
         }
         if (this.Variable2!="")
         {
-        this.Guts+= "intseconds = Integer.parseInt("+this.Variable2+");\n";
+        this.Guts+= "intseconds = Integer.parseInt(\""+this.Variable2+"\");\n";
         }  
         this.Guts+=" int totalpause = ((intminutes * 60) + intseconds) * 1000;\n" +
 "        \n" +

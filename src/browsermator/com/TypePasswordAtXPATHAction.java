@@ -22,8 +22,8 @@ public class TypePasswordAtXPATHAction extends Action
   @Override
     public void SetGuts()
     {
-     this.Guts = "     WebElement element = driver.findElement(By.xpath(this.Variable1));\n" +
-"        element.sendKeys(this.Variable2);";
+     this.Guts = " \n    WebElement element = driver.findElement(By.xpath(\"" + this.Variable1+ "\"));\n" +
+"        element.sendKeys(\""+this.Variable2+"\");";
      if (this.BoolVal1.equals(true))
 {
     this.Guts+="element.sendKeys(Keys.RETURN);";

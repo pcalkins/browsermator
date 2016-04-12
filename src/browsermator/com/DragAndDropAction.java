@@ -26,7 +26,7 @@ public class DragAndDropAction extends Action {
   @Override
     public void SetGuts()
     {
-        this.Guts = "try\n" +
+        this.Guts = "\ntry\n" +
 " {\n" +
 "\n" +
 " WebElement dragElement = driver.findElement(By.xpath(" + this.Variable1+ "));\n" +

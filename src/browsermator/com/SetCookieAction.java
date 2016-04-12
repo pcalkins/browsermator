@@ -18,7 +18,7 @@ public class SetCookieAction extends Action
  @Override
  public void SetGuts()
  {
-     this.Guts = "Cookie cookie = new Cookie("+this.Variable1+", " +this.Variable2+");\n" +
+     this.Guts = "\nCookie cookie = new Cookie(\""+this.Variable1+"\", \"" +this.Variable2+"\");\n" +
 "driver.manage().addCookie(cookie);";
  }
     @Override
