@@ -70,9 +70,9 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveAsMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.21";
+private final String version = "0.0.22";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.21";
+   public final String ProgramVersion = "0.0.22";
 
   
   
@@ -1009,7 +1009,7 @@ SeleniumToolDesktop.add(Navigator);
       newProps.setProperty("email_from", "");
       newProps.setProperty("email_login_name", "");
       newProps.setProperty("smtp_hostname", "");
-     newProps.setProperty("recentfiles", " , , , , , ");
+     newProps.setProperty("recentfiles", " , , , , , , , , , , ");
               try {
   
     
@@ -1586,7 +1586,7 @@ try
     }
 catch (Exception e)
         {
-            System.out.println(e.toString());
+            System.out.println("Error loading filesettings: " + e.toString());
           
         }
 try
@@ -1751,7 +1751,7 @@ STAppFrame.UpdateDisplay();
     }
 catch (Exception e)
         {
-            System.out.println(e.toString());
+            System.out.println("Error loading procedure: " + e.toString());
           
         }
 STAppFrame.addTargetBrowserItemListener( new ItemListener() {
@@ -1989,7 +1989,7 @@ STAppFrame.addjButtonDoStuffActionListener(
                           }
                           catch (PropertyVetoException ec)
                           {
-                              System.out.println(ec.toString());
+                              System.out.println("Error setting iframe: " + ec.toString());
                           }
                        }
                   
@@ -2114,7 +2114,7 @@ try
          }
          catch (Exception e)
          {
-             System.out.println(e);
+             System.out.println("Error config file: " + e);
            
              
          }

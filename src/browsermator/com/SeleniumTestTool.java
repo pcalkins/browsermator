@@ -25,8 +25,6 @@ import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 

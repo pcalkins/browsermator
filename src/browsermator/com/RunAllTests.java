@@ -207,7 +207,7 @@ if (thisbugview.myTable==null)
        ThisAction.RunAction(driver);
        try
        {
-    ThisAction.ScreenshotBase64 = "<img src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+    ThisAction.ScreenshotBase64 = "<img style = \"display: inline\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
  //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
        }
        catch (Exception ex)
@@ -270,7 +270,7 @@ else
           ThisAction.RunAction(driver, pause_message);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
+       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
   
         }
@@ -289,7 +289,7 @@ else
         ThisAction.RunAction(driver);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-      ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
+      ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\"></img>";
   
             }
