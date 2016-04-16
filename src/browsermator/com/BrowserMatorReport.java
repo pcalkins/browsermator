@@ -175,7 +175,40 @@ mainPanel = new JPanel(new BorderLayout());
      if (includescreens)
      {
          LineBreak = "<BR>"; 
-         Header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML>\n<HEAD>\n<STYLE>#Report { height: 800; overflow-y: auto;}\n #Controls { }\n</STYLE>\n<SCRIPT>\nfunction ShowHideThisScreen(button_id)\n {alert(button_id); }\nfunction ShowAllScreens()\n{ alert('show all screens'); }\n function HideAllScreens()\n{alert('hide all screens');}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
+         Header = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><HTML>\n<HEAD>\n"
+                 + "<STYLE>#Report { height: 800; overflow-y: auto;}\n #Controls { }\n</STYLE>"
+                 + "\n<SCRIPT>"
+                 + "\nfunction ShowHideThisScreen(button_id)\n {"
+                 + "var buttsize = button_id.length;\n" +
+" var id_string = button_id.substring(14, buttsize);\n" +
+" var img_id = \"screenshot\" + id_string;\n" +
+"\n" +
+" var thisimg = document.getElementById(img_id);\n" +
+" var button = document.getElementById(button_id);\n" +
+"\n" +
+" if (thisimg.style.display == \"inline\")\n" +
+"     {\n" +
+"         thisimg.style.display = \"none\";\n" +
+"         button.innerHTML = \"Show Screenshot \" + id_string;\n" +
+"         \n" +
+"     }\n" +
+"     else{\n" +
+"         thisimg.style.display = \"inline\";\n" +
+"         button.innerHTML = \"Hide Screenshot \" + id_string;\n" +
+"     }"
+                 + " }\nfunction ShowAllScreens()\n{"
+                 + "   var allscreens = document.getElementsByClassName(\"report_screenshots\");\n" +
+"   for (x=0; x<allscreens.length; x++)\n" +
+"   {\n" +
+"      allscreens.item(x).style.display = \"inline\";\n" +
+"   }"
+                 + "}\n function HideAllScreens()\n{"
+                 + "  var allscreens = document.getElementsByClassName(\"report_screenshots\");\n" +
+"   for (x=0; x<allscreens.length; x++)\n" +
+"   {\n" +
+"      allscreens.item(x).style.display = \"none\";\n" +
+"   }"
+                 + "}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
          Footer = "</DIV>\n</BODY>\n</HTML>";
      }
      else
@@ -238,7 +271,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
              if (includescreens)
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              
               }
@@ -251,7 +284,8 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-        ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+        ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton" 
+                + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
               }
       
@@ -284,7 +318,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-             ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+             ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
               }
          else
@@ -296,7 +330,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
                
               }
@@ -340,7 +374,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
               if (includescreens)
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }   
               }
          else
@@ -352,7 +386,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
           
               }
