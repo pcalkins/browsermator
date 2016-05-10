@@ -177,7 +177,7 @@ int returnVal = fc.showSaveDialog(STAppFrame);
      
              try {
 xmlfile.writeStartElement("BrowserMatorWindow");
-xmlfile.writeAttribute("Filename",file.getAbsolutePath());
+xmlfile.writeAttribute("Filename",file.getName());
 xmlfile.writeAttribute("ProgramVersion", mainApp.ProgramVersion);
 String ShowReport = Boolean.toString(STAppFrame.getShowReport());
 

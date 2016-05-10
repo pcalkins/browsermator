@@ -45,6 +45,7 @@ LocalDateTime[] loop_time_of_test;
   this.BugURL = "http://www.browsermator.com";
   this.Loopable = false;
   this.pause_message = "";
+  this.ScreenshotBase64 = "null";
   
    }
    public void InitializeLoopTestVars(int number_of_rows)

@@ -54,17 +54,20 @@ final JFXPanel fxPanel = new JFXPanel();
  WebView browser;
 WebEngine webEngine;
 Stage webStage;
+Boolean ReportDisplayed;
 
 
 
     public BrowserMatorReport (SeleniumTestTool SiteTest)
  {
    this.SiteTest = SiteTest;
-   
+   this.ReportDisplayed = false;
  }
     public String GetTextReport()
     {
+        
         return this.TextReport;
+       
     }
     public String GetHTMLReport()
     {
@@ -114,6 +117,7 @@ Stage webStage;
     } catch (MessagingException mex) {
     //    System.out.println("send failed, exception: " + mex);
      Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.");    
+     
     }
    
    }
@@ -162,7 +166,7 @@ mainPanel = new JPanel(new BorderLayout());
     ReportFrame.setVisible(true);   
      
      
-             
+       this.ReportDisplayed = true;       
     
     }
      public void OutPutReports()
@@ -198,15 +202,29 @@ mainPanel = new JPanel(new BorderLayout());
 "     }"
                  + " }\nfunction ShowAllScreens()\n{"
                  + "   var allscreens = document.getElementsByClassName(\"report_screenshots\");\n" +
-"   for (x=0; x<allscreens.length; x++)\n" +
+" for (x=0; x<allscreens.length; x++)\n" +
 "   {\n" +
 "      allscreens.item(x).style.display = \"inline\";\n" +
-"   }"
+"      var thisid = allscreens.item(x).id;\n" +
+       "      var idsize = allscreens.item(x).id.length;\n" +          
+        "     var id_string = allscreens.item(x).id.substring(10, idsize); \n" +  
+              
+         " var button = document.getElementById(\"ShowHideButton\" + id_string);\n" + 
+             "button.innerHTML = \"Hide Screenshot \" + id_string;" +
+                 
+                 "  }"
                  + "}\n function HideAllScreens()\n{"
                  + "  var allscreens = document.getElementsByClassName(\"report_screenshots\");\n" +
-"   for (x=0; x<allscreens.length; x++)\n" +
+" for (x=0; x<allscreens.length; x++)\n" +
 "   {\n" +
-"      allscreens.item(x).style.display = \"none\";\n" +
+
+                       "      var idsize = allscreens.item(x).id.length;\n" +          
+        "     var id_string = allscreens.item(x).id.substring(10, idsize);  \n" +  
+              
+         " var button = document.getElementById(\"ShowHideButton\" + id_string);\n" + 
+             "button.innerHTML = \"Show Screenshot \" + id_string;" +
+                 "      allscreens.item(x).style.display = \"none\";\n" +
+         
 "   }"
                  + "}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
          Footer = "</DIV>\n</BODY>\n</HTML>";
@@ -264,28 +282,43 @@ mainPanel = new JPanel(new BorderLayout());
         }
          if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + "Action Performed: " + 
+             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
+            
              if (includescreens)
+             {
+                  if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
              {
                  ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              
               }
+              }
          else
          {
-              ReportText = ReportText + "Action Performed: " + 
+              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
+                  if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
+             {
         ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton" 
                 + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+             }
              }
               }
       
@@ -311,28 +344,44 @@ mainPanel = new JPanel(new BorderLayout());
      }
  if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + "Action Performed: " + 
+             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
-              if (includescreens)
+           
+             if (includescreens)
+             {
+                  if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
              {
              ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+             }
+                  
              }
               }
          else
          {
-              ReportText = ReportText + "Action Performed: " + 
+              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
-               if (includescreens)
+          
+              if (includescreens)
+             {
+                   if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
              {
                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
-               
+             } 
               }
     
           
@@ -353,7 +402,7 @@ mainPanel = new JPanel(new BorderLayout());
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
             String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
             String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
-            String ThisScreenshot = "";
+            String ThisScreenshot = "null";
             String pass_string = " has failed at ";
                    DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
@@ -367,26 +416,41 @@ mainPanel = new JPanel(new BorderLayout());
         }
          if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + "Action Performed: " + 
+             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
-              if (includescreens)
+            
+             if (includescreens)
+             {
+                  if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
              {
                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }   
+             }
               }
          else
          {
-              ReportText = ReportText + "Action Performed: " + 
+              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
+                  if ("null".equals(ThisScreenshot))
+             {
+                 ReportText += LineBreak;
+             }
+             else
+             {
                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+             }
              }
           
               }

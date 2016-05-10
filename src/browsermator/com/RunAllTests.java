@@ -59,8 +59,15 @@ public String doInBackground()
      SiteTest.setRunActionsButtonName(donetext);
     if (SiteTest.getShowReport())
     {
+    if (BrowserMatorReport.ReportDisplayed)
+    {
+        
+    }
+    else
+    {
    BrowserMatorReport.OutPutReports();
    BrowserMatorReport.ShowHTMLReport();
+    }
     }
     if (SiteTest.getEmailReportFail())
     {
@@ -228,10 +235,32 @@ if (thisbugview.myTable==null)
        BrowserMatorReport.ShowHTMLReport();
      
        }
-              driver.close();
+         
+   
+        if (SiteTest.getEmailReportFail())
+    {
+        if (SiteTest.AllTestsPassed)
+        {
+            
+        }
+        else
+        {
+            BrowserMatorReport.EmailReport();
+        }
+    }
+    if (SiteTest.getEmailReport())
+    {
+ 
+        BrowserMatorReport.EmailReport();
+  
+    }
+    if (SiteTest.getExitAfter())
+    {
+    System.exit(0);
+    }  
+               driver.close();
               SiteTest.setCursor(Cursor.getDefaultCursor()); 
               publish(thisbugindex);
-              
           break;
       
        
@@ -307,7 +336,29 @@ else
        BrowserMatorReport.ShowHTMLReport();
      
        }
-               driver.close();
+      
+                if (SiteTest.getEmailReportFail())
+    {
+        if (SiteTest.AllTestsPassed)
+        {
+            
+        }
+        else
+        {
+            BrowserMatorReport.EmailReport();
+        }
+    }
+    if (SiteTest.getEmailReport())
+    {
+ 
+        BrowserMatorReport.EmailReport();
+  
+    }
+    if (SiteTest.getExitAfter())
+    {
+    System.exit(0);
+    }
+             driver.close();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
@@ -374,7 +425,29 @@ else
        BrowserMatorReport.ShowHTMLReport();
      
        }
-               driver.close();
+          
+                if (SiteTest.getEmailReportFail())
+    {
+        if (SiteTest.AllTestsPassed)
+        {
+            
+        }
+        else
+        {
+            BrowserMatorReport.EmailReport();
+        }
+    }
+    if (SiteTest.getEmailReport())
+    {
+ 
+        BrowserMatorReport.EmailReport();
+  
+    }
+    if (SiteTest.getExitAfter())
+    {
+    System.exit(0);
+    }
+         driver.close();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
