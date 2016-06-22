@@ -23,9 +23,16 @@ public class SwitchToFrameAction extends Action
     @Override
     public void RunAction(WebDriver driver)
     {    
-
+try
+{
  driver.switchTo().frame(this.Variable1);
-    }
+this.Pass = true;
+}
+catch (Exception ex)
+{
+    this.Pass = false;
+}
+}
 
     
 }

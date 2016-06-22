@@ -5,9 +5,16 @@
  */
 package browsermator.com;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -21,27 +28,39 @@ public class OpenNewTabAction extends Action {
       @Override
       public void SetGuts()
       {
-          this.Guts = "\nActions actions = new Actions(driver);\n" +
-" actions.keyDown(Keys.CONTROL).perform();\n" +
-" actions.sendKeys(\"t\").perform();\n" +
-" actions.keyUp(Keys.CONTROL).perform();\n" +
+          this.Guts = "     try\n" +
+"      {\n" +
 "\n" +
-"           \n" +
-"       String tab_handle = driver.getWindowHandle();\n" +
-"        driver.switchTo().window(tab_handle); \n" +
-"        this.Pass = true;";
+"driver.findElement(By.cssSelector(\"body\")).sendKeys(Keys.chord(Keys.CONTROL, \"t\"));\n" +
+"     \n" +
+"        Set<String> tab_handles = driver.getWindowHandles();\n" +
+"        int number_of_tabs = tab_handles.size();\n" +
+"        int new_tab_index = number_of_tabs-1;\n" +
+"        driver.switchTo().window(tab_handles.toArray()[new_tab_index].toString()); \n" +
+"        this.Pass = true;\n" +
+"      }\n" +
+"      catch (Exception ex)\n" +
+"      {\n" +
+"          this.Pass = false;\n" +
+"      }";
       }
   @Override
     public void RunAction(WebDriver driver)
     {
-         Actions actions = new Actions(driver);
- actions.keyDown(Keys.CONTROL).perform();
- actions.sendKeys("t").perform();
- actions.keyUp(Keys.CONTROL).perform();
+      try
+      {
 
-           
-       String tab_handle = driver.getWindowHandle();
-        driver.switchTo().window(tab_handle); 
+driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "t"));
+     
+        Set<String> tab_handles = driver.getWindowHandles();
+        int number_of_tabs = tab_handles.size();
+        int new_tab_index = number_of_tabs-1;
+        driver.switchTo().window(tab_handles.toArray()[new_tab_index].toString()); 
         this.Pass = true;
+      }
+      catch (Exception ex)
+      {
+          this.Pass = false;
+      }
     }
 }

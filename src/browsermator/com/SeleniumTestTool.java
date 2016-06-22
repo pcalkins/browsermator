@@ -930,9 +930,9 @@ this.changes=true;
 
         jLabel8.setText("Target Browser:");
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Silent Mode (HTMLUnit)" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Firefox-Marionette", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Silent Mode (HTMLUnit)" }));
 
-        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>See http://www.seleniumhq.org/docs/03_webdriver.jsp for details</HTML> ");
+        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***Marionette's Windows geckodriver does not currently include MSVCR140.dll.  Download and install it if you have problems.</HTML> ");
 
         jCheckBoxOSTypeWindows.setText("Windows");
         jCheckBoxOSTypeWindows.setEnabled(false);
@@ -1047,7 +1047,7 @@ this.changes=true;
                                                 .addComponent(jButtonClearEmailSettings)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGap(0, 67, Short.MAX_VALUE))
+                                .addGap(0, 64, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1406,6 +1406,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             {
                 case "Firefox":
                     jButtonBrowseForFireFoxExe.setEnabled(true);
+                     setOSTypeActive(false);
+                    break;
+                case "Firefox-Marionette":
+                    jButtonBrowseForFireFoxExe.setEnabled(true);
+                    setOSTypeActive(true);
                     break;
                 case "Internet Explorer-32":
                     jButtonBrowseForFireFoxExe.setEnabled(false);
@@ -1415,6 +1420,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
                     break;  
                 case "Chrome":
                     jButtonBrowseForFireFoxExe.setEnabled(false);
+                     setOSTypeActive(true);
                     break;
                 case "Silent Mode (HTMLUnit)":
                     jButtonBrowseForFireFoxExe.setEnabled(false);

@@ -42,8 +42,20 @@ STAppController mainApp;
 int calling_MDI_Index;
 boolean isFlatten;
 boolean RunIt;
+boolean fromCloud=false;
+
     public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
 {
+  this.isFlatten = isFlatten;
+  this.mainApp = mainApp;
+  this.file = file;
+  this.MDIClasses = MDIClasses;
+  this.calling_MDI_Index = calling_MDI_Index;
+  this.RunIt = RunIt;
+}
+      public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, boolean fromCloud)
+{
+    this.fromCloud = fromCloud;
   this.isFlatten = isFlatten;
   this.mainApp = mainApp;
   this.file = file;
@@ -100,9 +112,22 @@ if(!file.exists()) {
 }
 else
 {
-     //   filename = file.getName();
-String full_filename = file.getAbsoluteFile().toString();
-
+    String full_filename;
+    if (this.fromCloud)
+    {
+        if (MDIClasses.size()>0)
+        {
+       full_filename = file.getName() + "-untitled" + MDIClasses.size();
+        }
+        else
+        {
+          full_filename = file.getName() + "-untitled";   
+        }
+        }
+    else
+    {
+ full_filename = file.getAbsoluteFile().toString();
+    }
 
 int MDI_Index = -1;
 
@@ -132,8 +157,9 @@ try
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 DocumentBuilder builder = factory.newDocumentBuilder();
+String file_path = file.getAbsolutePath();
 
-doc = builder.parse(file.getAbsolutePath());
+doc = builder.parse(file_path);
 
  
 }
@@ -150,8 +176,15 @@ finally
     STAppFrame.UpdateDisplay();
    STAppFrame.setVisible(true);
   STAppFrame.setProperties(full_filename);
+  if (this.fromCloud)
+  {
+      
+  }
+  else
+  {
    mainApp.Navigator.addRecentFile(full_filename);
-MDIClasses.add(STAppFrame);
+  }
+   MDIClasses.add(STAppFrame);
 MDI_Index =  MDIClasses.size()-1;
 STAppFrame.AllFieldValues.clear();
 STAppFrame.AllFieldValues.add(STAppFrame.OSType);
@@ -285,7 +318,8 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String EmailTo = "";
   String EmailFrom = "";
   String EmailSubject = "";
-  
+ if (FileSettingsNode!=null)
+ {
 try
 {
     NodeList SettingsNodes = FileSettingsNode.item(0).getChildNodes();
@@ -403,12 +437,15 @@ try
     }
 
     }
+
     }
 catch (Exception e)
         {
-            System.out.println(e.toString());
+           System.out.println ("exception reading file settings: " + e.toString());
           
         }
+ }
+
 try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");

@@ -121,7 +121,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="67" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="64" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonNewBug" min="-2" pref="188" max="-2" attributes="0"/>
@@ -385,19 +385,20 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxTargetBrowser">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
+          <StringArray count="6">
             <StringItem index="0" value="Firefox"/>
-            <StringItem index="1" value="Internet Explorer-32"/>
-            <StringItem index="2" value="Internet Explorer-64"/>
-            <StringItem index="3" value="Chrome"/>
-            <StringItem index="4" value="Silent Mode (HTMLUnit)"/>
+            <StringItem index="1" value="Firefox-Marionette"/>
+            <StringItem index="2" value="Internet Explorer-32"/>
+            <StringItem index="3" value="Internet Explorer-64"/>
+            <StringItem index="4" value="Chrome"/>
+            <StringItem index="5" value="Silent Mode (HTMLUnit)"/>
           </StringArray>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;HTML&gt;*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).&lt;br/&gt;**HTMLUnit&apos;s Javascript engine is a bit quirky.&lt;br/&gt;See http://www.seleniumhq.org/docs/03_webdriver.jsp for details&lt;/HTML&gt; "/>
+        <Property name="text" type="java.lang.String" value="&lt;HTML&gt;*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).&lt;br/&gt;**HTMLUnit&apos;s Javascript engine is a bit quirky.&lt;br/&gt;***Marionette&apos;s Windows geckodriver does not currently include MSVCR140.dll.  Download and install it if you have problems.&lt;/HTML&gt; "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBoxOSTypeWindows">

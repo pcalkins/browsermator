@@ -5,8 +5,10 @@
  */
 package browsermator.com;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 /**
@@ -29,10 +31,19 @@ public class EnterKeyAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
-        Actions actions = new Actions(driver);
- 
- actions.keyDown(Keys.RETURN).perform(); 
- actions.keyUp(Keys.RETURN).perform();
+try
+{
+  WebElement element = driver.findElement(By.tagName("body"));
+  element.sendKeys(Keys.RETURN);
+   // Actions actions = new Actions(driver);
+
+// actions.sendKeys(Keys.RETURN).perform(); 
+ this.Pass = true;
+}
+catch (Exception ex)
+{
+    this.Pass = false;
+}
  
      
     }

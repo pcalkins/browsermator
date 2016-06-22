@@ -51,7 +51,7 @@ if (this.BoolVal1.equals(true))
 }
         this.Pass = true;
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
   

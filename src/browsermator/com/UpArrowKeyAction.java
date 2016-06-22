@@ -28,9 +28,16 @@ public class UpArrowKeyAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
+        try
+        {
         Actions actions = new Actions(driver);
- actions.sendKeys(Keys.ARROW_UP).perform(); 
- 
+ actions.sendKeys(Keys.ARROW_UP).perform();
+this.Pass = true; 
+        }
+        catch (Exception ex)
+                {
+                    this.Pass = false;
+                }
      
     }    
 }

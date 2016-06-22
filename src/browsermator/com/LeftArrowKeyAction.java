@@ -28,10 +28,17 @@ public class LeftArrowKeyAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
+        try
+        {
         Actions actions = new Actions(driver);
  
  actions.sendKeys(Keys.ARROW_LEFT).perform(); 
  
-     
+     this.Pass = true;
+        }
+        catch (Exception ex)
+        {
+            this.Pass = false;
+        }
     }  
 }

@@ -68,14 +68,19 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem aboutMenuItem;
      private JMenuItem newFileItem;
      private JMenuItem saveAsMenuItem;
+     private JMenuItem uploadFileToCloudMenuItem;
+      private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.23";
+private final String version = "0.0.24";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.23";
-
-  
-  
+   public final String ProgramVersion = "0.0.24";
+   public String loginName;
+   public String loginPassword;
+   
+  public int user_id;
+  // String rootURL = "http://localhost";
+String rootURL = "http://www.browsermator.com";
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
 
 
@@ -354,6 +359,39 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
+  addFileMenuBrowseCloudMenuItemActionListener(
+ new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+               OpenBrowserMatorCloud();
+                 
+              
+            
+           } 
+       });
+  addFileMenuuploadFileToCloudMenuItemActionListener(
+ new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
+                 
+                   UploadFile(STAppFrame, true, false);
+                    
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+              
+            
+           } 
+       });
   addFileMenuSaveAsActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
@@ -393,6 +431,8 @@ SeleniumToolDesktop.add(Navigator);
   
  
       SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+      STAppFrame.setTargetBrowser("Chrome");
+      STAppFrame.setOSType("Windows");
    STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
   STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
@@ -489,7 +529,7 @@ SeleniumToolDesktop.add(Navigator);
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
            STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome")
+           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -810,7 +850,10 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+  STAppFrame.setTargetBrowser("Chrome");
+  STAppFrame.setOSType("Windows");
      STAppFrame.setClosable(true);
+ 
   STAppFrame.setMaximizable(true);
   STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
   STAppFrame.setResizable(true);
@@ -901,7 +944,7 @@ SeleniumToolDesktop.add(Navigator);
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
            STAppFrame.changes = true;
-           if ("Chrome".equals(STAppFrame.TargetBrowser))
+           if ("Chrome".equals(STAppFrame.TargetBrowser)|| "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -1003,7 +1046,7 @@ SeleniumToolDesktop.add(Navigator);
       newProps.setProperty("main_window_sizeWidth", "1000");
       newProps.setProperty("main_window_sizeHeight", "800");   
    
-      newProps.setProperty("email_subect", "");
+      newProps.setProperty("email_subject", "");
       newProps.setProperty("email_to", "");
       newProps.setProperty("email_login_password", "");
       newProps.setProperty("email_from", "");
@@ -1102,9 +1145,14 @@ else
             switch(result){
                   case JOptionPane.YES_OPTION:
                  //   SaveFile
-                     
+                     if (STAppFrame.filename.contains("untitled"))
+                     {
+                       SaveFile(STAppFrame, true, false);  
+                     }
+                     else
+                     {
                          SaveFile(STAppFrame, false, false);
-                      
+                     }
                      
                      
                 case JOptionPane.NO_OPTION:
@@ -1162,6 +1210,8 @@ return 1;
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        browseCloudMenuItem = new javax.swing.JMenuItem();
+        uploadFileToCloudMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         closeMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
@@ -1179,6 +1229,8 @@ return 1;
         fileMenu.setText("File");
         saveAsMenuItem.setText("Save As");
         saveAsMenuItem.setMnemonic('a');
+        browseCloudMenuItem.setText("BrowserMator File Cloud");
+        uploadFileToCloudMenuItem.setText("Upload to BrowserMator Cloud");
            saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));  
            openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); 
            closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));  
@@ -1240,6 +1292,8 @@ return 1;
         saveMenuItem.setText("Save");
         fileMenu.add(saveMenuItem);
  fileMenu.add(saveAsMenuItem);
+ fileMenu.add(browseCloudMenuItem);
+ fileMenu.add(uploadFileToCloudMenuItem);
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1300,6 +1354,14 @@ return 1;
    }
    public void addFileMenuSaveAsActionListener (ActionListener listener) {
     saveAsMenuItem.addActionListener(listener);
+   }
+   public void addFileMenuBrowseCloudMenuItemActionListener(ActionListener listener)
+   {
+       browseCloudMenuItem.addActionListener(listener);
+   }
+   public void addFileMenuuploadFileToCloudMenuItemActionListener (ActionListener listener)
+   {
+       uploadFileToCloudMenuItem.addActionListener(listener);
    }
    public void addFileMenuImportActionListener (ActionListener listener)
    {
@@ -1387,7 +1449,20 @@ File newfile = new File(path + ".browsermation");
         
             
   }
-
+public void OpenBrowserMatorCloud()
+{
+    BrowserMatorFileCloud thisCloud = new BrowserMatorFileCloud(this);
+    thisCloud.ShowFileCloudWindow();
+}
+ public void UploadFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
+  {
+      int current_MDI_Index = GetCurrentWindow();
+      
+     UploadFileThread UPLOADREF = new UploadFileThread(this, STAppFrame, current_MDI_Index);
+  UPLOADREF.execute();  
+   
+  }
+ 
   public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
       int current_MDI_Index = GetCurrentWindow();
@@ -1395,6 +1470,7 @@ File newfile = new File(path + ".browsermation");
      SaveFileThread SAVEREF = new SaveFileThread(this, STAppFrame, isSaveAs, isFlatten, current_MDI_Index);
   SAVEREF.execute();  
   }
+  
      public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses, boolean RunIt) 
     {
         
@@ -1404,6 +1480,16 @@ File newfile = new File(path + ".browsermation");
  
 
     }
+      public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIClasses, boolean RunIt, boolean fromCloud) 
+    {
+        
+    int current_MDI_Index = GetCurrentWindow();
+  OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index, false, RunIt, fromCloud);
+  OPENREF.execute();
+ 
+
+    }
+     
      public void ImportFileFunct (File[] files, int CurrentMDIWindowIndex)
      {
             ImportFileThread IMPORTREF = new ImportFileThread(this, files, CurrentMDIWindowIndex);
@@ -1419,6 +1505,7 @@ File newfile = new File(path + ".browsermation");
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
    STAppFrame.filename = filename_read;
+
       STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
   STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
@@ -1763,7 +1850,7 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
           STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome")
+           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -2175,5 +2262,218 @@ public void addJMenuViewItem (JMenuItem item_to_add)
 {
     jMenuView.add(item_to_add);
 }
+   public void LoadNameAndPassword()
+  {
+   
+          Properties applicationProps = new Properties();
+    String userdir = System.getProperty("user.home");
+try
+{
+         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+             applicationProps.load(input);
+         }
+         catch (Exception e)
+         {
+             System.out.println("error name and pw config:" + e.toString());
+           
+             
+         }
+}
+catch (Exception e) {
+			System.out.println("Exception loading name and pw config: " + e);
+                        
+		} 
 
+    this.loginName = applicationProps.getProperty("loginName");
+    String temppassword = applicationProps.getProperty("loginPassword");
+   if (temppassword==null || temppassword=="")
+   {
+    this.loginName = "";
+    this.loginPassword = "";
+   }
+   else
+       
+   {
+       try
+    {
+     this.loginPassword = Protector.decrypt(temppassword);
+    }
+    catch (Exception ex)
+    {
+      System.out.println("error decrypting login pw: " + ex.toString());
+       
+    }
+
+   }
+   
+        
+  }
+   public void SaveNameAndPassword(String in_loginName, String in_Password)
+  {
+      String userdir = System.getProperty("user.home");
+      Properties applicationProps = new Properties();
+      this.loginName = in_loginName;
+      this.loginPassword = in_Password;
+      try
+{
+    Boolean file_exists = false;
+    
+    File f = new File(userdir + File.separator + "browsermator_config.properties");
+if(f.exists() && !f.isDirectory()) { 
+   file_exists = true;
+}
+if (file_exists == false)
+{
+    CreateConfigFile();
+}
+      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+  
+applicationProps.load(input);
+input.close();
+}
+      catch (Exception ex)
+      {
+         System.out.println ("exception loading config: " + ex.toString()); 
+      }
+      applicationProps.setProperty("loginName", in_loginName);
+      String encPassword = "";
+      try
+      {
+       encPassword = Protector.encrypt(in_Password);
+      }
+      catch (Exception ex)
+      {
+          System.out.println("error encrypting login pw: " + ex.toString());
+          
+      }
+      applicationProps.setProperty("loginPassword", encPassword);
+      
+           try {
+       FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+    applicationProps.store(writer, "browsermator_settings");
+    writer.close();
+         
+  
+   
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception writing login details: " + e);
+		}      
+  }  
+   
+    public void LookUpUser(String name, String password)
+ {
+   String outHTML = "";
+     UserParamHash userData = new UserParamHash(name, "", password);
+     SendReceiveData thisSession = new SendReceiveData(rootURL + "/get_user_id.php", userData);
+  Boolean errorcheck = false;
+          try
+           {
+      outHTML = thisSession.SendParams();           
+           }
+   catch (Exception ex)
+   {
+       errorcheck = true;
+       System.out.println ("Exception getting user_id : " + ex.toString());
+       
+   }
+   if (outHTML.isEmpty() || "failed".equals(outHTML))
+   {
+       if (errorcheck)
+       {
+           this.user_id = -1;
+       }
+       else
+       {
+        this.user_id = 0;
+       }
+       
+ }
+   else
+   {
+       try
+       {
+      this.user_id = Integer.parseInt(outHTML);
+       }
+       catch (Exception ex)
+       {
+           System.out.println("Exception parsing user_id int:" + ex.toString());
+       }
+               
+   }
+ }
+     public String RecoverPassword (String email)
+ {
+     
+     UserParamHash userData = new UserParamHash("", email, "");
+      SendReceiveData thisSession = new SendReceiveData(rootURL + "/recover.php", userData);
+      try
+     {
+     String outHTML = thisSession.SendParams();
+      if (outHTML=="Success")
+      {
+        return "An email with your password has been sent.";
+       
+      }
+      else
+      {
+          if (outHTML.contains("failed to send"))
+          {
+  
+          return "Connection to mail server has failed.  Please try again later.";    
+          }
+          
+          else
+          {
+        return "There is no account registered to " + email;
+          }
+      }
+     
+      
+     }
+     catch (Exception ex)
+     {
+         
+         System.out.println("Exception recovering password: " + ex.toString());
+         if (ex.toString().contains("Connection refused"))
+         {
+             return "Unable to connect to browsermator.com";
+         }
+         else
+         {
+         return "Unable to recover password.";
+         }
+     }
+   
+ }
+ public String RegisterUser (Login_Register_Dialog loginDialog, String loginName, String Email, String Password)
+ {
+    
+     
+     UserParamHash userData = new UserParamHash(loginName, Email, Password);
+     SendReceiveData thisSession = new SendReceiveData(rootURL + "/register.php", userData);
+  try
+  {
+     String outHTML = thisSession.SendParams();
+      if ("Success".equals(outHTML))
+      {
+        
+       return "Success";
+       
+      }
+      else
+      {
+        return "The username and/or email address you have chosen already exists.";
+      }
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception sending params register: " + ex.toString());
+  }
+     
+     
+return "Unable to connect browsermator.com.";
+  
+ }
 }

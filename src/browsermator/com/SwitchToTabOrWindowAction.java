@@ -29,8 +29,16 @@ public class SwitchToTabOrWindowAction extends Action
         {
         this.Guts = "\nint_index =  Integer.parseInt(\""+this.Variable1+"\");";
         }
-        this.Guts+=" \n   ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());\n" +
-"    driver.switchTo().window(tabs_windows.get(int_index));";
+        this.Guts+="  try\n" +
+"        {\n" +
+"       ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());\n" +
+"    driver.switchTo().window(tabs_windows.get(int_index));\n" +
+"    this.Pass = true;\n" +
+"        }\n" +
+"        catch (Exception ex)\n" +
+"        {\n" +
+"            this.Pass = false;\n" +
+"        }";
      }
     @Override
     public void RunAction(WebDriver driver)
@@ -41,9 +49,16 @@ public class SwitchToTabOrWindowAction extends Action
         {
         int_index =  Integer.parseInt(this.Variable1);
         }
-        
+        try
+        {
        ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());
     driver.switchTo().window(tabs_windows.get(int_index));
+    this.Pass = true;
+        }
+        catch (Exception ex)
+        {
+            this.Pass = false;
+        }
     }
 
 }

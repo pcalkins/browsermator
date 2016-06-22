@@ -13,6 +13,7 @@ import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
@@ -79,14 +80,31 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  //  WebDriver driver = new FirefoxDriver();
    switch (TargetBrowser)
    {
-     case "Firefox":
-    if (this.firefox_path!=null)
-      {
-           System.setProperty("webdriver.firefox.bin", this.firefox_path);
-         
-      }
-
-       driver = new FirefoxDriver();
+       case "Firefox":
+            System.setProperty("webdriver.firefox.bin", firefox_path);
+             driver =  new FirefoxDriver();
+           break;
+           
+    case "Firefox-Marionette":
+     if ("Windows".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-v0.8.0-win32\\geckodriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-OSX\\geckodriver-0.8.0-OSX");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-linux64\\geckodriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-linux64\\geckodriver");
+     }
+ System.setProperty("webdriver.firefox.bin", firefox_path);
+         driver =  new MarionetteDriver();
+     
      break;
      
      case "Silent Mode (HTMLUnit)":
@@ -94,33 +112,36 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
      
      case "Internet Explorer-32":
-     System.setProperty("webdriver.ie.driver", "IEDriverServer_Win32_2.48.0\\IEDriverServer.exe");
+     System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win32\\IEDriverServer.exe");
      driver = new InternetExplorerDriver();
      break;
      case "Internet Explorer-64":
-     System.setProperty("webdriver.ie.driver", "IEDriverServer_x64_2.48.0\\IEDriverServer.exe");
+     System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win64\\IEDriverServer.exe");
      driver = new InternetExplorerDriver();
      break;
      case "Chrome":
      if ("Windows".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "chromedriver_win32\\chromedriver.exe");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "chromedriver_mac32\\chromedriver-mac32");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac32\\chromedriver-mac32");
      }
      if ("Linux-32".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "chromedriver_linux32\\chromedriver-linux32");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver-linux32");
      }
      if ("Linux-64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "chromedriver_linux64\\chromedriver-linux64");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver-linux64");
      }
      
      driver = new ChromeDriver();
      break;
+      default: 
+            driver = new ChromeDriver();
+                     break;
    }
  
   int WaitTime = SiteTest.GetWaitTime();
@@ -149,7 +170,11 @@ if (thisbugview.myTable==null)
    catch (Exception ex)
    {
    SiteTest.setCursor(Cursor.getDefaultCursor()); 
-     driver.close();
+       for(String winHandle : driver.getWindowHandles())
+       {
+             driver.switchTo().window(winHandle);
+             driver.close();
+       }
         break;
      
         }
@@ -189,7 +214,11 @@ else
         catch (Exception ex)
      {
    
-        driver.close();
+        for(String winHandle : driver.getWindowHandles())
+       {
+             driver.switchTo().window(winHandle);
+             driver.close();
+       }
         ThisAction.Variable1 = original_value1;
         ThisAction.Variable2 = original_value2;
         SiteTest.setCursor(Cursor.getDefaultCursor()); 
@@ -243,7 +272,11 @@ else
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
-          driver.close();
+        for(String winHandle : driver.getWindowHandles())
+       {
+             driver.switchTo().window(winHandle);
+             driver.close();
+       }
        SiteTest.setCursor(Cursor.getDefaultCursor()); 
           break;
        
@@ -255,8 +288,12 @@ else
      }
     }
    }
-     
-    driver.close();  
+    
+  for(String winHandle : driver.getWindowHandles())
+       {
+             driver.switchTo().window(winHandle);
+             driver.close();
+       }
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
 
  int ActionIndex = 0;

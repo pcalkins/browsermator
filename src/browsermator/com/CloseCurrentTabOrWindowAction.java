@@ -5,6 +5,7 @@
  */
 package browsermator.com;
 
+import java.util.ArrayList;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -21,20 +22,42 @@ public class CloseCurrentTabOrWindowAction extends Action
   @Override
   public void SetGuts()
   {
-      this.Guts = "\n Actions actions = new Actions(driver);\n" +
-" actions.keyDown(Keys.CONTROL).perform();\n" +
-" actions.sendKeys(\"w\").perform();\n" +
-" actions.keyUp(Keys.CONTROL).perform();\n" +
-"        this.Pass = true;";
+      this.Guts = "try\n" +
+"{\n" +
+" String currenthandle = driver.getWindowHandle();\n" +
+"  driver.switchTo().window(currenthandle);\n" +
+"\n" +
+"driver.close();\n" +
+" for (String winHandle : driver.getWindowHandles()) {\n" +
+"  driver.switchTo().window(winHandle); \n" +
+"}\n" +
+"     this.Pass = true;\n" +
+"}\n" +
+"catch (Exception ex)\n" +
+"{\n" +
+"    this.Pass = false;\n" +
+"}";
   }
   @Override
     public void RunAction(WebDriver driver)
     {
-       Actions actions = new Actions(driver);
- actions.keyDown(Keys.CONTROL).perform();
- actions.sendKeys("w").perform();
- actions.keyUp(Keys.CONTROL).perform();
-        this.Pass = true;
+try
+{
+ String currenthandle = driver.getWindowHandle();
+  driver.switchTo().window(currenthandle);
+
+driver.close();
+ for (String winHandle : driver.getWindowHandles()) {
+  driver.switchTo().window(winHandle); 
+}
+     this.Pass = true;
+}
+catch (Exception ex)
+{
+    this.Pass = false;
+}
+  
+   
     }
     
     

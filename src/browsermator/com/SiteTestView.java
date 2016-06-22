@@ -21,8 +21,12 @@ String RecentFile2;
 String RecentFile3;
 String RecentFile4;
 String RecentFile5;
-
-           
+String CloudFile1;
+String CloudFile2;
+String CloudFile3;
+String CloudFile4;
+String CloudFile5;
+   
 
    SiteTestView() {
    RecentFile1 = "";
@@ -30,8 +34,13 @@ String RecentFile5;
    RecentFile3 = "";
    RecentFile4 = "";
    RecentFile5 = "";
+   CloudFile1 = "";
+   CloudFile2 = "";
+   CloudFile3 = "";
+   CloudFile4 = "";
+   CloudFile5 = "";
    
-       initComponents();
+    initComponents();
              Properties applicationProps = new Properties();
              Boolean file_exists = false;
               String userdir = System.getProperty("user.home");
