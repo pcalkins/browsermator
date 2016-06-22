@@ -170,11 +170,7 @@ if (thisbugview.myTable==null)
    catch (Exception ex)
    {
    SiteTest.setCursor(Cursor.getDefaultCursor()); 
-       for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+      driver.quit();
         break;
      
         }
@@ -214,11 +210,7 @@ else
         catch (Exception ex)
      {
    
-        for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+      driver.quit();
         ThisAction.Variable1 = original_value1;
         ThisAction.Variable2 = original_value2;
         SiteTest.setCursor(Cursor.getDefaultCursor()); 
@@ -272,11 +264,7 @@ else
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
-        for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+      driver.quit();
        SiteTest.setCursor(Cursor.getDefaultCursor()); 
           break;
        
@@ -289,11 +277,7 @@ else
     }
    }
     
-  for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+  driver.quit();
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
 
  int ActionIndex = 0;

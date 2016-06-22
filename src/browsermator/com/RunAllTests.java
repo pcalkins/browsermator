@@ -286,13 +286,11 @@ if (thisbugview.myTable==null)
     }
     if (SiteTest.getExitAfter())
     {
+      driver.quit();
+              SiteTest.setCursor(Cursor.getDefaultCursor()); 
     System.exit(0);
     }  
-       for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+      driver.quit();
               SiteTest.setCursor(Cursor.getDefaultCursor()); 
         //      publish(thisbugindex);
           break;
@@ -390,13 +388,11 @@ else
     }
     if (SiteTest.getExitAfter())
     {
+       driver.quit();
+               SiteTest.setCursor(Cursor.getDefaultCursor()); 
     System.exit(0);
     }
-         for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+       driver.quit();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
@@ -483,13 +479,11 @@ else
     }
     if (SiteTest.getExitAfter())
     {
+      driver.quit();
+          
     System.exit(0);
     }
-        for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+      driver.quit();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
@@ -539,20 +533,13 @@ else
                    options[0]);
     if (n==0)
     {
-      for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+    driver.quit();
     }
      }
      else
      {
-   for(String winHandle : driver.getWindowHandles())
-       {
-             driver.switchTo().window(winHandle);
-             driver.close();
-       }
+ 
+   driver.quit();
      }
  
      FillReport();
