@@ -614,7 +614,7 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
           STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome")
+           if ("Chrome".equals(STAppFrame.TargetBrowser) || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
