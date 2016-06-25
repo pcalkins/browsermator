@@ -271,6 +271,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
    
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
+   
    STAppFrame.filename = filename_read;
       STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
@@ -725,8 +726,7 @@ STAppFrame.addjButtonDoStuffActionListener(
       }
     );
   
- 
-  
+STAppFrame.ShowStoredVarControls(false);
  return STAppFrame;
 
   }

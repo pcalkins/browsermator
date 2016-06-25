@@ -48,10 +48,13 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String TargetBrowser;
   String OSType;
   int WaitTime;
- 
+  HashMap<String, String> VarHashMap;
+  ArrayList<ArrayList<String>> VarLists;
+  
   public SeleniumTestTool(String filename)
   {
-      
+    
+   this.VarHashMap = new HashMap();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
   this.OSType = "Windows";
@@ -138,6 +141,90 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
 
 }
 
+public void initVarHashMap()
+{
+    this.VarHashMap = new HashMap();
+}
+
+public void initVarLists()
+{
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   this.VarLists.add(new ArrayList());
+   
+}
+  public String getSelectedVariableName()
+      {
+          String ret_val = "";
+          ret_val = (String)jComboBoxStoredVariables.getSelectedItem();
+          if (ret_val=="Select a stored variable") { ret_val = ""; }
+          return ret_val;  
+      }
+      public void addSelectedVariableName(String varname)
+      {
+        jComboBoxStoredVariables.addItem(varname);
+        int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
+        jComboBoxStoredVariables.setSelectedIndex(newitemindex);
+      }
+public String GetStoredVariableValue(String fieldname)
+{
+    String ret_val = "";
+if (VarHashMap.containsKey(fieldname))
+{
+    ret_val = VarHashMap.get(fieldname);
+}
+return ret_val;
+}
+
+public void SetStoredVariableName(String varname)
+{
+    VarHashMap.put(varname, "");  
+    addSelectedVariableName(varname);
+    
+}
+public void SetStoredVariableValue (String varname, String varval)
+{
+    if (VarHashMap.containsKey(varname))
+    {
+        VarHashMap.put(varname, varval);
+    }
+}
+public void ShowStoredVarControls(Boolean showhideval)
+{
+    if (showhideval)
+    {
+         jButtonPlaceStoredVariable.setVisible(true);
+    jButtonPlaceStoredVariable.setEnabled(false);
+    jLabelStoredVariables.setVisible(true);
+    jComboBoxStoredVariables.setVisible(true);   
+    }
+    else
+    {
+    jButtonPlaceStoredVariable.setVisible(false);
+    jComboBoxStoredVariables.setVisible(false);
+    jLabelStoredVariables.setVisible(false);
+    }
+}
+
+public void ShowPlaceStoredVariableButton(Boolean showhideval)
+{
+    if (showhideval)
+    {
+     jButtonPlaceStoredVariable.setEnabled(true);   
+    }
+    else
+    {
+    jButtonPlaceStoredVariable.setEnabled(true);      
+    }
+}
+
 public void setAllFieldValues(ArrayList<String> allfieldvalues)
 {
     this.AllFieldValues = allfieldvalues;
@@ -184,6 +271,9 @@ catch (Exception e) {
    
         
 	}
+    
+      
+      
       public boolean getExitAfter()
       {
           boolean checked = this.jCheckBoxExitAfter.isSelected();
@@ -329,6 +419,7 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
+  
   //      AV.AddDraggers(this, this.BugArray.get(bugindex), BV, AV);
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
@@ -380,6 +471,7 @@ bugindex++;
         {
 
          AV.SetIndexes(newbugview.index, actionindex);
+         
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
@@ -872,6 +964,9 @@ this.changes=true;
         jButtonFlattenFile = new javax.swing.JButton();
         jButtonLoadEmailSettings = new javax.swing.JButton();
         jButtonGutsView = new javax.swing.JButton();
+        jComboBoxStoredVariables = new javax.swing.JComboBox<>();
+        jButtonPlaceStoredVariable = new javax.swing.JButton();
+        jLabelStoredVariables = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -966,6 +1061,12 @@ this.changes=true;
 
         jButtonGutsView.setText("View Guts");
 
+        jComboBoxStoredVariables.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a stored variable" }));
+
+        jButtonPlaceStoredVariable.setText("Place Variable");
+
+        jLabelStoredVariables.setText("Stored Variables");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1052,6 +1153,12 @@ this.changes=true;
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonNewDataLoop)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelStoredVariables)
+                                .addGap(10, 10, 10)
+                                .addComponent(jComboBoxStoredVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonPlaceStoredVariable)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonGutsView)))
                         .addContainerGap())))
@@ -1063,7 +1170,10 @@ this.changes=true;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonNewDataLoop)
-                        .addComponent(jButtonGutsView))
+                        .addComponent(jButtonGutsView)
+                        .addComponent(jComboBoxStoredVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonPlaceStoredVariable)
+                        .addComponent(jLabelStoredVariables))
                     .addComponent(jButtonNewBug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelTHISSITEURL)
@@ -1258,6 +1368,11 @@ public void addjButtonBrowseForFireFoxExeActionListener(ActionListener listener)
 {
     jButtonBrowseForFireFoxExe.addActionListener(listener);
 }
+public void addjButtonPlaceStoredVariable(ActionListener listener)
+{
+    jButtonPlaceStoredVariable.addActionListener(listener);
+}
+
 public void addjButtonNewBugActionListener(ActionListener listener) {
      jButtonNewBug.addActionListener(listener);
   }
@@ -1544,6 +1659,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JButton jButtonLoadEmailSettings;
     private javax.swing.JButton jButtonNewBug;
     private javax.swing.JButton jButtonNewDataLoop;
+    private javax.swing.JButton jButtonPlaceStoredVariable;
     private javax.swing.JCheckBox jCheckBoxEmailReport;
     private javax.swing.JCheckBox jCheckBoxEmailReportFail;
     private javax.swing.JCheckBox jCheckBoxExitAfter;
@@ -1553,6 +1669,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JCheckBox jCheckBoxOSTypeWindows;
     private javax.swing.JCheckBox jCheckBoxPromptToClose;
     private javax.swing.JCheckBox jCheckBoxShowReport;
+    private javax.swing.JComboBox<String> jComboBoxStoredVariables;
     private javax.swing.JComboBox jComboBoxTargetBrowser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1565,6 +1682,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;

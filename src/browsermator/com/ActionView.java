@@ -36,6 +36,7 @@ public abstract class ActionView implements Listenable, Initializable{
    JPasswordField JTextFieldPassword;
    JTextField JTextFieldVariable1;
    JTextField JTextFieldVariable2;
+   JTextField JTextFieldVariableVARINDEX;
    JLabel JLabelVariable1;
    JLabel JLabelVariable2;
 
@@ -58,6 +59,7 @@ public abstract class ActionView implements Listenable, Initializable{
       this.JLabelPassFail = new JLabel("");
       this.JTextFieldVariable1 =  new JTextField("", 15);
       this.JTextFieldVariable2 = new JTextField("", 15);
+      this.JTextFieldVariableVARINDEX = new JTextField("", 15);
       this.JTextFieldPassword = new JPasswordField("", 15);
       this.JLabelVariable1 = new JLabel("Generic");
       this.JLabelVariable2 = new JLabel("Generic");
@@ -78,6 +80,7 @@ String stringactionindex = Integer.toString(this.index+1);
   
          
    }
+ 
      public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
      {
          
@@ -126,6 +129,10 @@ String stringactionindex = Integer.toString(this.index+1);
          public void addJTextFieldVariable1DocListener(DocumentListener doclistener)
      {
          JTextFieldVariable1.getDocument().addDocumentListener(doclistener);
+     }
+              public void addJTextFieldVariableVARINDEXDocListener(DocumentListener doclistener)
+     {
+         JTextFieldVariableVARINDEX.getDocument().addDocumentListener(doclistener);
      }
          public void addJTextFieldVariable2DocListener(DocumentListener doclistener)
          {
@@ -210,11 +217,51 @@ String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
            this.JLabelIndex.setText(bugdashactionindex);
+           this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
            
        }
-       
+       public void AddSetVarFocusListeners(SeleniumTestTool Window)
+       {
+          
+       addJTextFieldFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+            
+               Window.ShowStoredVarControls(true);
+               Window.ShowPlaceStoredVariableButton(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+           Window.ShowStoredVarControls(false);
+               Window.ShowPlaceStoredVariableButton(false);
+            }
+        });
+      addJTextField2FocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+            
+               Window.ShowStoredVarControls(true);
+               Window.ShowPlaceStoredVariableButton(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+           Window.ShowStoredVarControls(false);
+               Window.ShowPlaceStoredVariableButton(false);
+            }
+        });    
+       }
        public void AddDraggers(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
        {
+           if (!Window.VarHashMap.isEmpty())
+           {
+               AddSetVarFocusListeners(Window);
+           }
              this.addJButtonDragItMouseAdapter(new MouseAdapter() {
 
  

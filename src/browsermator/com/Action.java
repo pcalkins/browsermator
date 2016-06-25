@@ -1,6 +1,7 @@
 package browsermator.com;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -30,9 +31,15 @@ LocalDateTime[] loop_time_of_test;
  String ScreenshotBase64;
  String[] loop_ScreenshotsBase64;
  String Guts;
+ String tostore_varname;
+ String tostore_varvalue;
 
+ ArrayList<String> tostore_varlist;
    Action ()
    {
+  this.tostore_varname = "";
+  this.tostore_varvalue = "";
+  this.tostore_varlist = null;
   this.Pass = false;
   this.TimeOfTest = LocalDateTime.now();
   this.NOT = false;
@@ -48,6 +55,7 @@ LocalDateTime[] loop_time_of_test;
   this.ScreenshotBase64 = "null";
   
    }
+
    public void InitializeLoopTestVars(int number_of_rows)
    {
        this.loop_pass_values = new Boolean[number_of_rows];

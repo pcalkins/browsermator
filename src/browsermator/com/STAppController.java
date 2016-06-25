@@ -431,6 +431,8 @@ SeleniumToolDesktop.add(Navigator);
   
  
       SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+      STAppFrame.ShowStoredVarControls(false);
+     
       STAppFrame.setTargetBrowser("Chrome");
       STAppFrame.setOSType("Windows");
    STAppFrame.setClosable(true);
@@ -850,6 +852,7 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+   STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows");
      STAppFrame.setClosable(true);
@@ -1477,6 +1480,7 @@ public void OpenBrowserMatorCloud()
     int current_MDI_Index = GetCurrentWindow();
   OpenFileThread OPENREF = new OpenFileThread(this, file, MDIClasses, current_MDI_Index, false, RunIt);
   OPENREF.execute();
+  
  
 
     }
@@ -1504,6 +1508,7 @@ public void OpenBrowserMatorCloud()
    
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
+  STAppFrame.ShowStoredVarControls(false);
    STAppFrame.filename = filename_read;
 
       STAppFrame.setClosable(true);

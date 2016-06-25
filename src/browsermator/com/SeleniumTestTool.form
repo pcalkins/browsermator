@@ -127,6 +127,12 @@
                               <Component id="jButtonNewBug" min="-2" pref="188" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonNewDataLoop" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelStoredVariables" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="jComboBoxStoredVariables" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jButtonPlaceStoredVariable" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jButtonGutsView" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -145,6 +151,9 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonNewDataLoop" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonGutsView" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxStoredVariables" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonPlaceStoredVariable" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelStoredVariables" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jButtonNewBug" max="32767" attributes="0"/>
               </Group>
@@ -464,6 +473,28 @@
     <Component class="javax.swing.JButton" name="jButtonGutsView">
       <Properties>
         <Property name="text" type="java.lang.String" value="View Guts"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxStoredVariables">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="1">
+            <StringItem index="0" value="Select a stored variable"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonPlaceStoredVariable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Place Variable"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelStoredVariables">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stored Variables"/>
       </Properties>
     </Component>
   </SubComponents>
