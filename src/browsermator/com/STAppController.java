@@ -72,7 +72,7 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.24";
+private final String version = "0.0.25";
     private int CurrentMDIWindowIndex;
    public final String ProgramVersion = "0.0.25";
    public String loginName;
