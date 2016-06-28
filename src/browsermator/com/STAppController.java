@@ -74,7 +74,7 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem importMenuItem;
 private final String version = "0.0.24";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.24";
+   public final String ProgramVersion = "0.0.25";
    public String loginName;
    public String loginPassword;
    
@@ -431,7 +431,7 @@ SeleniumToolDesktop.add(Navigator);
   
  
       SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
-      STAppFrame.ShowStoredVarControls(false);
+ //     STAppFrame.ShowStoredVarControls(false);
      
       STAppFrame.setTargetBrowser("Chrome");
       STAppFrame.setOSType("Windows");
@@ -483,7 +483,8 @@ SeleniumToolDesktop.add(Navigator);
      
       }
     });
- 
+  
+  
     STAppFrame.addjButtonDoStuffActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -852,7 +853,7 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
-   STAppFrame.ShowStoredVarControls(false);
+ //  STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows");
      STAppFrame.setClosable(true);
@@ -899,6 +900,7 @@ SeleniumToolDesktop.add(Navigator);
      
       }
     });
+ 
  
     STAppFrame.addjButtonDoStuffActionListener(
       new ActionListener() {
@@ -1508,7 +1510,7 @@ public void OpenBrowserMatorCloud()
    
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
-  STAppFrame.ShowStoredVarControls(false);
+ // STAppFrame.ShowStoredVarControls(false);
    STAppFrame.filename = filename_read;
 
       STAppFrame.setClosable(true);

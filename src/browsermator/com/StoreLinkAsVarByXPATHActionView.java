@@ -17,8 +17,10 @@ import javax.swing.event.DocumentListener;
  */
 public class StoreLinkAsVarByXPATHActionView extends ActionView
 {
+   
     StoreLinkAsVarByXPATHActionView()
    {
+       this.ActionType = "StoreLinkAsVarByXPATH";
        this.JLabelVariable1 = new JLabel("Find link At XPATH:");
     this.JLabelVariable2 = new JLabel("Store as variable name:");
  this.JPanelAction.add(this.JLabelVariable1);
@@ -35,7 +37,6 @@ public class StoreLinkAsVarByXPATHActionView extends ActionView
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
   
-    
      AddDraggers(action, Window, newbug, newbugview);
      
 

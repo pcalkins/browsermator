@@ -606,6 +606,8 @@ catch (Exception e)
             System.out.println(e.toString());
           
         }
+ 
+ 
 STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -627,6 +629,8 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
         }
         
         });
+ 
+  
 STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
 new ActionListener() {
     public void actionPerformed (ActionEvent evt)
@@ -726,7 +730,7 @@ STAppFrame.addjButtonDoStuffActionListener(
       }
     );
   
-STAppFrame.ShowStoredVarControls(false);
+// STAppFrame.ShowStoredVarControls(false);
  return STAppFrame;
 
   }

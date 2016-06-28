@@ -75,12 +75,18 @@ String stringactionindex = Integer.toString(this.index+1);
     
       this.JPanelAction.add(this.JLabelIndex);
       this.JPanelAction.add(this.JButtonDragIt);
-
+ this.ActionType = "";
                 
   
          
    }
- 
+     public void setFieldToStoredVariable(String stored_var_name)
+     {
+       
+      String stored_var_string = "[stored_varname-start]" + stored_var_name + "[stored_varname-end]";
+     JTextFieldVariable2.setText(stored_var_string);
+         
+     }
      public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
      {
          
@@ -217,51 +223,50 @@ String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
            this.JLabelIndex.setText(bugdashactionindex);
-           this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+          // this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+           
            
        }
-       public void AddSetVarFocusListeners(SeleniumTestTool Window)
+       public void AddSetVarFocusListeners(SeleniumTestTool Window, Procedure newbug, Action action)
        {
           
-       addJTextFieldFocusListener(new FocusListener() {
+     //  addJTextFieldFocusListener(new FocusListener() {
 
-            @Override
-            public void focusGained(FocusEvent e) {
+      //      @Override
+      //      public void focusGained(FocusEvent e) {
             
             
-               Window.ShowStoredVarControls(true);
-               Window.ShowPlaceStoredVariableButton(true);
-            }
+           
+       //        Window.ShowPlaceStoredVariableButton(true);
+       //     }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-           Window.ShowStoredVarControls(false);
-               Window.ShowPlaceStoredVariableButton(false);
-            }
-        });
+       //     @Override
+       //     public void focusLost(FocusEvent e) {
+          
+       //        Window.ShowPlaceStoredVariableButton(false);
+        //    }
+       // });
       addJTextField2FocusListener(new FocusListener() {
 
             @Override
             public void focusGained(FocusEvent e) {
             
-            
-               Window.ShowStoredVarControls(true);
-               Window.ShowPlaceStoredVariableButton(true);
+         
+          
+               Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index );
+                
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-           Window.ShowStoredVarControls(false);
-               Window.ShowPlaceStoredVariableButton(false);
+          
+               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index);
             }
         });    
        }
        public void AddDraggers(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
        {
-           if (!Window.VarHashMap.isEmpty())
-           {
-               AddSetVarFocusListeners(Window);
-           }
+    
              this.addJButtonDragItMouseAdapter(new MouseAdapter() {
 
  
@@ -408,8 +413,8 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                     
                      
                      original_locationY = snapped_locationY;
-  
- UpdateScrollPane();
+  Window.UpdateScrollPane(newbugview);
+ // UpdateScrollPane();
   scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
@@ -422,8 +427,8 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                  
           original_locationY = snapped_locationY;
   
-     
-  UpdateScrollPane();    
+  Window.UpdateScrollPane(newbugview);
+ // UpdateScrollPane(); 
  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
  
  
@@ -450,43 +455,7 @@ else
     c.scrollRectToVisible(visible);
     
 }    
-     public void UpdateScrollPane()
-     {
-              GridBagConstraints ActionConstraints = new GridBagConstraints();
-           // JPanel ActionPanel = new JPanel();
-             
-            JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
-            ActionPanel.removeAll();
-              GridBagLayout ActionLayout = new GridBagLayout();
-      ActionPanel.setLayout(ActionLayout); 
-      
-     ActionConstraints.fill = GridBagConstraints.NONE;
-     ActionConstraints.anchor = GridBagConstraints.WEST;            
-         int actionindex = 0;
-      for (ActionView AV : newbugview.ActionsViewList )
-        {
 
-       
-         ActionConstraints.gridx = 1;
-         ActionConstraints.gridy = actionindex;
-         ActionConstraints.gridwidth = 1;
-         ActionConstraints.gridheight = 1;
-         ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
-         
-         ActionPanel.add(AV.JPanelAction);
-    
-         actionindex++;
-
-        }
-      if (actionindex < 9)
-      {
-     newbugview.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));
-          }
-      newbugview.ActionScrollPane.setVisible(true);
-
-       newbugview.ActionScrollPane.setViewportView(ActionPanel);
-
-     }
 	private int getDragDistance(int larger, int smaller, int snapSize)
 	{
 		int halfway = snapSize / 2;
@@ -591,7 +560,10 @@ if (!potentialDrag) return;
 
   public void AddLoopListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-
+   if (Window.hasStoredVar)
+   {
+   AddSetVarFocusListeners(Window, newbug, action);
+   }
 if (newbugview.myTable!=null)
 {
   
@@ -617,7 +589,7 @@ if (newbugview.myTable!=null)
             @Override
             public void focusGained(FocusEvent e) {
             
-            
+           
                 newbugview.ShowFieldInstructions(true, 2, newbugview.index, action.index);
                 newbugview.setLastSelectedField (2, newbugview.index, action.index);
             }

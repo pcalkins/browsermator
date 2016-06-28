@@ -24,6 +24,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -48,12 +49,13 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String TargetBrowser;
   String OSType;
   int WaitTime;
+  boolean hasStoredVar;
   HashMap<String, String> VarHashMap;
   ArrayList<ArrayList<String>> VarLists;
   
   public SeleniumTestTool(String filename)
   {
-    
+    this.hasStoredVar = false;
    this.VarHashMap = new HashMap();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
@@ -70,7 +72,8 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
 
   
       initComponents();
-
+jButtonPlaceStoredVariable.setFocusable(false);
+jComboBoxStoredVariables.setFocusable(false);
        jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
           @Override
            public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,7 +129,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
             }
         });
       
-        
+  
  // this.setVisible(true);
   this.EmailReport = false;
   this.EmailReportFail = false;
@@ -140,7 +143,20 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
     }
 
 }
+public void setCurrentlySelectedFieldToStoredVariable(String fieldindex)
+{
+    String[] indexes = fieldindex.split("-");
+    String bugindex = indexes[0];
+    String actionindex = indexes[1];
+    int bugindexnum = Integer.parseInt(bugindex)-1;
+    int actionindexnum = Integer.parseInt(actionindex)-1;
+    BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString());
 
+}
+public void setHasStoredVar(boolean hasit)
+{
+    this.hasStoredVar=hasit;
+}
 public void initVarHashMap()
 {
     this.VarHashMap = new HashMap();
@@ -169,10 +185,57 @@ public void initVarLists()
       }
       public void addSelectedVariableName(String varname)
       {
-        jComboBoxStoredVariables.addItem(varname);
-        int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
+         
+       if(((DefaultComboBoxModel)jComboBoxStoredVariables.getModel()).getIndexOf(varname) == -1) {
+ jComboBoxStoredVariables.addItem(varname);
+ int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
         jComboBoxStoredVariables.setSelectedIndex(newitemindex);
+}
       }
+    public void updatePlacedVariables(String to_updatename, String update_toname)
+    {
+    int bugindex = 0;
+    if (!"".equals(to_updatename))
+    {
+    for (ProcedureView BV : BugViewArray)
+      {
+            for (ActionView AV : BV.ActionsViewList )
+        {
+            if (AV.JTextFieldVariable2.getText().contains("[stored_varname") && AV.JTextFieldVariable2.getText().contains(to_updatename))
+            {
+               AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
+            }
+        }
+      } 
+    }
+    }
+    public void updateSelectedVariableName(String oldname, String newname)
+      {
+          int indexof_oldname = -1;
+          int indexof_newname = -1;
+          
+        if (VarHashMap.containsKey(newname))
+        {       
+            updatePlacedVariables(newname, oldname);
+            updatePlacedVariables(oldname, newname);
+            VarHashMap.put(newname, "");
+            VarHashMap.put(oldname, "");
+        }
+        else
+        {
+            VarHashMap.remove(oldname);
+            VarHashMap.put(newname, "");
+            updatePlacedVariables(oldname, newname);
+        }
+        jComboBoxStoredVariables.removeAllItems();
+        jComboBoxStoredVariables.addItem("Select a stored variable");
+        for (String keyname: VarHashMap.keySet())
+        {
+            jComboBoxStoredVariables.addItem(keyname);
+        }
+       
+      }
+  
 public String GetStoredVariableValue(String fieldname)
 {
     String ret_val = "";
@@ -200,28 +263,50 @@ public void ShowStoredVarControls(Boolean showhideval)
 {
     if (showhideval)
     {
-         jButtonPlaceStoredVariable.setVisible(true);
-    jButtonPlaceStoredVariable.setEnabled(false);
+     //    jButtonPlaceStoredVariable.setVisible(true);
+  //  jButtonPlaceStoredVariable.setEnabled(false);
     jLabelStoredVariables.setVisible(true);
     jComboBoxStoredVariables.setVisible(true);   
+    
     }
     else
     {
-    jButtonPlaceStoredVariable.setVisible(false);
+  //  jButtonPlaceStoredVariable.setVisible(false);
     jComboBoxStoredVariables.setVisible(false);
     jLabelStoredVariables.setVisible(false);
     }
 }
 
-public void ShowPlaceStoredVariableButton(Boolean showhideval)
+public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int actionindex)
 {
     if (showhideval)
     {
-     jButtonPlaceStoredVariable.setEnabled(true);   
+     jButtonPlaceStoredVariable.setVisible(true);   
+     jButtonPlaceStoredVariable.setEnabled(true); 
+       
+            String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(bugindex);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+     jButtonPlaceStoredVariable.setActionCommand(bugdashactionindex);
+     addjButtonPlaceStoredVariableActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+   String ACommand = evt.getActionCommand();
+
+       setCurrentlySelectedFieldToStoredVariable(ACommand);
+       
+ 
+  
+        }
+      }
+    );
+     
     }
     else
     {
-    jButtonPlaceStoredVariable.setEnabled(true);      
+        
+    jButtonPlaceStoredVariable.setEnabled(false);      
     }
 }
 
@@ -414,12 +499,32 @@ int bugindex = 0;
     
     // AddToGrid(JLabelBugIndex, 1, 2, 1, 1);
       int actionindex = 0;
+      
       for (ActionView AV : BV.ActionsViewList )
         {
 
        
         AV.SetIndexes(bugindex, actionindex);
-  
+        if (AV.ActionType.contains("Store"))
+        {
+          setHasStoredVar(true);
+                            String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(bugindex+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+           if (oldname.equals(newname))
+          {
+           addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+         
+         
+          }
+          else
+          {
+         updateSelectedVariableName(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+        }
   //      AV.AddDraggers(this, this.BugArray.get(bugindex), BV, AV);
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
@@ -443,7 +548,14 @@ BV.ActionScrollPane.setVisible(true);
    
 bugindex++;
      }
-
+if (hasStoredVar)
+{
+    ShowStoredVarControls(true);
+}
+else
+{
+    ShowStoredVarControls(false);
+}
 
 
   this.setProperties(this.filename);
@@ -467,10 +579,34 @@ bugindex++;
      ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;            
          int actionindex = 0;
+
       for (ActionView AV : newbugview.ActionsViewList )
         {
-
-         AV.SetIndexes(newbugview.index, actionindex);
+       
+          AV.SetIndexes(newbugview.index, actionindex);
+        if (AV.ActionType.contains("Store"))
+        {
+   
+                            String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(newbugview.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+           if (oldname.equals(newname))
+          {
+           addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+         
+         
+          }
+          else
+          {
+         updateSelectedVariableName(oldname, newname);
+     //    updateInsertedVariableNames(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+        }
+     
+      
          
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
@@ -484,6 +620,15 @@ bugindex++;
          actionindex++;
 
         }
+      if (hasStoredVar)
+      {
+        ShowStoredVarControls(true);
+        
+      }
+      else
+      {
+          ShowStoredVarControls(false);
+      }
       if (actionindex < 9)
       {
           
@@ -500,8 +645,7 @@ bugindex++;
  {
     RunAllTests REFSYNCH = new RunAllTests(this);
     REFSYNCH.execute();
-    
-    
+ 
  }
 
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
@@ -606,6 +750,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
  
       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
       {
+         
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
                MoveProcedure(newbugview.index, -1);
            });
@@ -1368,7 +1513,8 @@ public void addjButtonBrowseForFireFoxExeActionListener(ActionListener listener)
 {
     jButtonBrowseForFireFoxExe.addActionListener(listener);
 }
-public void addjButtonPlaceStoredVariable(ActionListener listener)
+
+public void addjButtonPlaceStoredVariableActionListener(ActionListener listener)
 {
     jButtonPlaceStoredVariable.addActionListener(listener);
 }
