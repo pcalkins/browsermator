@@ -6,8 +6,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -82,10 +80,11 @@ String stringactionindex = Integer.toString(this.index+1);
    }
      public void setFieldToStoredVariable(String stored_var_name)
      {
-       
+       if (stored_var_name.contains("-"))
+       {
       String stored_var_string = "[stored_varname-start]" + stored_var_name + "[stored_varname-end]";
      JTextFieldVariable2.setText(stored_var_string);
-         
+       }
      }
      public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
      {

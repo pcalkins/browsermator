@@ -209,6 +209,7 @@ public void initVarLists()
       } 
     }
     }
+ 
     public void updateSelectedVariableName(String oldname, String newname)
       {
           int indexof_oldname = -1;
@@ -227,15 +228,18 @@ public void initVarLists()
             VarHashMap.put(newname, "");
             updatePlacedVariables(oldname, newname);
         }
+      UpdateStoredVarPulldown();
+       
+      }
+  public void UpdateStoredVarPulldown()
+  {
         jComboBoxStoredVariables.removeAllItems();
         jComboBoxStoredVariables.addItem("Select a stored variable");
         for (String keyname: VarHashMap.keySet())
         {
             jComboBoxStoredVariables.addItem(keyname);
         }
-       
-      }
-  
+  }
 public String GetStoredVariableValue(String fieldname)
 {
     String ret_val = "";
@@ -1039,7 +1043,14 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
   
    public void DeleteAction (Procedure thisBug, ProcedureView thisBugView, int atIndex)
    {
-
+     String stringactionindex = Integer.toString(atIndex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        if (VarHashMap.containsKey(bugdashactionindex))
+        {
+            VarHashMap.remove(bugdashactionindex);
+            UpdateStoredVarPulldown();
+        }
     thisBug.ActionsList.remove(atIndex);
     thisBugView.ActionsViewList.remove(atIndex);
 
@@ -1062,7 +1073,14 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
    }
    public void DeleteBug (int BugIndex)
    {
-  
+   for (Action A: this.BugArray.get(BugIndex).ActionsList)
+   {
+       if (A.Type.contains("Store Link"))
+       {
+           VarHashMap.remove(A.Variable2);
+       }
+   }
+   UpdateStoredVarPulldown();
    this.BugArray.remove(BugIndex);
    this.BugViewArray.remove(BugIndex);
 this.changes=true;
