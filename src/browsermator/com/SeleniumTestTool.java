@@ -263,15 +263,15 @@ public void ShowStoredVarControls(Boolean showhideval)
 {
     if (showhideval)
     {
-     //    jButtonPlaceStoredVariable.setVisible(true);
-  //  jButtonPlaceStoredVariable.setEnabled(false);
+      jButtonPlaceStoredVariable.setVisible(true);
+  jButtonPlaceStoredVariable.setEnabled(false);
     jLabelStoredVariables.setVisible(true);
     jComboBoxStoredVariables.setVisible(true);   
     
     }
     else
     {
-  //  jButtonPlaceStoredVariable.setVisible(false);
+    jButtonPlaceStoredVariable.setVisible(false);
     jComboBoxStoredVariables.setVisible(false);
     jLabelStoredVariables.setVisible(false);
     }

@@ -431,8 +431,8 @@ SeleniumToolDesktop.add(Navigator);
   
  
       SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
- //     STAppFrame.ShowStoredVarControls(false);
-     
+     STAppFrame.ShowStoredVarControls(false);
+
       STAppFrame.setTargetBrowser("Chrome");
       STAppFrame.setOSType("Windows");
    STAppFrame.setClosable(true);
@@ -853,7 +853,7 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
- //  STAppFrame.ShowStoredVarControls(false);
+ STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows");
      STAppFrame.setClosable(true);
