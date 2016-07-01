@@ -4,7 +4,6 @@ package browsermator.com;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -50,12 +49,14 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String OSType;
   int WaitTime;
   boolean hasStoredVar;
+  boolean hasStoredArray;
   HashMap<String, String> VarHashMap;
   ArrayList<ArrayList<String>> VarLists;
   
   public SeleniumTestTool(String filename)
   {
     this.hasStoredVar = false;
+    this.hasStoredArray = false;
    this.VarHashMap = new HashMap();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
@@ -157,6 +158,11 @@ public void setHasStoredVar(boolean hasit)
 {
     this.hasStoredVar=hasit;
 }
+public void setHasStoredArray(boolean hasit)
+{
+    this.hasStoredArray=hasit;
+}
+
 public void initVarHashMap()
 {
     this.VarHashMap = new HashMap();
@@ -209,7 +215,12 @@ public void initVarLists()
       } 
     }
     }
- 
+    public void updateSelectedArrayName(String oldname, String newname)
+    {
+
+          
+      
+    }
     public void updateSelectedVariableName(String oldname, String newname)
       {
           int indexof_oldname = -1;
@@ -509,6 +520,27 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
+        if ("StoreLinksAsArrayByXPATH".equals(AV.ActionType))
+        {
+            setHasStoredArray(true);
+               String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(bugindex+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+           if (oldname.equals(newname))
+          {
+           addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+         
+         
+          }
+          else
+          {
+         updateSelectedArrayName(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+            
+        }
         if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
           setHasStoredVar(true);
@@ -588,6 +620,27 @@ else
         {
        
           AV.SetIndexes(newbugview.index, actionindex);
+         if ("StoreLinksAsArrayByXPATH".equals(AV.ActionType))
+        {
+   
+                            String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(newbugview.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+           if (oldname.equals(newname))
+          {
+        //   addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+         
+         
+          }
+          else
+          {
+         updateSelectedArrayName(oldname, newname);
+     //    updateInsertedVariableNames(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+        }  
         if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
    
