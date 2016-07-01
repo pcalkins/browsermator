@@ -14,17 +14,21 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
+import static javax.swing.JFileChooser.SAVE_DIALOG;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -40,6 +44,9 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.25";
+private final String version = "0.0.26";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.25";
+   public final String ProgramVersion = "0.0.26";
    public String loginName;
    public String loginPassword;
    
@@ -146,22 +153,35 @@ super.setSize(Width-300,Height-300);
     @Override
     public void windowClosing(WindowEvent windowEvent) {
      int closure = 0;
-        for (SeleniumTestTool openwindow : MDIClasses)
-      { 
-        closure  =  CheckToSaveChanges(openwindow);
+     int number_of_windows_to_close = 0;
+   
+    
+     int last_window_index = MDIClasses.size()-1;
+     for (int x = last_window_index; x>-1; x--)
+     {
+        closure  =  CheckToSaveChanges(MDIClasses.get(x), true);
            
       if (closure==1)
       {
-      openwindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      MDIClasses.get(x).setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
       }
       else
       {
-       openwindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-       System.exit(0);
+       MDIClasses.get(x).setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      number_of_windows_to_close++;
       }
- 
-
+    
+     }
+     if (number_of_windows_to_close==MDIClasses.size())
+     {
+     for (int x = 0; x<number_of_windows_to_close; x++)
+      { 
+       MDIClasses.remove(MDIClasses.size()-1);
     }
+     }
+  
+      
+
         
     if (MDIClasses.size()==0)
     {
@@ -342,7 +362,7 @@ SeleniumToolDesktop.add(Navigator);
                  {
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
-                  int closed =  CheckToSaveChanges(STAppFrame);
+                  int closed =  CheckToSaveChanges(STAppFrame, false);
            
     
        MDIClasses.remove(MDIClasses.size()-1); 
@@ -466,7 +486,7 @@ SeleniumToolDesktop.add(Navigator);
  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
-                    int closed =  CheckToSaveChanges(STAppFrame);
+                    int closed =  CheckToSaveChanges(STAppFrame, false);
            
       if (closed==1)
       {
@@ -885,7 +905,7 @@ SeleniumToolDesktop.add(Navigator);
   STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
-                    int closed =  CheckToSaveChanges(STAppFrame);
+                    int closed =  CheckToSaveChanges(STAppFrame, false);
            
       if (closed==1)
       {
@@ -1072,7 +1092,7 @@ SeleniumToolDesktop.add(Navigator);
 		}    
       
   }
-  public int CheckToSaveChanges(SeleniumTestTool STAppFrame) 
+  public int CheckToSaveChanges(SeleniumTestTool STAppFrame, Boolean savenow) 
   {
 
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
@@ -1136,7 +1156,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
 }
 if (!STAppFrame.AllFieldValues.equals(AllFieldValuesCheck))
 {
-   STAppFrame.changes =  true;
+   STAppFrame.changes = true;
    
 }
 
@@ -1152,11 +1172,41 @@ else
                  //   SaveFile
                      if (STAppFrame.filename.contains("untitled"))
                      {
-                       SaveFile(STAppFrame, true, false);  
+                      if (savenow)
+                      {
+                        try
+                          {
+                        SaveFileNow(STAppFrame, true, false);
+                          }
+                          catch (Exception ex)
+                          {
+                              
+                          }
+                      }  
+                      else
+                      {
+                          SaveFile(STAppFrame, true, false);  
+                      }
                      }
                      else
                      {
-                         SaveFile(STAppFrame, false, false);
+                          if (savenow)
+                      {
+                          try
+                          {
+                        SaveFileNow(STAppFrame, false, false);
+                          }
+                          catch (Exception ex)
+                          {
+                              
+                          }
+                                  
+                          }  
+                      else
+                      {
+                          SaveFile(STAppFrame, false, false);  
+                      }
+                       
                      }
                      
                      
@@ -1179,24 +1229,73 @@ return 1;
     }
    
       private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
-      int closure = 0;
-        for (SeleniumTestTool openwindow : MDIClasses)
-      { 
-        closure  =  CheckToSaveChanges(openwindow);
+     int closure = 0;
+     int number_of_windows_to_close = 0;
+   
+    
+     int last_window_index = MDIClasses.size()-1;
+     for (int x = last_window_index; x>-1; x--)
+     {
+        closure  =  CheckToSaveChanges(MDIClasses.get(x), true);
            
       if (closure==1)
       {
-      openwindow.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      MDIClasses.get(x).setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
       }
       else
       {
-       openwindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-       System.exit(0);
+       MDIClasses.get(x).setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      number_of_windows_to_close++;
       }
+    
+     }
+     if (number_of_windows_to_close==MDIClasses.size())
+     {
+     for (int x = 0; x<number_of_windows_to_close; x++)
+      { 
+       MDIClasses.remove(MDIClasses.size()-1);
     }
-        System.exit(0);
-      }
+     }
   
+      
+
+        
+    if (MDIClasses.size()==0)
+    {
+            Properties newProps = new Properties();
+         Boolean file_exists = false;
+              String userdir = System.getProperty("user.home");
+    try
+{
+    File f = new File(userdir + File.separator + "browsermator_config.properties");
+
+     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+   newProps.load(input);
+ 
+   
+      
+      newProps.setProperty("main_window_locationY", Integer.toString(getY()));
+      newProps.setProperty("main_window_locationX", Integer.toString(getX()));
+      newProps.setProperty("main_window_sizeWidth", Integer.toString(getWidth()));
+      newProps.setProperty("main_window_sizeHeight", Integer.toString(getHeight()));
+    
+    
+    FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+    newProps.store(writer, "browsermator_settings");
+    writer.close();
+   
+    
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} 
+      System.exit(0);
+    } 
+   
+    
+} 
+
       
         @SuppressWarnings("unchecked")
     private void initComponents() {
@@ -1467,7 +1566,338 @@ public void OpenBrowserMatorCloud()
   UPLOADREF.execute();  
    
   }
+  public void SaveFileNow (SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
+  {
+       int current_MDI_Index = GetCurrentWindow();
+         final JFileChooser fc = new JFileChooser(){
+    @Override
+    public void approveSelection(){
+        
+        File f = getSelectedFile();
+                String filestring = f.toString();
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 f = new File(left_side_of_dot[0] + ".browsermation");
+       
+       
+        if(f.exists() && getDialogType() == SAVE_DIALOG){
+            int result = JOptionPane.showConfirmDialog(STAppFrame,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+            switch(result){
+                case JOptionPane.YES_OPTION:
+                    super.approveSelection();
+                 
+                    return;
+                case JOptionPane.NO_OPTION:
+                    return;
+                case JOptionPane.CLOSED_OPTION:
+                    return;
+                case JOptionPane.CANCEL_OPTION:
+                    cancelSelection();
+                    return;
+            }
+        }
+        super.approveSelection();
+    STAppFrame.changes = false;
+    }
+};
+File file=null;
+   
+    if (isSaveAs==true || STAppFrame.filename.contains("untitled") == true)
+    {
+     FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
+
+    fc.setFileFilter(filefilter);
+    if (STAppFrame.filename.contains("untitled") == false  && isSaveAs==true)
+    {
+          String[] left_side_of_dot = STAppFrame.filename.split("\\.");
+                if (isFlatten)
+                {
+                 file = new File(left_side_of_dot[0] + "-flat.browsermation");   
+                }
+                else
+                {
+                 file = new File(left_side_of_dot[0] + ".browsermation");
+                }
+        fc.setSelectedFile(file);
+        
+    }
+int returnVal = fc.showSaveDialog(STAppFrame);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = fc.getSelectedFile();
+                String filestring = file.toString();
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 file = new File(left_side_of_dot[0] + ".browsermation");
+            
+            }
+            else
+            {
+            
+            }
+    }
+    else
+    {
+    
+         String filestring = STAppFrame.filename;
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 file = new File(left_side_of_dot[0] + ".browsermation");
+    }
+  
+
+               XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
+                              new FileOutputStream(file)));
+     
+             try {
+xmlfile.writeStartElement("BrowserMatorWindow");
+xmlfile.writeAttribute("Filename",file.getName());
+xmlfile.writeAttribute("ProgramVersion", ProgramVersion);
+String ShowReport = Boolean.toString(STAppFrame.getShowReport());
+
+xmlfile.writeStartElement("FileSettings");
+
+xmlfile.writeStartElement("ShowReport");
+    xmlfile.writeCharacters(ShowReport);
+    xmlfile.writeEndElement();
+// xmlfile.writeAttribute("ShowReport", ShowReport);
+String EmailReport = Boolean.toString(STAppFrame.getEmailReport());
+  xmlfile.writeStartElement("EmailReport");
+    xmlfile.writeCharacters(EmailReport);
+    xmlfile.writeEndElement();
+// xmlfile.writeAttribute("EmailReport", EmailReport);
+String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
+xmlfile.writeStartElement("EmailReportFail");
+    xmlfile.writeCharacters(EmailReportFail);
+    xmlfile.writeEndElement();
+    
+// xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
+String ExitAfter = Boolean.toString(STAppFrame.getExitAfter());
+xmlfile.writeStartElement("ExitAfter");
+    xmlfile.writeCharacters(ExitAfter);
+    xmlfile.writeEndElement();    
+// xmlfile.writeAttribute("ExitAfter", ExitAfter);
+   String SMTPHostname = STAppFrame.getSMTPHostname();
+xmlfile.writeStartElement("SMTPHostname");
+    xmlfile.writeCharacters(SMTPHostname);
+    xmlfile.writeEndElement(); 
+// xmlfile.writeAttribute("SMTPHostname", STAppFrame.getSMTPHostname());
+    
+  String EmailLoginName = STAppFrame.getEmailLoginName();
+xmlfile.writeStartElement("EmailLoginName");
+    xmlfile.writeCharacters(EmailLoginName);
+    xmlfile.writeEndElement();     
+// xmlfile.writeAttribute("EmailLoginName", STAppFrame.getEmailLoginName());
+String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
+xmlfile.writeStartElement("PromptToClose");
+    xmlfile.writeCharacters(PromptToClose);
+    xmlfile.writeEndElement();     
+// String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
+//    xmlfile.writeAttribute("PromptToClose", PromptToClose);
+String TargetBrowser = STAppFrame.TargetBrowser;
+xmlfile.writeStartElement("TargetBrowser");
+    xmlfile.writeCharacters(TargetBrowser);
+    xmlfile.writeEndElement();   
+// xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
+    
+Integer WaitTime = STAppFrame.GetWaitTime();
+String WaitTimeString = WaitTime.toString();
+xmlfile.writeStartElement("WaitTime");
+    xmlfile.writeCharacters(WaitTimeString);
+    xmlfile.writeEndElement();   
+// xmlfile.writeAttribute("WaitTime", WaitTimeString);
+
+String OSType = STAppFrame.OSType;
+xmlfile.writeStartElement("OSType");
+    xmlfile.writeCharacters(OSType);
+    xmlfile.writeEndElement();  
+// xmlfile.writeAttribute("OSType", OSType);
+String EmailPassword = "";
+EmailPassword = STAppFrame.getEmailPassword();
+
+String une = "";
+      try
+      {
+     une = Protector.encrypt(EmailPassword);
+      }
+      catch (Exception e)
+      {
+      System.out.println("Error encrypting emailpassword: " + e.toString());
+      }
+      EmailPassword = une;
+xmlfile.writeStartElement("EmailPassword");
+    xmlfile.writeCharacters(EmailPassword);
+    xmlfile.writeEndElement();    
+// xmlfile.writeAttribute("EmailPassword", EmailPassword);
+String EmailTo = STAppFrame.getEmailTo();
+xmlfile.writeStartElement("EmailTo");
+    xmlfile.writeCharacters(EmailTo);
+    xmlfile.writeEndElement();  
+// xmlfile.writeAttribute("EmailTo", STAppFrame.getEmailTo());
+
+String EmailFrom = STAppFrame.getEmailFrom();
+xmlfile.writeStartElement("EmailFrom");
+    xmlfile.writeCharacters(EmailFrom);
+    xmlfile.writeEndElement(); 
+// xmlfile.writeAttribute("EmailFrom", STAppFrame.getEmailFrom());
+String EmailSubject = STAppFrame.getSubject();
+xmlfile.writeStartElement("EmailSubject");
+    xmlfile.writeCharacters(EmailSubject);
+    xmlfile.writeEndElement();     
+// xmlfile.writeAttribute("EmailSubject", STAppFrame.getSubject());
+xmlfile.writeEndElement();
+
+for (Procedure thisbug: STAppFrame.BugArray)
+{
+
+xmlfile.writeStartElement("Procedure");
+xmlfile.writeAttribute("Title", thisbug.BugTitle);
+xmlfile.writeAttribute("URL", thisbug.BugURL);
+xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
+String index = String.valueOf(thisbug.index);
+xmlfile.writeAttribute("index", index);
+if (!"".equals(thisbug.DataFile))
+{
+
+xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+  
+
+}
+
+
+    for (Action thisaction: thisbug.ActionsList)
+    {
+    xmlfile.writeStartElement("Action");
+
+    String LOCKED = Boolean.toString(thisaction.Locked);
+   
+    xmlfile.writeStartElement("LOCKED");
+    xmlfile.writeCharacters(LOCKED);
+    xmlfile.writeEndElement();
+    
+   
+        
+    String Pass = Boolean.toString(thisaction.Pass);
+    xmlfile.writeStartElement("Pass");
+    xmlfile.writeCharacters(Pass);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("TimeOfTest");
+    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Type");
+    xmlfile.writeCharacters(thisaction.Type);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Variable1");
+    
+    xmlfile.writeCharacters(thisaction.Variable1);
+    xmlfile.writeEndElement();
+    if (thisaction.Type.contains("Password"))
+    {
+    xmlfile.writeStartElement("Variable2");
+    try
+    {
+    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+    }
+    catch (Exception e)
+            {
+            System.out.println("encrypt error.. passvar2: " + e.toString());
+            }
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
+    }
+    else
+    {
+    xmlfile.writeStartElement("Variable2");
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement();
+    }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
+    String ActionIndex = Integer.toString(thisaction.index);   
+    xmlfile.writeStartElement("ActionIndex");
+    xmlfile.writeCharacters(ActionIndex);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeEndElement();  
+    }
+    xmlfile.writeEndElement();
+  }
+xmlfile.writeEndElement();
+
+// STAppFrame.AllFieldValues.clear();
+
+
+// System.out.println("Successfully Created XML...");
+  
  
+        } catch (Exception e) {
+           System.out.println("Write error:" + e.toString());
+ 
+        } finally {
+            xmlfile.flush();
+            xmlfile.close();
+           
+ 
+    STAppFrame.setProperties(file.getAbsolutePath());
+            STAppFrame.AllFieldValues.clear();
+           
+STAppFrame.AllFieldValues.add(STAppFrame.OSType);
+STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
+String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
+STAppFrame.AllFieldValues.add(stringWaitTime);
+STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
+STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
+STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
+String thisbool = "false";
+if (STAppFrame.getEmailReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getEmailReportFail())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getExitAfter())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getPromptToClose())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getShowReport())
+{
+    thisbool = "true";
+}
+
+     
+        
+  }
+  }
   public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
       int current_MDI_Index = GetCurrentWindow();
@@ -1526,7 +1956,7 @@ public void OpenBrowserMatorCloud()
      public void internalFrameClosing(InternalFrameEvent e) {
     
     
-      int closed =  CheckToSaveChanges(STAppFrame);
+      int closed =  CheckToSaveChanges(STAppFrame, false);
            
       if (closed==1)
       {

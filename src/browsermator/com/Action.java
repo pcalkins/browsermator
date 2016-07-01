@@ -39,7 +39,7 @@ LocalDateTime[] loop_time_of_test;
    {
   this.tostore_varname = "";
   this.tostore_varvalue = "";
-  this.tostore_varlist = null;
+  this.tostore_varlist = new ArrayList();
   this.Pass = false;
   this.TimeOfTest = LocalDateTime.now();
   this.NOT = false;

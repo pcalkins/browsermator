@@ -50,6 +50,7 @@ public class ActionsMaster {
     ActionViewHashMap.put("Set Cookie", new SetCookieActionView());
     
     ActionViewHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHActionView());
+    ActionViewHashMap.put("Store Links as Array by XPATH", new StoreLinksAsArrayByXPATHActionView());
     ActionViewHashMap.put("Switch To Frame", new SwitchToFrameActionView());
     ActionViewHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowActionView());
     ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
@@ -82,6 +83,7 @@ public class ActionsMaster {
   ActionHashMap.put("Right-Click", new RightClickAction());
   ActionHashMap.put("Set Cookie", new SetCookieAction("", ""));
   ActionHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHAction("", ""));
+  ActionHashMap.put("Store Links as Array by XPATH", new StoreLinksAsArrayByXPATHAction("", ""));
   ActionHashMap.put("Switch To Frame", new SwitchToFrameAction(""));
   ActionHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowAction(""));
   ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));

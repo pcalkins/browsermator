@@ -286,7 +286,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
      public void internalFrameClosing(InternalFrameEvent e) {
     
     
-      int closed =  mainApp.CheckToSaveChanges(STAppFrame);
+      int closed =  mainApp.CheckToSaveChanges(STAppFrame, false);
            
       if (closed==1)
       {

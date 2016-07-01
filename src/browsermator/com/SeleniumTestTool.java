@@ -509,7 +509,7 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
-        if (AV.ActionType.contains("Store"))
+        if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
           setHasStoredVar(true);
                             String stringactionindex = Integer.toString(actionindex+1);
@@ -588,7 +588,7 @@ else
         {
        
           AV.SetIndexes(newbugview.index, actionindex);
-        if (AV.ActionType.contains("Store"))
+        if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
    
                             String stringactionindex = Integer.toString(actionindex+1);
@@ -1062,12 +1062,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
      thisBugView.ActionsViewList.get(BugIndex).index--;
      }
      }
-  if (atIndex != 0)
-  {
-  Point visible_location = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getLocation();
-  Dimension visible_size = thisBugView.ActionsViewList.get(atIndex-1).JPanelAction.getSize();
  
-  }
  
   this.changes=true;
    }
@@ -1075,7 +1070,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
    {
    for (Action A: this.BugArray.get(BugIndex).ActionsList)
    {
-       if (A.Type.contains("Store Link"))
+       if ("Store Link as Variable by XPATH".equals(A.Type))
        {
            VarHashMap.remove(A.Variable2);
        }
