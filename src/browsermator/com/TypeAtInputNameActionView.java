@@ -30,6 +30,10 @@ public class TypeAtInputNameActionView extends ActionView
  @Override  
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
+        addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
+          
+       });
     AddDraggers(action, Window, newbug, newbugview);
     
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {

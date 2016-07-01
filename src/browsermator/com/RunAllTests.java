@@ -239,7 +239,7 @@ if (thisbugview.myTable==null)
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
   }
-       String varfieldname="";
+                     String varfieldname="";
        if (ThisAction.Variable2.contains("[stored_varname-start]"))
        {
          varfieldname = ThisAction.Variable2;
@@ -248,7 +248,7 @@ if (thisbugview.myTable==null)
          String fieldname = varfieldname.substring(22, indexof_end_tag);
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
-          ThisAction.Variable2 = fieldname;
+          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
        }
        else
        {
@@ -261,6 +261,8 @@ if (thisbugview.myTable==null)
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
+      
+       
       
        try
        {
@@ -367,7 +369,29 @@ else
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
   }
-        ThisAction.RunAction(driver);
+                     String varfieldname="";
+       if (ThisAction.Variable2.contains("[stored_varname-start]"))
+       {
+         varfieldname = ThisAction.Variable2;
+            int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+         String fieldname = varfieldname.substring(22, indexof_end_tag);
+         ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+          ThisAction.RunAction(driver);
+          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname_end]";
+       }
+       else
+       {
+         ThisAction.RunAction(driver);    
+       }
+       
+      
+       if (!"".equals(ThisAction.tostore_varvalue))
+       {
+        
+           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+       }
+       
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
