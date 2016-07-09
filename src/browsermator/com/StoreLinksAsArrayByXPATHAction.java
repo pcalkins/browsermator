@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
 public class StoreLinksAsArrayByXPATHAction extends Action {
   StoreLinksAsArrayByXPATHAction(String TargetXPATH, String StoreVarName)
 {
-    this.Type = "Store Links as Array by XPATH";
+    this.Type = "Store Links as URL List by XPATH";
     this.Variable1 = TargetXPATH;
     this.Variable2 = StoreVarName;
 

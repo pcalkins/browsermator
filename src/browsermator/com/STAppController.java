@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.26";
+private final String version = "0.0.27";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.26";
+   public final String ProgramVersion = "0.0.27";
    public String loginName;
    public String loginPassword;
    
@@ -591,11 +591,13 @@ SeleniumToolDesktop.add(Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-   File chosenCSVFile = BrowseForCSVFile();
-   if (chosenCSVFile!=null)
-   {
-   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-   }
+//   File chosenCSVFile = BrowseForCSVFile();
+//   if (chosenCSVFile!=null)
+//   {
+//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+//   }
+              File blankfile = null;
+   STAppFrame.AddNewDataLoop(blankfile);  
         }
                                           
       }
@@ -1009,11 +1011,12 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
     
-   File chosenCSVFile = BrowseForCSVFile();
-   if (chosenCSVFile!=null)
-   {
-   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-   }
+//   File chosenCSVFile = BrowseForCSVFile();
+//   if (chosenCSVFile!=null)
+//   {
+            File blankfile = new File("placeholder");
+   STAppFrame.AddNewDataLoop(blankfile);  
+//   }
  
   }
                                           
@@ -1759,7 +1762,8 @@ xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
-if (!"".equals(thisbug.DataFile))
+
+if ("Dataloop".equals(thisbug.Type))
 {
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
@@ -2388,12 +2392,13 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
     
-   File chosenCSVFile = BrowseForCSVFile();
-   if (chosenCSVFile!=null)
-   {
-   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-   }
- 
+//   File chosenCSVFile = BrowseForCSVFile();
+//   if (chosenCSVFile!=null)
+//   {
+//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+//   }
+             File blankfile = null;
+   STAppFrame.AddNewDataLoop(blankfile);  
   }
                                           
       }

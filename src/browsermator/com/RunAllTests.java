@@ -261,7 +261,8 @@ if (thisbugview.myTable==null)
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-      
+       
+    
        
       
        try

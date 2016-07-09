@@ -459,9 +459,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    
     Element Procedure = (Element) ProcedureList.item(i);
    
-    String DataFile = Procedure.getAttribute("DataLoopFile");
-    if (!"".equals(DataFile))
+    String ProcType = Procedure.getAttribute("Type");
+    if ("Dataloop".equals(ProcType))
     {
+        String DataFile = Procedure.getAttribute("DataLoopFile");
         
         File DataFile_file = new File(DataFile);
        
@@ -603,7 +604,7 @@ STAppFrame.UpdateDisplay();
     }
 catch (Exception e)
         {
-            System.out.println(e.toString());
+            System.out.println("Exception parsing procedure node" + e.toString());
           
         }
  
@@ -719,12 +720,15 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
     
-   File chosenCSVFile = mainApp.BrowseForCSVFile();
-   if (chosenCSVFile!=null)
-   {
-   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-   }
- 
+//   File chosenCSVFile = mainApp.BrowseForCSVFile();
+//   if (chosenCSVFile!=null)
+//   {
+//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
+//   }
+       String userdir = System.getProperty("user.home");
+      File placeholder =  new File(userdir + File.separator + "data_loop_placeholder.csv");
+   
+   STAppFrame.AddNewDataLoop(placeholder);  
   }
                                           
       }

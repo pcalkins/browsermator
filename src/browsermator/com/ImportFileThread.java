@@ -88,10 +88,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     int newbug_index = MDIClasses.get(MDI_INDEX).BugArray.size();
    Element Procedure = (Element) ProcedureList.item(i);
-   
-    String DataFile = Procedure.getAttribute("DataLoopFile");
-    if (!"".equals(DataFile))
+     String ProcType = Procedure.getAttribute("Type");
+ 
+    if ("Dataloop".equals(ProcType))
     {
+      
+         String DataFile = Procedure.getAttribute("DataLoopFile");
         File DataFile_file = new File(DataFile);
         if (DataFile_file.exists())
         {

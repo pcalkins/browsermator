@@ -412,6 +412,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                     
                      
                      original_locationY = snapped_locationY;
+                     
   Window.UpdateScrollPane(newbugview);
  // UpdateScrollPane();
   scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  

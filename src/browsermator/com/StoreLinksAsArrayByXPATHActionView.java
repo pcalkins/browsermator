@@ -18,9 +18,9 @@ import javax.swing.event.DocumentListener;
 public class StoreLinksAsArrayByXPATHActionView extends ActionView {
       StoreLinksAsArrayByXPATHActionView()
    {
-       this.ActionType = "StoreLinksAsArrayByXPATH";
+       this.ActionType = "StoreLinksAsURLListByXPATH";
        this.JLabelVariable1 = new JLabel("Find links At XPATH:");
-    this.JLabelVariable2 = new JLabel("Store as array name:");
+    this.JLabelVariable2 = new JLabel("Store as URL List:");
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
       this.JPanelAction.add(this.JLabelVariable2);

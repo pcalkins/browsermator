@@ -50,7 +50,7 @@ public class ActionsMaster {
     ActionViewHashMap.put("Set Cookie", new SetCookieActionView());
     
     ActionViewHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHActionView());
-    ActionViewHashMap.put("Store Links as Array by XPATH", new StoreLinksAsArrayByXPATHActionView());
+    ActionViewHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHActionView());
     ActionViewHashMap.put("Switch To Frame", new SwitchToFrameActionView());
     ActionViewHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowActionView());
     ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
@@ -83,7 +83,7 @@ public class ActionsMaster {
   ActionHashMap.put("Right-Click", new RightClickAction());
   ActionHashMap.put("Set Cookie", new SetCookieAction("", ""));
   ActionHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHAction("", ""));
-  ActionHashMap.put("Store Links as Array by XPATH", new StoreLinksAsArrayByXPATHAction("", ""));
+  ActionHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHAction("", ""));
   ActionHashMap.put("Switch To Frame", new SwitchToFrameAction(""));
   ActionHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowAction(""));
   ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));
@@ -98,11 +98,15 @@ public class ActionsMaster {
    PassFailActionViewHashMap.put("Find HREF", new FindHREFPassFailActionView());
    PassFailActionViewHashMap.put("Find IFrame SRC", new FindIFrameSRCPassFailActionView());
    PassFailActionViewHashMap.put("Find Image SRC", new FindImageSRCPassFailActionView());
+
    PassFailActionViewHashMap.put("Find Page Title", new FindPAGETITLEPassFailActionView());
    PassFailActionViewHashMap.put("Find XPATH", new FindXPATHPassFailActionView());
    PassFailActionViewHashMap.put("Do NOT Find Text", new NOTFindTextPassFailActionView());
    PassFailActionViewHashMap.put("Do NOT Find HREF", new NOTFindHREFPassFailActionView());
    PassFailActionViewHashMap.put("Do NOT Find IFrame SRC", new NOTFindIFrameSRCPassFailActionView());
+ 
+
+ 
    PassFailActionViewHashMap.put("Do NOT Find Image SRC", new NOTFindImageSRCPassFailActionView());
    PassFailActionViewHashMap.put("Do NOT Find Page Title", new NOTFindPAGETITLEPassFailActionView());
    PassFailActionViewHashMap.put("Do NOT Find XPATH", new NOTFindXPATHPassFailActionView());

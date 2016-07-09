@@ -16,11 +16,13 @@ int index;
 String TargetBrowser;
 MyTable DataSet;
 String DataFile;
+String Type;
 
 
 CSVReader CSVFileReader;
 int number_of_columns;
 int number_of_records;
+
    ArrayList<Action> ActionsList = new ArrayList();    
   
    Procedure ()
@@ -32,6 +34,8 @@ this.index = 0;
 this.TargetBrowser = "Firefox";
 this.DataSet=null;
 this.DataFile="";
+this.Type = "";
+
    }
   
    
@@ -43,7 +47,12 @@ this.DataFile="";
     public void setDataFile(String dataFile)
    {
        DataFile = dataFile;
-       DataSet = new MyTable(DataFile);
+       if (!"placeholder".equals(DataFile))
+       {  DataSet = new MyTable(DataFile); }
    }
+  public void setType(String type)
+  {
+      this.Type = type;
+  }
    
 }

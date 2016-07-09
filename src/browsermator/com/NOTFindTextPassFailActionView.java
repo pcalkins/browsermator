@@ -13,7 +13,6 @@ public class NOTFindTextPassFailActionView extends ActionView
    NOTFindTextPassFailActionView()
    {
        this.JLabelVariable1 = new JLabel("Do Not Find Text:");
-       
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
        this.JPanelAction.add(this.JLabelPassFail);

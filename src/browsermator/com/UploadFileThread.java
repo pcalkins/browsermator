@@ -479,7 +479,9 @@ xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
-if (!"".equals(thisbug.DataFile))
+xmlfile.writeAttribute("Type", thisbug.Type);
+
+if ("Dataloop".equals(thisbug.Type))
 {
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);

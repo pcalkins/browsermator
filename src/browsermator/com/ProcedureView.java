@@ -1,6 +1,8 @@
 package browsermator.com;
 
 
+import com.opencsv.CSVReader;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -9,6 +11,9 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -19,8 +24,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 import javax.swing.event.DocumentListener;
@@ -37,13 +44,13 @@ public class ProcedureView {
      JTextField JTextFieldBugTitle = new JTextField("", 35);
   
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
- 
+ JComboBox JComboBoxStoredArrayLists;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
      JTextField JTextFieldBugURL = new JTextField("", 15);
      JLabel JLabelBugSeverity = new JLabel ("Importance:");
      JComboBox JComboBoxBugSeverity = new JComboBox();
         JButton JButtonSubmitBug = new JButton("OK");
-  
+
       
      JComboBox JComboBoxDoActions = new JComboBox();
      JComboBox JComboBoxPassFailActions = new JComboBox();
@@ -78,10 +85,29 @@ public class ProcedureView {
       JButton JButtonMoveProcedureUp = new JButton("/\\");
       JButton JButtonMoveProcedureDown = new JButton ("\\/");
       JPanel MoveButtonsPanel = new JPanel();
-      
+        JTextField JTextFieldDataFile;
+   JButton JButtonBrowseForDataFile;
+   JScrollPane JTableScrollPane;
+   CSVReader CSVFileReader;
+JPanel panelForTable;
+JButton JButtonUseList;
+JLabel JLabelOR;
+String Type;
     ProcedureView()
      {
+             JLabelOR = new JLabel("OR:");
+       JButtonUseList = new JButton("Use Stored URL List");
+JTextFieldDataFile = new JTextField();
+JTextFieldDataFile.setVisible(true);
+ JButtonBrowseForDataFile = new JButton();
 
+ JButtonBrowseForDataFile.setText("Browse for Data File");
+
+ JButtonBrowseForDataFile.setVisible(true);
+panelForTable = new JPanel();
+
+ JComboBoxStoredArrayLists = new JComboBox();
+ JComboBoxStoredArrayLists.addItem("Select a stored URL List");
        JComboBoxBugSeverity.addItem("Trivial");
      JComboBoxBugSeverity.addItem("Low");
      JComboBoxBugSeverity.addItem("Medium");
@@ -201,6 +227,14 @@ for (String passfailaction_name : passfailaction_keys)
          last_selected_action_index = 0;
          last_selected_jtextfield_variable_number = 0;
      }
+     public void setType (String type)
+     {
+         this.Type = type;
+     }
+     public void setTitle(String title)
+     {
+         JLabelBugTitle.setText(title);
+     }
      public void setLastSelectedField (int variable_number, int procedure_index, int action_index)
      {
          last_selected_procedure_index = procedure_index;
@@ -305,11 +339,120 @@ for (String passfailaction_name : passfailaction_keys)
        String stringbugindex = Integer.toString(this.index+1);
        
        this.JLabelBugIndex.setText(stringbugindex);
-        
+        if (this.Type=="Procedure")
+        {
     JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
-   
+        }
+        else
+        {
+              
+    JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
+    ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+        }
+   }
+ 
+   public void EnableArrayListsPulldown(boolean enableit)
+   {
+    this.JComboBoxStoredArrayLists.setEnabled(enableit);
+   }
+   public void EnableJComboBoxStoredArrayLists(Boolean enableit)
+   {
+       JComboBoxStoredArrayLists.setEnabled(enableit);
        
    }
+   public void SetJComboBoxStoredArraylists(String itemname)
+   {
+       JComboBoxStoredArrayLists.setSelectedItem(itemname);
+   }
+         public void addJButtonUseListActionListener(ActionListener listener)
+      {
+          JButtonUseList.addActionListener(listener);
+      }
+      public void addJButtonBrowseForDataFileActionListener(ActionListener listener)
+     {
+         JButtonBrowseForDataFile.addActionListener(listener);
+     }
+     public void setJTextFieldDataFile(String dataFile)
+     {
+         JTextFieldDataFile.setText(dataFile);
+
+     }
+     public void setJTableSource (String sourceCSVfile)
+     {
+         JPanelBug.remove(panelForTable);
+     myTable = null;
+     myTable = new MyTable(sourceCSVfile);
+     myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+     myTable.DataTable.getTableHeader().setReorderingAllowed(false);
+
+    myTable.DataTable.setFillsViewportHeight( true );
+
+    panelForTable.removeAll();
+   JTableScrollPane = new JScrollPane(myTable.DataTable, 
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+   
+      JTableScrollPane.setSize(new Dimension(1024, 840));
+     JTableScrollPane.setVisible(true);
+     
+  
+   panelForTable.setLayout(new BorderLayout());
+  //  panelForTable.add(JLabelAddFieldInstructions, BorderLayout.PAGE_START);
+    panelForTable.add(JTextFieldDataFile,BorderLayout.PAGE_END );
+    JPanel panelForBrowseAndPulldown = new JPanel();
+//    EnableArrayListsPulldown(false);
+//    JComboBoxStoredArrayLists.setEnabled(false);
+    panelForBrowseAndPulldown.add(JButtonBrowseForDataFile);
+    panelForBrowseAndPulldown.add(JLabelOR);
+    panelForBrowseAndPulldown.add(JButtonUseList);
+    panelForBrowseAndPulldown.add(JComboBoxStoredArrayLists);
+    
+    panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
+      
+    panelForTable.add(JTableScrollPane);
+   // JLabelAddFieldInstructions.setVisible(false);
+   AddToGrid(JLabelAddFieldInstructions, 8, 0, 1, 1, 1, 1);
+   
+    AddToGrid(panelForTable, 9, 0, 9, 1, 1, 1);
+     JTextFieldDataFile.setText(sourceCSVfile);
+
+    
+    File file = new File(sourceCSVfile);
+if (file.isAbsolute()) {
+ 
+}
+else
+{
+    if ("".equals(sourceCSVfile))
+    {
+        JTextFieldDataFile.setText ("No data file or URL list set.");
+    }
+    else
+    {
+   
+    JTextFieldDataFile.setText("Will use stored URL List " + sourceCSVfile);
+    }
+}
+     
+    myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int columnindex = myTable.DataTable.columnAtPoint(e.getPoint());
+        String selected_name = myTable.DataTable.getColumnName(columnindex);
+     
+        int field_number = last_selected_jtextfield_variable_number;
+        int action_index = last_selected_action_index;
+        if (ActionsViewList.size()>action_index)
+            {
+        ActionView actionview_to_update = ActionsViewList.get(action_index);
+        actionview_to_update.setActionFieldToDataColumn (field_number, columnindex, selected_name);
+            }
+    
+    }
+    
+});
+     }
+
   
 }
