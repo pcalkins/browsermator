@@ -128,7 +128,10 @@ public String doInBackground()
     switch (TargetBrowser)
    {
         case "Firefox":
+       if (firefox_path!=null) {
            System.setProperty("webdriver.firefox.bin", firefox_path);
+       }
+      
  
     
 
@@ -153,12 +156,21 @@ public String doInBackground()
       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-linux64\\geckodriver");
      }
    
-    System.setProperty("webdriver.firefox.bin", firefox_path);
+    if (firefox_path!=null) {
+        System.setProperty("webdriver.firefox.bin", firefox_path);
+    }
+
+    try
+    {
  
     
 
       driver =  new MarionetteDriver();
-
+    }
+    catch (Exception ex)
+    {
+        System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+    }
       
      break;
      
@@ -191,8 +203,14 @@ public String doInBackground()
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver-linux64");
      }
-     
-     driver = new ChromeDriver();
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver, XP or older version of Chrome?: " + ex.toString());
+   }
      break;
 
          

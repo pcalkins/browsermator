@@ -21,7 +21,7 @@ public class FireFoxProperties {
 
   public FireFoxProperties()
   {
-      
+  
   }
   public void BrowseforFFPath()
   {
@@ -56,6 +56,8 @@ try
 {
          try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
              applicationProps.load(input);
+             
+            
          }
          catch (Exception e)
          {
@@ -68,10 +70,8 @@ catch (Exception e) {
 			System.out.println("Exception loading firefox path: " + e);
                         
 		} 
-
-    return applicationProps.getProperty("firefox_exe");
+      return applicationProps.getProperty("firefox_exe");
    
- 
  
    
         
