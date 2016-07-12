@@ -75,5 +75,6 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
     public void SetStoredLinkArray (ArrayList<String> to_storelist)
     {
        this.tostore_varlist = to_storelist;
+       
     }  
 }

@@ -43,7 +43,7 @@ public class MyTable {
  {
         DataFile = csvFile;
         DataTable = new JTable();
-        myEntries = new ArrayList<String[]>();
+        myEntries = new ArrayList<>();
           File filecheck = new File(csvFile);
 if (filecheck.isAbsolute()) {
       
@@ -271,19 +271,51 @@ catch (Exception ex)
 else
 {
     
-          columnnames[0] = "Stored URL List";
+          columnnames[0] = "Stored URL List:" + csvFile;
            DefaultTableModel tableModel = new DefaultTableModel(columnnames, 0); 
         
 
 
         DataTable = new JTable(tableModel);
         DataTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-        
         DataTable.setPreferredScrollableViewportSize(new Dimension (20,0));
         
 
 }
+
   
         }
+ public void setSourceToURLList(ArrayList<String> storedURLlist)
+{
+ 
+ 
+          this.number_of_records = storedURLlist.size();
+          rowcount = this.number_of_records;
+          DefaultTableModel model = (DefaultTableModel) DataTable.getModel();
+
+          for (int x = 0; x<rowcount+1; x++)
+           {
+             
+              int columnnumber = 0;
+             if (x>0)
+             {
+          model.addRow(new Object[]{storedURLlist.get(x-1)});
+             
+          
+             }
+   
+          
+           }
+          
+        
+            DataTable = new JTable(model);
+                
+   
+        int number_of_rows = DataTable.getRowCount();
+        if (number_of_rows < 20)
+        {
+        DataTable.setPreferredScrollableViewportSize(new Dimension (1200, number_of_rows * DataTable.getRowHeight()));
+        }
+}
 
 }

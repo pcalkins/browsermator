@@ -182,6 +182,14 @@ public void initVarLists()
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
+  public void UpdateDataLoopTable(ArrayList<String> storedURLlist, Procedure thisproc, ProcedureView thisprocview)
+  {
+    thisprocview.myTable.setSourceToURLList(storedURLlist);   
+    thisproc.DataSet.setSourceToURLList(storedURLlist);
+  }
+         
+     
+  
   
    public void addSelectedArrayName(String varname)
       {
@@ -921,7 +929,7 @@ else
         
          newdataloop.DataSet = new MyTable(CSVFile.toString());
          SetVarListPulldown = true;
-         
+       newdataloopview.SetJComboBoxStoredArraylists(CSVFile.toString());  
 }
 
          BugArray.add(newdataloop);
@@ -948,8 +956,9 @@ else
   
       public void AddLoopHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug) 
       {
-           newbugview.addJButtonUseListActionListener((ActionEvent evt) -> {
-               if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
+           newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
+        if ((e.getStateChange() == ItemEvent.SELECTED)) {
+         if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
                {
                    
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
@@ -958,7 +967,12 @@ else
       UpdateDisplay();
 
                }
-          });
+            
+        }
+         
+            
+         
+        });
        
             newbugview.addJButtonBrowseForDataFileActionListener((ActionEvent evt) -> {
              File chosenCSVFile = ChangeCSVFile();

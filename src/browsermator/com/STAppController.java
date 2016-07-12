@@ -95,6 +95,8 @@ String rootURL = "http://www.browsermator.com";
   
      super ("Browermator");
                  Properties newProps = new Properties();
+                  this.loginName = "";
+    this.loginPassword = "";
          Boolean file_exists = false;
               String userdir = System.getProperty("user.home");
     try
@@ -1755,18 +1757,19 @@ xmlfile.writeEndElement();
 
 for (Procedure thisbug: STAppFrame.BugArray)
 {
-
 xmlfile.writeStartElement("Procedure");
 xmlfile.writeAttribute("Title", thisbug.BugTitle);
 xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
+xmlfile.writeAttribute("Type", thisbug.Type);   
+
 
 if ("Dataloop".equals(thisbug.Type))
 {
 
-xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
   
 
 }

@@ -238,7 +238,7 @@ int action_INT = 0;
 String action_ID = "";
 ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
 
-if (thisbugview.myTable==null)
+if (!"Dataloop".equals(thisbugview.Type))
 {
     action_INT=0;
    for( Action ThisAction : thisbug.ActionsList ) {
@@ -279,7 +279,12 @@ if (thisbugview.myTable==null)
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-       
+    if (ThisAction.tostore_varlist.size()>0)
+       {
+           SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+         
+           
+       }
     
        
       
@@ -344,7 +349,12 @@ if (thisbugview.myTable==null)
 }
 else
 {
+    
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ if (number_of_rows==0)
+ {
+  number_of_rows = FillTables(thisbug, thisbugview);
+ }
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
@@ -395,6 +405,7 @@ else
             int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
          String fieldname = varfieldname.substring(22, indexof_end_tag);
+      
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname_end]";
@@ -405,11 +416,7 @@ else
        }
        
       
-       if (!"".equals(ThisAction.tostore_varvalue))
-       {
-        
-           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
-       }
+   
        
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
@@ -477,6 +484,7 @@ else
            {
                ThisAction.Variable1 = " ";
            }
+      
  }
 
            concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
@@ -710,8 +718,52 @@ else
          SiteTest.AllTestsPassed = false;
      }
 
-  
-
+ 
   }
+  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
+  {
+      int number_of_rows = 0;
+     for (Action ThisAction: thisproc.ActionsList)
+     {
+      String concat_variable;
+ 
+              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
+    if (var1Parser.hasDataLoopVar)
+    {
+ concat_variable = ThisAction.Variable1;
+            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+            String[] parts = middle_part.split(",");
+             if (parts[2].contains(":"))
+            {  
+            String[] parts2 = parts[2].split(":");
+            String URLListName = parts2[1];
+               if (SiteTest.VarLists.containsKey(URLListName))
+            {
+            SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = SiteTest.VarLists.get(URLListName).size();
+            }
+            }
+        } 
+    if (var2Parser.hasDataLoopVar)
+    {
+ concat_variable = ThisAction.Variable2;
+            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+            String[] parts = middle_part.split(",");
+             if (parts[2].contains(":"))
+            {  
+            String[] parts2 = parts[2].split(":");
+            String URLListName = parts2[1];
+                  if (SiteTest.VarLists.containsKey(URLListName))
+            {
+            SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = SiteTest.VarLists.get(URLListName).size();
+            }
+            }
+        } 
+    
+    }
+     return number_of_rows;
+     }
  
 }

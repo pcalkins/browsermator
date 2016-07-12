@@ -78,7 +78,7 @@ public class ProcedureView {
     JLabel JLabelQuickActions = new JLabel ("Quick Select Action Buttons:");
     JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Action Buttons:");
   //  JLabel JLabelQuickActionsPassFail = new JLabel ("Quick Select Pass/Fail Action Buttons:");
-    MyTable myTable = null;
+    MyTable myTable;
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
     int last_selected_jtextfield_variable_number = 0;
@@ -90,13 +90,14 @@ public class ProcedureView {
    JScrollPane JTableScrollPane;
    CSVReader CSVFileReader;
 JPanel panelForTable;
-JButton JButtonUseList;
+JLabel JLabelUseList;
 JLabel JLabelOR;
 String Type;
     ProcedureView()
      {
+         myTable=new MyTable("");
              JLabelOR = new JLabel("OR:");
-       JButtonUseList = new JButton("Use Stored URL List");
+       JLabelUseList = new JLabel("Use Stored URL List");
 JTextFieldDataFile = new JTextField();
 JTextFieldDataFile.setVisible(true);
  JButtonBrowseForDataFile = new JButton();
@@ -323,7 +324,10 @@ for (String passfailaction_name : passfailaction_keys)
          JButtonYesNoPromptPassFail.addActionListener(listener);
      }
   
-    
+  public void addJComboBoxStoredArrayListsItemListener(ItemListener listener)
+  {
+      JComboBoxStoredArrayLists.addItemListener(listener);
+  }
   public void addDoActionItemListener(ItemListener listener) {
        JComboBoxDoActions.addItemListener(listener);
      
@@ -351,7 +355,7 @@ for (String passfailaction_name : passfailaction_keys)
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
         }
    }
- 
+   
    public void EnableArrayListsPulldown(boolean enableit)
    {
     this.JComboBoxStoredArrayLists.setEnabled(enableit);
@@ -365,10 +369,7 @@ for (String passfailaction_name : passfailaction_keys)
    {
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
    }
-         public void addJButtonUseListActionListener(ActionListener listener)
-      {
-          JButtonUseList.addActionListener(listener);
-      }
+   
       public void addJButtonBrowseForDataFileActionListener(ActionListener listener)
      {
          JButtonBrowseForDataFile.addActionListener(listener);
@@ -378,8 +379,57 @@ for (String passfailaction_name : passfailaction_keys)
          JTextFieldDataFile.setText(dataFile);
 
      }
+     public void UpdatePlacedLoopVars(String newsource)
+     {
+         Boolean isStoredList = true;
+             File checkfile = new File(newsource);
+             if (checkfile.isAbsolute())
+             {
+                isStoredList = false; 
+             }
+         for (ActionView AV: this.ActionsViewList)
+         {
+            
+             if (isStoredList)
+             {
+             if (AV.JTextFieldVariable1.getText().contains("Stored URL List:"))
+             {
+              String oldval = AV.JTextFieldVariable1.getText();
+              String meat = oldval.substring(21, oldval.length()-20);
+              String newval = "[dataloop-field-start]1,0,Stored URL List:" + newsource + "[dataloop-field-end]";
+              AV.JTextFieldVariable1.setText(newval);
+             }
+           
+               if (AV.JTextFieldVariable2.getText().contains("Stored URL List:"))
+             {
+              String oldval =  AV.JTextFieldVariable2.getText();
+              String meat = oldval.substring(21, oldval.length()-20);
+              String newval = "[dataloop-field-start]2,0,Stored URL List:" + newsource + "[dataloop-field-end]";
+              AV.JTextFieldVariable2.setText(newval);
+             }
+             }
+             else
+             {
+              if (AV.JTextFieldVariable1.getText().contains("[dataloop-field-start]"))
+             {
+            
+              AV.JTextFieldVariable1.setText("");
+             }
+           
+               if (AV.JTextFieldVariable2.getText().contains("[dataloop-field-start]"))
+             {
+            
+              AV.JTextFieldVariable2.setText("");
+             }  
+                 JComboBoxStoredArrayLists.setSelectedIndex(0);
+             }
+         }
+    
+     }
+     
      public void setJTableSource (String sourceCSVfile)
      {
+     UpdatePlacedLoopVars(sourceCSVfile);
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
@@ -405,7 +455,7 @@ for (String passfailaction_name : passfailaction_keys)
 //    JComboBoxStoredArrayLists.setEnabled(false);
     panelForBrowseAndPulldown.add(JButtonBrowseForDataFile);
     panelForBrowseAndPulldown.add(JLabelOR);
-    panelForBrowseAndPulldown.add(JButtonUseList);
+    panelForBrowseAndPulldown.add(JLabelUseList);
     panelForBrowseAndPulldown.add(JComboBoxStoredArrayLists);
     
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
