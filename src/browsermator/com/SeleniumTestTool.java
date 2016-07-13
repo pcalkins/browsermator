@@ -2088,6 +2088,51 @@ for (int x = 1; x<=number_of_places_to_move; x++)
   UpdateDisplay(); 
   
    }
+ public int FillTables(Procedure thisproc, ProcedureView thisprocview)
+  {
+      int number_of_rows = 0;
+     for (Action ThisAction: thisproc.ActionsList)
+     {
+      String concat_variable;
+ 
+              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
+    if (var1Parser.hasDataLoopVar)
+    {
+ concat_variable = ThisAction.Variable1;
+            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+            String[] parts = middle_part.split(",");
+            if (parts[2].contains(":"))
+            {   
+            String[] parts2 = parts[2].split(":");
+            String URLListName = parts2[1];
+               if (this.VarLists.containsKey(URLListName))
+            {
+            this.UpdateDataLoopTable(this.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = this.VarLists.get(URLListName).size();
+            }
+            }
+        } 
+    if (var2Parser.hasDataLoopVar)
+    {
+ concat_variable = ThisAction.Variable2;
+            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+            String[] parts = middle_part.split(",");
+             if (parts[2].contains(":"))
+            {  
+            String[] parts2 = parts[2].split(":");
+            String URLListName = parts2[1];
+            if (this.VarLists.containsKey(URLListName))
+            {
+            this.UpdateDataLoopTable(this.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = this.VarLists.get(URLListName).size();
+            }
+            }
+        } 
+    
+    }
+     return number_of_rows;
+     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane MainScrollPane;

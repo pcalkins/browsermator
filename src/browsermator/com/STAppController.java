@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.0.27";
+private final String version = "0.1.28";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.0.27";
+   public final String ProgramVersion = "0.1.28";
    public String loginName;
    public String loginPassword;
    
@@ -343,7 +343,7 @@ SeleniumToolDesktop.add(Navigator);
                  {
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
-                    SaveFile(STAppFrame, false, false);
+                    ThreadSaveFile(STAppFrame, false, false);
                     
                  }
                    else
@@ -424,7 +424,7 @@ SeleniumToolDesktop.add(Navigator);
                  {
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
-                    SaveFile(STAppFrame, true, false);
+                    ThreadSaveFile(STAppFrame, true, false);
                     
                  }
                    else
@@ -1144,12 +1144,13 @@ AllFieldValuesCheck.add(sthisbool);
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
- 
+    AllFieldValuesCheck.add(thisproc.DataFile);
     for (Action thisact: thisproc.ActionsList)
     {
         AllFieldValuesCheck.add(thisact.Variable1);
        
         AllFieldValuesCheck.add(thisact.Variable2);
+       
         String checkingboolval1 = "false";
         if (thisact.BoolVal1)
         {
@@ -1190,7 +1191,7 @@ else
                       }  
                       else
                       {
-                          SaveFile(STAppFrame, true, false);  
+                          ThreadSaveFile(STAppFrame, true, false);  
                       }
                      }
                      else
@@ -1209,7 +1210,7 @@ else
                           }  
                       else
                       {
-                          SaveFile(STAppFrame, false, false);  
+                          ThreadSaveFile(STAppFrame, false, false);  
                       }
                        
                      }
@@ -1571,10 +1572,10 @@ public void OpenBrowserMatorCloud()
   UPLOADREF.execute();  
    
   }
-  public void SaveFileNow (SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
-  {
-       int current_MDI_Index = GetCurrentWindow();
-         final JFileChooser fc = new JFileChooser(){
+   public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index) throws IOException, XMLStreamException
+    {
+
+      final JFileChooser fc = new JFileChooser(){
     @Override
     public void approveSelection(){
         
@@ -1660,7 +1661,7 @@ int returnVal = fc.showSaveDialog(STAppFrame);
              try {
 xmlfile.writeStartElement("BrowserMatorWindow");
 xmlfile.writeAttribute("Filename",file.getName());
-xmlfile.writeAttribute("ProgramVersion", ProgramVersion);
+xmlfile.writeAttribute("ProgramVersion", this.ProgramVersion);
 String ShowReport = Boolean.toString(STAppFrame.getShowReport());
 
 xmlfile.writeStartElement("FileSettings");
@@ -1757,6 +1758,7 @@ xmlfile.writeEndElement();
 
 for (Procedure thisbug: STAppFrame.BugArray)
 {
+
 xmlfile.writeStartElement("Procedure");
 xmlfile.writeAttribute("Title", thisbug.BugTitle);
 xmlfile.writeAttribute("URL", thisbug.BugURL);
@@ -1765,16 +1767,188 @@ String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
 xmlfile.writeAttribute("Type", thisbug.Type);   
 
-
 if ("Dataloop".equals(thisbug.Type))
 {
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
-  
 
 }
+  if (isFlatten==true && "Dataloop".equals(thisbug.Type))
+  {
+        int indexer = thisbug.index;
+           ProcedureView thisbugview = STAppFrame.BugViewArray.get(indexer-1);
+       int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+       if (number_of_rows == 0)
+       {
+         
+           STAppFrame.FillTables(thisbug, thisbugview);
+       }
+  for( Action ThisAction : thisbug.ActionsList ) { 
+ ThisAction.InitializeLoopTestVars(number_of_rows);
+  } 
+int action_index_for_flatten = 0;
+ for (int x = 0; x<number_of_rows; x++)
+    {
+     for (Action thisaction: thisbug.ActionsList)
+    {
+         String original_value1 = thisaction.Variable1;
+           String original_value2 = thisaction.Variable2;
+               DataLoopVarParser var1Parser = new DataLoopVarParser(thisaction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(thisaction.Variable2);
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
+        xmlfile.writeStartElement("Action");
 
+    String LOCKED = Boolean.toString(thisaction.Locked);
+   
+    xmlfile.writeStartElement("LOCKED");
+    xmlfile.writeCharacters(LOCKED);
+    xmlfile.writeEndElement();
+    
+   
+        
+    String Pass = Boolean.toString(thisaction.Pass);
+    xmlfile.writeStartElement("Pass");
+    xmlfile.writeCharacters(Pass);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("TimeOfTest");
+    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Type");
+    xmlfile.writeCharacters(thisaction.Type);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Variable1");
+    
+    xmlfile.writeCharacters(thisaction.Variable1);
+    xmlfile.writeEndElement();
+    if (thisaction.Type.contains("Password"))
+    {
+    xmlfile.writeStartElement("Variable2");
+    try
+    {
+    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+    }
+    catch (Exception e)
+            {
+            System.out.println("encrypt error.. passvar2: " + e.toString());
+            }
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
+    }
+    else
+    {
+    xmlfile.writeStartElement("Variable2");
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement();
+    }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
+    String ActionIndex = Integer.toString(action_index_for_flatten);   
+    
+    xmlfile.writeStartElement("ActionIndex");
+    xmlfile.writeCharacters(ActionIndex);
+    action_index_for_flatten++;
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeEndElement();  
+    }
+    else
+    {
+               String concat_variable;
+            String concat_variable2;
+ concat_variable = var1Parser.GetFullValue(x, thisbug.DataSet);
+ if (!"".equals(concat_variable))
+ {
+      thisaction.Variable1 = concat_variable;
+ }
+      concat_variable2 = var2Parser.GetFullValue(x, thisbug.DataSet);
+     if (!"".equals(concat_variable2))
+     {
+      thisaction.Variable2 = concat_variable2;  
+     }   
+           xmlfile.writeStartElement("Action");
 
+    String LOCKED = Boolean.toString(thisaction.Locked);
+   
+    xmlfile.writeStartElement("LOCKED");
+    xmlfile.writeCharacters(LOCKED);
+    xmlfile.writeEndElement();
+    
+   
+        
+    String Pass = Boolean.toString(thisaction.Pass);
+    xmlfile.writeStartElement("Pass");
+    xmlfile.writeCharacters(Pass);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("TimeOfTest");
+    xmlfile.writeCharacters(thisaction.TimeOfTest.format(DateTimeFormatter.ISO_DATE_TIME));
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Type");
+    xmlfile.writeCharacters(thisaction.Type);
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("Variable1");
+    
+    xmlfile.writeCharacters(thisaction.Variable1);
+    xmlfile.writeEndElement();
+    if (thisaction.Type.contains("Password"))
+    {
+    xmlfile.writeStartElement("Variable2");
+    try
+    {
+    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+    }
+    catch (Exception e)
+            {
+            System.out.println("encrypt error.. passvar2: " + e.toString());
+            }
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
+    }
+    else
+    {
+    xmlfile.writeStartElement("Variable2");
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement();
+    }
+    
+    xmlfile.writeStartElement("BoolVal1");
+    String tempstringbool = "false";
+    if (thisaction.BoolVal1)
+    {
+        tempstringbool = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool);
+    xmlfile.writeEndElement();
+    String ActionIndex = Integer.toString(action_index_for_flatten);   
+    xmlfile.writeStartElement("ActionIndex");
+    xmlfile.writeCharacters(ActionIndex);
+    action_index_for_flatten++;
+    xmlfile.writeEndElement();
+    
+    xmlfile.writeEndElement();    
+        thisaction.Variable1 = original_value1;
+   thisaction.Variable2 = original_value2;
+    }
+  
+    }
+    }
+  }
+  else
+  {
+ 
     for (Action thisaction: thisbug.ActionsList)
     {
     xmlfile.writeStartElement("Action");
@@ -1840,10 +2014,12 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
     
     xmlfile.writeEndElement();  
     }
-    xmlfile.writeEndElement();
   }
+ 
+    xmlfile.writeEndElement();
+  
+}
 xmlfile.writeEndElement();
-
 // STAppFrame.AllFieldValues.clear();
 
 
@@ -1856,7 +2032,14 @@ xmlfile.writeEndElement();
         } finally {
             xmlfile.flush();
             xmlfile.close();
-           
+            if (isFlatten)
+            {
+
+     OpenFileThread OPENREF = new OpenFileThread(this, file, this.MDIClasses, calling_MDI_Index, true, false);
+  OPENREF.execute();
+            }
+            else
+            {
  
     STAppFrame.setProperties(file.getAbsolutePath());
             STAppFrame.AllFieldValues.clear();
@@ -1900,12 +2083,49 @@ if (STAppFrame.getShowReport())
 {
     thisbool = "true";
 }
+STAppFrame.AllFieldValues.add(thisbool);
+for (Procedure thisproc: STAppFrame.BugArray)
+{
+    
+    STAppFrame.AllFieldValues.add(thisproc.BugTitle);
+    STAppFrame.AllFieldValues.add(thisproc.DataFile);
+    for (Action thisact: thisproc.ActionsList)
+    {
+        String checkingboolval1 = "false";
+        STAppFrame.AllFieldValues.add(thisact.Variable1);
+       
+        STAppFrame.AllFieldValues.add(thisact.Variable2);
+      
+        if (thisact.BoolVal1)
+        {
+            checkingboolval1 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval1);
+    }
+}
+STAppFrame.changes = false;
+            }
+        }
+if (isFlatten==false)
+{
+this.filename = file.getAbsolutePath();
+STAppFrame.setProperties(this.filename);
+this.Navigator.addRecentFile(file.getAbsolutePath());
 
+}
+else
+{
+   
+}
      
-        
+        }
+
+  public void SaveFileNow (SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
+  {
+       int current_MDI_Index = GetCurrentWindow();
+  SaveFile (STAppFrame, isSaveAs, isFlatten, current_MDI_Index);
   }
-  }
-  public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
+  public void ThreadSaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
       int current_MDI_Index = GetCurrentWindow();
       
@@ -2332,7 +2552,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
    
-                   SaveFile(STAppFrame, true, true);
+                   ThreadSaveFile(STAppFrame, true, true);
                     
  
   

@@ -230,7 +230,7 @@ STAppFrame.AllFieldValues.add(thisbool);
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
-
+    STAppFrame.AllFieldValues.add(thisproc.DataFile);
     for (Action thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";
@@ -658,7 +658,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
    
-                mainApp.SaveFile(STAppFrame, true, true);
+                mainApp.ThreadSaveFile(STAppFrame, true, true);
                    
  
   

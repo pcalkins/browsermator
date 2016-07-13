@@ -31,7 +31,7 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
 " {\n" +
 "\n" +
 "        ArrayList<String> link_list = new ArrayList();\n" +
-"       List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));\n" +
+"       List<WebElement> link_elements = driver.findElements(By.xpath(\"" + this.Variable1 + "\"));\n" +
 "  for(WebElement e : link_elements) {\n" +
 "  link_list.add(e.getAttribute(\"href\"));\n" +
 "}\n" +
@@ -56,7 +56,16 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
         ArrayList<String> link_list = new ArrayList();
        List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));
   for(WebElement e : link_elements) {
-  link_list.add(e.getAttribute("href"));
+      String thishref = e.getAttribute("href");
+      
+      if (link_list.contains(thishref))
+      {
+          
+      }
+      else
+      {
+  link_list.add(thishref);
+      }
 }
   
      

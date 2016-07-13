@@ -29,11 +29,11 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
       this.Guts = "   try\n" +
 " {\n" +
 "        \n" +
-"        String link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute(\"href\");\n" +
+"        String link_value = driver.findElement(By.xpath(\"" + this.Variable1+"\")).getAttribute(\"href\");\n" +
 "  \n" +
 "     String varname = this.Variable2;\n" +
 "     \n" +
-" SetStoredLinkHashValue (varname, link_value);\n" +
+" SetStoredLinkHashValue (\"" + this.Variable2 + "\", link_value);" +
 "    \n" +
 "        this.Pass = true;\n" +
 " }\n" +

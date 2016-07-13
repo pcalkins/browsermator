@@ -27,6 +27,7 @@ String Guts;
 
  ViewGuts (SeleniumTestTool in_SiteTest)
  {
+
   this.GutsHeader = "";
   this.GutsFooter = "";
   this.Guts = "";
@@ -268,7 +269,7 @@ int action_INT = 0;
 String action_ID = "";
 ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
 
-if (thisbugview.myTable==null)
+if (!"Dataloop".equals(thisbugview.Type))
 {
     action_INT=0;
    for( Action ThisAction : thisbug.ActionsList ) {
@@ -296,7 +297,12 @@ if (thisbugview.myTable==null)
 }
 else
 {
- int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+     int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ if (number_of_rows==0)
+ {
+  number_of_rows = SiteTest.FillTables(thisbug, thisbugview);
+ }
+
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
@@ -390,6 +396,7 @@ else
      
  }
 }
+thisbugindex++;
       }
  }
 }
