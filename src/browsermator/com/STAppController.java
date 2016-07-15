@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.28";
+private final String version = "0.1.29";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.28";
+   public final String ProgramVersion = "0.1.29";
    public String loginName;
    public String loginPassword;
    
@@ -3076,7 +3076,7 @@ input.close();
       try
      {
      String outHTML = thisSession.SendParams();
-      if (outHTML=="Success")
+      if ("Success".equals(outHTML))
       {
         return "An email with your password has been sent.";
        

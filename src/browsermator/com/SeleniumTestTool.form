@@ -394,13 +394,14 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxTargetBrowser">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="6">
+          <StringArray count="7">
             <StringItem index="0" value="Firefox"/>
             <StringItem index="1" value="Firefox-Marionette"/>
             <StringItem index="2" value="Internet Explorer-32"/>
             <StringItem index="3" value="Internet Explorer-64"/>
             <StringItem index="4" value="Chrome"/>
-            <StringItem index="5" value="Silent Mode (HTMLUnit)"/>
+            <StringItem index="5" value="Chrome (WinXP)"/>
+            <StringItem index="6" value="Silent Mode (HTMLUnit)"/>
           </StringArray>
         </Property>
       </Properties>

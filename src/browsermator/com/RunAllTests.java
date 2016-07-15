@@ -37,6 +37,7 @@ BrowserMatorReport BrowserMatorReport;
    this.SiteTest = in_SiteTest;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
+  this.driver = new HtmlUnitDriver();
  }
  
 @Override 
@@ -170,6 +171,9 @@ public String doInBackground()
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+       
+        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
       
      break;
@@ -180,11 +184,29 @@ public String doInBackground()
      
      case "Internet Explorer-32":
      System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win32\\IEDriverServer.exe");
+     try
+     {
      driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+     {
+         System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver");
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+     }
      break;
      case "Internet Explorer-64":
      System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win64\\IEDriverServer.exe");
+     try
+     {
      driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+             {
+             System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver");
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
+             }
      break;
      case "Chrome":
      if ("Windows".equals(OSType))
@@ -209,10 +231,26 @@ public String doInBackground()
      }
    catch (Exception ex)
    {
-       System.out.println ("Problem launching Chromedriver, XP or older version of Chrome?: " + ex.toString());
+       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver");
+       SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
-
+   case "Chrome (WinXP)":
+    
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+    
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver");
+       SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+   }
+     break;
          
          default: 
             driver = new ChromeDriver();
@@ -343,6 +381,7 @@ if (!"Dataloop".equals(thisbugview.Type))
       
        
      }
+   
    }   
    }  
 
@@ -633,7 +672,7 @@ else
 
 
  int NumberOfActionsPassed = 0;
-  if (thisbugview.myTable==null)
+  if (!"Dataloop".equals(thisbugview.Type))
   {
        int ActionIndex = 0;
    for( ActionView TheseActionViews : ActionView ) {
