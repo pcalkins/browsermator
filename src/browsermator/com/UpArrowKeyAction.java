@@ -7,6 +7,7 @@ package browsermator.com;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 /**
@@ -21,8 +22,17 @@ public class UpArrowKeyAction extends Action {
     @Override
     public void SetGuts()
     {
-   this.Guts = "\n  Actions actions = new Actions(driver);\n" +
-" actions.sendKeys(Keys.ARROW_UP).perform(); ";
+   this.Guts = "  try\n" +
+"        {\n" +
+"\n" +
+" WebElement element = driver.switchTo().activeElement();\n" +
+" element.sendKeys(Keys.ARROW_UP);\n" +
+"this.Pass = true; \n" +
+"        }\n" +
+"        catch (Exception ex)\n" +
+"                {\n" +
+"                    this.Pass = false;\n" +
+"                } ";
    
     }
   @Override
@@ -30,8 +40,9 @@ public class UpArrowKeyAction extends Action {
     {
         try
         {
-        Actions actions = new Actions(driver);
- actions.sendKeys(Keys.ARROW_UP).perform();
+
+ WebElement element = driver.switchTo().activeElement();
+ element.sendKeys(Keys.ARROW_UP);
 this.Pass = true; 
         }
         catch (Exception ex)

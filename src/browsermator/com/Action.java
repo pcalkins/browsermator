@@ -2,8 +2,10 @@ package browsermator.com;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -89,12 +91,32 @@ LocalDateTime[] loop_time_of_test;
   {
      
        try { 
- WebElement element = driver.findElement(By.xpath(xpather));
- element.click();
- this.Pass = true;
+             Actions actions = new Actions(driver);
+             List<WebElement> elements = driver.findElements(By.xpath(xpather));
+
+ if (elements.size()>1)
+ {
+  for (WebElement thiselement: elements)
+  {
+
+       actions.click(thiselement).perform();
+  }
  
+  
+  this.Pass = true;
  }
- catch (NoSuchElementException e)
+ else
+ {
+ if (elements.size()>0)
+ {
+WebElement element = elements.get(0);
+   actions.click(element).perform();
+     this.Pass = true;
+ }
+
+ }
+ }
+ catch (Exception e)
  {
   this.Pass = false;
   
@@ -104,8 +126,27 @@ LocalDateTime[] loop_time_of_test;
   {
         try { 
             Actions actions = new Actions(driver);
- WebElement element = driver.findElement(By.xpath(xpather));
- actions.contextClick(element).perform();
+             List<WebElement> elements = driver.findElements(By.xpath(xpather));
+ if (elements.size()>1)
+ {
+  for (WebElement thiselement: elements)
+  {
+      actions.contextClick(thiselement);
+   
+  }
+  actions.build();
+  actions.perform();
+ }
+ else
+ {
+     if (elements.size()>0)
+     {
+WebElement element = elements.get(0);
+actions.contextClick(element).perform(); 
+     }
+
+ }
+
  this.Pass = true;
  
  }
@@ -135,12 +176,13 @@ public void setActionIndex (int newindex)
    
    }
 @Override
- public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1)
+ public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean LOCKED)
  {
      this.Variable1 = Variable1;
      this.Variable2 = Variable2;
      this.Password = Password;
      this.BoolVal1 = BoolVal1;
+     this.Locked = LOCKED;
  }
  
 

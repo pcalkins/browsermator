@@ -145,6 +145,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     String ActionPass;
     
    Boolean RealBoolVal1 = false;
+   Boolean boolLOCKED = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
    thisActionNodeName = ActionNodes.item(k).getNodeName();
@@ -176,6 +177,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             break;
         case "LOCKED":
             LOCKED = thisActionNodeValue;
+            if (LOCKED.equals("true"))
+                    {
+                    boolLOCKED = true;
+                    }
             break;
        
 
@@ -213,8 +218,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
@@ -225,8 +230,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
              {
                Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);

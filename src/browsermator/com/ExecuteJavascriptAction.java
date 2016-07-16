@@ -67,8 +67,18 @@ public class ExecuteJavascriptAction extends Action {
                 for (int i = 0; i < s.length; i++) {
                     js_TxtFile += s[i];
                     js_TxtFile += " ";
-                }    
+                }   
+                try
+                {
                 ((JavascriptExecutor)driver).executeScript(js_TxtFile);
+                this.Pass = true;
+                }
+                catch (Exception ex)
+                {
+                     System.out.println ("Exception when running Javascript: " + ex.toString());
+            this.Pass = false;    
+                }
+               
             }
             
             }
@@ -78,7 +88,17 @@ public class ExecuteJavascriptAction extends Action {
             System.out.println(ex.toString());
             }
         }
+        try
+        {
         ((JavascriptExecutor)driver).executeScript(this.Variable1);
+        this.Pass = true;
+        }
+        catch (Exception ex)
+        {
+            System.out.println ("Exception when running Javascript: " + ex.toString());
+            this.Pass = false;
+        }
+        
 
  
     }

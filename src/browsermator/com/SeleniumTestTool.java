@@ -144,14 +144,14 @@ jComboBoxStoredVariables.setFocusable(false);
     }
 
 }
-public void setCurrentlySelectedFieldToStoredVariable(String fieldindex)
+public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fieldnum)
 {
     String[] indexes = fieldindex.split("-");
     String bugindex = indexes[0];
     String actionindex = indexes[1];
     int bugindexnum = Integer.parseInt(bugindex)-1;
     int actionindexnum = Integer.parseInt(actionindex)-1;
-    BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString());
+    BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString(), fieldnum);
 
 }
 public void setHasStoredVar(boolean hasit)
@@ -434,7 +434,7 @@ public void ShowStoredVarControls(Boolean showhideval)
     }
 }
 
-public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int actionindex)
+public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int actionindex, int fieldnum)
 {
     if (showhideval)
     {
@@ -451,7 +451,7 @@ public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int
         { 
    String ACommand = evt.getActionCommand();
 
-       setCurrentlySelectedFieldToStoredVariable(ACommand);
+       setCurrentlySelectedFieldToStoredVariable(ACommand, fieldnum);
        
  
   

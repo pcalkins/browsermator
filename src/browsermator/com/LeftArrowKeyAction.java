@@ -7,6 +7,7 @@ package browsermator.com;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 /**
@@ -21,18 +22,25 @@ public class LeftArrowKeyAction extends Action {
      @Override
      public void SetGuts()
      {
-         this.Guts = "\n Actions actions = new Actions(driver);\n" +
+         this.Guts = "    try\n" +
+"        {\n" +
+" WebElement element = driver.switchTo().activeElement();\n" +
+" element.sendKeys(Keys.ARROW_LEFT);\n" +
 " \n" +
-" actions.sendKeys(Keys.ARROW_LEFT).perform(); ";
+"     this.Pass = true;\n" +
+"        }\n" +
+"        catch (Exception ex)\n" +
+"        {\n" +
+"            this.Pass = false;\n" +
+"        }";
      }
   @Override
     public void RunAction(WebDriver driver)
     {
         try
         {
-        Actions actions = new Actions(driver);
- 
- actions.sendKeys(Keys.ARROW_LEFT).perform(); 
+ WebElement element = driver.switchTo().activeElement();
+ element.sendKeys(Keys.ARROW_LEFT);
  
      this.Pass = true;
         }

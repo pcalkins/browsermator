@@ -47,11 +47,11 @@ public abstract class ActionView implements Listenable, Initializable{
    JCheckBox JCheckBoxBoolVal1;
    JButton JButtonBrowseForFile;
    JButton JButtonDragIt;
-  
+   Boolean Locked;
    
    ActionView()
    {
-
+      this.Locked = false;
       this.JButtonDragIt = new JButton("=");
       this.JPanelAction = new JPanel();
       this.JLabelPassFail = new JLabel("");
@@ -78,12 +78,21 @@ String stringactionindex = Integer.toString(this.index+1);
   
          
    }
-     public void setFieldToStoredVariable(String stored_var_name)
+     public void setFieldToStoredVariable(String stored_var_name, int field_num)
      {
        if (stored_var_name.contains("-"))
        {
+           
       String stored_var_string = "[stored_varname-start]" + stored_var_name + "[stored_varname-end]";
-     JTextFieldVariable2.setText(stored_var_string);
+     if (field_num==2)
+     {
+      JTextFieldVariable2.setText(stored_var_string);
+     }
+    if (field_num==1)
+    {
+      JTextFieldVariable1.setText(stored_var_string);  
+    }
+        
        }
      }
      public void setActionFieldToDataColumn (int field_number, int columnindex, String selected_name)
@@ -201,15 +210,20 @@ String stringactionindex = Integer.toString(this.index+1);
   
        }
        @Override
-       public void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1)
+       public void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean LOCKED)
        {
          this.JTextFieldVariable1.setText(Variable1);
          this.JTextFieldVariable2.setText(Variable2);
          this.JTextFieldPassword.setText(Password);
+         this.Locked = LOCKED;
          
          if (BoolVal1)
          {
              this.JCheckBoxBoolVal1.setSelected(true);
+         }
+         if (this.Locked)
+         {
+          UpdateActionView();
          }
        }
        public void SetIndexes(int bugindex, int actionindex)
@@ -229,22 +243,22 @@ String stringactionindex = Integer.toString(this.index+1);
        public void AddSetVarFocusListeners(SeleniumTestTool Window, Procedure newbug, Action action)
        {
           
-     //  addJTextFieldFocusListener(new FocusListener() {
+       addJTextFieldFocusListener(new FocusListener() {
 
-      //      @Override
-      //      public void focusGained(FocusEvent e) {
+            @Override
+            public void focusGained(FocusEvent e) {
             
             
            
-       //        Window.ShowPlaceStoredVariableButton(true);
-       //     }
+             Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 1 );
+            }
 
-       //     @Override
-       //     public void focusLost(FocusEvent e) {
+            @Override
+            public void focusLost(FocusEvent e) {
           
-       //        Window.ShowPlaceStoredVariableButton(false);
-        //    }
-       // });
+               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 1);
+            }
+        });
       addJTextField2FocusListener(new FocusListener() {
 
             @Override
@@ -252,14 +266,14 @@ String stringactionindex = Integer.toString(this.index+1);
             
          
           
-               Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index );
+               Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 2 );
                 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
           
-               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index);
+               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 2);
             }
         });    
        }

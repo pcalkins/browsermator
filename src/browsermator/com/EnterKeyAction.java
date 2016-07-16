@@ -23,22 +23,27 @@ public class EnterKeyAction extends Action {
       @Override
  public void SetGuts()
  {
-    this.Guts = "\n    Actions actions = new Actions(driver);\n" +
-" \n" +
-" actions.keyDown(Keys.RETURN).perform(); \n" +
-" actions.keyUp(Keys.RETURN).perform();"; 
+    this.Guts = "try\n" +
+"{\n" +
+"WebElement element = driver.switchTo().activeElement();\n" +
+"  element.sendKeys(Keys.RETURN);\n" +
+"\n" +
+"    this.Pass = true;\n" +
+"}\n" +
+"catch (Exception ex)\n" +
+"{\n" +
+"    this.Pass = false;\n" +
+"}"; 
  }
   @Override
     public void RunAction(WebDriver driver)
     {
 try
 {
-  WebElement element = driver.findElement(By.tagName("body"));
+WebElement element = driver.switchTo().activeElement();
   element.sendKeys(Keys.RETURN);
-   // Actions actions = new Actions(driver);
 
-// actions.sendKeys(Keys.RETURN).perform(); 
- this.Pass = true;
+    this.Pass = true;
 }
 catch (Exception ex)
 {

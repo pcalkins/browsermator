@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.29";
+private final String version = "0.1.30";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.29";
+   public final String ProgramVersion = "0.1.30";
    public String loginName;
    public String loginPassword;
    
@@ -1826,17 +1826,24 @@ int action_index_for_flatten = 0;
     xmlfile.writeEndElement();
     if (thisaction.Type.contains("Password"))
     {
-    xmlfile.writeStartElement("Variable2");
+   
     try
     {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+         xmlfile.writeStartElement("Variable2");
+    String encpass = Protector.encrypt(thisaction.Variable2);
+    xmlfile.writeCharacters(encpass);
+    xmlfile.writeEndElement(); 
     }
     catch (Exception e)
             {
             System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
+                   System.out.println("encrypt error.. passvar2: " + e.toString());
+             xmlfile.writeStartElement("Variable2");
+    String encpass = "";
     xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
+    xmlfile.writeEndElement();   
+            }
+    
     }
     else
     {
@@ -1905,17 +1912,23 @@ int action_index_for_flatten = 0;
     xmlfile.writeEndElement();
     if (thisaction.Type.contains("Password"))
     {
-    xmlfile.writeStartElement("Variable2");
+   
     try
     {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+         xmlfile.writeStartElement("Variable2");
+    String encpass = Protector.encrypt(thisaction.Variable2);
+    xmlfile.writeCharacters(thisaction.Variable2);
+    xmlfile.writeEndElement(); 
     }
     catch (Exception e)
             {
             System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
+             xmlfile.writeStartElement("Variable2");
+    String encpass = "";
     xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
+    xmlfile.writeEndElement();   
+            }
+   
     }
     else
     {
@@ -1980,17 +1993,22 @@ int action_index_for_flatten = 0;
     xmlfile.writeEndElement();
     if (thisaction.Type.contains("Password"))
     {
-    xmlfile.writeStartElement("Variable2");
-    try
+       try
     {
-    thisaction.Variable2 = Protector.encrypt(thisaction.Variable2);
+         xmlfile.writeStartElement("Variable2");
+    String encpass = Protector.encrypt(thisaction.Variable2);
+    xmlfile.writeCharacters(encpass);
+    xmlfile.writeEndElement(); 
     }
     catch (Exception e)
             {
             System.out.println("encrypt error.. passvar2: " + e.toString());
-            }
+                   System.out.println("encrypt error.. passvar2: " + e.toString());
+             xmlfile.writeStartElement("Variable2");
+    String encpass = "";
     xmlfile.writeCharacters(thisaction.Variable2);
-    xmlfile.writeEndElement(); 
+    xmlfile.writeEndElement();   
+            }
     }
     else
     {
@@ -2409,6 +2427,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     
     
    Boolean RealBoolVal1 = false;
+   Boolean boolLOCKED = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
    thisActionNodeName = ActionNodes.item(k).getNodeName();
@@ -2440,6 +2459,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
            break;
         case "LOCKED":
             LOCKED = thisActionNodeValue;
+             if (LOCKED.equals("true"))
+                    {
+                   boolLOCKED = true;
+                    }
             break;
        
 
@@ -2474,8 +2497,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
@@ -2486,8 +2509,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
              {
                Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
               STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);

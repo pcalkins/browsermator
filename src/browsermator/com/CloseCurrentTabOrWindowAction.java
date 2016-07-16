@@ -5,10 +5,10 @@
  */
 package browsermator.com;
 
-import java.util.ArrayList;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
+
 /**
  *
  * @author pcalkins
@@ -24,10 +24,9 @@ public class CloseCurrentTabOrWindowAction extends Action
   {
       this.Guts = "try\n" +
 "{\n" +
-" String currenthandle = driver.getWindowHandle();\n" +
-"  driver.switchTo().window(currenthandle);\n" +
 "\n" +
-"driver.close();\n" +
+"  driver.findElement(By.cssSelector(\"body\")).sendKeys(Keys.chord(Keys.CONTROL, \"w\"));\n" +
+"\n" +
 " for (String winHandle : driver.getWindowHandles()) {\n" +
 "  driver.switchTo().window(winHandle); \n" +
 "}\n" +
@@ -36,6 +35,7 @@ public class CloseCurrentTabOrWindowAction extends Action
 "catch (Exception ex)\n" +
 "{\n" +
 "    this.Pass = false;\n" +
+"}" +
 "}";
   }
   @Override
@@ -43,10 +43,9 @@ public class CloseCurrentTabOrWindowAction extends Action
     {
 try
 {
- String currenthandle = driver.getWindowHandle();
-  driver.switchTo().window(currenthandle);
 
-driver.close();
+  driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "w"));
+
  for (String winHandle : driver.getWindowHandles()) {
   driver.switchTo().window(winHandle); 
 }

@@ -197,7 +197,11 @@ if (thisbugview.myTable==null)
         break;
      
         }
-   }   
+   } 
+             else
+      {
+          ThisAction.Pass = true;
+      }
    }  
 
 }
@@ -319,6 +323,10 @@ else
      
   }
    
+      }
+        else
+      {
+          ThisAction.Pass = true;
       }
      }
     }

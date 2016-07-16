@@ -12,7 +12,6 @@ public class TypePasswordAtInputNameAction extends Action
  TypePasswordAtInputNameAction (String TargetXPATH, String ToType, Boolean BoolVal1)
     {
         this.Type = "Type Password at Input Name";
-        
         this.Variable1 = TargetXPATH;
         this.Variable2 = ToType;
      this.BoolVal1 = BoolVal1;
@@ -40,7 +39,7 @@ public class TypePasswordAtInputNameAction extends Action
 
  try
  {
-        
+
         WebElement element = driver.findElement(By.name(this.Variable1));  
         element.sendKeys(this.Variable2);
 if (this.BoolVal1.equals(true))

@@ -11,6 +11,6 @@ package browsermator.com;
  */
 public interface Initializable {
  
- void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1);   
+ void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean LOCKED);   
   
 }
