@@ -10,6 +10,8 @@ import java.io.File;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.List;
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
 import javax.swing.SwingWorker;
 
 /**
@@ -27,10 +29,11 @@ public class SendFileThread extends SwingWorker<String, Integer>{
  String isPrivate;
  File clean_file;
  STAppController mainApp;
- // String rootURL = "http://localhost";
-String rootURL = "http://www.browsermator.com";
+// String rootURL = "http://localhost";
+ String rootURL = "http://www.browsermator.com";
+WebEngine cloudEngine;
 
-    SendFileThread(File in_sendfile, String in_name, String in_password, String file_id)
+    SendFileThread(WebEngine in_cloudREF, File in_sendfile, String in_name, String in_password, String file_id)
   {
 
  this.thisUpDiag = null;
@@ -41,8 +44,10 @@ String rootURL = "http://www.browsermator.com";
   this.file_id = file_id;
 this.description = "";
  this.isPrivate = "";
+ this.cloudEngine = in_cloudREF;
  
   }
+    
     SendFileThread(STAppController mainApp, Upload_File_Dialog in_thisUpDiag, File in_sendfile, String in_name, String in_password)
   {
  this.file_id = "";
@@ -55,7 +60,7 @@ this.description = thisUpDiag.getDescription();
  this.isPrivate = thisUpDiag.getPrivate();
  this.mainApp = mainApp;
   }
-       @Override 
+@Override 
 public String doInBackground()
  {
     
@@ -181,6 +186,17 @@ public String doInBackground()
     else
     {
 // move file to local browsermatorcloudfolder
+       String toURL = rootURL + "/browse_files.php?edit=" + file_id + "&loginName=" + name + "&loginPassword=" + password;
+  
+      
+          Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+              cloudEngine.load(toURL);
+
+            }
+        });
     }
      
  }

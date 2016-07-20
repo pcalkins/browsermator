@@ -58,12 +58,16 @@ JLabel loginLabelText;
 //JTextField loginFieldName;
 //JPasswordField loginFieldPassword;
 // String rootURL = "http://localhost";
-String rootURL = "http://www.browsermator.com";
-
+ String rootURL = "http://www.browsermator.com";
+    JPanel bottomPanel;
+JLabel LoadingLabel;
 
 JButton loginButton = new JButton("Login"); 
       public BrowserMatorFileCloud(STAppController mainApp)
  {
+    bottomPanel = new JPanel();
+ LoadingLabel = new JLabel("Loading.  Please wait...");
+bottomPanel.add(LoadingLabel);
      Platform.setImplicitExit(false);
      mainApp.LoadNameAndPassword();
      this.mainApp = mainApp;
@@ -84,10 +88,11 @@ JButton loginButton = new JButton("Login");
           
      }
   }
-  public void UpdateWebView (WebView webviewREF, String url)
+  public void UpdateWebView (String url)
   {
            try
       {
+        
       URLConnection connection = new URL(url).openConnection();
 connection.setDoOutput(true);
   BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -102,17 +107,21 @@ connection.setDoOutput(true);
       catch(Exception ex)
       {
           HTML_TO_SEND = "Unable to connect to browsermator.com.";
+   //        webviewREF.getEngine().loadContent(HTML_TO_SEND);
+      webEngine.loadContent(HTML_TO_SEND);
           System.out.println("Exception browsing cloud: " + ex.toString());
+            LoadingLabel.setVisible(false);
+         
       }
    if (HTML_TO_SEND=="Unable to connect to browsermator.com.")
 {
-    webviewREF.getEngine().loadContent(HTML_TO_SEND);
+ //   webviewREF.getEngine().loadContent(HTML_TO_SEND);
+    webEngine.loadContent(HTML_TO_SEND);
+    LoadingLabel.setVisible(false);
 }
 else
 {
- //  webviewREF.getEngine().loadContent(HTML_TO_SEND);
-// webviewREF.getEngine().load(url);
-// webEngine.load(url);
+
       Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -129,6 +138,7 @@ else
     
       try
       {
+         
       URLConnection connection = new URL(url).openConnection();
 connection.setDoOutput(true);
   BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -144,6 +154,7 @@ connection.setDoOutput(true);
       {
           HTML_TO_SEND = "Unable to connect to browsermator.com.";
           System.out.println("Exception browsing cloud: " + ex.toString());
+          LoadingLabel.setVisible(false);
       }
      //   String HTML_TO_SEND = HTML;
     
@@ -151,6 +162,7 @@ connection.setDoOutput(true);
    Platform.runLater(new Runnable() {
             @Override
             public void run() {
+             
 browser2 = new WebView();
 webEngine = browser2.getEngine();
 
@@ -161,7 +173,7 @@ webEngine = browser2.getEngine();
                   if (newState == Worker.State.SUCCEEDED) {
                   JSObject win
                                 = (JSObject) webEngine.executeScript("window");
-                        win.setMember("app", new JavaApp(browser2));  
+                        win.setMember("app", new JavaApp(webEngine));  
                 }
                   
                 }
@@ -170,6 +182,7 @@ webEngine = browser2.getEngine();
 if (HTML_TO_SEND=="Unable to connect to browsermator.com.")
 {
     webEngine.loadContent(HTML_TO_SEND);
+    
 }
 else
 {
@@ -177,7 +190,7 @@ webEngine.load(url);
 }
 Scene scene = new Scene(browser2);
         fxPanel.setScene(scene);
-
+   LoadingLabel.setVisible(false);
   
  
      
@@ -305,8 +318,10 @@ LoginDialogLauncher();
 fxPanel.setSize(800,800);
 
 mainPanel = new JPanel(new BorderLayout());
+
     mainPanel.add(topPanel, BorderLayout.NORTH);
     mainPanel.add(fxPanel, BorderLayout.CENTER);
+    mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     mainPanel.setVisible(true);
 
    cloudFrame = new JFrame("BrowserMation File Cloud");
@@ -411,7 +426,7 @@ input.close();
        {
            stored_file_date = applicationProps.getProperty(file_id);
        }
-       if (file_date!=stored_file_date)
+       if (!file_date.equals(stored_file_date))
        {
            ret_val = true;
        }
@@ -419,28 +434,35 @@ input.close();
        
    }
     public class JavaApp {
-    WebView webviewREF;
-        JavaApp(WebView webviewREF)
+    WebEngine CloudEngine;
+        JavaApp(WebEngine in_cloudREF)
         {
-           this.webviewREF = webviewREF; 
+        this.CloudEngine = in_cloudREF;
+        
         }
-        public void upload(String file_id) {
+        public String upload(String file_id) {
  
   File[] newfiles = mainApp.BrowseForFile();
     
- if (newfiles !=null)
+ if (newfiles!=null)
  {
  
  File newfile = newfiles[0];
 
-SendFileThread UpdateSendFileREF = new SendFileThread(newfile, mainApp.loginName, mainApp.loginPassword, file_id);
+SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, mainApp.loginName, mainApp.loginPassword, file_id);
  UpdateSendFileREF.execute();
 
  
- String URLwithLogin = rootURL + "/browse_files.php?edit=" + file_id + "&loginName=" + mainApp.loginName + "&loginPassword=" + mainApp.loginPassword;
+// String URLwithLogin = rootURL + "/browse_files.php?edit=" + file_id + "&loginName=" + mainApp.loginName + "&loginPassword=" + mainApp.loginPassword;
   
 //  ShowHTMLWindow(URLwithLogin);
- UpdateWebView (webviewREF, URLwithLogin);
+ // UpdateWebView (URLwithLogin);
+ return "filechosen";
+ }
+ else
+ {
+ // if cancel is hit... do ?
+     return "cancelled";
  }
   
         }

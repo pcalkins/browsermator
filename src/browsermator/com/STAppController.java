@@ -79,15 +79,15 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.30";
+private final String version = "0.1.31";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.30";
+   public final String ProgramVersion = "0.1.31";
    public String loginName;
    public String loginPassword;
    
   public int user_id;
-  // String rootURL = "http://localhost";
-String rootURL = "http://www.browsermator.com";
+//   String rootURL = "http://localhost";
+ String rootURL = "http://www.browsermator.com";
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
 
 
