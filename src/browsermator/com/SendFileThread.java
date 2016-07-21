@@ -83,8 +83,17 @@ public String doInBackground()
      String outHTML = thisSession.SendParams();
      if (outHTML.isEmpty()==false)
      {
-         
-     if (Integer.parseInt(outHTML)>0)
+         int check_int =0;
+      try
+      {
+          check_int = Integer.parseInt(outHTML);
+          
+      }
+      catch (Exception ex)
+              {
+             check_int = -1;     
+              }
+     if (check_int>0)
       {
         if (thisUpDiag!=null)
         {

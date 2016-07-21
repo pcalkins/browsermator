@@ -86,7 +86,7 @@ private final String version = "0.1.31";
    public String loginPassword;
    
   public int user_id;
-//   String rootURL = "http://localhost";
+//  String rootURL = "http://localhost";
  String rootURL = "http://www.browsermator.com";
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
 
@@ -3087,6 +3087,7 @@ input.close();
        catch (Exception ex)
        {
            System.out.println("Exception parsing user_id int:" + ex.toString());
+           this.user_id = -1;
        }
                
    }
