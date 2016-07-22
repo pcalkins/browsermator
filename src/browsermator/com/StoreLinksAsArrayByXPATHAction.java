@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -27,14 +28,22 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
       @Override
    public void SetGuts()
    {
-      this.Guts = "    try\n" +
+      this.Guts = "   try\n" +
 " {\n" +
 "\n" +
 "        ArrayList<String> link_list = new ArrayList();\n" +
-"       List<WebElement> link_elements = driver.findElements(By.xpath(\"" + this.Variable1 + "\"));\n" +
-"  for(WebElement e : link_elements) {\n" +
-"  link_list.add(e.getAttribute(\"href\"));\n" +
-"}\n" +
+"       List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));\n" +
+"        for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {\n" +
+"            WebElement e = it.next();\n" +
+"            String thishref = e.getAttribute(\"href\");\n" +
+"            if (link_list.contains(thishref))\n" +
+"            {\n" +
+"                \n" +
+"            }\n" +
+"            else\n" +
+"            {\n" +
+"                link_list.add(thishref);\n" +
+"            } }\n" +
 "  \n" +
 "     \n" +
 " SetStoredLinkArray(link_list);\n" +
@@ -55,18 +64,17 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
 
         ArrayList<String> link_list = new ArrayList();
        List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));
-  for(WebElement e : link_elements) {
-      String thishref = e.getAttribute("href");
-      
-      if (link_list.contains(thishref))
-      {
-          
-      }
-      else
-      {
-  link_list.add(thishref);
-      }
-}
+        for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {
+            WebElement e = it.next();
+            String thishref = e.getAttribute("href");
+            if (link_list.contains(thishref))
+            {
+                
+            }
+            else
+            {
+                link_list.add(thishref);
+            } }
   
      
  SetStoredLinkArray(link_list);

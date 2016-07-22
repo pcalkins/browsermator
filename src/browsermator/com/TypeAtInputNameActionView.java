@@ -14,8 +14,8 @@ public class TypeAtInputNameActionView extends ActionView
    {
  
     
-       this.JLabelVariable1 = new JLabel("Type At Input Name:");
-    this.JLabelVariable2 = new JLabel("Words:");
+       this.JLabelVariable1 = new JLabel("At Input Name:");
+    this.JLabelVariable2 = new JLabel("Type:");
   
     this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 

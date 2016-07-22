@@ -13,8 +13,8 @@ public class TypeAtXPATHActionView extends ActionView
   
    TypeAtXPATHActionView()
    {
-       this.JLabelVariable1 = new JLabel("Type At XPATH:");
-    this.JLabelVariable2 = new JLabel("Words:");
+       this.JLabelVariable1 = new JLabel("At XPATH:");
+    this.JLabelVariable2 = new JLabel("Type:");
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
       this.JPanelAction.add(this.JLabelVariable2);

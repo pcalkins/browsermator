@@ -28,6 +28,12 @@ public class Prompter extends JFrame implements ActionListener
                 boxpanel.add(flowpanel);
                 boxpanel.add(ContinueButton);
                 setSize(400, 200);
+                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+        int x = (int) rect.getMaxX() - this.getWidth();
+      
+        this.setLocation(x, 0);
                 this.setTitle(messagetodisplay);
                 add(boxpanel);
              

@@ -16,7 +16,7 @@ public class TypeAtIDActionView extends ActionView
  
     
        this.JLabelVariable1 = new JLabel("At ID:");
-    this.JLabelVariable2 = new JLabel("Words:");
+    this.JLabelVariable2 = new JLabel("Type:");
     
     this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
