@@ -6,20 +6,11 @@
 package browsermator.com;
 
 import java.awt.Cursor;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
-import javax.swing.JFileChooser;
-import static javax.swing.JFileChooser.SAVE_DIALOG;
-import javax.swing.JOptionPane;
+
 import javax.swing.SwingWorker;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+
 
 /**
  *

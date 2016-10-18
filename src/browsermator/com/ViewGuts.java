@@ -206,8 +206,15 @@ this.Guts+="\ndriver.close();\n}" +
    {
      case "Firefox":
 
-       this.Guts+=  "driver = new FirefoxDriver();";
       
+       if ("Windows32".equals(OSType))
+     {
+     this.Guts+=  "System.setProperty(\"webdriver.gecko.driver\", \"lib\\\\geckodriver-0.11.1-win32\\\\geckodriver.exe\");";
+     }
+      if ("Windows64".equals(OSType))
+     {
+     this.Guts+=  "System.setProperty(\"webdriver.gecko.driver\", \"lib\\\\geckodriver-0.11.1-win64\\\\geckodriver.exe\");";
+     }
      break;
      
      case "Silent Mode (HTMLUnit)":
@@ -223,7 +230,11 @@ this.Guts+="\ndriver.close();\n}" +
      this.Guts+=  "driver = new InternetExplorerDriver();";
      break;
      case "Chrome":
-     if ("Windows".equals(OSType))
+     if ("Windows32".equals(OSType))
+     {
+     this.Guts+=  "System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_win32\\chromedriver.exe\");";
+     }
+      if ("Windows64".equals(OSType))
      {
      this.Guts+=  "System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_win32\\chromedriver.exe\");";
      }

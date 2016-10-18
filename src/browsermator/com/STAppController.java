@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.33";
+private final String version = "0.1.34";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.33";
+   public final String ProgramVersion = "0.1.34";
    public String loginName;
    public String loginPassword;
    
@@ -93,7 +93,7 @@ private final String version = "0.1.33";
 
   public STAppController(String[] args) throws PropertyVetoException {
   
-     super ("Browermator");
+     super ("Browsermator");
                  Properties newProps = new Properties();
                   this.loginName = "";
     this.loginPassword = "";
@@ -456,7 +456,7 @@ SeleniumToolDesktop.add(Navigator);
      STAppFrame.ShowStoredVarControls(false);
 
       STAppFrame.setTargetBrowser("Chrome");
-      STAppFrame.setOSType("Windows");
+      STAppFrame.setOSType("Windows32");
    STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
   STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
@@ -554,7 +554,7 @@ SeleniumToolDesktop.add(Navigator);
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
            STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
+           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -879,7 +879,7 @@ SeleniumToolDesktop.add(Navigator);
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
  STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
-  STAppFrame.setOSType("Windows");
+  STAppFrame.setOSType("Windows32");
      STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
@@ -973,7 +973,7 @@ SeleniumToolDesktop.add(Navigator);
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
            STAppFrame.changes = true;
-           if ("Chrome".equals(STAppFrame.TargetBrowser)|| "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
+           if ("Chrome".equals(STAppFrame.TargetBrowser)|| "Firefox".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }
@@ -2228,7 +2228,7 @@ else
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
   String WaitTime = "3";
-  String OSType = "Windows";
+  String OSType = "Windows32";
   String EmailPassword = "";
   String unepassword = "";
   String EmailTo = "";
@@ -2537,7 +2537,7 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
           STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
+           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }

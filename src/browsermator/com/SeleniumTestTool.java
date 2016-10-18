@@ -60,7 +60,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
    this.VarHashMap = new HashMap();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
-  this.OSType = "Windows";
+  this.OSType = "Windows32";
 
   this.changes = false;
   this.PromptToClose = false;
@@ -105,10 +105,16 @@ jComboBoxStoredVariables.setFocusable(false);
               jCheckBoxShowReportActionPerformed(evt);
             }
         });
-         jCheckBoxOSTypeWindows.addActionListener(new java.awt.event.ActionListener() {
+         jCheckBoxOSTypeWindows32.addActionListener(new java.awt.event.ActionListener() {
            @Override
              public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeWindowsActionPerformed(evt);
+              jCheckBoxOSTypeWindows32ActionPerformed(evt);
+            }
+        });
+             jCheckBoxOSTypeWindows64.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeWindows64ActionPerformed(evt);
             }
         });
           jCheckBoxOSTypeMac.addActionListener(new java.awt.event.ActionListener() {
@@ -1392,7 +1398,7 @@ this.changes=true;
         jLabel8 = new javax.swing.JLabel();
         jComboBoxTargetBrowser = new javax.swing.JComboBox();
         jLabel9 = new javax.swing.JLabel();
-        jCheckBoxOSTypeWindows = new javax.swing.JCheckBox();
+        jCheckBoxOSTypeWindows32 = new javax.swing.JCheckBox();
         jCheckBoxOSTypeMac = new javax.swing.JCheckBox();
         jCheckBoxOSTypeLinux32 = new javax.swing.JCheckBox();
         jCheckBoxOSTypeLinux64 = new javax.swing.JCheckBox();
@@ -1405,6 +1411,7 @@ this.changes=true;
         jComboBoxStoredVariables = new javax.swing.JComboBox<>();
         jButtonPlaceStoredVariable = new javax.swing.JButton();
         jLabelStoredVariables = new javax.swing.JLabel();
+        jCheckBoxOSTypeWindows64 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1463,12 +1470,13 @@ this.changes=true;
 
         jLabel8.setText("Target Browser:");
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Firefox-Marionette", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)" }));
 
         jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***Marionette's Windows geckodriver does not currently include MSVCR140.dll.  Download and install it if you have problems.</HTML> ");
 
-        jCheckBoxOSTypeWindows.setText("Windows");
-        jCheckBoxOSTypeWindows.setEnabled(false);
+        jCheckBoxOSTypeWindows32.setText("Windows - 32");
+        jCheckBoxOSTypeWindows32.setActionCommand("Windows - 32");
+        jCheckBoxOSTypeWindows32.setEnabled(false);
 
         jCheckBoxOSTypeMac.setText("Mac");
         jCheckBoxOSTypeMac.setEnabled(false);
@@ -1504,6 +1512,9 @@ this.changes=true;
         jButtonPlaceStoredVariable.setText("Place Variable");
 
         jLabelStoredVariables.setText("Stored Variables");
+
+        jCheckBoxOSTypeWindows64.setText("Windows - 64");
+        jCheckBoxOSTypeWindows64.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1552,13 +1563,15 @@ this.changes=true;
                                                 .addGap(18, 18, 18)
                                                 .addComponent(jButtonBrowseForFireFoxExe))))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxOSTypeWindows)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jCheckBoxOSTypeMac)
+                                        .addComponent(jCheckBoxOSTypeWindows32)
+                                        .addGap(13, 13, 13)
+                                        .addComponent(jCheckBoxOSTypeWindows64)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jCheckBoxOSTypeLinux32)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBoxOSTypeLinux64))
+                                        .addComponent(jCheckBoxOSTypeLinux64)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jCheckBoxOSTypeMac))
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(145, 145, 145)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1648,10 +1661,11 @@ this.changes=true;
                             .addComponent(jButtonBrowseForFireFoxExe, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxOSTypeWindows)
+                            .addComponent(jCheckBoxOSTypeWindows32)
                             .addComponent(jCheckBoxOSTypeMac)
                             .addComponent(jCheckBoxOSTypeLinux32)
-                            .addComponent(jCheckBoxOSTypeLinux64))
+                            .addComponent(jCheckBoxOSTypeLinux64)
+                            .addComponent(jCheckBoxOSTypeWindows64))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
@@ -1687,6 +1701,7 @@ this.changes=true;
                             .addComponent(jButtonLoadEmailSettings)))))
         );
 
+        jCheckBoxOSTypeWindows32.getAccessibleContext().setAccessibleName("Windows - 32");
         jButtonBrowseForFireFoxExe.getAccessibleContext().setAccessibleName("jButtonBrowseForFireFoxExe");
 
         pack();
@@ -1735,17 +1750,33 @@ this.changes=true;
   }
   // this.changes=true;
   }
- private void jCheckBoxOSTypeWindowsActionPerformed(ActionEvent evt)
+ private void jCheckBoxOSTypeWindows32ActionPerformed(ActionEvent evt)
  {
      
-     if (jCheckBoxOSTypeWindows.isSelected())
+     if (jCheckBoxOSTypeWindows32.isSelected())
      {
-         this.OSType = "Windows";
+         this.OSType = "Windows32";
+         jCheckBoxOSTypeWindows64.setSelected(false);
      jCheckBoxOSTypeMac.setSelected(false);
      jCheckBoxOSTypeLinux32.setSelected(false);
      jCheckBoxOSTypeLinux64.setSelected(false);
      }
+   
  }
+  private void jCheckBoxOSTypeWindows64ActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeWindows64.isSelected())
+     {
+         this.OSType = "Windows64";
+         jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeMac.setSelected(false);
+     jCheckBoxOSTypeLinux32.setSelected(false);
+     jCheckBoxOSTypeLinux64.setSelected(false);
+     }
+   
+ }
+
 
    private void jCheckBoxOSTypeMacActionPerformed(ActionEvent evt)
  {
@@ -1753,9 +1784,10 @@ this.changes=true;
      if (jCheckBoxOSTypeMac.isSelected())
      {
          this.OSType = "Mac";
-     jCheckBoxOSTypeWindows.setSelected(false);
+     jCheckBoxOSTypeWindows32.setSelected(false);
      jCheckBoxOSTypeLinux32.setSelected(false);
      jCheckBoxOSTypeLinux64.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
      }
  }
     private void jCheckBoxOSTypeLinux32ActionPerformed(ActionEvent evt)
@@ -1765,8 +1797,9 @@ this.changes=true;
      {
          this.OSType = "Linux32";
      jCheckBoxOSTypeMac.setSelected(false);
-     jCheckBoxOSTypeWindows.setSelected(false);
+     jCheckBoxOSTypeWindows32.setSelected(false);
      jCheckBoxOSTypeLinux64.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
      }
  }
      private void jCheckBoxOSTypeLinux64ActionPerformed(ActionEvent evt)
@@ -1777,7 +1810,8 @@ this.changes=true;
          this.OSType = "Linux64";
      jCheckBoxOSTypeMac.setSelected(false);
      jCheckBoxOSTypeLinux32.setSelected(false);
-     jCheckBoxOSTypeWindows.setSelected(false);
+     jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
      }
 
  }
@@ -1785,14 +1819,16 @@ public void setOSTypeActive (Boolean Active)
 {
     if (Active)
     {
-    jCheckBoxOSTypeWindows.setEnabled(true);
+    jCheckBoxOSTypeWindows32.setEnabled(true);
+    jCheckBoxOSTypeWindows64.setEnabled(true);
     jCheckBoxOSTypeMac.setEnabled(true);
     jCheckBoxOSTypeLinux32.setEnabled(true);
     jCheckBoxOSTypeLinux64.setEnabled(true);
     }
     else
     {
-    jCheckBoxOSTypeWindows.setEnabled(false);
+    jCheckBoxOSTypeWindows32.setEnabled(false);
+    jCheckBoxOSTypeWindows64.setEnabled(false);
     jCheckBoxOSTypeMac.setEnabled(false);
     jCheckBoxOSTypeLinux32.setEnabled(false);
     jCheckBoxOSTypeLinux64.setEnabled(false);    
@@ -1988,9 +2024,13 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         }
         public String getOSType()
         {
-            if (jCheckBoxOSTypeWindows.isSelected())
+            if (jCheckBoxOSTypeWindows32.isSelected())
             {
-                return "Windows";
+                return "Windows32";
+            }
+             if (jCheckBoxOSTypeWindows64.isSelected())
+            {
+                return "Windows64";
             }
             if (jCheckBoxOSTypeMac.isSelected())
             {
@@ -2004,7 +2044,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             {
                 return "Linux-64";
             }
-           return "Windows";
+           return "Windows32";
         }
         public void setOSType(String OSType)
         {
@@ -2012,7 +2052,14 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             switch (OSType)
             {
                 case "Windows":
-                jCheckBoxOSTypeWindows.setSelected(true);
+                   jCheckBoxOSTypeWindows32.setSelected(true); 
+                    break;
+                    
+                case "Windows32":
+                jCheckBoxOSTypeWindows32.setSelected(true);
+                break;
+                case "Windows64":
+                jCheckBoxOSTypeWindows64.setSelected(true);
                 break;
                 case "Mac":
                 jCheckBoxOSTypeMac.setSelected(true);
@@ -2151,7 +2198,8 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JCheckBox jCheckBoxOSTypeLinux32;
     private javax.swing.JCheckBox jCheckBoxOSTypeLinux64;
     private javax.swing.JCheckBox jCheckBoxOSTypeMac;
-    private javax.swing.JCheckBox jCheckBoxOSTypeWindows;
+    private javax.swing.JCheckBox jCheckBoxOSTypeWindows32;
+    private javax.swing.JCheckBox jCheckBoxOSTypeWindows64;
     private javax.swing.JCheckBox jCheckBoxPromptToClose;
     private javax.swing.JCheckBox jCheckBoxShowReport;
     private javax.swing.JComboBox<String> jComboBoxStoredVariables;

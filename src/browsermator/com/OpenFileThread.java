@@ -278,7 +278,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
   STAppFrame.setResizable(true);
   STAppFrame.setSize(1024, 800);
-   STAppFrame.setClosable(true);
+  STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
 
     STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
@@ -313,7 +313,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
   String WaitTime = "3";
-  String OSType = "Windows";
+  String OSType = "Windows32";
   String EmailPassword = "";
   String unepassword = "";
   String EmailTo = "";
@@ -395,6 +395,10 @@ try
         case "TargetBrowser":
  TargetBrowser = thisSettingsNodeValue;
       STAppFrame.setTargetBrowser(TargetBrowser);
+        if (TargetBrowser.equals("Firefox") || TargetBrowser.equals("Chrome"))
+      {
+      STAppFrame.setOSTypeActive(true);
+      }
             break;   
             
        case "WaitTime":
@@ -406,6 +410,7 @@ try
        case "OSType":
  OSType = thisSettingsNodeValue;
       STAppFrame.setOSType(OSType);
+    
             break;   
      
        case "EmailPassword":
@@ -623,7 +628,7 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
             String TargetBrowser = ActionType.toString();
            STAppFrame.TargetBrowser = TargetBrowser;
           STAppFrame.changes = true;
-           if ("Chrome".equals(STAppFrame.TargetBrowser) || "Firefox-Marionette".equals(STAppFrame.TargetBrowser))
+           if ("Chrome".equals(STAppFrame.TargetBrowser) || "Firefox".equals(STAppFrame.TargetBrowser))
            {
               STAppFrame.setOSTypeActive(true);
            }

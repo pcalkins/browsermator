@@ -386,7 +386,7 @@ finally
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
   String WaitTime = "3";
-  String OSType = "Windows";
+  String OSType = "Windows32";
   String EmailPassword = "";
   String unepassword = "";
   String EmailTo = "";

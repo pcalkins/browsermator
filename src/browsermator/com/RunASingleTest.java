@@ -16,6 +16,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 
@@ -80,32 +81,54 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  //  WebDriver driver = new FirefoxDriver();
    switch (TargetBrowser)
    {
-       case "Firefox":
-            System.setProperty("webdriver.firefox.bin", firefox_path);
-             driver =  new FirefoxDriver();
-           break;
-           
-    case "Firefox-Marionette":
-     if ("Windows".equals(OSType))
+    
+        case "Firefox":
+     if ("Windows32".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-v0.8.0-win32\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+     }
+     if ("Windows64".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win64\\geckodriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-OSX\\geckodriver-0.8.0-OSX");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-osx\\geckodriver");
      }
      if ("Linux-32".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-linux64\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux32\\geckodriver");
      }
      if ("Linux-64".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.8.0-linux64\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux64\\geckodriver");
      }
- System.setProperty("webdriver.firefox.bin", firefox_path);
-         driver =  new MarionetteDriver();
-     
+   
+    if (firefox_path!=null) {
+        System.setProperty("webdriver.firefox.bin", firefox_path);
+    }
+
+    try
+    {
+ DesiredCapabilities cap = DesiredCapabilities.firefox();
+        cap.setJavascriptEnabled(true);
+        cap.setCapability("marionette", true);
+        driver = new FirefoxDriver(cap);
+    
+
+    //  driver =  new MarionetteDriver();
+    }
+    catch (Exception ex)
+    {
+        System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+       
+        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+    }
+      
      break;
+       
+          
      
      case "Silent Mode (HTMLUnit)":
      driver = new HtmlUnitDriver();  
@@ -120,10 +143,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      driver = new InternetExplorerDriver();
      break;
      case "Chrome":
-     if ("Windows".equals(OSType))
+     if ("Windows32".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
      }
+     if ("Windows64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     
      if ("Mac".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac32\\chromedriver-mac32");

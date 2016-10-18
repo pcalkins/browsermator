@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public abstract class Action implements Initializable {
   
@@ -91,15 +92,19 @@ LocalDateTime[] loop_time_of_test;
   {
      
        try { 
-             Actions actions = new Actions(driver);
-             List<WebElement> elements = driver.findElements(By.xpath(xpather));
+      //       Actions actions = new Actions(driver);
+             
+          List<WebElement> elements = driver.findElements(By.xpath(xpather));
+          
+
 
  if (elements.size()>1)
  {
   for (WebElement thiselement: elements)
   {
 
-       actions.click(thiselement).perform();
+   //    actions.click(thiselement).perform();
+       thiselement.click();
   }
  
   
@@ -110,8 +115,9 @@ LocalDateTime[] loop_time_of_test;
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
-   actions.click(element).perform();
-     this.Pass = true;
+  // actions.click(element).perform();
+  element.click();
+  this.Pass = true;
  }
 
  }
@@ -125,6 +131,7 @@ WebElement element = elements.get(0);
   public void RightClickCatchAction (WebDriver driver, String xpather)
   {
         try { 
+        // actions don't seem to work with geckodriver
             Actions actions = new Actions(driver);
              List<WebElement> elements = driver.findElements(By.xpath(xpather));
  if (elements.size()>1)

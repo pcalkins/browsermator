@@ -37,6 +37,7 @@ public class ActionsMaster {
     ActionViewHashMap.put("Drag From XPATH to XPATH", new DragAndDropActionView());
     ActionViewHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByActionView());
     ActionViewHashMap.put("Enter Key", new EnterKeyActionView());
+    ActionViewHashMap.put("Escape Key", new EscapeKeyActionView());
     ActionViewHashMap.put("Execute Javascript", new ExecuteJavascriptActionView());
     ActionViewHashMap.put("Forward Action", new ForwardActionView());
     ActionViewHashMap.put("Go to URL", new GoActionView());
@@ -71,6 +72,7 @@ public class ActionsMaster {
   ActionHashMap.put("Drag From XPATH to XPATH", new DragAndDropAction("", ""));
   ActionHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByAction("", ""));
   ActionHashMap.put("Enter Key", new EnterKeyAction());
+  ActionHashMap.put("Escape Key", new EscapeKeyAction());
   ActionHashMap.put("Execute Javascript", new ExecuteJavascriptAction(""));
   ActionHashMap.put("Forward Action", new ForwardAction());
   ActionHashMap.put("Go to URL", new GoAction(""));
