@@ -43,7 +43,7 @@ String CRLF = "\r\n"; // Line separator required by multipart/form-data.
 UserParamHash ParamsHashMap;  
 String url;
 //  String rootURL = "http://localhost";
- String rootURL = "http://www.browsermator.com";
+ String rootURL = "https://www.browsermator.com";
 
     SendReceiveData(String in_url, UserParamHash userparams)
     {

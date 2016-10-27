@@ -58,7 +58,7 @@ JLabel loginLabelText;
 //JTextField loginFieldName;
 //JPasswordField loginFieldPassword;
 // String rootURL = "http://localhost";
- String rootURL = "http://www.browsermator.com";
+ String rootURL = "https://www.browsermator.com";
     JPanel bottomPanel;
 JLabel LoadingLabel;
 

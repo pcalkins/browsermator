@@ -28,7 +28,7 @@ int number_of_records;
    Procedure ()
    {
 this.Pass = false;
-this.BugURL = "http://www.browsermator.com";
+this.BugURL = "https://www.browsermator.com";
 this.BugTitle = "";
 this.index = 0;
 this.TargetBrowser = "Firefox";

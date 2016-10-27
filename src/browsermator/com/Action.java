@@ -52,7 +52,7 @@ LocalDateTime[] loop_time_of_test;
   this.Password = "";
   this.BoolVal1 = false;
   this.Locked = false;
-  this.BugURL = "http://www.browsermator.com";
+  this.BugURL = "https://www.browsermator.com";
   this.Loopable = false;
   this.pause_message = "";
   this.ScreenshotBase64 = "null";

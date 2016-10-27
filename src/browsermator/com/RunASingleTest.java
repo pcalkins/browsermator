@@ -13,7 +13,6 @@ import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -29,6 +28,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     FireFoxProperties FFprops;
     String firefox_path;
     SeleniumTestTool SiteTest;
+    WebDriver driver;
   public RunASingleTest (SeleniumTestTool in_SiteTest, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
               this.SiteTest = in_SiteTest;
@@ -36,6 +36,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.thisbugview = in_thisbugview;
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
+              this.driver = new HtmlUnitDriver();
           }
     public String doInBackground()
  {
@@ -77,12 +78,16 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  {
    
   SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-  WebDriver driver = null; 
- //  WebDriver driver = new FirefoxDriver();
-   switch (TargetBrowser)
+
+    switch (TargetBrowser)
    {
-    
-        case "Firefox":
+        // legacy file support
+     case "Firefox-Marionette":
+     // legacy file support
+         if ("Windows".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+     }   
      if ("Windows32".equals(OSType))
      {
        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
@@ -127,8 +132,52 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     }
       
      break;
+            
+    case "Firefox":
+     if ("Windows32".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+     }
+     if ("Windows64".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win64\\geckodriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-osx\\geckodriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux32\\geckodriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux64\\geckodriver");
+     }
+   
+    if (firefox_path!=null) {
+        System.setProperty("webdriver.firefox.bin", firefox_path);
+    }
+
+    try
+    {
+ DesiredCapabilities cap = DesiredCapabilities.firefox();
+        cap.setJavascriptEnabled(true);
+        cap.setCapability("marionette", true);
+        driver = new FirefoxDriver(cap);
+    
+
+    //  driver =  new MarionetteDriver();
+    }
+    catch (Exception ex)
+    {
+        System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
        
-          
+        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+    }
+      
+     break;
      
      case "Silent Mode (HTMLUnit)":
      driver = new HtmlUnitDriver();  
@@ -136,22 +185,39 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      
      case "Internet Explorer-32":
      System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win32\\IEDriverServer.exe");
+     try
+     {
      driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+     {
+         System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver");
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+     }
      break;
      case "Internet Explorer-64":
      System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win64\\IEDriverServer.exe");
+     try
+     {
      driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+             {
+             System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver");
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
+             }
      break;
      case "Chrome":
      if ("Windows32".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
      }
-     if ("Windows64".equals(OSType))
+       if ("Windows64".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
      }
-     
      if ("Mac".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac32\\chromedriver-mac32");
@@ -164,10 +230,34 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver-linux64");
      }
-     
-     driver = new ChromeDriver();
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver");
+       SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+   }
      break;
-      default: 
+   case "Chrome (WinXP)":
+    
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+    
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver");
+       SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+   }
+     break;
+         
+         default: 
             driver = new ChromeDriver();
                      break;
    }
@@ -176,8 +266,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
 // driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
      int totalpause = WaitTime * 1000;
  
-if (thisbugview.myTable==null)
-{
+ if (!"Dataloop".equals(thisbugview.Type))
+  {
    for( Action ThisAction : bugtorun.ActionsList ) {
        
            if (!ThisAction.Locked)

@@ -30,7 +30,7 @@ public class SendFileThread extends SwingWorker<String, Integer>{
  File clean_file;
  STAppController mainApp;
 // String rootURL = "http://localhost";
- String rootURL = "http://www.browsermator.com";
+ String rootURL = "https://www.browsermator.com";
 WebEngine cloudEngine;
 
     SendFileThread(WebEngine in_cloudREF, File in_sendfile, String in_name, String in_password, String file_id)
