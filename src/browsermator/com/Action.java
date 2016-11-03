@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public abstract class Action implements Initializable {
   
@@ -121,9 +119,14 @@ WebElement element = elements.get(0);
  }
 
  }
+if (elements.isEmpty())
+{
+    this.Pass = false;
+}
  }
  catch (Exception e)
  {
+     System.out.println ("Exception while running clickcatch: " + e.toString());
   this.Pass = false;
   
  }
@@ -143,6 +146,7 @@ WebElement element = elements.get(0);
   }
   actions.build();
   actions.perform();
+   this.Pass = true;
  }
  else
  {
@@ -151,10 +155,13 @@ WebElement element = elements.get(0);
 WebElement element = elements.get(0);
 actions.contextClick(element).perform(); 
      }
-
- }
-
  this.Pass = true;
+ }
+if (elements.isEmpty())
+{
+    this.Pass = false;
+}
+
  
  }
  catch (NoSuchElementException e)

@@ -79,9 +79,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.35";
+private final String version = "0.1.36";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.35";
+   public final String ProgramVersion = "0.1.36";
    public String loginName;
    public String loginPassword;
    
@@ -1765,8 +1765,14 @@ xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
+if (isFlatten==true)
+{
+ xmlfile.writeAttribute("Type", "Procedure");    
+}
+else
+{
 xmlfile.writeAttribute("Type", thisbug.Type);   
-
+}
 if ("Dataloop".equals(thisbug.Type))
 {
 
@@ -1775,6 +1781,7 @@ xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
 }
   if (isFlatten==true && "Dataloop".equals(thisbug.Type))
   {
+    
         int indexer = thisbug.index;
            ProcedureView thisbugview = STAppFrame.BugViewArray.get(indexer-1);
        int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
@@ -1797,6 +1804,7 @@ int action_index_for_flatten = 0;
     DataLoopVarParser var2Parser = new DataLoopVarParser(thisaction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
+      
         xmlfile.writeStartElement("Action");
 
     String LOCKED = Boolean.toString(thisaction.Locked);

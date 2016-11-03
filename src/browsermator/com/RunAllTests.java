@@ -5,12 +5,20 @@ package browsermator.com;
 
 
 import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import javax.xml.bind.DatatypeConverter;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +26,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.internal.Base64Encoder;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class RunAllTests extends SwingWorker<String, Integer>
@@ -316,13 +325,13 @@ public String doInBackground()
         
   
   int thisbugindex = 0;
-  int bug_INT = thisbugindex+1;
-  String bug_ID = Integer.toString(bug_INT);
+  
   
      for (Procedure thisbug : SiteTest.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
-   
+   int bug_INT = thisbugindex+1;
+  String bug_ID = Integer.toString(bug_INT);
 
 
 int action_INT = 0;
@@ -379,15 +388,7 @@ if (!"Dataloop".equals(thisbugview.Type))
     
        
       
-       try
-       {
-    ThisAction.ScreenshotBase64 = "<img style = \"display: inline\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
- //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
-       }
-       catch (Exception ex)
-       {
-           System.out.println("Exception creating screenshot: " + ex.toString());     
-    }
+    
    }
   catch (Exception ex)
      {
@@ -434,6 +435,19 @@ if (!"Dataloop".equals(thisbugview.Type))
       
        
      }
+      try
+       {
+     String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
+     String scrn = OneQuarterBase64(full_scrn);
+     
+    ThisAction.ScreenshotBase64 = "<img style = \"display: inline\" src=\"data:image/png;base64,"+scrn+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+ //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+       }
+       catch (Exception ex)
+       {
+            ThisAction.ScreenshotBase64 = "Screenshot Failed";
+           System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
    
    }   
            else
@@ -478,9 +492,10 @@ else
           ThisAction.RunAction(driver, pause_message);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
+     
+       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
-  
+      
         }
        else
         {
@@ -516,9 +531,6 @@ else
        
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-      ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
-// ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\"></img>";
-  
             }
              catch (Exception ex)
      {
@@ -564,6 +576,20 @@ else
           break;
        
      }
+              try
+        {
+                  String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
+     String scrn = OneQuarterBase64(full_scrn);
+      ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+scrn+"\"></img>";
+// ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\"></img>";
+        }
+                 catch (Exception ex)
+       {
+          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+           System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
+        
+            
         }
     }
     else
@@ -609,8 +635,18 @@ else
    ThisAction.Variable2 = original_value2;
    ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-          ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64)+"\"></img>";
-
+        try
+        {
+                      String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
+     String scrn = OneQuarterBase64(full_scrn);
+          ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+scrn+"\"></img>";
+        }
+                  catch (Exception ex)
+       {
+          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+           System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
+        
         
              }
       catch (Exception ex)
@@ -691,6 +727,29 @@ else
     }
      
    }
+  int actions_passed = 0;
+ for( Action ThisAction : thisbug.ActionsList )
+    {   
+     
+      
+      
+        Boolean passvalue = ThisAction.Pass;
+        
+            if (passvalue)
+            {
+                actions_passed++;
+            }
+        
+     
+    }
+    if (actions_passed == thisbug.ActionsList.size())
+        {
+            thisbug.Pass = true;
+        }
+    else
+    {
+        thisbug.Pass = false;
+    }
   
    publish(thisbugindex);
     thisbugindex++;
@@ -759,6 +818,10 @@ else
     {
         BugPass = true;
     }
+     else
+     {
+         BugPass = false;
+     }
   }
   else
   {
@@ -790,6 +853,10 @@ else
     {
         BugPass = true;
     }
+     else
+     {
+         BugPass = false;
+     }
   }
     int LastActionIndex = SiteTest.BugArray.get(BugIndex).ActionsList.size()-1;
    if (BugPass.equals(true))
@@ -822,6 +889,39 @@ else
      }
 
  
+  }
+  public String OneQuarterBase64(String in_image)
+  {
+  
+    String imageData = in_image;
+ 
+
+ 
+    //convert the image data String to a byte[]
+    byte[] dta = DatatypeConverter.parseBase64Binary(imageData);
+    try (InputStream in = new ByteArrayInputStream(dta);) {
+        BufferedImage fullSize = ImageIO.read(in);
+
+        // Create a new image one quarter the size of the original image
+        BufferedImage resized = new BufferedImage(fullSize.getWidth() / 4, fullSize.getHeight() / 4, BufferedImage.TYPE_4BYTE_ABGR);
+         Graphics2D g2 = (Graphics2D) resized.getGraphics();
+      g2.drawImage(fullSize, 0, 0, resized.getWidth(), resized.getHeight(), 0, 0, fullSize.getWidth(), fullSize.getHeight(), null);
+     
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ImageIO.write( fullSize, "png", baos );
+            baos.flush();
+           byte[] resizedInByte = baos.toByteArray();
+      Base64Encoder enc_resized = new Base64Encoder();
+ String out_image = enc_resized.encode(resizedInByte);
+
+        return out_image;
+        }
+
+
+    } catch (IOException e) {
+       System.out.println("error resizing screenshot" + e.toString());
+        return "";
+    }
   }
   public int FillTables(Procedure thisproc, ProcedureView thisprocview)
   {
