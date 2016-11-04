@@ -27,6 +27,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     String OSType;
     FireFoxProperties FFprops;
     String firefox_path;
+    String chrome_path;
     SeleniumTestTool SiteTest;
     WebDriver driver;
   public RunASingleTest (SeleniumTestTool in_SiteTest, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
@@ -40,8 +41,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
           }
     public String doInBackground()
  {
-      FFprops = new FireFoxProperties();
+      FFprops = new FireFoxProperties(this.targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
+  this.chrome_path = FFprops.LoadChromePath();
+  
    thisbugview.JButtonRunTest.setText("Running...");
     RunSingleTest(bugtorun, thisbugview, targetbrowser, OSType);
     String donetext = "Run";
@@ -242,7 +245,9 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    }
      break;
    case "Chrome (WinXP)":
-    
+     if (chrome_path!=null) {
+        System.setProperty("webdriver.chrome.bin", chrome_path);
+    }
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
     
      try

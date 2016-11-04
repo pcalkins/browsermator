@@ -54,7 +54,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 
-
 public final class STAppController extends JFrame {
  
 public final SiteTestView Navigator;
@@ -79,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.36";
+private final String version = "0.1.37";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.36";
+   public final String ProgramVersion = "0.1.37";
    public String loginName;
    public String loginPassword;
    
@@ -552,16 +551,9 @@ SeleniumToolDesktop.add(Navigator);
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.TargetBrowser = TargetBrowser;
+           STAppFrame.setTargetBrowser(TargetBrowser);
            STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox".equals(STAppFrame.TargetBrowser))
-           {
-              STAppFrame.setOSTypeActive(true);
-           }
-           else
-           {
-            STAppFrame.setOSTypeActive(false);   
-           }
+          
          }
         }
         
@@ -971,16 +963,9 @@ SeleniumToolDesktop.add(Navigator);
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.TargetBrowser = TargetBrowser;
+           STAppFrame.setTargetBrowser(TargetBrowser);
            STAppFrame.changes = true;
-           if ("Chrome".equals(STAppFrame.TargetBrowser)|| "Firefox".equals(STAppFrame.TargetBrowser))
-           {
-              STAppFrame.setOSTypeActive(true);
-           }
-           else
-           {
-            STAppFrame.setOSTypeActive(false);   
-           }
+          
          }
         }
         
@@ -2543,16 +2528,10 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.TargetBrowser = TargetBrowser;
+           STAppFrame.setTargetBrowser(TargetBrowser);
+           
           STAppFrame.changes = true;
-           if (STAppFrame.TargetBrowser=="Chrome" || "Firefox".equals(STAppFrame.TargetBrowser))
-           {
-              STAppFrame.setOSTypeActive(true);
-           }
-           else
-           {
-            STAppFrame.setOSTypeActive(false);   
-           }
+          
          }
         }
         
@@ -2561,7 +2540,9 @@ STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
 new ActionListener() {
     public void actionPerformed (ActionEvent evt)
     {
-    FireFoxProperties FFProperties = new FireFoxProperties();
+           String TargetBrowser = STAppFrame.getTargetBrowser();
+    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
+   
     FFProperties.BrowseforFFPath();
  
     }

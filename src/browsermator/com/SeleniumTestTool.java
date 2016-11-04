@@ -1412,6 +1412,7 @@ this.changes=true;
         jButtonPlaceStoredVariable = new javax.swing.JButton();
         jLabelStoredVariables = new javax.swing.JLabel();
         jCheckBoxOSTypeWindows64 = new javax.swing.JCheckBox();
+        jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1475,7 +1476,6 @@ this.changes=true;
         jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***Marionette's Windows geckodriver does not currently include MSVCR140.dll.  Download and install it if you have problems.</HTML> ");
 
         jCheckBoxOSTypeWindows32.setText("Windows - 32");
-        jCheckBoxOSTypeWindows32.setActionCommand("Windows - 32");
         jCheckBoxOSTypeWindows32.setEnabled(false);
 
         jCheckBoxOSTypeMac.setText("Mac");
@@ -1516,6 +1516,8 @@ this.changes=true;
         jCheckBoxOSTypeWindows64.setText("Windows - 64");
         jCheckBoxOSTypeWindows64.setEnabled(false);
 
+        jCheckBoxIncludeScreenshots.setText("Include Screenshots");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1543,7 +1545,8 @@ this.changes=true;
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jCheckBoxShowReport)
-                                            .addComponent(jCheckBoxEmailReport))
+                                            .addComponent(jCheckBoxEmailReport)
+                                            .addComponent(jCheckBoxIncludeScreenshots))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jCheckBoxExitAfter)
@@ -1599,7 +1602,7 @@ this.changes=true;
                                                 .addComponent(jButtonClearEmailSettings)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGap(0, 64, Short.MAX_VALUE))
+                                .addGap(0, 31, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1650,7 +1653,9 @@ this.changes=true;
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel1))
-                            .addComponent(jCheckBoxExitAfter))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBoxExitAfter)
+                                .addComponent(jCheckBoxIncludeScreenshots)))
                         .addGap(6, 6, 6)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -1701,7 +1706,6 @@ this.changes=true;
                             .addComponent(jButtonLoadEmailSettings)))))
         );
 
-        jCheckBoxOSTypeWindows32.getAccessibleContext().setAccessibleName("Windows - 32");
         jButtonBrowseForFireFoxExe.getAccessibleContext().setAccessibleName("jButtonBrowseForFireFoxExe");
 
         pack();
@@ -1989,6 +1993,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     }
         public void setTargetBrowser (String targetbrowser)
         {   
+            //legacy stuff
+            if ("Firefox-Marionette".equals(targetbrowser))
+            {
+                targetbrowser = "Firefox";
+            }
             
             jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
             this.TargetBrowser = targetbrowser;
@@ -1997,12 +2006,9 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             {
                 case "Firefox":
                     jButtonBrowseForFireFoxExe.setEnabled(true);
-                     setOSTypeActive(false);
+                     setOSTypeActive(true);
                     break;
-                case "Firefox-Marionette":
-                    jButtonBrowseForFireFoxExe.setEnabled(true);
-                    setOSTypeActive(true);
-                    break;
+         
                 case "Internet Explorer-32":
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                     break;
@@ -2013,6 +2019,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                      setOSTypeActive(true);
                     break;
+                case "Chrome (WinXP)":
+                     jButtonBrowseForFireFoxExe.setEnabled(true);
+                     setOSTypeActive(true);
+                    break;
+                    
                 case "Silent Mode (HTMLUnit)":
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                     break;
@@ -2195,6 +2206,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JCheckBox jCheckBoxEmailReport;
     private javax.swing.JCheckBox jCheckBoxEmailReportFail;
     private javax.swing.JCheckBox jCheckBoxExitAfter;
+    private javax.swing.JCheckBox jCheckBoxIncludeScreenshots;
     private javax.swing.JCheckBox jCheckBoxOSTypeLinux32;
     private javax.swing.JCheckBox jCheckBoxOSTypeLinux64;
     private javax.swing.JCheckBox jCheckBoxOSTypeMac;

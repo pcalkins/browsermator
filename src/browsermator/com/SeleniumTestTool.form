@@ -52,6 +52,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jCheckBoxShowReport" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jCheckBoxEmailReport" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jCheckBoxIncludeScreenshots" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -123,7 +124,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="64" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="31" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jButtonNewBug" min="-2" pref="188" max="-2" attributes="0"/>
@@ -188,7 +189,10 @@
                               <Component id="jSpinnerWaitTime" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jCheckBoxExitAfter" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jCheckBoxExitAfter" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckBoxIncludeScreenshots" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -504,6 +508,11 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Windows - 64"/>
         <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="jCheckBoxIncludeScreenshots">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Include Screenshots"/>
       </Properties>
     </Component>
   </SubComponents>

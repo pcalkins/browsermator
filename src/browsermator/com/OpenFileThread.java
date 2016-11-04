@@ -626,16 +626,10 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.TargetBrowser = TargetBrowser;
+           STAppFrame.setTargetBrowser(TargetBrowser);
+           
           STAppFrame.changes = true;
-           if ("Chrome".equals(STAppFrame.TargetBrowser) || "Firefox".equals(STAppFrame.TargetBrowser))
-           {
-              STAppFrame.setOSTypeActive(true);
-           }
-           else
-           {
-            STAppFrame.setOSTypeActive(false);   
-           }
+          
          }
         }
         
@@ -646,7 +640,8 @@ STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
 new ActionListener() {
     public void actionPerformed (ActionEvent evt)
     {
-    FireFoxProperties FFProperties = new FireFoxProperties();
+       String TargetBrowser = STAppFrame.getTargetBrowser();
+    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
     FFProperties.BrowseforFFPath();
  
     }

@@ -6,6 +6,7 @@ package browsermator.com;
 
 import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,6 +24,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -36,14 +38,16 @@ String targetbrowser;
 String OSType;
 WebDriver driver;
 String firefox_path;
+String chrome_path;
 FireFoxProperties FFprops;
 BrowserMatorReport BrowserMatorReport;
 
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
    this.BrowserMatorReport = new BrowserMatorReport(in_SiteTest);
-  FFprops = new FireFoxProperties();
+  FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
+  this.chrome_path = FFprops.LoadChromePath();
    this.SiteTest = in_SiteTest;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
@@ -299,12 +303,19 @@ public String doInBackground()
    }
      break;
    case "Chrome (WinXP)":
-    
+         ChromeOptions options = new ChromeOptions();
+      if (chrome_path!=null) {
+        
+options.setBinary(chrome_path);
+
+
+    }
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+   
     
      try
      {
-        driver = new ChromeDriver();     
+        driver = new ChromeDriver(options);     
      }
    catch (Exception ex)
    {
@@ -895,20 +906,26 @@ else
   
     String imageData = in_image;
  
-
- 
     //convert the image data String to a byte[]
     byte[] dta = DatatypeConverter.parseBase64Binary(imageData);
     try (InputStream in = new ByteArrayInputStream(dta);) {
         BufferedImage fullSize = ImageIO.read(in);
 
-        // Create a new image one quarter the size of the original image
-        BufferedImage resized = new BufferedImage(fullSize.getWidth() / 4, fullSize.getHeight() / 4, BufferedImage.TYPE_4BYTE_ABGR);
-         Graphics2D g2 = (Graphics2D) resized.getGraphics();
-      g2.drawImage(fullSize, 0, 0, resized.getWidth(), resized.getHeight(), 0, 0, fullSize.getWidth(), fullSize.getHeight(), null);
-     
+        // Create a new image .7 the size of the original image
+      double newheight_db = fullSize.getHeight() * .7;
+      double newwidth_db = fullSize.getWidth() * .7;
+   
+        int newheight = (int)newheight_db;
+        int newwidth = (int)newwidth_db;
+
+        BufferedImage resized = new BufferedImage(newwidth, newheight, BufferedImage.SCALE_REPLICATE);
+
+        Graphics2D g2 = (Graphics2D) resized.getGraphics();
+      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g2.drawImage(fullSize, 0, 0, newwidth, newheight, null);
+
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write( fullSize, "png", baos );
+            ImageIO.write( resized, "png", baos );
             baos.flush();
            byte[] resizedInByte = baos.toByteArray();
       Base64Encoder enc_resized = new Base64Encoder();
