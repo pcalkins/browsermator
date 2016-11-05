@@ -50,6 +50,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   int WaitTime;
   boolean hasStoredVar;
   boolean hasStoredArray;
+  boolean IncludeScreenshots;
   HashMap<String, String> VarHashMap = new HashMap();
   HashMap<String, ArrayList> VarLists = new HashMap();
   
@@ -68,10 +69,10 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   this.filename = filename;
   this.URL = "";
   this.BugPanel = new JPanel();
+  this.IncludeScreenshots = false;
  
   this.AllFieldValues = new ArrayList<>();
-
-  
+ this.setIconifiable(true);
       initComponents();
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
@@ -534,6 +535,13 @@ catch (Exception e) {
     boolean checked = this.jCheckBoxEmailReport.isSelected();
     this.EmailReport = checked;
     return checked;
+    }
+         public boolean getIncludeScreenshots()
+    {
+         boolean checked = this.jCheckBoxIncludeScreenshots.isSelected();
+    this.IncludeScreenshots = checked;
+    return checked;
+       
     }
       public boolean getEmailReportFail()
     {
@@ -1473,7 +1481,7 @@ this.changes=true;
 
         jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)" }));
 
-        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***Marionette's Windows geckodriver does not currently include MSVCR140.dll.  Download and install it if you have problems.</HTML> ");
+        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***If a report fails to show the screenshots may have overrun Java's heap space.</HTML> ");
 
         jCheckBoxOSTypeWindows32.setText("Windows - 32");
         jCheckBoxOSTypeWindows32.setEnabled(false);
@@ -1517,6 +1525,7 @@ this.changes=true;
         jCheckBoxOSTypeWindows64.setEnabled(false);
 
         jCheckBoxIncludeScreenshots.setText("Include Screenshots");
+        jCheckBoxIncludeScreenshots.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1529,7 +1538,7 @@ this.changes=true;
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+                    .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1244, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -1544,17 +1553,21 @@ this.changes=true;
                                             .addComponent(jButtonDoStuff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxShowReport)
-                                            .addComponent(jCheckBoxEmailReport)
-                                            .addComponent(jCheckBoxIncludeScreenshots))
-                                        .addGap(18, 18, 18)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jCheckBoxShowReport)
+                                                    .addComponent(jCheckBoxEmailReport))
+                                                .addGap(59, 59, 59))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jCheckBoxIncludeScreenshots)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxExitAfter)
-                                            .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jCheckBoxPromptToClose)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonFlattenFile))))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonFlattenFile))
+                                            .addComponent(jCheckBoxExitAfter)
+                                            .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1602,7 +1615,7 @@ this.changes=true;
                                                 .addComponent(jButtonClearEmailSettings)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGap(0, 31, Short.MAX_VALUE))
+                                .addGap(0, 42, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1632,9 +1645,9 @@ this.changes=true;
                 .addGap(18, 18, 18)
                 .addComponent(jLabelTHISSITEURL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                .addComponent(MainScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1645,17 +1658,16 @@ this.changes=true;
                                     .addComponent(jButtonFlattenFile))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jCheckBoxEmailReport)
-                                    .addComponent(jCheckBoxEmailReportFail)))
+                                    .addComponent(jCheckBoxIncludeScreenshots)
+                                    .addComponent(jCheckBoxExitAfter)))
                             .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jCheckBoxExitAfter)
-                                .addComponent(jCheckBoxIncludeScreenshots)))
+                                .addComponent(jLabel1)
+                                .addComponent(jCheckBoxEmailReport))
+                            .addComponent(jCheckBoxEmailReportFail))
                         .addGap(6, 6, 6)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -1671,9 +1683,8 @@ this.changes=true;
                             .addComponent(jCheckBoxOSTypeLinux32)
                             .addComponent(jCheckBoxOSTypeLinux64)
                             .addComponent(jCheckBoxOSTypeWindows64))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
@@ -1700,12 +1711,14 @@ this.changes=true;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(jTextFieldSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonClearEmailSettings)
-                            .addComponent(jButtonLoadEmailSettings)))))
+                            .addComponent(jButtonLoadEmailSettings))))
+                .addContainerGap())
         );
 
+        jLabel9.getAccessibleContext().setAccessibleName("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>*** If a report fails to show the number of screenshots may have overrun Java's heap space.</HTML> ");
         jButtonBrowseForFireFoxExe.getAccessibleContext().setAccessibleName("jButtonBrowseForFireFoxExe");
 
         pack();
@@ -1726,7 +1739,15 @@ this.changes=true;
   private void jCheckBoxShowReportActionPerformed(ActionEvent evt)
   {
   this.ShowReport = jCheckBoxShowReport.isSelected();
-  // this.changes=true;
+  if (this.ShowReport==false)
+  {
+      jCheckBoxIncludeScreenshots.setEnabled(false);
+    
+  }
+  else
+  {
+    jCheckBoxIncludeScreenshots.setEnabled(true);  
+  }
   }
   
    private void jCheckBoxExitAfterActionPerformed(ActionEvent evt)
@@ -1740,19 +1761,27 @@ this.changes=true;
   if (this.EmailReport==true)
   {
       jCheckBoxEmailReportFail.setSelected(false);
+
       this.EmailReportFail = false;
   }
+ 
   // this.changes=true;
+  }
+   private void jCheckBoxIncludeScreenshotsActionPerformed(ActionEvent evt)
+  {
+     this.IncludeScreenshots = jCheckBoxIncludeScreenshots.isSelected();
   }
   private void jCheckBoxEmailReportFailActionPerformed(ActionEvent evt)
   {
      this.EmailReportFail = jCheckBoxEmailReportFail.isSelected();
   if (this.EmailReportFail==true)
   {
+
      jCheckBoxEmailReport.setSelected(false);
      this.EmailReport = false;
   }
-  // this.changes=true;
+
+
   }
  private void jCheckBoxOSTypeWindows32ActionPerformed(ActionEvent evt)
  {
@@ -1972,24 +2001,52 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     {
         this.ShowReport = showreport;
         jCheckBoxShowReport.setSelected(showreport);
+        if (this.ShowReport==false)
+        {
+             jCheckBoxIncludeScreenshots.setSelected(false);
+      jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+        }
+        else
+        {
+        jCheckBoxIncludeScreenshots.setEnabled(true);     
+        }
     }
+    public void setIncludeScreenshots(Boolean includescreenshots)
+    {
+        this.IncludeScreenshots = includescreenshots;
+        jCheckBoxIncludeScreenshots.setSelected(includescreenshots);
+    }
+ 
     public void setEmailReport (Boolean emailreport)
     {
         jCheckBoxEmailReport.setSelected(emailreport);
         this.EmailReport = emailreport;
         if (emailreport==true)
         {
+                    jCheckBoxIncludeScreenshots.setSelected(false);
+      jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
             jCheckBoxEmailReportFail.setSelected(false);
         }
+     
     }
+    
         public void setEmailReportFail (Boolean emailreportfail)
     {
         this.EmailReportFail = emailreportfail;
         jCheckBoxEmailReportFail.setSelected(emailreportfail);
          if (emailreportfail==true)
         {
+            
             jCheckBoxEmailReport.setSelected(false);
         }
+         else
+         {
+                     jCheckBoxIncludeScreenshots.setSelected(false);
+      jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+         }
     }
         public void setTargetBrowser (String targetbrowser)
         {   

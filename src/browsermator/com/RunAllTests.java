@@ -446,6 +446,8 @@ if (!"Dataloop".equals(thisbugview.Type))
       
        
      }
+         if (SiteTest.getIncludeScreenshots())
+    { 
       try
        {
      String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
@@ -458,6 +460,7 @@ if (!"Dataloop".equals(thisbugview.Type))
        {
             ThisAction.ScreenshotBase64 = "Screenshot Failed";
            System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
     }
    
    }   
@@ -503,10 +506,11 @@ else
           ThisAction.RunAction(driver, pause_message);
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-     
+           if (SiteTest.getIncludeScreenshots())
+    { 
        ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
-      
+    } 
         }
        else
         {
@@ -587,6 +591,8 @@ else
           break;
        
      }
+                  if (SiteTest.getIncludeScreenshots())
+    { 
               try
         {
                   String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
@@ -599,7 +605,7 @@ else
           ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
            System.out.println("Exception creating screenshot: " + ex.toString());     
     }
-        
+    }
             
         }
     }
@@ -646,6 +652,8 @@ else
    ThisAction.Variable2 = original_value2;
    ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+             if (SiteTest.getIncludeScreenshots())
+    { 
         try
         {
                       String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
@@ -658,7 +666,7 @@ else
            System.out.println("Exception creating screenshot: " + ex.toString());     
     }
         
-        
+    } 
              }
       catch (Exception ex)
      {

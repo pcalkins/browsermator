@@ -121,7 +121,10 @@ Boolean ReportDisplayed;
     }
    
    }
-   
+   public void ShowTextReport()
+   {
+     Prompter Promptem = new Prompter(this.TextReport);  
+   }
     public void ShowHTMLReport()
     {
         String HTML_TO_SEND = GetHTMLReport();

@@ -197,17 +197,20 @@ STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
 STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
+
 String thisbool = "false";
 if (STAppFrame.getEmailReport())
 {
     thisbool = "true";
 }
 STAppFrame.AllFieldValues.add(thisbool);
+
 thisbool = "false";
 if (STAppFrame.getEmailReportFail())
 {
     thisbool = "true";
 }
+
 STAppFrame.AllFieldValues.add(thisbool);
 thisbool = "false";
 if (STAppFrame.getExitAfter())
@@ -227,6 +230,13 @@ if (STAppFrame.getShowReport())
     thisbool = "true";
 }
 STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getIncludeScreenshots())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
@@ -307,6 +317,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String stShowReport="false";
   String stEmailReport = "false";
   String stEmailReportFail = "false";
+  String stIncludeScreenshots = "false";
   String stExitAfter = "false";
   String SMTPHostname = "";
   String EmailLoginName = "";
@@ -341,7 +352,18 @@ try
    }
    STAppFrame.setShowReport(ShowReport);
             break;
-        
+            
+        case "IncludeScreenshots":
+           stIncludeScreenshots = thisSettingsNodeValue;
+   Boolean IncludeScreenshots = false;  
+    if (stIncludeScreenshots.equals("true"))
+   {
+       IncludeScreenshots = true;
+   }
+       STAppFrame.setIncludeScreenshots(IncludeScreenshots);
+            break;
+            
+                
         case "EmailReport":
    stEmailReport = thisSettingsNodeValue;
    Boolean EmailReport = false;

@@ -401,6 +401,11 @@ String EmailReport = Boolean.toString(STAppFrame.getEmailReport());
   xmlfile.writeStartElement("EmailReport");
     xmlfile.writeCharacters(EmailReport);
     xmlfile.writeEndElement();
+    
+    String IncludeScreenshots = Boolean.toString(STAppFrame.getIncludeScreenshots());
+xmlfile.writeStartElement("IncludeScreenshots");
+    xmlfile.writeCharacters(IncludeScreenshots);
+    xmlfile.writeEndElement();
 // xmlfile.writeAttribute("EmailReport", EmailReport);
 String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
 xmlfile.writeStartElement("EmailReportFail");

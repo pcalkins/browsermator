@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.37";
+private final String version = "0.1.38";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.37";
+   public final String ProgramVersion = "0.1.38";
    public String loginName;
    public String loginPassword;
    
@@ -1107,7 +1107,10 @@ if (STAppFrame.getEmailReportFail())
 {
     sthisbool = "true";
 }
+sthisbool = "false";
 AllFieldValuesCheck.add(sthisbool);
+
+
 sthisbool = "false";
 if (STAppFrame.getExitAfter())
 {
@@ -1122,6 +1125,12 @@ if (STAppFrame.getPromptToClose())
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
 if (STAppFrame.getShowReport())
+{
+    sthisbool = "true";
+}
+AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getIncludeScreenshots())
 {
     sthisbool = "true";
 }
@@ -1664,7 +1673,11 @@ String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
 xmlfile.writeStartElement("EmailReportFail");
     xmlfile.writeCharacters(EmailReportFail);
     xmlfile.writeEndElement();
-    
+
+    String IncludeScreenshots = Boolean.toString(STAppFrame.getIncludeScreenshots());
+xmlfile.writeStartElement("IncludeScreenshots");
+    xmlfile.writeCharacters(IncludeScreenshots);
+    xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
 String ExitAfter = Boolean.toString(STAppFrame.getExitAfter());
 xmlfile.writeStartElement("ExitAfter");
@@ -2071,6 +2084,7 @@ if (STAppFrame.getEmailReport())
     thisbool = "true";
 }
 STAppFrame.AllFieldValues.add(thisbool);
+
 thisbool = "false";
 if (STAppFrame.getEmailReportFail())
 {
@@ -2091,6 +2105,12 @@ if (STAppFrame.getPromptToClose())
 STAppFrame.AllFieldValues.add(thisbool);
 thisbool = "false";
 if (STAppFrame.getShowReport())
+{
+    thisbool = "true";
+}
+STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getIncludeScreenshots())
 {
     thisbool = "true";
 }
