@@ -223,7 +223,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      }
      if ("Mac".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac32\\chromedriver-mac32");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac64\\chromedriver");
      }
      if ("Linux-32".equals(OSType))
      {

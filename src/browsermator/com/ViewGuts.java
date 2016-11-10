@@ -240,7 +240,7 @@ this.Guts+="\ndriver.close();\n}" +
      }
      if ("Mac".equals(OSType))
      {
-         this.Guts+=  "System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_mac32\\\\chromedriver-mac32\");";
+         this.Guts+=  "System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_mac64\\\\chromedriver\");";
      
      }
      if ("Linux-32".equals(OSType))
