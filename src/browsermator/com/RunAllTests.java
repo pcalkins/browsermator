@@ -2,8 +2,6 @@
 package browsermator.com;
 
 
-
-
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -49,6 +47,7 @@ BrowserMatorReport BrowserMatorReport;
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
    this.SiteTest = in_SiteTest;
+    this.SiteTest.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
   this.driver = new HtmlUnitDriver();
@@ -58,7 +57,8 @@ BrowserMatorReport BrowserMatorReport;
 public String doInBackground()
  {
     SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    SiteTest.setRunActionsButtonName("Running...");
+    SiteTest.setRunActionsButtonName("Running...(Click to Cancel)");
+
     RunAllActions(SiteTest, targetbrowser, OSType);
     String donetext = "Run All Procedures";
      return donetext;
@@ -187,7 +187,7 @@ public String doInBackground()
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -195,6 +195,11 @@ public String doInBackground()
      break;
             
     case "Firefox":
+    //legacy support
+     if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");  
+     }
      if ("Windows32".equals(OSType))
      {
        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
@@ -233,7 +238,7 @@ public String doInBackground()
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -253,7 +258,7 @@ public String doInBackground()
      catch (Exception ex)
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver");
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
      }
      break;
@@ -266,11 +271,16 @@ public String doInBackground()
      catch (Exception ex)
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver");
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
              }
      break;
      case "Chrome":
+         //legacy support
+         if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
      if ("Windows32".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
@@ -298,7 +308,7 @@ public String doInBackground()
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -320,7 +330,7 @@ options.setBinary(chrome_path);
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -340,6 +350,7 @@ options.setBinary(chrome_path);
   
      for (Procedure thisbug : SiteTest.BugArray)
       {
+        
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
@@ -353,7 +364,14 @@ if (!"Dataloop".equals(thisbugview.Type))
 {
     action_INT=0;
    for( Action ThisAction : thisbug.ActionsList ) {
-           String original_value = ThisAction.Variable2;
+         if (SiteTest.cancelled)
+          {
+              driver.close();
+              driver.quit();
+             
+             break;
+          }  
+       String original_value = ThisAction.Variable2;
  action_INT++;
  action_ID = Integer.toString(action_INT);
            if (!ThisAction.Locked)
@@ -435,10 +453,12 @@ if (!"Dataloop".equals(thisbugview.Type))
     }
     if (SiteTest.getExitAfter())
     {
+      driver.close();
       driver.quit();
               SiteTest.setCursor(Cursor.getDefaultCursor()); 
     System.exit(0);
     }  
+    driver.close();
       driver.quit();
               SiteTest.setCursor(Cursor.getDefaultCursor()); 
         //      publish(thisbugindex);
@@ -473,7 +493,7 @@ if (!"Dataloop".equals(thisbugview.Type))
 }
 else
 {
-    
+   
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
  if (number_of_rows==0)
  {
@@ -487,7 +507,13 @@ else
     {
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
-      
+       if (SiteTest.cancelled)
+          {
+              driver.close();
+              driver.quit();
+            
+             break;
+          }   
        action_INT++;
  action_ID = Integer.toString(action_INT) + "-" + Integer.toString(x);   
         String original_value1 = ThisAction.Variable1;
@@ -503,7 +529,8 @@ else
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-          ThisAction.RunAction(driver, pause_message);
+          ThisAction.RunAction(driver, pause_message, this.SiteTest);
+        
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
            if (SiteTest.getIncludeScreenshots())
@@ -581,10 +608,12 @@ else
     }
     if (SiteTest.getExitAfter())
     {
+        driver.close();
        driver.quit();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
     System.exit(0);
     }
+    driver.close();
        driver.quit();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
@@ -704,10 +733,12 @@ else
     }
     if (SiteTest.getExitAfter())
     {
+        driver.close();
       driver.quit();
           
     System.exit(0);
     }
+    driver.close();
       driver.quit();
                SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
@@ -785,12 +816,13 @@ else
                    options[0]);
     if (n==0)
     {
+        driver.close();
     driver.quit();
     }
      }
      else
      {
- 
+ driver.close();
    driver.quit();
      }
  

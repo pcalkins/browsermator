@@ -84,7 +84,7 @@ public class ExecuteJavascriptAction extends Action {
             }
             catch (Exception ex)
             {
-            Prompter errorPrompt = new Prompter("Error occured executing script");  
+            Prompter errorPrompt = new Prompter("Error occured executing script", false);  
             System.out.println(ex.toString());
             }
         }

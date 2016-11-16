@@ -80,7 +80,7 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem importMenuItem;
 private final String version = "0.1.39";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.39";
+   public final String ProgramVersion = "0.1.40";
    public String loginName;
    public String loginPassword;
    
@@ -1714,7 +1714,7 @@ xmlfile.writeStartElement("WaitTime");
     xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("WaitTime", WaitTimeString);
 
-String OSType = STAppFrame.OSType;
+String OSType = STAppFrame.getOSType();
 xmlfile.writeStartElement("OSType");
     xmlfile.writeCharacters(OSType);
     xmlfile.writeEndElement();  

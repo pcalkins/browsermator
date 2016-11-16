@@ -64,7 +64,7 @@ public class DragAndDropByAction extends Action {
    catch (Exception e)
    {
        this.Pass = false;
-       Prompter alert = new Prompter("X and Y must be integers separated by a comma: ex: 100,100");
+       Prompter alert = new Prompter("X and Y must be integers separated by a comma: ex: 100,100", false);
    }
  try
  {

@@ -129,7 +129,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -137,6 +137,11 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
             
     case "Firefox":
+        //legacy support
+        if ("Windows".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+     } 
      if ("Windows32".equals(OSType))
      {
        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
@@ -175,7 +180,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -195,7 +200,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver");
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
      }
      break;
@@ -208,7 +213,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver");
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
              }
      break;
@@ -240,7 +245,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -257,7 +262,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver");
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -316,7 +321,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
    SiteTest.setCursor(Cursor.getDefaultCursor()); 
-      driver.quit();
+   driver.close();
+   driver.quit();
         break;
      
         }
@@ -345,6 +351,11 @@ else
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
+         if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+           String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
+          ThisAction.RunAction(driver, pause_message, this.SiteTest);
+        }
          try
   {
    Thread.sleep(totalpause);  
@@ -383,7 +394,7 @@ else
        }
         catch (Exception ex)
      {
-   
+   driver.close();
       driver.quit();
         ThisAction.Variable1 = original_value1;
         ThisAction.Variable2 = original_value2;
@@ -438,6 +449,7 @@ else
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
+       driver.close();
       driver.quit();
        SiteTest.setCursor(Cursor.getDefaultCursor()); 
           break;
@@ -454,7 +466,7 @@ else
      }
     }
    }
-    
+    driver.close();
   driver.quit();
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
 

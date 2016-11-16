@@ -78,6 +78,10 @@ LocalDateTime[] loop_time_of_test;
    {
        
    }
+    public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
+    {
+        
+    }
    public void SetGuts()
    {
        

@@ -7,26 +7,39 @@ import java.awt.event.*;
 public class Prompter extends JFrame implements ActionListener 
 {
     JButton ContinueButton;
-
-    
-     Prompter (String messagetodisplay)
+    JButton CancelButton;
+    Boolean cancelled;
+    Boolean hasCancelButton;
+     Prompter (String messagetodisplay, Boolean in_hascancel)
             {
               
-                
+           this.cancelled = false;    
+           this.hasCancelButton = in_hascancel;
                 ContinueButton = new JButton("Continue");
-                
+                CancelButton = new JButton("Cancel"); 
              
                 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 FlowLayout flo = new FlowLayout();
                 setLayout(flo);
                 JLabel messageText = new JLabel(messagetodisplay);
-                JPanel flowpanel = new JPanel();
+                JPanel messagepanel = new JPanel();
                 
-                flowpanel.add(messageText);
-                JPanel boxpanel = new JPanel();
-                boxpanel.setLayout(new BoxLayout(boxpanel, BoxLayout.Y_AXIS));
-                boxpanel.add(flowpanel);
-                boxpanel.add(ContinueButton);
+                messagepanel.add(messageText);
+              
+                JPanel buttonpanel = new JPanel();
+                buttonpanel.setLayout(new FlowLayout());
+                buttonpanel.add(ContinueButton);
+                if (this.hasCancelButton)
+                {
+               buttonpanel.add(CancelButton);
+                }
+                
+                JPanel WholePrompt = new JPanel();
+                WholePrompt.setLayout(new FlowLayout());
+                WholePrompt.add(messagepanel);
+                WholePrompt.add(buttonpanel);
+                
+               
                 setSize(400, 200);
                  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
@@ -35,7 +48,7 @@ public class Prompter extends JFrame implements ActionListener
       
         this.setLocation(x, 0);
                 this.setTitle(messagetodisplay);
-                add(boxpanel);
+                add(WholePrompt);
              
                 
                 setVisible(true);
@@ -51,8 +64,10 @@ public class Prompter extends JFrame implements ActionListener
          {
           this.setVisible(false);
           this.dispose();
-     
+         }
+   
      }
-        
-}
+       public void addCancelButtonActionListener(ActionListener listener) {
+       CancelButton.addActionListener(listener);
+   }
 }

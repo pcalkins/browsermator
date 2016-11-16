@@ -116,14 +116,14 @@ Boolean ReportDisplayed;
         Transport.send(msg, login_name, password);
     } catch (MessagingException mex) {
     //    System.out.println("send failed, exception: " + mex);
-     Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.");    
+     Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.", false);    
      
     }
    
    }
    public void ShowTextReport()
    {
-     Prompter Promptem = new Prompter(this.TextReport);  
+     Prompter Promptem = new Prompter(this.TextReport, false);  
    }
     public void ShowHTMLReport()
     {

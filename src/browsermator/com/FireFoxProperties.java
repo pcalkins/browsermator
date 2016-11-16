@@ -49,7 +49,7 @@ public class FireFoxProperties {
    
    WriteFireFoxPathToProperties(file.getAbsolutePath());
   
- Prompter closeDown = new Prompter("Close and re-open the Browsermator to update executable path.");
+ Prompter closeDown = new Prompter("Close and re-open the Browsermator to update executable path.", false);
   
   
             }

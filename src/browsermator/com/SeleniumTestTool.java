@@ -53,9 +53,10 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   boolean IncludeScreenshots;
   HashMap<String, String> VarHashMap = new HashMap();
   HashMap<String, ArrayList> VarLists = new HashMap();
-  
+  boolean cancelled;
   public SeleniumTestTool(String filename)
   {
+      this.cancelled = false;
     this.hasStoredVar = false;
     this.hasStoredArray = false;
    this.VarHashMap = new HashMap();
@@ -617,6 +618,10 @@ public void setProperties (String filename)
  {
      jButtonDoStuff.setText(newtext);
  }
+ public String getRunActionsButtonName()
+ {
+     return jButtonDoStuff.getText();
+ }
  public void setFlattenFileButtonName (String newtext)
  {
      jButtonFlattenFile.setText(newtext);
@@ -881,8 +886,15 @@ else
      }
  public void RunActions()
  {
-    RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();
+     if (this.getRunActionsButtonName()=="Run All Procedures")
+     {
+       RunAllTests REFSYNCH = new RunAllTests(this);
+    REFSYNCH.execute();     
+     }
+     else
+     {
+         this.cancelled = true;
+     }
  
  }
 
@@ -2116,6 +2128,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         }
         public void setOSType(String OSType)
         {
+            if ("Windows".equals(OSType))
+            {
+                OSType = "Windows32";
+            }
             this.OSType = OSType;
             switch (OSType)
             {

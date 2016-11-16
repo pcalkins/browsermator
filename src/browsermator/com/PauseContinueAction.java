@@ -5,6 +5,9 @@
  */
 package browsermator.com;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -14,10 +17,12 @@ import org.openqa.selenium.WebDriver;
 class PauseContinueAction extends Action {
 String pause_message;
 
+
     public PauseContinueAction() 
      {
         this.Type = "Pause with Continue Button";
         this.pause_message = "Actions Paused...";
+     
        }
     @Override
     public void SetGuts()
@@ -40,7 +45,7 @@ String pause_message;
     @Override
     public void RunAction(WebDriver driver)
     {
-    Prompter thisContinuePrompt = new Prompter(this.pause_message);
+    Prompter thisContinuePrompt = new Prompter(this.pause_message, false);
     
 while(thisContinuePrompt.isVisible() == true){
         try
@@ -57,7 +62,8 @@ this.Pass = true;
     @Override
     public void RunAction (WebDriver driver, String message)
     {
-       Prompter thisContinuePrompt = new Prompter(message);
+       Prompter thisContinuePrompt = new Prompter(message, false);
+    
     
 while(thisContinuePrompt.isVisible() == true){
         try
@@ -70,7 +76,32 @@ Thread.sleep(200);
                 }
     }   
     }
+  
+    @Override
+    public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
+    {
+       Prompter thisContinuePrompt = new Prompter(message, true);
+      thisContinuePrompt.addCancelButtonActionListener(new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+
+       in_sitetest.cancelled = true;
+       thisContinuePrompt.setVisible(false);
+       thisContinuePrompt.dispose();
+       
+   }    
+ });
     
+while(thisContinuePrompt.isVisible() == true){
+        try
+        {
+Thread.sleep(200);
+        }
+        catch (InterruptedException e)
+                {
+                    System.out.println("pause exception: " + e.toString());
+                }
+    }   
+    }
  
   
 }
