@@ -8,8 +8,10 @@ package browsermator.com;
 
 import java.util.Set;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 
 /**
@@ -24,11 +26,11 @@ public class OpenNewTabAction extends Action {
       @Override
       public void SetGuts()
       {
-          this.Guts = "     try\n" +
+          this.Guts = "    try\n" +
 "      {\n" +
+"        \n" +
+"((JavascriptExecutor)driver).executeScript(\"window.open('about:blank', '_blank');\");\n" +
 "\n" +
-"driver.findElement(By.cssSelector(\"body\")).sendKeys(Keys.chord(Keys.CONTROL, \"t\"));\n" +
-"     \n" +
 "        Set<String> tab_handles = driver.getWindowHandles();\n" +
 "        int number_of_tabs = tab_handles.size();\n" +
 "        int new_tab_index = number_of_tabs-1;\n" +
@@ -45,9 +47,12 @@ public class OpenNewTabAction extends Action {
     {
       try
       {
+        
+((JavascriptExecutor)driver).executeScript("window.open('about:blank', '_blank');");
 
-driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "t"));
-     
+//driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "t"));
+// Actions actions = new Actions(driver); 
+// actions.keyDown(Keys.CONTROL).sendKeys("t").keyUp(Keys.CONTROL).build().perform();  
         Set<String> tab_handles = driver.getWindowHandles();
         int number_of_tabs = tab_handles.size();
         int new_tab_index = number_of_tabs-1;

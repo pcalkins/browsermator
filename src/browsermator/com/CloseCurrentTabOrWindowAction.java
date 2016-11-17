@@ -6,8 +6,10 @@
 package browsermator.com;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 /**
  *
@@ -25,9 +27,9 @@ public class CloseCurrentTabOrWindowAction extends Action
       this.Guts = "try\n" +
 "{\n" +
 "\n" +
-"  driver.findElement(By.cssSelector(\"body\")).sendKeys(Keys.chord(Keys.CONTROL, \"w\"));\n" +
 "\n" +
-" for (String winHandle : driver.getWindowHandles()) {\n" +
+"((JavascriptExecutor)driver).executeScript(\"close();\");\n" +
+"    for (String winHandle : driver.getWindowHandles()) {\n" +
 "  driver.switchTo().window(winHandle); \n" +
 "}\n" +
 "     this.Pass = true;\n" +
@@ -35,7 +37,6 @@ public class CloseCurrentTabOrWindowAction extends Action
 "catch (Exception ex)\n" +
 "{\n" +
 "    this.Pass = false;\n" +
-"}" +
 "}";
   }
   @Override
@@ -44,9 +45,12 @@ public class CloseCurrentTabOrWindowAction extends Action
 try
 {
 
-  driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "w"));
 
- for (String winHandle : driver.getWindowHandles()) {
+ // driver.findElement(By.cssSelector("html")).sendKeys(Keys.chord(Keys.CONTROL, "w"));
+// Actions actions = new Actions(driver); 
+// actions.keyDown(Keys.CONTROL).sendKeys("w").keyUp(Keys.CONTROL).build().perform();
+((JavascriptExecutor)driver).executeScript("close();");
+    for (String winHandle : driver.getWindowHandles()) {
   driver.switchTo().window(winHandle); 
 }
      this.Pass = true;
