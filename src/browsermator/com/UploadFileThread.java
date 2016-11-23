@@ -446,7 +446,13 @@ String WaitTimeString = WaitTime.toString();
 xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
     xmlfile.writeEndElement();   
-// xmlfile.writeAttribute("WaitTime", WaitTimeString);
+
+Integer Sessions = STAppFrame.getSessions();
+String SessionsString = Sessions.toString();
+xmlfile.writeStartElement("Sessions");
+    xmlfile.writeCharacters(SessionsString);
+    xmlfile.writeEndElement();  
+
 
 String OSType = STAppFrame.OSType;
 xmlfile.writeStartElement("OSType");

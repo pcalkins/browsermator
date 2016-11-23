@@ -48,6 +48,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String TargetBrowser;
   String OSType;
   int WaitTime;
+  int Sessions;
   boolean hasStoredVar;
   boolean hasStoredArray;
   boolean IncludeScreenshots;
@@ -63,7 +64,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
    // super("Selenium Test Tool");
   this.TargetBrowser = "Firefox";
   this.OSType = "Windows32";
-
+  this.Sessions = 1;
   this.changes = false;
   this.PromptToClose = false;
   this.ShowReport = false;
@@ -603,6 +604,38 @@ public int GetWaitTime()
 
         this.jSpinnerWaitTime.setValue(wait_time);
     }
+   public void setSessions (int number_of_sessions)
+   {
+       this.Sessions = number_of_sessions;
+       this.jSpinnerSessions.setValue(number_of_sessions);
+   }
+   public int getSessions()
+{
+    int fallbackValue = 1;
+
+
+    
+    try {
+       jSpinnerSessions.commitEdit();
+   }
+   catch (ParseException pe) {
+       // Edited value is invalid, spinner.getValue() will return
+       // the last valid value, you could revert the spinner to show that:
+       JComponent editor =jSpinnerSessions.getEditor();
+       
+       if (editor instanceof DefaultEditor) {
+           ((DefaultEditor)editor).getTextField().setValue(jSpinnerSessions.getValue());
+       }
+       // reset the value to some known value:
+       jSpinnerSessions.setValue(fallbackValue);
+       // or treat the last valid value as the current, in which
+       // case you don't need to do anything.
+      
+   }
+   int wait = (Integer)this.jSpinnerSessions.getValue();
+    return wait;
+    
+}
 public void setProperties (String filename)
     {
    
@@ -888,8 +921,33 @@ else
  {
      if (this.getRunActionsButtonName()=="Run All Procedures")
      {
+          int sessions = getSessions();
+          String tbrowser = this.getTargetBrowser();
+      if (tbrowser=="Firefox/IE/Chrome")
+      {
+ for (int x=0; x<sessions; x++)
+ {
+    
+      this.setTargetBrowser("Firefox");
        RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();     
+    REFSYNCH.execute();   
+    this.setTargetBrowser("Chrome");
+       RunAllTests REFSYNCH2 = new RunAllTests(this);
+    REFSYNCH2.execute();  
+    this.setTargetBrowser("Internet Explorer-32");
+      RunAllTests REFSYNCH3 = new RunAllTests(this);
+    REFSYNCH3.execute();  
+    this.setTargetBrowser("Firefox/IE/Chrome");
+ }
+      }
+      else
+      {
+     for (int x=0; x<sessions; x++)
+ {
+    RunAllTests REFSYNCH = new RunAllTests(this);
+    REFSYNCH.execute();      
+ }     
+      }
      }
      else
      {
@@ -1433,6 +1491,8 @@ this.changes=true;
         jLabelStoredVariables = new javax.swing.JLabel();
         jCheckBoxOSTypeWindows64 = new javax.swing.JCheckBox();
         jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
+        jSpinnerSessions = new javax.swing.JSpinner();
+        jLabelSessions = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1491,7 +1551,7 @@ this.changes=true;
 
         jLabel8.setText("Target Browser:");
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
         jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***If a report fails to show the screenshots may have overrun Java's heap space.</HTML> ");
 
@@ -1538,6 +1598,10 @@ this.changes=true;
 
         jCheckBoxIncludeScreenshots.setText("Include Screenshots");
         jCheckBoxIncludeScreenshots.setEnabled(false);
+
+        jSpinnerSessions.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+
+        jLabelSessions.setText("Number of Sessions:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1586,10 +1650,14 @@ this.changes=true;
                                             .addComponent(jLabel2)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel8)
-                                                .addGap(18, 18, 18)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonBrowseForFireFoxExe))))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonBrowseForFireFoxExe)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabelSessions)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jCheckBoxOSTypeWindows32)
                                         .addGap(13, 13, 13)
@@ -1686,8 +1754,11 @@ this.changes=true;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel8)
-                                .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonBrowseForFireFoxExe, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonBrowseForFireFoxExe))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelSessions)
+                                .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBoxOSTypeWindows32)
@@ -2300,8 +2371,10 @@ for (int x = 1; x<=number_of_places_to_move; x++)
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelSessions;
     private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
+    private javax.swing.JSpinner jSpinnerSessions;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;
     private javax.swing.JTextField jTextFieldEmailLoginName;

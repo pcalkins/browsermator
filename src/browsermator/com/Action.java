@@ -34,7 +34,6 @@ LocalDateTime[] loop_time_of_test;
  String Guts;
  String tostore_varname;
  String tostore_varvalue;
-
  ArrayList<String> tostore_varlist;
    Action ()
    {

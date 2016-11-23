@@ -78,10 +78,14 @@
                                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jComboBoxTargetBrowser" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jButtonBrowseForFireFoxExe" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jLabelSessions" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jSpinnerSessions" min="-2" pref="45" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -206,8 +210,12 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxTargetBrowser" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonBrowseForFireFoxExe" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jButtonBrowseForFireFoxExe" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jLabelSessions" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jSpinnerSessions" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -406,13 +414,14 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxTargetBrowser">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="6">
+          <StringArray count="7">
             <StringItem index="0" value="Firefox"/>
             <StringItem index="1" value="Internet Explorer-32"/>
             <StringItem index="2" value="Internet Explorer-64"/>
             <StringItem index="3" value="Chrome"/>
             <StringItem index="4" value="Chrome (WinXP)"/>
             <StringItem index="5" value="Silent Mode (HTMLUnit)"/>
+            <StringItem index="6" value="Firefox/IE/Chrome"/>
           </StringArray>
         </Property>
       </Properties>
@@ -522,6 +531,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Include Screenshots"/>
         <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="jSpinnerSessions">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="1" maximum="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelSessions">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Number of Sessions:"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -191,6 +191,9 @@ STAppFrame.AllFieldValues.add(STAppFrame.OSType);
 STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 STAppFrame.AllFieldValues.add(stringWaitTime);
+
+String stringSessions = String.valueOf(STAppFrame.getSessions());
+STAppFrame.AllFieldValues.add(stringSessions);
 STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
@@ -324,6 +327,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
   String WaitTime = "3";
+  String Sessions = "1";
   String OSType = "Windows32";
   String EmailPassword = "";
   String unepassword = "";
@@ -428,7 +432,11 @@ try
  int intWaitTime = Integer.parseInt(WaitTime);
       STAppFrame.setWaitTime(intWaitTime);
             break;   
-              
+        case "Sessions":
+ Sessions = thisSettingsNodeValue;
+ int intSessions = Integer.parseInt(Sessions);
+      STAppFrame.setSessions(intSessions);
+            break;               
        case "OSType":
  OSType = thisSettingsNodeValue;
       STAppFrame.setOSType(OSType);

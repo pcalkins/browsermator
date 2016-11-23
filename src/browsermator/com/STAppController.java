@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "0.1.41";
+private final String version = "1.0.01b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "0.1.41";
+   public final String ProgramVersion = "1.0.01b";
    public String loginName;
    public String loginPassword;
    
@@ -510,9 +510,9 @@ SeleniumToolDesktop.add(Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
- 
+
  STAppFrame.RunActions(); 
- 
+
   
         }
       }
@@ -1090,6 +1090,8 @@ AllFieldValuesCheck.add(STAppFrame.OSType);
 AllFieldValuesCheck.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 AllFieldValuesCheck.add(stringWaitTime);
+String stringSessions = String.valueOf(STAppFrame.getSessions());
+AllFieldValuesCheck.add(stringSessions);
 AllFieldValuesCheck.add(STAppFrame.getSMTPHostname());
 AllFieldValuesCheck.add(STAppFrame.getEmailFrom());
 AllFieldValuesCheck.add(STAppFrame.getEmailLoginName());
@@ -1711,6 +1713,12 @@ Integer WaitTime = STAppFrame.GetWaitTime();
 String WaitTimeString = WaitTime.toString();
 xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
+    xmlfile.writeEndElement();  
+    
+Integer NumberOfSessions = STAppFrame.getSessions();
+String NumberOfSessionsString = NumberOfSessions.toString();
+xmlfile.writeStartElement("Sessions");
+    xmlfile.writeCharacters(NumberOfSessionsString);
     xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("WaitTime", WaitTimeString);
 
@@ -2072,6 +2080,8 @@ STAppFrame.AllFieldValues.add(STAppFrame.OSType);
 STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 STAppFrame.AllFieldValues.add(stringWaitTime);
+String stringSessions = String.valueOf(STAppFrame.getSessions());
+STAppFrame.AllFieldValues.add(stringSessions);
 STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailFrom());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
@@ -2241,6 +2251,7 @@ else
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
   String WaitTime = "3";
+  String Sessions = "1";
   String OSType = "Windows32";
   String EmailPassword = "";
   String unepassword = "";
@@ -2328,7 +2339,12 @@ try
  WaitTime = thisSettingsNodeValue;
  int intWaitTime = Integer.parseInt(WaitTime);
       STAppFrame.setWaitTime(intWaitTime);
-            break;   
+            break;  
+       case "Sessions":
+ Sessions = thisSettingsNodeValue;
+ int intSessions = Integer.parseInt(Sessions);
+      STAppFrame.setSessions(intSessions);
+            break; 
               
        case "OSType":
  OSType = thisSettingsNodeValue;
