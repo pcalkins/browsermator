@@ -489,6 +489,7 @@ else
     @Override
     public void mouseClicked(MouseEvent e) {
         int columnindex = myTable.DataTable.columnAtPoint(e.getPoint());
+        if (columnindex<0){columnindex=0;}
         String selected_name = myTable.DataTable.getColumnName(columnindex);
      
         int field_number = last_selected_jtextfield_variable_number;
