@@ -38,6 +38,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
               this.driver = new HtmlUnitDriver();
+            
           }
     public String doInBackground()
  {
@@ -309,10 +310,16 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
        }
        
       
-       if (!"".equals(ThisAction.tostore_varvalue))
+      if (!"".equals(ThisAction.tostore_varvalue))
        {
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+       }
+    if (ThisAction.tostore_varlist.size()>0)
+       {
+
+           SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+
        }
       
      

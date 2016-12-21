@@ -195,6 +195,8 @@ public void initVarLists()
   {
     thisprocview.myTable.setSourceToURLList(storedURLlist);   
     thisproc.DataSet.setSourceToURLList(storedURLlist);
+    int height = storedURLlist.size() * 20;
+    thisprocview.panelForTable.setSize(200, height);
   }
          
      
@@ -1106,7 +1108,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
             }
 
       }
- 
+  
       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
       {
          
@@ -1117,6 +1119,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                MoveProcedure(newbugview.index, 1);
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
+               
                RunSingleTest(newbug, newbugview);
            });
            

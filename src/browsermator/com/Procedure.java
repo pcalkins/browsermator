@@ -38,8 +38,7 @@ this.Type = "";
 
    }
   
-   
- 
+  
    public void setProcedureTitle(String title)
    {
        this.BugTitle = title;

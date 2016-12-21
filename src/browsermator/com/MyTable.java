@@ -292,7 +292,7 @@ else
           this.number_of_records = storedURLlist.size();
           rowcount = this.number_of_records;
           DefaultTableModel model = (DefaultTableModel) DataTable.getModel();
-
+          DataTable.removeAll();
           for (int x = 0; x<rowcount+1; x++)
            {
              

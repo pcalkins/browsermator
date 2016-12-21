@@ -51,6 +51,10 @@ BrowserMatorReport BrowserMatorReport;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
   this.driver = new HtmlUnitDriver();
+  SiteTest.VarHashMap.clear();
+  SiteTest.VarLists.clear();
+ 
+    
  }
  
 @Override 
@@ -82,7 +86,15 @@ public String doInBackground()
     else
     {
    BrowserMatorReport.OutPutReports();
-   BrowserMatorReport.ShowHTMLReport();
+    if (SiteTest.getIncludeScreenshots())
+       {
+       BrowserMatorReport.ShowHTMLReport();
+       }
+       else
+       {
+           BrowserMatorReport.ShowTextReport();
+       }
+  
     }
     }
     if (SiteTest.getEmailReportFail())
@@ -350,7 +362,8 @@ options.setBinary(chrome_path);
   
      for (Procedure thisbug : SiteTest.BugArray)
       {
-        
+     
+       
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
@@ -410,9 +423,9 @@ if (!"Dataloop".equals(thisbugview.Type))
        }
     if (ThisAction.tostore_varlist.size()>0)
        {
+      
            SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
-         
-           
+
        }
     
        
@@ -429,7 +442,15 @@ if (!"Dataloop".equals(thisbugview.Type))
        {
     
        BrowserMatorReport.OutPutReports();
+        if (SiteTest.getIncludeScreenshots())
+       {
        BrowserMatorReport.ShowHTMLReport();
+       }
+       else
+       {
+           BrowserMatorReport.ShowTextReport();
+       }
+      
      
        }
          
@@ -482,10 +503,15 @@ if (!"Dataloop".equals(thisbugview.Type))
            System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
+         else
+         {
+              ThisAction.ScreenshotBase64 = ""; 
+         }
    
    }   
            else
            {
+              ThisAction.ScreenshotBase64 = ""; 
              ThisAction.Pass = true; 
            }
    }  
@@ -493,7 +519,11 @@ if (!"Dataloop".equals(thisbugview.Type))
 }
 else
 {
-   
+    String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
+      thisbugview.setJTableSource(selectedarraylist);
+      thisbug.setDataFile(selectedarraylist);
+      SiteTest.UpdateDisplay();
+     
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
  if (number_of_rows==0)
  {
@@ -538,6 +568,10 @@ else
        ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
     } 
+           else
+           {
+             ThisAction.loop_ScreenshotsBase64[x] = "";
+           }
         }
        else
         {
@@ -585,7 +619,14 @@ else
        {
     
        BrowserMatorReport.OutPutReports();
+       if (SiteTest.getIncludeScreenshots())
+       {
        BrowserMatorReport.ShowHTMLReport();
+       }
+       else
+       {
+           BrowserMatorReport.ShowTextReport();
+       }
      
        }
       
@@ -627,7 +668,6 @@ else
                   String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
      String scrn = OneQuarterBase64(full_scrn);
       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+scrn+"\"></img>";
-// ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\"></img>";
         }
                  catch (Exception ex)
        {
@@ -635,6 +675,10 @@ else
            System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
+                  else
+                  {
+                   ThisAction.loop_ScreenshotsBase64[x] = "";    
+                  }
             
         }
     }
@@ -696,6 +740,10 @@ else
     }
         
     } 
+             else
+             {
+             ThisAction.loop_ScreenshotsBase64[x] = "";     
+             }
              }
       catch (Exception ex)
      {
@@ -710,7 +758,15 @@ else
        {
     
        BrowserMatorReport.OutPutReports();
+        if (SiteTest.getIncludeScreenshots())
+       {
        BrowserMatorReport.ShowHTMLReport();
+       }
+       else
+       {
+           BrowserMatorReport.ShowTextReport();
+       }
+      
      
        }
           
@@ -1000,6 +1056,7 @@ else
             String URLListName = parts2[1];
                if (SiteTest.VarLists.containsKey(URLListName))
             {
+      
             SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }
@@ -1016,6 +1073,7 @@ else
             String URLListName = parts2[1];
                   if (SiteTest.VarLists.containsKey(URLListName))
             {
+     
             SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }

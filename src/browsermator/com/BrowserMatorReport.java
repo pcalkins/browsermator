@@ -123,7 +123,50 @@ Boolean ReportDisplayed;
    }
    public void ShowTextReport()
    {
-     Prompter Promptem = new Prompter(this.TextReport, false);  
+        String HTML_TO_SEND = GetTextReport();
+  //      GetTextReport()
+        jButtonSaveFile = new JButton("Save HTML Report");
+   Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                    browser = new WebView();
+webEngine = browser.getEngine();
+webEngine.loadContent(HTML_TO_SEND);
+
+ browser.setVisible(true);
+Scene scene = new Scene(browser);
+        fxPanel.setScene(scene);
+        
+
+            }
+   });   
+
+            fxPanel.setVisible(true);
+fxPanel.setSize(800,800);
+
+mainPanel = new JPanel(new BorderLayout());
+  mainPanel.add(jButtonSaveFile, BorderLayout.NORTH);
+    mainPanel.add(fxPanel, BorderLayout.CENTER);
+    mainPanel.setVisible(true);
+
+   ReportFrame = new JFrame("Browsermator Report");
+
+    jButtonSaveFile.addActionListener(new ActionListener() {
+        
+       @Override
+        public void actionPerformed (ActionEvent e )
+        {
+         SaveAsHTMLFile();   
+        }
+        });
+
+  
+    ReportFrame.add(mainPanel);
+    ReportFrame.setSize(800, 800);
+    ReportFrame.setVisible(true);   
+     
+     
+       this.ReportDisplayed = true;    
    }
     public void ShowHTMLReport()
     {
@@ -234,11 +277,17 @@ mainPanel = new JPanel(new BorderLayout());
      }
      else
      {
+     if (SiteTest.EmailReport)
+     {
        LineBreak = "\n";
        Header = "";
        Footer = "";
      }
-     
+     else
+     {
+         LineBreak = "<br>";
+     }
+     }
       String ReportText= "Procedure report: " + SiteTest.filename + LineBreak;
     int action_INT=0;
     int bug_INT=0;

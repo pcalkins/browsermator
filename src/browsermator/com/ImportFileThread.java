@@ -69,9 +69,10 @@ public String doInBackground()
 @Override
  protected void done()
  {
-  //    MDIClasses.get(calling_MDI_Index).UpdateDisplay();  
+
    mainApp.MDIClasses.get(calling_MDI_Index).setCursor(Cursor.getDefaultCursor()); 
- 
+   mainApp.MDIClasses.get(calling_MDI_Index).UpdateDisplay();
+   
      
  }
  @Override
@@ -125,10 +126,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
      MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).Pass = Pass;
 
     NodeList ActionsList = Procedure.getElementsByTagName("Action");
-   int thislength = ActionsList.getLength();
-
+  
     for (int j = 0; j <ActionsList.getLength(); j++)
     {
+        
    Element Action = (Element) ActionsList.item(j);
    NodeList ActionNodes = Action.getChildNodes();
    String thisActionNodeName = "none";

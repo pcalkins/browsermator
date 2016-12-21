@@ -57,6 +57,7 @@ public class ActionsMaster {
     ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
     ActionViewHashMap.put("Type at Input Name", new TypeAtInputNameActionView());
     ActionViewHashMap.put("Type at XPATH", new TypeAtXPATHActionView());
+    ActionViewHashMap.put("Type Password at ID", new TypePasswordAtIDActionView());
     ActionViewHashMap.put("Type Password at Input Name", new TypePasswordAtInputNameActionView());
     ActionViewHashMap.put("Type Password at XPATH", new TypePasswordAtXPATHActionView());
     ActionViewHashMap.put("Up Arrow Key", new UpArrowKeyActionView());
@@ -91,6 +92,7 @@ public class ActionsMaster {
   ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));
   ActionHashMap.put("Type at Input Name", new TypeAtInputNameAction("","", false));
   ActionHashMap.put("Type at XPATH", new TypeAtXPATHAction("", "", false));
+  ActionHashMap.put("Type Password at ID", new TypePasswordAtIDAction("", "", false));
   ActionHashMap.put("Type Password at Input Name", new TypePasswordAtInputNameAction("", "", false));
   ActionHashMap.put("Type Password at XPATH", new TypePasswordAtXPATHAction("", "", false));
   ActionHashMap.put("Up Arrow Key", new UpArrowKeyAction());

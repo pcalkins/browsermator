@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.02b";
+private final String version = "1.0.04b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.02b";
+   public final String ProgramVersion = "1.0.04b";
    public String loginName;
    public String loginPassword;
    
@@ -2198,6 +2198,7 @@ else
      {
             ImportFileThread IMPORTREF = new ImportFileThread(this, files, CurrentMDIWindowIndex);
    IMPORTREF.execute();
+   
      }
   
   public SeleniumTestTool BuildNewWindow(Document doc)

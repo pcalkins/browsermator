@@ -67,6 +67,10 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
         for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {
             WebElement e = it.next();
             String thishref = e.getAttribute("href");
+            if (thishref.isEmpty())
+            {
+                thishref = e.getAttribute("src");
+            }
             if (link_list.contains(thishref))
             {
                 
