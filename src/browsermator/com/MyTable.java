@@ -262,7 +262,7 @@ catch (Exception ex)
         int number_of_rows = DataTable.getRowCount();
         if (number_of_rows < 20)
         {
-        DataTable.setPreferredScrollableViewportSize(new Dimension (1200, number_of_rows * DataTable.getRowHeight()));
+        DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
         }
        
  
@@ -277,8 +277,8 @@ else
 
 
         DataTable = new JTable(tableModel);
-        DataTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-        DataTable.setPreferredScrollableViewportSize(new Dimension (20,0));
+        DataTable.getColumnModel().getColumn(0).setPreferredWidth(600);
+        DataTable.setPreferredScrollableViewportSize(new Dimension (600, 100));
         
 
 }
@@ -288,20 +288,21 @@ else
  public void setSourceToURLList(ArrayList<String> storedURLlist)
 {
  
- 
+         
+               
           this.number_of_records = storedURLlist.size();
           rowcount = this.number_of_records;
           DefaultTableModel model = (DefaultTableModel) DataTable.getModel();
           DataTable.removeAll();
+          
           for (int x = 0; x<rowcount+1; x++)
            {
-             
+            
               int columnnumber = 0;
              if (x>0)
              {
           model.addRow(new Object[]{storedURLlist.get(x-1)});
-             
-          
+       
              }
    
           
@@ -312,10 +313,14 @@ else
                 
    
         int number_of_rows = DataTable.getRowCount();
+     
         if (number_of_rows < 20)
         {
+            int rowheight = DataTable.getRowHeight();
+            
         DataTable.setPreferredScrollableViewportSize(new Dimension (1200, number_of_rows * DataTable.getRowHeight()));
         }
+      
 }
 
 }

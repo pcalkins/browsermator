@@ -191,12 +191,12 @@ public void initVarLists()
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
-  public void UpdateDataLoopTable(ArrayList<String> storedURLlist, Procedure thisproc, ProcedureView thisprocview)
+  public void UpdateDataLoopTable(String ListName, ArrayList<String> storedURLlist, Procedure thisproc, ProcedureView thisprocview)
   {
+
     thisprocview.myTable.setSourceToURLList(storedURLlist);   
     thisproc.DataSet.setSourceToURLList(storedURLlist);
-    int height = storedURLlist.size() * 20;
-    thisprocview.panelForTable.setSize(200, height);
+   
   }
          
      
@@ -267,46 +267,47 @@ public void initVarLists()
 }
       }
  
-      public void updatePlacedListVariables(String to_updatename, String update_toname)
+      public void updatePlacedListVariables()
     {
-    int bugindex = 0;
-    if (!"".equals(to_updatename))
-    {
+ 
+   
     for (ProcedureView BV : BugViewArray)
       {
          
             for (ActionView AV : BV.ActionsViewList )
         {
-            if (AV.JTextFieldVariable2.getText().contains("[stored_arrayname") && AV.JTextFieldVariable2.getText().contains(to_updatename))
+            if (AV.JTextFieldVariable2.getText().contains("[stored_arrayname"))
             {
-               AV.JTextFieldVariable2.setText("[stored_arrayname-start]" + update_toname + "[stored_arrayname-end]");
+               AV.JTextFieldVariable2.setText("[stored_arrayname-start]" + AV.index + "[stored_arrayname-end]");
             }
         }
       } 
   
-    }
+
     }
     public void updateSelectedArrayName(String oldname, String newname)
     {
-    
-       int indexof_oldname = -1;
-          int indexof_newname = -1;
+
           
         if (VarLists.containsKey(newname))
         {       
-            updatePlacedListVariables(newname, oldname);
-            updatePlacedListVariables(oldname, newname);
-            VarLists.put(newname, new ArrayList());
-            VarLists.put(oldname, new ArrayList());
-                              int bugindex = 0;  
+            updatePlacedListVariables();
+
+         //   VarLists.put(newname, new ArrayList());
+         //   VarLists.put(oldname, new ArrayList());
+            
+       int bugindex = 0;  
             for (Procedure PROC: BugArray)
       {
           if (oldname.equals(PROC.DataFile))
           {
       PROC.setDataFile(newname);
       BugViewArray.get(bugindex).setJTableSource(newname);
-     
-      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
+        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
+
+      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
+   //   BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
+         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
    //   UpdateDisplay();
           }
           bugindex++;
@@ -316,7 +317,7 @@ public void initVarLists()
         {
             VarLists.remove(oldname);
             VarLists.put(newname, new ArrayList());
-            updatePlacedListVariables(oldname, newname);
+            updatePlacedListVariables();
           
              int bugindex = 0;  
             for (Procedure PROC: BugArray)
@@ -326,14 +327,19 @@ public void initVarLists()
      
       
       PROC.setDataFile(newname);
+     
       BugViewArray.get(bugindex).setJTableSource(newname);
-      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
-  //    UpdateDisplay();
+        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
+      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
+      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
+        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
+     // BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
+    UpdateStoredListsPulldown(newname);
           }
           bugindex++;
       }
         }
-      UpdateStoredListsPulldown();
+      
      
     
     }
@@ -367,13 +373,14 @@ public void initVarLists()
             jComboBoxStoredVariables.addItem(keyname);
         }
   }
-    public void UpdateStoredListsPulldown()
+    public void UpdateStoredListsPulldown(String selecteditem)
   {
       for (ProcedureView BV : BugViewArray)
       {
          
           if ("Dataloop".equals(BV.Type))
           {
+              BV.JComboBoxStoredArrayLists.setEnabled(false); 
                  BV.JComboBoxStoredArrayLists.removeAllItems();
                
         BV.JComboBoxStoredArrayLists.addItem("Select a stored URL list");
@@ -390,8 +397,14 @@ public void initVarLists()
  }
         }
           }
+       
+   //    BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+        BV.JComboBoxStoredArrayLists.setEnabled(true);
       }
+          
       }
+ 
+    
   }
   
 public String GetStoredVariableValue(String fieldname)
@@ -683,32 +696,29 @@ this.BugPanel.removeAll();
 this.BugPanel.setLayout(layout);
 
 
-// this.BugPanel.setBorder(BorderFactory.createLineBorder(Color.black));
    setHasStoredArray(false);
 int bugindex = 0;
     for (ProcedureView BV : BugViewArray)
       {
 
-    //    BV.JPanelBug.setBorder(BorderFactory.createLineBorder(Color.black));
           BV.SetIndex(bugindex);
           
           this.BugPanel.add(BV.JPanelBug);
      JPanel ActionAdderPanel = new JPanel();
-  //   ActionAdderPanel.add(BV.JPanelActionAdders);
+
      
           this.BugPanel.add(ActionAdderPanel);
   
    GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints();
             JPanel ActionPanel = new JPanel();
-    //  FlowLayout ActionLayout = new ModifiedFlowLayout(1);
+
             
       ActionPanel.setLayout(ActionLayout); 
       
      ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;
-    
-    // AddToGrid(JLabelBugIndex, 1, 2, 1, 1);
+ 
       int actionindex = 0;
       
       for (ActionView AV : BV.ActionsViewList )
@@ -858,6 +868,7 @@ else
          updateSelectedArrayName(oldname, newname);
               }
           AV.JTextFieldVariableVARINDEX.setText(newname);
+   
           }
             
         }
@@ -1353,27 +1364,7 @@ File newfile = new File(path + ".js");
   thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
   thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
   thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
-   //  GridBagConstraints ActionConstraints = new GridBagConstraints();
-         
-      
-   //  ActionConstraints.fill = GridBagConstraints.NONE;
-   //  ActionConstraints.anchor = GridBagConstraints.WEST;            
-
-   //     AV.SetIndexes(newbugview.index, actionindex);
-   //     ActionConstraints.gridx = 1;
-   //      ActionConstraints.gridy = SwapIndex;
-   //      ActionConstraints.gridwidth = 1;
-   //      ActionConstraints.gridheight = 1;
-   //     JPanel theActionPanel = thisBugView.ActionScrollPanel;
     
- //      Component theddseaction = thisBugView.ActionScrollPane.getViewport().getView();
- //    thisBugView.ActionScrollPane.getViewport().remove(theddseaction.getComponentAt(e.getPoint()));
- //    thisBugView.ActionScrollPane.getViewport().revalidate();
- //    thisBugView.ActionScrollPane.getViewport().repaint();
- //    thisBugView.ActionScrollPane.revalidate();
- //    thisBugView.ActionScrollPane.repaint();
- // int test=0;
-      
 
 
       
@@ -1412,7 +1403,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
         if (VarLists.containsKey(bugdashactionindex))
         {
             VarLists.remove(bugdashactionindex);
-            UpdateStoredListsPulldown();
+            UpdateStoredListsPulldown("Select a stored URL List");
         }
     thisBug.ActionsList.remove(atIndex);
     thisBugView.ActionsViewList.remove(atIndex);
@@ -2232,67 +2223,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
-         public void SortActionView (Procedure thisProc, ProcedureView thisProcView, int dropped_index, int draggedLocationY)
-   {
-     int dragIndex = draggedLocationY/36;
-   //  System.out.println (dropIndex);
-     MoveActionFromTo (thisProc, thisProcView, dragIndex, dropped_index);
-   }
-          public void MoveActionFromTo (Procedure thisBug, ProcedureView thisBugView, int MoveFromIndex, int MoveToIndex)
-   {
-
-  
-   System.out.println("From: "+MoveFromIndex + " To: "+MoveToIndex);
-   
-  // ArrayList<ActionView> ActionViewArrayCopy =  thisBugView.ActionsViewList;
-  // ArrayList<Action> ActionArrayCopy = thisBug.ActionsList;
-   
-    int diff = MoveFromIndex - MoveToIndex;
-    int number_of_places_to_move = Math.abs(diff);
-    
-    if (diff<0)
-    {
-                if (MoveFromIndex<thisBug.ActionsList.size()-1)
-     {
-        int SwapIndex = 0; 
-for (int x = 1; x<=number_of_places_to_move; x++)
-{
-    SwapIndex = MoveFromIndex+1;
-         Collections.swap(thisBug.ActionsList, MoveFromIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, MoveFromIndex, SwapIndex);
-  thisBugView.ActionsViewList.get(MoveFromIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, MoveFromIndex);
-  thisBug.ActionsList.get(MoveFromIndex).setActionIndex(SwapIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(MoveFromIndex);
-    MoveFromIndex++;
-  
-    }
-
-       }
-    }
-    else
-    {
-      if (MoveFromIndex<0)
-     {  
-                int SwapIndex = 0; 
-for (int x = 1; x<=number_of_places_to_move; x++)
-{
-    SwapIndex = MoveFromIndex-1;
-         Collections.swap(thisBug.ActionsList, MoveFromIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, MoveFromIndex, SwapIndex);
-  thisBugView.ActionsViewList.get(MoveFromIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, MoveFromIndex);
-  thisBug.ActionsList.get(MoveFromIndex).setActionIndex(SwapIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(MoveFromIndex);
-    MoveFromIndex--;
-  
-    }
-         
-     }
-    }
-  UpdateDisplay(); 
-  
-   }
+ 
  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
   {
       int number_of_rows = 0;
@@ -2313,7 +2244,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
             String URLListName = parts2[1];
                if (this.VarLists.containsKey(URLListName))
             {
-            this.UpdateDataLoopTable(this.VarLists.get(URLListName), thisproc, thisprocview);
+            this.UpdateDataLoopTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
             number_of_rows = this.VarLists.get(URLListName).size();
             }
             }
@@ -2329,7 +2260,7 @@ for (int x = 1; x<=number_of_places_to_move; x++)
             String URLListName = parts2[1];
             if (this.VarLists.containsKey(URLListName))
             {
-            this.UpdateDataLoopTable(this.VarLists.get(URLListName), thisproc, thisprocview);
+            this.UpdateDataLoopTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
             number_of_rows = this.VarLists.get(URLListName).size();
             }
             }

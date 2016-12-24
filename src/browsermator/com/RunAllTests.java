@@ -77,6 +77,7 @@ public String doInBackground()
         String donetext = get();
         SiteTest.setCursor(Cursor.getDefaultCursor());   
      SiteTest.setRunActionsButtonName(donetext);
+
     if (SiteTest.getShowReport())
     {
     if (BrowserMatorReport.ReportDisplayed)
@@ -136,7 +137,7 @@ public String doInBackground()
     }
        System.out.println(ex.getLocalizedMessage());
     }
-     
+    SiteTest.UpdateDisplay(); 
  }
  
   
@@ -522,7 +523,7 @@ else
     String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
       thisbugview.setJTableSource(selectedarraylist);
       thisbug.setDataFile(selectedarraylist);
-      SiteTest.UpdateDisplay();
+   
      
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
  if (number_of_rows==0)
@@ -1057,7 +1058,8 @@ else
                if (SiteTest.VarLists.containsKey(URLListName))
             {
       
-            SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+            SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+            
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }
             }
@@ -1074,14 +1076,16 @@ else
                   if (SiteTest.VarLists.containsKey(URLListName))
             {
      
-            SiteTest.UpdateDataLoopTable(SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+            SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }
             }
         } 
     
     }
+   
      return number_of_rows;
+     
      }
  
 }

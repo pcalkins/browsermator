@@ -394,16 +394,16 @@ for (String passfailaction_name : passfailaction_keys)
              {
              if (AV.JTextFieldVariable1.getText().contains("Stored URL List:"))
              {
-              String oldval = AV.JTextFieldVariable1.getText();
-              String meat = oldval.substring(21, oldval.length()-20);
+           //   String oldval = AV.JTextFieldVariable1.getText();
+           //   String meat = oldval.substring(21, oldval.length()-20);
               String newval = "[dataloop-field-start]1,0,Stored URL List:" + newsource + "[dataloop-field-end]";
               AV.JTextFieldVariable1.setText(newval);
              }
            
                if (AV.JTextFieldVariable2.getText().contains("Stored URL List:"))
              {
-              String oldval =  AV.JTextFieldVariable2.getText();
-              String meat = oldval.substring(21, oldval.length()-20);
+            //  String oldval =  AV.JTextFieldVariable2.getText();
+           //   String meat = oldval.substring(21, oldval.length()-20);
               String newval = "[dataloop-field-start]2,0,Stored URL List:" + newsource + "[dataloop-field-end]";
               AV.JTextFieldVariable2.setText(newval);
              }
@@ -421,19 +421,19 @@ for (String passfailaction_name : passfailaction_keys)
             
               AV.JTextFieldVariable2.setText("");
              }  
-                 JComboBoxStoredArrayLists.setSelectedIndex(0);
+             //    JComboBoxStoredArrayLists.setSelectedIndex(0);
              }
          }
     
      }
-     
+  
      public void setJTableSource (String sourceCSVfile)
      {
      UpdatePlacedLoopVars(sourceCSVfile);
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
-     myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+   myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      myTable.DataTable.getTableHeader().setReorderingAllowed(false);
 
     myTable.DataTable.setFillsViewportHeight( true );
@@ -464,7 +464,7 @@ for (String passfailaction_name : passfailaction_keys)
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 8, 0, 1, 1, 1, 1);
    
-    AddToGrid(panelForTable, 9, 0, 9, 1, 1, 1);
+    AddToGrid(panelForTable, 9, 0, 8, 8, 1, 1);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     
@@ -503,6 +503,7 @@ else
     }
     
 });
+    
      }
 
   
