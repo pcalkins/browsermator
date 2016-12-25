@@ -401,15 +401,40 @@ if (!"Dataloop".equals(thisbugview.Type))
       System.out.println ("Exception when sleeping: " + ex.toString());
   }
                      String varfieldname="";
-       if (ThisAction.Variable2.contains("[stored_varname-start]"))
+          if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
        {
-         varfieldname = ThisAction.Variable2;
-            int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
+           if (ThisAction.Variable2.contains("[stored_varname-start]"))
+                   {
+          varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
-         String fieldname = varfieldname.substring(22, indexof_end_tag);
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           else
+           {
+              if (ThisAction.Variable1.contains("[stored_varname-start]"))
+                   {
+         varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable1 = SiteTest.GetStoredVariableValue(fieldname);
+          ThisAction.RunAction(driver);
+          ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           }
+       
        }
        else
        {
@@ -552,7 +577,7 @@ else
       if (!ThisAction.Locked)
    {
    
-   
+ 
                DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
@@ -586,25 +611,54 @@ else
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
   }
-                     String varfieldname="";
-       if (ThisAction.Variable2.contains("[stored_varname-start]"))
+      
+       int indexof_end_tag = 0;
+       
+                  String varfieldname="";
+       if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
        {
-         varfieldname = ThisAction.Variable2;
-            int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
+           if (ThisAction.Variable2.contains("[stored_varname-start]"))
+                   {
+          varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
-         String fieldname = varfieldname.substring(22, indexof_end_tag);
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
-          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname_end]";
+          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           else
+           {
+              if (ThisAction.Variable1.contains("[stored_varname-start]"))
+                   {
+         varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable1 = SiteTest.GetStoredVariableValue(fieldname);
+          ThisAction.RunAction(driver);
+          ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           }
+           
        }
        else
        {
          ThisAction.RunAction(driver);    
+       }   
+          if (!"".equals(ThisAction.tostore_varvalue))
+       {
+        
+           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-       
-      
-   
        
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;

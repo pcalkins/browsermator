@@ -36,7 +36,9 @@ public void setVariable1(String variable)
        Boolean checker = variable.contains("http://");
      Boolean checker2 = variable.contains("https://");
      Boolean checker3 = variable.contains("[dataloop-field-start]");
-      if (checker == true || checker2 == true || checker3 == true) 
+     Boolean checker4 = variable.contains("[stored_varname-start]");
+     
+      if (checker == true || checker2 == true || checker3 == true || checker4 ==true) 
       {
       
         this.Variable1 = variable;

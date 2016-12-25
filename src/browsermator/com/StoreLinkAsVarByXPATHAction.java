@@ -50,7 +50,10 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
  {
         
         String link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("href");
-  
+  if (link_value==null)
+  {
+      link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("src");
+  }
      
  SetStoredLinkHashValue (this.Variable2, link_value);
     
