@@ -150,7 +150,7 @@ for (String passfailaction_name : passfailaction_keys)
      
      
      JPanel LeftSideButtonsPanel = new JPanel();
-     BoxLayout LeftSideButtonsLayout = new BoxLayout(LeftSideButtonsPanel, BoxLayout.PAGE_AXIS);
+     BoxLayout LeftSideButtonsLayout = new BoxLayout(LeftSideButtonsPanel, BoxLayout.Y_AXIS);
      setStandardButtonSize(JButtonGoAction);
      setStandardButtonSize(JButtonClickAtXPATH);
      setStandardButtonSize(JButtonTypeAtXPATH);
@@ -210,7 +210,7 @@ for (String passfailaction_name : passfailaction_keys)
     AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty); 
 
     BugConstraints.insets = new Insets(10,10,10,10);
-   AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, global_weightx, global_weighty); 
+   AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, 0.1, global_weighty); 
   ActionScrollPane.setVisible(false);
   ActionScrollPane.setSize(new Dimension(1024, 840));
 
@@ -245,7 +245,7 @@ for (String passfailaction_name : passfailaction_keys)
       public final void setStandardButtonSize(JButton thisbutton)
      {
      //    thisbutton.setSize(new Dimension(5000, 5000));
-         thisbutton.setMaximumSize(new Dimension(500, 500));
+         thisbutton.setMaximumSize(new Dimension(225, 300));
      }
      public void ShowFieldInstructions(boolean showit, int textfieldindex, int bugindex, int actionindex)
      {
@@ -464,7 +464,7 @@ for (String passfailaction_name : passfailaction_keys)
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 8, 0, 1, 1, 1, 1);
    
-    AddToGrid(panelForTable, 9, 0, 8, 8, 1, 1);
+    AddToGrid(panelForTable, 9, 1, 8, 8, 1, 1);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     

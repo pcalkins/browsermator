@@ -1075,7 +1075,7 @@ else
              File chosenCSVFile = ChangeCSVFile();
    if (chosenCSVFile!=null)
    {
-  
+   newbugview.SetJComboBoxStoredArraylists("Select a stored URL List");
    newbugview.setJTableSource(chosenCSVFile.getAbsolutePath());
    newbug.setDataFile(chosenCSVFile.getAbsolutePath());
    UpdateDisplay();
