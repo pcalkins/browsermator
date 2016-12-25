@@ -136,6 +136,7 @@ public String doInBackground()
     System.exit(0);
     }
        System.out.println(ex.getLocalizedMessage());
+           
     }
     SiteTest.UpdateDisplay(); 
  }
@@ -144,9 +145,9 @@ public String doInBackground()
 @Override
  protected void process ( List <Integer> bugindex)
  {
-    int updatebugindex = bugindex.size()-1;
+ //   int updatebugindex = bugindex.size()-1;
     
-    SiteTest.BugViewArray.get(updatebugindex).JButtonRunTest.setText("Done");
+    SiteTest.BugViewArray.get(bugindex.get(0)).JButtonRunTest.setText("Run");
     
  }
   public void RunAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
@@ -382,6 +383,7 @@ if (!"Dataloop".equals(thisbugview.Type))
           {
               driver.close();
               driver.quit();
+             publish(thisbugindex);
              
              break;
           }  
@@ -508,7 +510,7 @@ if (!"Dataloop".equals(thisbugview.Type))
     driver.close();
       driver.quit();
               SiteTest.setCursor(Cursor.getDefaultCursor()); 
-        //      publish(thisbugindex);
+              publish(thisbugindex);
           break;
       
        
@@ -567,7 +569,7 @@ else
           {
               driver.close();
               driver.quit();
-            
+             publish(thisbugindex);
              break;
           }   
        action_INT++;
