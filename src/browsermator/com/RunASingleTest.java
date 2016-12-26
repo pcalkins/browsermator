@@ -8,6 +8,7 @@ package browsermator.com;
 import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
@@ -57,10 +58,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     {
         String donetext = get();
       thisbugview.JButtonRunTest.setText(donetext); 
+      
     }
    catch (Exception ex)
     {
-            if (ex.toString().contains("Cannot find firefox"))
+      
+        if (ex.toString().contains("Cannot find firefox"))
         {
        FFprops.BrowseforFFPath();
   
@@ -473,8 +476,28 @@ else
      }
     }
    }
-    driver.close();
-  driver.quit();
+   if (SiteTest.getPromptToClose())
+     {
+   Object[] options = {"OK"};
+    int n = JOptionPane.showOptionDialog(null,
+                   "Close webdriver/browser?","Prompt to close browser",
+                   JOptionPane.PLAIN_MESSAGE,
+                   JOptionPane.QUESTION_MESSAGE,
+                   null,
+                   options,
+                   options[0]);
+    if (n==0)
+    {
+        driver.close();
+    driver.quit();
+    }
+     }
+     else
+     {
+ driver.close();
+   driver.quit();
+     }
+
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
 
  int ActionIndex = 0;

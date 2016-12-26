@@ -3,6 +3,7 @@ package browsermator.com;
 
 import com.opencsv.CSVReader;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentListener;
 // import net.miginfocom.swing.MigLayout;
 
@@ -41,7 +44,7 @@ public class ProcedureView {
   //    JLabel JLabelBugNumber = new JLabel("Bug Number: ");
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
-     JTextField JTextFieldBugTitle = new JTextField("", 35);
+     JTextField JTextFieldBugTitle = new JTextField("", 32);
   
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
  JComboBox JComboBoxStoredArrayLists;
@@ -85,6 +88,7 @@ public class ProcedureView {
       JButton JButtonMoveProcedureUp = new JButton("/\\");
       JButton JButtonMoveProcedureDown = new JButton ("\\/");
       JPanel MoveButtonsPanel = new JPanel();
+      JPanel RemoveRunButtonsPanel = new JPanel();
         JTextField JTextFieldDataFile;
    JButton JButtonBrowseForDataFile;
    JScrollPane JTableScrollPane;
@@ -93,8 +97,14 @@ JPanel panelForTable;
 JLabel JLabelUseList;
 JLabel JLabelOR;
 String Type;
+TitledBorder BugPanelBorder;
     ProcedureView()
      {
+   
+         
+
+
+
          myTable=new MyTable("");
              JLabelOR = new JLabel("OR:");
        JLabelUseList = new JLabel("Use Stored URL List");
@@ -138,9 +148,9 @@ for (String passfailaction_name : passfailaction_keys)
 
      JPanelBug.setLayout(BugLayout);
      JPanelBug.setSize(600, 252);
-     BugConstraints.fill = GridBagConstraints.BOTH;
-     BugConstraints.anchor = GridBagConstraints.WEST;
-     BugConstraints.insets = new Insets(2,2,4,10); //top, left, bottom, right
+     BugConstraints.fill = GridBagConstraints.NONE;
+     BugConstraints.anchor = GridBagConstraints.EAST;
+     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
      double global_weightx = 1/6;
      double global_weighty = 1/4;
      JPanel ProcedurePlusIndex = new JPanel();
@@ -188,12 +198,13 @@ for (String passfailaction_name : passfailaction_keys)
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
   
      AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty );
-   
+     RemoveRunButtonsPanel.add(JButtonDeleteBug);
+     RemoveRunButtonsPanel.add(JButtonRunTest);
 
-  AddToGrid(JButtonDeleteBug, 1, 3, 1, 1, global_weightx, global_weighty);
+ // AddToGrid(JButtonDeleteBug, 1, 4, 1, 1, global_weightx, global_weighty);
  
-  AddToGrid(JButtonRunTest, 1, 4, 1, 1, global_weightx, global_weighty);
-  
+ // AddToGrid(JButtonRunTest, 1, 5, 1, 1, global_weightx, global_weighty);
+   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty);
   AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
      JLabelPass.setVisible(false);
 
@@ -234,7 +245,8 @@ for (String passfailaction_name : passfailaction_keys)
      }
      public void setTitle(String title)
      {
-         JLabelBugTitle.setText(title);
+        JLabelBugTitle.setText(title);
+    
      }
      public void setLastSelectedField (int variable_number, int procedure_index, int action_index)
      {
@@ -347,12 +359,19 @@ for (String passfailaction_name : passfailaction_keys)
         {
     JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+ BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
+         JPanelBug.setBorder(BugPanelBorder);
+         setTitle("Procedure ");
+         
         }
         else
         {
               
     JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+     BugPanelBorder = BorderFactory.createTitledBorder("Procedure (Data Loop) " + stringbugindex);
+         JPanelBug.setBorder(BugPanelBorder);
+          setTitle("Procedure (Data Loop) ");
         }
    }
    
@@ -462,9 +481,9 @@ for (String passfailaction_name : passfailaction_keys)
       
     panelForTable.add(JTableScrollPane);
    // JLabelAddFieldInstructions.setVisible(false);
-   AddToGrid(JLabelAddFieldInstructions, 8, 0, 1, 1, 1, 1);
+   AddToGrid(JLabelAddFieldInstructions, 9, 0, 2, 1, 1, 1);
    
-    AddToGrid(panelForTable, 9, 1, 8, 8, 1, 1);
+    AddToGrid(panelForTable, 10, 0, 5, 8, .5, .5);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     
