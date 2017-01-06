@@ -875,10 +875,20 @@ else
      if (NumberOfActionsPassed == thisbugview.ActionsViewList.size())
     {
         BugPass = true;
+  
+        thisbugview.JLabelPass.setVisible(true);
+       thisbugview.JLabelPass.setText("Passed");
+       SiteTest.BugArray.get(BugIndex).Pass = true;
+       thisbugview.JLabelPass.setVisible(true);
     }
      else
      {
          BugPass = false;
+     
+        thisbugview.JLabelPass.setVisible(true);
+       thisbugview.JLabelPass.setText("Failed");
+       SiteTest.BugArray.get(BugIndex).Pass = true;
+       thisbugview.JLabelPass.setVisible(true);
      }
   }
   else
@@ -910,26 +920,35 @@ else
      if (NumberOfActionsPassed == thisbugview.ActionsViewList.size()*number_of_rows)
     {
         BugPass = true;
+     
+        thisbugview.JLabelPass.setVisible(true);
+       thisbugview.JLabelPass.setText("Passed");
+       SiteTest.BugArray.get(BugIndex).Pass = true;
+       thisbugview.JLabelPass.setVisible(true);
     }
      else
      {
          BugPass = false;
+           thisbugview.JLabelPass.setVisible(true);
+       thisbugview.JLabelPass.setText("Failed");
+       SiteTest.BugArray.get(BugIndex).Pass = true;
+       thisbugview.JLabelPass.setVisible(true);
      }
   }
-    int LastActionIndex = SiteTest.BugArray.get(BugIndex).ActionsList.size()-1;
+  
    if (BugPass.equals(true))
    {
        NumberOfTestsPassed++;
-        LocalDateTime stringtime = SiteTest.BugArray.get(BugIndex).ActionsList.get(LastActionIndex).TimeOfTest;
+     
         thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Passed at " + stringtime);
+       thisbugview.JLabelPass.setText("Passed");
        SiteTest.BugArray.get(BugIndex).Pass = true;
        thisbugview.JLabelPass.setVisible(true);
    }
    else
    {
-       LocalDateTime stringtime = SiteTest.BugArray.get(BugIndex).ActionsList.get(LastActionIndex).TimeOfTest;
-       thisbugview.JLabelPass.setText("Failed at " + stringtime);
+     
+       thisbugview.JLabelPass.setText("Failed");
        SiteTest.BugArray.get(BugIndex).Pass = false;
        thisbugview.JLabelPass.setVisible(true);
    }
