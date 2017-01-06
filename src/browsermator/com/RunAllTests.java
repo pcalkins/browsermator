@@ -78,16 +78,78 @@ public String doInBackground()
         SiteTest.setCursor(Cursor.getDefaultCursor());   
      SiteTest.setRunActionsButtonName(donetext);
 
-    if (SiteTest.getShowReport())
-    {
-    if (BrowserMatorReport.ReportDisplayed)
-    {
-        
+  
     }
-    else
+    catch (Exception ex)
     {
-   BrowserMatorReport.OutPutReports();
-    if (SiteTest.getIncludeScreenshots())
+        if (ex.toString().contains("Cannot find firefox"))
+        {
+        FFprops.BrowseforFFPath();
+        
+ 
+        }
+        SiteTest.setRunActionsButtonName("Run All Procedures");
+ try
+ {
+     driver.close();
+ }
+ catch (Exception e)
+ {
+     System.out.println(e.toString());
+     driver.quit();
+ }
+   driver.quit();
+  
+   SiteTest.setCursor(Cursor.getDefaultCursor()); 
+    if (SiteTest.getExitAfter())
+    {
+    System.exit(0);
+    }
+       System.out.println(ex.getLocalizedMessage());
+           
+    }
+        if (SiteTest.getPromptToClose())
+     {
+   Object[] options = {"OK"};
+    int n = JOptionPane.showOptionDialog(null,
+                   "Close webdriver/browser?","Prompt to close browser",
+                   JOptionPane.PLAIN_MESSAGE,
+                   JOptionPane.QUESTION_MESSAGE,
+                   null,
+                   options,
+                   options[0]);
+    if (n==0)
+    {
+        try
+        {
+        driver.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            driver.quit();
+        }
+    driver.quit();
+    }
+     }
+     else
+     {
+ try
+        {
+        driver.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            driver.quit();
+        }
+   driver.quit();
+     }
+      if (SiteTest.getShowReport())
+       {
+    
+       BrowserMatorReport.OutPutReports();
+        if (SiteTest.getIncludeScreenshots())
        {
        BrowserMatorReport.ShowHTMLReport();
        }
@@ -95,10 +157,11 @@ public String doInBackground()
        {
            BrowserMatorReport.ShowTextReport();
        }
-  
-    }
-    }
-    if (SiteTest.getEmailReportFail())
+      
+     
+       }
+          
+                if (SiteTest.getEmailReportFail())
     {
         if (SiteTest.AllTestsPassed)
         {
@@ -117,27 +180,11 @@ public String doInBackground()
     }
     if (SiteTest.getExitAfter())
     {
+    
+          
     System.exit(0);
     }
-    }
-    catch (Exception ex)
-    {
-        if (ex.toString().contains("Cannot find firefox"))
-        {
-        FFprops.BrowseforFFPath();
-        
- 
-        }
-        SiteTest.setRunActionsButtonName("Run All Procedures");
- 
-   SiteTest.setCursor(Cursor.getDefaultCursor()); 
-    if (SiteTest.getExitAfter())
-    {
-    System.exit(0);
-    }
-       System.out.println(ex.getLocalizedMessage());
-           
-    }
+     FillReport();
     SiteTest.UpdateDisplay(); 
  }
  
@@ -381,8 +428,7 @@ if (!"Dataloop".equals(thisbugview.Type))
    for( Action ThisAction : thisbug.ActionsList ) {
          if (SiteTest.cancelled)
           {
-              driver.close();
-              driver.quit();
+          
              publish(thisbugindex);
              
              break;
@@ -465,51 +511,7 @@ if (!"Dataloop".equals(thisbugview.Type))
   System.out.println(ex.toString());
       ThisAction.Pass = false;
        
-  FillReport();
-         if (SiteTest.getShowReport())
-       {
-    
-       BrowserMatorReport.OutPutReports();
-        if (SiteTest.getIncludeScreenshots())
-       {
-       BrowserMatorReport.ShowHTMLReport();
-       }
-       else
-       {
-           BrowserMatorReport.ShowTextReport();
-       }
-      
-     
-       }
-         
-   
-        if (SiteTest.getEmailReportFail())
-    {
-        if (SiteTest.AllTestsPassed)
-        {
-            
-        }
-        else
-        {
-            BrowserMatorReport.EmailReport();
-        }
-    }
-    if (SiteTest.getEmailReport())
-    {
  
-        BrowserMatorReport.EmailReport();
-  
-    }
-    if (SiteTest.getExitAfter())
-    {
-      driver.close();
-      driver.quit();
-              SiteTest.setCursor(Cursor.getDefaultCursor()); 
-    System.exit(0);
-    }  
-    driver.close();
-      driver.quit();
-              SiteTest.setCursor(Cursor.getDefaultCursor()); 
               publish(thisbugindex);
           break;
       
@@ -567,8 +569,7 @@ else
     for( Action ThisAction : thisbug.ActionsList ) {
        if (SiteTest.cancelled)
           {
-              driver.close();
-              driver.quit();
+       
              publish(thisbugindex);
              break;
           }   
@@ -671,49 +672,7 @@ else
           ThisAction.loop_pass_values[x] = false;
           ThisAction.loop_time_of_test[x] = LocalDateTime.now();
         
-  FillReport();
-       if (SiteTest.getShowReport())
-       {
-    
-       BrowserMatorReport.OutPutReports();
-       if (SiteTest.getIncludeScreenshots())
-       {
-       BrowserMatorReport.ShowHTMLReport();
-       }
-       else
-       {
-           BrowserMatorReport.ShowTextReport();
-       }
-     
-       }
-      
-                if (SiteTest.getEmailReportFail())
-    {
-        if (SiteTest.AllTestsPassed)
-        {
-            
-        }
-        else
-        {
-            BrowserMatorReport.EmailReport();
-        }
-    }
-    if (SiteTest.getEmailReport())
-    {
  
-        BrowserMatorReport.EmailReport();
-  
-    }
-    if (SiteTest.getExitAfter())
-    {
-        driver.close();
-       driver.quit();
-               SiteTest.setCursor(Cursor.getDefaultCursor()); 
-    System.exit(0);
-    }
-    driver.close();
-       driver.quit();
-               SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
        
@@ -810,50 +769,7 @@ else
        ThisAction.loop_pass_values[x] = false;
         ThisAction.loop_time_of_test[x] = LocalDateTime.now();
         
-  FillReport();
-       if (SiteTest.getShowReport())
-       {
-    
-       BrowserMatorReport.OutPutReports();
-        if (SiteTest.getIncludeScreenshots())
-       {
-       BrowserMatorReport.ShowHTMLReport();
-       }
-       else
-       {
-           BrowserMatorReport.ShowTextReport();
-       }
-      
-     
-       }
-          
-                if (SiteTest.getEmailReportFail())
-    {
-        if (SiteTest.AllTestsPassed)
-        {
-            
-        }
-        else
-        {
-            BrowserMatorReport.EmailReport();
-        }
-    }
-    if (SiteTest.getEmailReport())
-    {
- 
-        BrowserMatorReport.EmailReport();
   
-    }
-    if (SiteTest.getExitAfter())
-    {
-        driver.close();
-      driver.quit();
-          
-    System.exit(0);
-    }
-    driver.close();
-      driver.quit();
-               SiteTest.setCursor(Cursor.getDefaultCursor()); 
                publish(thisbugindex);
           break;
        
@@ -917,29 +833,7 @@ else
    publish(thisbugindex);
     thisbugindex++;
       }
-     if (SiteTest.getPromptToClose())
-     {
-   Object[] options = {"OK"};
-    int n = JOptionPane.showOptionDialog(null,
-                   "Close webdriver/browser?","Prompt to close browser",
-                   JOptionPane.PLAIN_MESSAGE,
-                   JOptionPane.QUESTION_MESSAGE,
-                   null,
-                   options,
-                   options[0]);
-    if (n==0)
-    {
-        driver.close();
-    driver.quit();
-    }
-     }
-     else
-     {
- driver.close();
-   driver.quit();
-     }
  
-     FillReport();
   
      
  }
