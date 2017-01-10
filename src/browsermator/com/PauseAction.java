@@ -58,10 +58,12 @@ public class PauseAction extends Action {
         try
         {
 Thread.sleep(totalpause);
+this.Pass = true;
         }
         catch (InterruptedException e)
                 {
                     System.out.println("pause exception: " + e.toString());
+                    this.Pass = false;
                 }
     }
   

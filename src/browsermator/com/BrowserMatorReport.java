@@ -297,7 +297,7 @@ mainPanel = new JPanel(new BorderLayout());
      {
        bug_INT = BugViewIndex + 1;
        bug_ID = Integer.toString(bug_INT);
-         ReportText = ReportText + "Procedure Title: " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
+         ReportText = ReportText + "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
         int passvalueslength = 0;
         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)

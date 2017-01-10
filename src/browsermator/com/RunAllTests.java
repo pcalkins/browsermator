@@ -2,6 +2,7 @@
 package browsermator.com;
 
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -42,7 +43,7 @@ BrowserMatorReport BrowserMatorReport;
 
  public RunAllTests (SeleniumTestTool in_SiteTest)
  {
-   this.BrowserMatorReport = new BrowserMatorReport(in_SiteTest);
+ 
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
@@ -60,9 +61,14 @@ BrowserMatorReport BrowserMatorReport;
 @Override 
 public String doInBackground()
  {
+     SiteTest.testRunning = true;
+     
     SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     SiteTest.setRunActionsButtonName("Running...(Click to Cancel)");
-
+        for (ProcedureView thisbugview : SiteTest.BugViewArray)
+      {
+          thisbugview.JLabelPass.setVisible(false);
+      }
     RunAllActions(SiteTest, targetbrowser, OSType);
     String donetext = "Run All Procedures";
      return donetext;
@@ -71,7 +77,7 @@ public String doInBackground()
 @Override
  protected void done()
  {
-     
+    SiteTest.testRunning = false; 
     try
     {
         String donetext = get();
@@ -145,9 +151,11 @@ public String doInBackground()
         }
    driver.quit();
      }
+             FillReport();
+    SiteTest.UpdateDisplay(); 
       if (SiteTest.getShowReport())
        {
-    
+      this.BrowserMatorReport = new BrowserMatorReport(SiteTest);
        BrowserMatorReport.OutPutReports();
         if (SiteTest.getIncludeScreenshots())
        {
@@ -184,8 +192,7 @@ public String doInBackground()
           
     System.exit(0);
     }
-     FillReport();
-    SiteTest.UpdateDisplay(); 
+
  }
  
   
@@ -195,6 +202,28 @@ public String doInBackground()
  //   int updatebugindex = bugindex.size()-1;
     
     SiteTest.BugViewArray.get(bugindex.get(0)).JButtonRunTest.setText("Run");
+      if (SiteTest.BugArray.get(bugindex.get(0)).Pass)
+    {
+      
+     
+      SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.GREEN);
+        SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Passed");
+      
+       SiteTest.BugArray.get(bugindex.get(0)).Pass = true;
+       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
+    }
+     else
+     {
+     
+     
+      
+       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.RED);
+       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Failed");
+      
+       
+       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
+       SiteTest.BugArray.get(bugindex.get(0)).Pass = true;
+     }
     
  }
   public void RunAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
@@ -876,19 +905,15 @@ else
     {
         BugPass = true;
   
-        thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Passed");
-       SiteTest.BugArray.get(BugIndex).Pass = true;
-       thisbugview.JLabelPass.setVisible(true);
+     
+    
     }
      else
      {
          BugPass = false;
      
-        thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Failed");
-       SiteTest.BugArray.get(BugIndex).Pass = true;
-       thisbugview.JLabelPass.setVisible(true);
+      
+   
      }
   }
   else
@@ -921,18 +946,14 @@ else
     {
         BugPass = true;
      
-        thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Passed");
-       SiteTest.BugArray.get(BugIndex).Pass = true;
-       thisbugview.JLabelPass.setVisible(true);
+    
+    
     }
      else
      {
          BugPass = false;
-           thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Failed");
-       SiteTest.BugArray.get(BugIndex).Pass = true;
-       thisbugview.JLabelPass.setVisible(true);
+         
+   
      }
   }
   
@@ -940,17 +961,13 @@ else
    {
        NumberOfTestsPassed++;
      
-        thisbugview.JLabelPass.setVisible(true);
-       thisbugview.JLabelPass.setText("Passed");
-       SiteTest.BugArray.get(BugIndex).Pass = true;
-       thisbugview.JLabelPass.setVisible(true);
+      
+     
    }
    else
    {
-     
-       thisbugview.JLabelPass.setText("Failed");
-       SiteTest.BugArray.get(BugIndex).Pass = false;
-       thisbugview.JLabelPass.setVisible(true);
+       
+   
    }
    SiteTest.BugViewArray.get(BugIndex).JButtonRunTest.setText("Run");
    BugIndex++;

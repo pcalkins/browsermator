@@ -31,6 +31,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     String chrome_path;
     SeleniumTestTool SiteTest;
     WebDriver driver;
+ 
   public RunASingleTest (SeleniumTestTool in_SiteTest, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
               this.SiteTest = in_SiteTest;
@@ -39,21 +40,25 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
               this.driver = new HtmlUnitDriver();
+             
             
           }
     public String doInBackground()
  {
+     SiteTest.testRunning = true;
       FFprops = new FireFoxProperties(this.targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
   
    thisbugview.JButtonRunTest.setText("Running...");
+  
     RunSingleTest(bugtorun, thisbugview, targetbrowser, OSType);
     String donetext = "Run";
      return donetext;
  }
  protected void done()
  {
+  SiteTest.testRunning = false;
     try
     {
         String donetext = get();

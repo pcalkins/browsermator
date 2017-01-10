@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.11b";
+private final String version = "1.0.12b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.11b";
+   public final String ProgramVersion = "1.0.12b";
    public String loginName;
    public String loginPassword;
    
@@ -364,10 +364,18 @@ SeleniumToolDesktop.add(Navigator);
                      SeleniumTestTool STAppFrame = MDIClasses.get(CurrentMDIWindowIndex);
                  
                   int closed =  CheckToSaveChanges(STAppFrame, false);
-           
-    
+        if (closed==1)
+      {
+      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      }
+      else
+      {
        MDIClasses.remove(MDIClasses.size()-1); 
+       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
        STAppFrame.dispose();
+      }    
+    
+ 
       }
                     
               
@@ -1084,7 +1092,13 @@ SeleniumToolDesktop.add(Navigator);
   }
   public int CheckToSaveChanges(SeleniumTestTool STAppFrame, Boolean savenow) 
   {
-
+if (STAppFrame.testRunning)
+{
+    Prompter cantClose = new Prompter("You can't close the window while procedures are running.", false);
+   
+    return 1;
+   
+}
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
 AllFieldValuesCheck.add(STAppFrame.OSType);
 AllFieldValuesCheck.add(STAppFrame.TargetBrowser);
@@ -1239,7 +1253,7 @@ return 1;
      for (int x = last_window_index; x>-1; x--)
      {
         closure  =  CheckToSaveChanges(MDIClasses.get(x), true);
-           
+      
       if (closure==1)
       {
       MDIClasses.get(x).setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -2231,7 +2245,7 @@ else
       {
       STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
       }
-      else
+      else 
       {
        MDIClasses.remove(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

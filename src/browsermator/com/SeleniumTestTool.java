@@ -55,6 +55,8 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   HashMap<String, String> VarHashMap = new HashMap();
   HashMap<String, ArrayList> VarLists = new HashMap();
   boolean cancelled;
+  boolean testRunning;
+  
   public SeleniumTestTool(String filename)
   {
       this.cancelled = false;
@@ -72,7 +74,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   this.URL = "";
   this.BugPanel = new JPanel();
   this.IncludeScreenshots = false;
- 
+  this.testRunning = false;
   this.AllFieldValues = new ArrayList<>();
  this.setIconifiable(true);
       initComponents();

@@ -46,16 +46,17 @@ String pause_message;
     public void RunAction(WebDriver driver)
     {
     Prompter thisContinuePrompt = new Prompter(this.pause_message, false);
-    
+    this.Pass = true;
 while(thisContinuePrompt.isVisible() == true){
         try
         {
 Thread.sleep(200);
-this.Pass = true;
+
         }
         catch (InterruptedException e)
                 {
                     System.out.println("pause exception: " + e.toString());
+                    this.Pass = false;
                 }
     }
     }
@@ -63,16 +64,18 @@ this.Pass = true;
     public void RunAction (WebDriver driver, String message)
     {
        Prompter thisContinuePrompt = new Prompter(message, false);
-    
+    this.Pass = true;
     
 while(thisContinuePrompt.isVisible() == true){
         try
         {
 Thread.sleep(200);
+
         }
         catch (InterruptedException e)
                 {
                     System.out.println("pause exception: " + e.toString());
+                    this.Pass = false;
                 }
     }   
     }
@@ -81,6 +84,7 @@ Thread.sleep(200);
     public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
     {
        Prompter thisContinuePrompt = new Prompter(message, true);
+       this.Pass = true;
       thisContinuePrompt.addCancelButtonActionListener(new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
 
@@ -99,6 +103,7 @@ Thread.sleep(200);
         catch (InterruptedException e)
                 {
                     System.out.println("pause exception: " + e.toString());
+                    this.Pass = false;
                 }
     }   
     }

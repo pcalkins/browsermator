@@ -3,7 +3,6 @@ package browsermator.com;
 
 import com.opencsv.CSVReader;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -60,6 +59,7 @@ public class ProcedureView {
      JButton JButtonDeleteBug = new JButton("Remove");
      JButton JButtonRunTest = new JButton("Run");
     JLabel JLabelPass = new JLabel ("Procedure not run yet.");
+    
     GridBagLayout BugLayout = new GridBagLayout();
     GridBagConstraints BugConstraints = new GridBagConstraints();
     JPanel JPanelBug = new JPanel();
@@ -104,7 +104,7 @@ TitledBorder BugPanelBorder;
          
 
 
-
+JLabelPass.setOpaque(true);
          myTable=new MyTable("");
              JLabelOR = new JLabel("OR:");
        JLabelUseList = new JLabel("Use Stored URL List");
