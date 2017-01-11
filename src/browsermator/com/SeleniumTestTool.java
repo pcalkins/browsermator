@@ -312,10 +312,7 @@ public void initVarLists()
           
         if (VarLists.containsKey(newname))
         {       
-       //     updatePlacedListVariables();
-
-         //   VarLists.put(newname, new ArrayList());
-         //   VarLists.put(oldname, new ArrayList());
+      
             
        int bugindex = 0;  
             for (Procedure PROC: BugArray)
@@ -756,22 +753,24 @@ int bugindex = 0;
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-      //    if (oldname.equals(newname))
-      //    {
+         if (oldname.equals(newname))
+         {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
          
-     //     addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
-     //     }
-     //     else
-     //     {
+         addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+          }
+          else
+         {
               if ("".equals(oldname))
               {
               addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
               }
               else
               {
+                 
          updateSelectedArrayName(oldname, newname);
               }
+        }
           AV.JTextFieldVariableVARINDEX.setText(newname);
     
         }
@@ -873,26 +872,27 @@ else
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-      //    if (oldname.equals(newname))
-      //    {
+         if (oldname.equals(newname))
+        {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
          
-     //     addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
-     //     }
-     //     else
-     //     {
+       addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+         }
+       else
+        {
               if ("".equals(oldname))
               {
               addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
               }
               else
               {
+                       
          updateSelectedArrayName(oldname, newname);
               }
           AV.JTextFieldVariableVARINDEX.setText(newname);
-   
+        }
          }
-    //    }
+
         if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
                               String stringactionindex = Integer.toString(actionindex+1);
