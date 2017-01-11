@@ -250,10 +250,20 @@ public void initVarLists()
       {
             for (ActionView AV : BV.ActionsViewList )
         {
-            if (AV.JTextFieldVariable2.getText().contains("[stored_varname") && AV.JTextFieldVariable2.getText().contains(to_updatename))
+            String testing = AV.JTextFieldVariable1.getText();
+            
+            if (AV.JTextFieldVariable1.getText().contains("[stored_varname"))
+            {
+               AV.JTextFieldVariable1.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
+               UpdateScrollPane(BV);
+               
+            }
+              if (AV.JTextFieldVariable2.getText().contains("[stored_varname"))
             {
                AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
+               UpdateScrollPane(BV);
             }
+            
         }
       } 
     }
@@ -272,16 +282,25 @@ public void initVarLists()
       public void updatePlacedListVariables()
     {
  
-   
+   String currentSelectedList = "";
     for (ProcedureView BV : BugViewArray)
       {
-         
+        
+         currentSelectedList = BV.JComboBoxStoredArrayLists.getSelectedItem().toString();
+         String stringindex = "";
             for (ActionView AV : BV.ActionsViewList )
         {
+            stringindex = "" + AV.index + "";
             if (AV.JTextFieldVariable2.getText().contains("[stored_arrayname"))
             {
                AV.JTextFieldVariable2.setText("[stored_arrayname-start]" + AV.index + "[stored_arrayname-end]");
+                      if (currentSelectedList.equals(stringindex))
+          {
+          // BV.JComboBoxStoredArrayLists.setSelectedItem(stringindex);    
+          }
             }
+   
+         
         }
       } 
   
@@ -293,7 +312,7 @@ public void initVarLists()
           
         if (VarLists.containsKey(newname))
         {       
-            updatePlacedListVariables();
+       //     updatePlacedListVariables();
 
          //   VarLists.put(newname, new ArrayList());
          //   VarLists.put(oldname, new ArrayList());
@@ -308,7 +327,7 @@ public void initVarLists()
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
 
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
-   //   BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
+  BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
          BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
    //   UpdateDisplay();
           }
@@ -319,8 +338,8 @@ public void initVarLists()
         {
             VarLists.remove(oldname);
             VarLists.put(newname, new ArrayList());
-            updatePlacedListVariables();
-          
+  //          updatePlacedListVariables();
+         
              int bugindex = 0;  
             for (Procedure PROC: BugArray)
       {
@@ -334,9 +353,10 @@ public void initVarLists()
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
+          BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
-     // BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
-    UpdateStoredListsPulldown(newname);
+  
+   // UpdateStoredListsPulldown(newname);
           }
           bugindex++;
       }
@@ -347,8 +367,7 @@ public void initVarLists()
     }
     public void updateSelectedVariableName(String oldname, String newname)
       {
-          int indexof_oldname = -1;
-          int indexof_newname = -1;
+      
           
         if (VarHashMap.containsKey(newname))
         {       
@@ -728,23 +747,23 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
-        if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+    if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
             
             setHasStoredArray(true);
-               String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(bugindex+1);
+                             String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(BV.index+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-           if (oldname.equals(newname))
-          {
+      //    if (oldname.equals(newname))
+      //    {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
          
-          addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
-          }
-          else
-          {
+     //     addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+     //     }
+     //     else
+     //     {
               if ("".equals(oldname))
               {
               addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
@@ -754,29 +773,32 @@ int bugindex = 0;
          updateSelectedArrayName(oldname, newname);
               }
           AV.JTextFieldVariableVARINDEX.setText(newname);
-          }
-            
+    
         }
-        if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
+       if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
-          setHasStoredVar(true);
-    String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(bugindex+1);
+              setHasStoredVar(true);
+                                      String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(BV.index+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-           if (oldname.equals(newname))
+      
+              if ("".equals(oldname))
           {
-           addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
-         
+           addSelectedVariableName(bugdashactionindex);
+           AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
          
           }
           else
           {
          updateSelectedVariableName(oldname, newname);
+     //    updateInsertedVariableNames(oldname, newname);
           AV.JTextFieldVariableVARINDEX.setText(newname);
           }
+ 
         }
+    
   //      AV.AddDraggers(this, this.BugArray.get(bugindex), BV, AV);
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
@@ -822,8 +844,7 @@ else
 
      this.MainScrollPane.setVisible(true);
   this.revalidate();
-  
-// this.changes = true;
+
  }
      public void UpdateScrollPane(ProcedureView newbugview)
      {
@@ -843,24 +864,23 @@ else
         {
        
           AV.SetIndexes(newbugview.index, actionindex);
-      
-        if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+          if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
             
-           
-               String stringactionindex = Integer.toString(actionindex+1);
+            setHasStoredArray(true);
+                      String stringactionindex = Integer.toString(actionindex+1);
         String stringbugindex = Integer.toString(newbugview.index+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-           if (oldname.equals(newname))
-          {
+      //    if (oldname.equals(newname))
+      //    {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
          
-          addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
-          }
-          else
-          {
+     //     addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+     //     }
+     //     else
+     //     {
               if ("".equals(oldname))
               {
               addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
@@ -871,21 +891,19 @@ else
               }
           AV.JTextFieldVariableVARINDEX.setText(newname);
    
-          }
-            
-        }
-        
+         }
+    //    }
         if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
-   
-                            String stringactionindex = Integer.toString(actionindex+1);
+                              String stringactionindex = Integer.toString(actionindex+1);
         String stringbugindex = Integer.toString(newbugview.index+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
-           if (oldname.equals(newname))
+         
+         if ("".equals(oldname))
           {
-           addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+           addSelectedVariableName(bugdashactionindex);
          
          
           }
@@ -896,6 +914,7 @@ else
           AV.JTextFieldVariableVARINDEX.setText(newname);
           }
         }
+     
      
       
          
@@ -1063,7 +1082,7 @@ else
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
       newbugview.setJTableSource(selectedarraylist);
       newbug.setDataFile(selectedarraylist);
-      UpdateDisplay();
+   //   UpdateDisplay();
 
                }
             
