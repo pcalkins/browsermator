@@ -93,35 +93,19 @@ LocalDateTime[] loop_time_of_test;
   {
      
        try { 
-      //       Actions actions = new Actions(driver);
+  
              
           List<WebElement> elements = driver.findElements(By.xpath(xpather));
           
 
-
- if (elements.size()>1)
- {
-  for (WebElement thiselement: elements)
-  {
-
-   //    actions.click(thiselement).perform();
-       thiselement.click();
-  }
- 
-  
-  this.Pass = true;
- }
- else
- {
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
-  // actions.click(element).perform();
   element.click();
   this.Pass = true;
  }
 
- }
+
 if (elements.isEmpty())
 {
     this.Pass = false;
