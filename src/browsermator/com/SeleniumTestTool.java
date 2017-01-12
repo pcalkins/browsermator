@@ -255,13 +255,13 @@ public void initVarLists()
             if (AV.JTextFieldVariable1.getText().contains("[stored_varname"))
             {
                AV.JTextFieldVariable1.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-               UpdateScrollPane(BV);
+           //    UpdateScrollPane(BV);
                
             }
               if (AV.JTextFieldVariable2.getText().contains("[stored_varname"))
             {
                AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-               UpdateScrollPane(BV);
+           //    UpdateScrollPane(BV);
             }
             
         }
@@ -279,33 +279,7 @@ public void initVarLists()
 }
       }
  
-      public void updatePlacedListVariables()
-    {
- 
-   String currentSelectedList = "";
-    for (ProcedureView BV : BugViewArray)
-      {
-        
-         currentSelectedList = BV.JComboBoxStoredArrayLists.getSelectedItem().toString();
-         String stringindex = "";
-            for (ActionView AV : BV.ActionsViewList )
-        {
-            stringindex = "" + AV.index + "";
-            if (AV.JTextFieldVariable2.getText().contains("[stored_arrayname"))
-            {
-               AV.JTextFieldVariable2.setText("[stored_arrayname-start]" + AV.index + "[stored_arrayname-end]");
-                      if (currentSelectedList.equals(stringindex))
-          {
-          // BV.JComboBoxStoredArrayLists.setSelectedItem(stringindex);    
-          }
-            }
-   
-         
-        }
-      } 
-  
 
-    }
     public void updateSelectedArrayName(String oldname, String newname)
     {
 
@@ -377,7 +351,7 @@ public void initVarLists()
         {
             VarHashMap.remove(oldname);
             VarHashMap.put(newname, "");
-            updatePlacedVariables(oldname, newname);
+           updatePlacedVariables(oldname, newname);
         }
       UpdateStoredVarPulldown();
        
