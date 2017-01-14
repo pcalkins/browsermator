@@ -186,7 +186,7 @@ String stringactionindex = Integer.toString(this.index+1);
  
        public void UpdateActionView()
        {
-      
+   this.JLabelVariable1.setEnabled(false);
    this.JTextFieldVariable1.setEnabled(false);
    this.JTextFieldVariable2.setEnabled(false);
    this.JTextFieldVariable1.setEditable(false);
@@ -198,7 +198,7 @@ String stringactionindex = Integer.toString(this.index+1);
        }
        public void EditActionView()
        {
- 
+ this.JLabelVariable1.setEnabled(true);
     this.JTextFieldVariable1.setEnabled(true);
    this.JTextFieldVariable2.setEnabled(true);
    this.JTextFieldVariable1.setEditable(true);

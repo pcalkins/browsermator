@@ -469,6 +469,8 @@ if (!"Dataloop".equals(thisbugview.Type))
    {
    try
    {
+       if (totalpause>0)
+       {
       try
   {
    Thread.sleep(totalpause);  
@@ -476,7 +478,12 @@ if (!"Dataloop".equals(thisbugview.Type))
   catch (Exception ex)
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+            publish(thisbugindex);
+          break;
+        
   }
+       }
                      String varfieldname="";
           if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
        {
@@ -515,7 +522,15 @@ if (!"Dataloop".equals(thisbugview.Type))
        }
        else
        {
+                 if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+         
+          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest);
+        }
+                 else
+                 {
          ThisAction.RunAction(driver);    
+                 }
        }
        
       
@@ -572,6 +587,7 @@ if (!"Dataloop".equals(thisbugview.Type))
            {
               ThisAction.ScreenshotBase64 = ""; 
              ThisAction.Pass = true; 
+           
            }
    }  
 
@@ -635,14 +651,21 @@ else
         {
             try
             {
+                   if (totalpause>0)
+       {
                   try
   {
   Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-      System.out.println ("Exception when sleeping: " + ex.toString());
+  
+         System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+            publish(thisbugindex);
+          break;
   }
+       }
       
        int indexof_end_tag = 0;
        
@@ -756,14 +779,21 @@ else
  
      try
              {
+                 if (totalpause>0)
+                 {
                                  try
   {
    Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-      System.out.println ("Exception when sleeping: " + ex.toString());
+    
+         System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+            publish(thisbugindex);
+          break;
   }
+                 }
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
@@ -809,6 +839,9 @@ else
       else
       {
           ThisAction.Pass = true;
+          ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        
       }
      
      }
@@ -873,35 +906,35 @@ else
       int BugIndex = 0;
   
     Boolean BugPass = false;
-     for (ProcedureView thisbugview : SiteTest.BugViewArray)
+     for (Procedure thisbug : SiteTest.BugArray)
       {
-        ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
-
+        ArrayList<Action> ActionsToLoop = thisbug.ActionsList;
+        ArrayList<ActionView> ActionViewsToLoop = SiteTest.BugViewArray.get(BugIndex).ActionsViewList;
 
  int NumberOfActionsPassed = 0;
-  if (!"Dataloop".equals(thisbugview.Type))
+  if (!"Dataloop".equals(thisbug.Type))
   {
        int ActionIndex = 0;
-   for( ActionView TheseActionViews : ActionView ) {
+   for( Action TheseActions : ActionsToLoop ) {
 
 
-    LocalDateTime stringtime = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).TimeOfTest;
-       boolean TestState = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).Pass;
+    LocalDateTime stringtime = TheseActions.TimeOfTest;
+       boolean TestState = TheseActions.Pass;
        if (TestState==true)
        {
-           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
            NumberOfActionsPassed++;
        }
        else
        {
-           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
+          ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
            
        }
 
        ActionIndex++;
 
 }
-     if (NumberOfActionsPassed == thisbugview.ActionsViewList.size())
+     if (NumberOfActionsPassed == SiteTest.BugViewArray.get(BugIndex).ActionsViewList.size())
     {
         BugPass = true;
   
@@ -918,31 +951,31 @@ else
   }
   else
   {
-      int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.DataTable.getRowCount();
     for (int x = 0; x<number_of_rows; x++)
     {
         
  int ActionIndex = 0;
-    for( ActionView TheseActionViews : ActionView ) {
+    for( Action TheseActions : ActionsToLoop ) {
 
 
-    LocalDateTime stringtime = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).TimeOfTest;
-       boolean TestState = SiteTest.BugArray.get(BugIndex).ActionsList.get(ActionIndex).loop_pass_values[x];
+    LocalDateTime stringtime = TheseActions.TimeOfTest;
+       boolean TestState = TheseActions.loop_pass_values[x];
        if (TestState==true)
        {
-           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
            NumberOfActionsPassed++;
        }
        else
        {
-           thisbugview.ActionsViewList.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
+           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
            
        }
 
        ActionIndex++;   
   }
     }
-     if (NumberOfActionsPassed == thisbugview.ActionsViewList.size()*number_of_rows)
+     if (NumberOfActionsPassed == SiteTest.BugViewArray.get(BugIndex).ActionsViewList.size()*number_of_rows)
     {
         BugPass = true;
      

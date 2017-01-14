@@ -355,14 +355,20 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    {
    try
    {
+       if (totalpause>0)
+       {
         try
   {
    Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-      System.out.println ("Exception when sleeping: " + ex.toString());
+        System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+         
+          break;
   }
+       }
                       String varfieldname="";
        if (ThisAction.Variable2.contains("[stored_varname-start]"))
        {
@@ -376,7 +382,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
        }
        else
        {
+             if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+         
+          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest);
+        }
+             else
+             {
          ThisAction.RunAction(driver);    
+             }
        }
        
       
@@ -431,14 +445,20 @@ else
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
           ThisAction.RunAction(driver, pause_message, this.SiteTest);
         }
+         if (totalpause>0)
+         {
          try
   {
    Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-      System.out.println ("Exception when sleeping: " + ex.toString());
+        System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+          
+          break;
   }
+         }
        try
        {
                        String varfieldname="";
@@ -505,14 +525,20 @@ else
  }  
      try
      {
-                         try
+         if (totalpause>0)
+         {
+         try
   {
    Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-      System.out.println ("Exception when sleeping: " + ex.toString());
+         System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+  
+          break;
   }
+         }
       ThisAction.RunAction(driver);
        ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;

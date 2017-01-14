@@ -7,7 +7,6 @@ package browsermator.com;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -66,18 +65,21 @@ Thread.sleep(200);
        Prompter thisContinuePrompt = new Prompter(message, false);
     this.Pass = true;
     
-while(thisContinuePrompt.isVisible() == true){
-        try
-        {
-Thread.sleep(200);
 
-        }
-        catch (InterruptedException e)
-                {
-                    System.out.println("pause exception: " + e.toString());
-                    this.Pass = false;
-                }
-    }   
+
+    
+while(thisContinuePrompt.isVisible() == true){
+       try
+       {
+ Thread.sleep(200);
+
+       }
+       catch (InterruptedException e)
+               {
+                  System.out.println("pause exception: " + e.toString());
+                  this.Pass = false;
+              }
+   }   
     }
   
     @Override

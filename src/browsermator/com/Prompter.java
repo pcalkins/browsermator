@@ -19,15 +19,15 @@ public class Prompter extends JFrame implements ActionListener
                 CancelButton = new JButton("Cancel"); 
              
                 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                FlowLayout flo = new FlowLayout();
-                setLayout(flo);
+        //        FlowLayout flo = new FlowLayout();
+        //        setLayout(flo);
                 JLabel messageText = new JLabel(messagetodisplay);
                 JPanel messagepanel = new JPanel();
                 
                 messagepanel.add(messageText);
-              
+             
                 JPanel buttonpanel = new JPanel();
-                buttonpanel.setLayout(new FlowLayout());
+           //  buttonpanel.setLayout(new FlowLayout());
                 buttonpanel.add(ContinueButton);
                 if (this.hasCancelButton)
                 {
@@ -35,26 +35,26 @@ public class Prompter extends JFrame implements ActionListener
                 }
                 
                 JPanel WholePrompt = new JPanel();
-                WholePrompt.setLayout(new FlowLayout());
-                WholePrompt.add(messagepanel);
-                WholePrompt.add(buttonpanel);
+                WholePrompt.setLayout(new BorderLayout());
+                WholePrompt.add(messagepanel, BorderLayout.CENTER);
+                WholePrompt.add(buttonpanel, BorderLayout.SOUTH);
                 
                
-                setSize(400, 200);
+                setSize(250, 100);
                  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
         int x = (int) rect.getMaxX() - this.getWidth();
       
         this.setLocation(x, 0);
-                this.setTitle(messagetodisplay);
+                this.setTitle("Actions Paused");
                 add(WholePrompt);
              
                 
                 setVisible(true);
                 ContinueButton.addActionListener(this);
               
-               pack();
+             //  pack();
             }
  @Override
      public void actionPerformed(ActionEvent event)
