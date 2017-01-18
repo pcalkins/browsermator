@@ -200,7 +200,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false, 0,0);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -251,7 +251,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -271,7 +271,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false);
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
      }
      break;
@@ -284,7 +284,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false);
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false,0,0);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
              }
      break;
@@ -316,7 +316,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false,0,0);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -333,7 +333,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false,0,0);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -385,7 +385,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
              if ("Pause with Continue Button".equals(ThisAction.Type))
         {
          
-          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest);
+          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest,0,0);
         }
              else
              {
@@ -443,7 +443,7 @@ else
          if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-          ThisAction.RunAction(driver, pause_message, this.SiteTest);
+          ThisAction.RunAction(driver, pause_message, this.SiteTest, x, number_of_rows);
         }
          if (totalpause>0)
          {

@@ -277,7 +277,7 @@ public String doInBackground()
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0, 0);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -328,7 +328,7 @@ public String doInBackground()
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false, 0,0);
        
         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
     }
@@ -348,7 +348,7 @@ public String doInBackground()
      catch (Exception ex)
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false);
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0, 0);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
      }
      break;
@@ -361,7 +361,7 @@ public String doInBackground()
      catch (Exception ex)
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false);
+              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false,0, 0);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
              }
      break;
@@ -398,7 +398,7 @@ public String doInBackground()
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false,0, 0);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -420,7 +420,7 @@ options.setBinary(chrome_path);
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false);
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false,0, 0);
        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
    }
      break;
@@ -525,7 +525,7 @@ if (!"Dataloop".equals(thisbugview.Type))
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
          
-          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest);
+        int nothing =  ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest, 0, 0);
         }
                  else
                  {
@@ -607,9 +607,10 @@ else
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
- 
+ int changex = -1;
  for (int x = 0; x<number_of_rows; x++)
     {
+  
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
        if (SiteTest.cancelled)
@@ -633,7 +634,7 @@ else
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-          ThisAction.RunAction(driver, pause_message, this.SiteTest);
+        changex =  ThisAction.RunAction(driver, pause_message, this.SiteTest, x, number_of_rows);
         
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
@@ -667,7 +668,7 @@ else
   }
        }
       
-       int indexof_end_tag = 0;
+     
        
                   String varfieldname="";
        if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
@@ -845,8 +846,25 @@ else
       }
      
      }
-    
-    
+ 
+             if (changex!=x)
+    {
+        if (changex==-1)
+        {
+      
+        }
+        else
+        {
+            if (changex==0)
+            {
+                x = 0;
+            }
+            else
+            {
+        x=changex-1;
+            }
+        }
+    }
     }
      //check if all actions passed
     for( Action ThisAction : thisbug.ActionsList )

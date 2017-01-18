@@ -7,6 +7,7 @@ package browsermator.com;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -15,7 +16,7 @@ import org.openqa.selenium.WebDriver;
  */
 class PauseContinueAction extends Action {
 String pause_message;
-
+int changex = 0;
 
     public PauseContinueAction() 
      {
@@ -44,7 +45,7 @@ String pause_message;
     @Override
     public void RunAction(WebDriver driver)
     {
-    Prompter thisContinuePrompt = new Prompter(this.pause_message, false);
+    Prompter thisContinuePrompt = new Prompter(this.pause_message, false, 0,0);
     this.Pass = true;
 while(thisContinuePrompt.isVisible() == true){
         try
@@ -62,7 +63,7 @@ Thread.sleep(200);
     @Override
     public void RunAction (WebDriver driver, String message)
     {
-       Prompter thisContinuePrompt = new Prompter(message, false);
+       Prompter thisContinuePrompt = new Prompter(message, false,0, 0);
     this.Pass = true;
     
 
@@ -83,10 +84,21 @@ while(thisContinuePrompt.isVisible() == true){
     }
   
     @Override
-    public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
+    public int RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest, int currentrecord, int number_of_records)
     {
-       Prompter thisContinuePrompt = new Prompter(message, true);
+       Prompter thisContinuePrompt = new Prompter(message, true, currentrecord, number_of_records);
        this.Pass = true;
+       if (number_of_records>0)
+       {
+        thisContinuePrompt.addJumpToItemListener((ItemEvent e) -> {
+        if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ChosenIndex = e.getItem();
+            int jumpindex = Integer.parseInt(ChosenIndex.toString());
+            thisContinuePrompt.JumpToRecord = jumpindex;
+            thisContinuePrompt.ClickedContinue();
+        }
+           });
+       }
       thisContinuePrompt.addCancelButtonActionListener(new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
 
@@ -107,8 +119,12 @@ Thread.sleep(200);
                     System.out.println("pause exception: " + e.toString());
                     this.Pass = false;
                 }
-    }   
     }
+changex = thisContinuePrompt.JumpToRecord;
+return changex;
+    }
+
+ 
  
   
 }

@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.17b";
+private final String version = "1.0.18b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.17b";
+   public final String ProgramVersion = "1.0.18b";
    public String loginName;
    public String loginPassword;
    
@@ -1094,7 +1094,7 @@ SeleniumToolDesktop.add(Navigator);
   {
 if (STAppFrame.testRunning)
 {
-    Prompter cantClose = new Prompter("You can't close the window while procedures are running.", false);
+    Prompter cantClose = new Prompter("You can't close the window while procedures are running.", false, 0,0);
    
     return 1;
    

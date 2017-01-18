@@ -77,9 +77,13 @@ LocalDateTime[] loop_time_of_test;
    {
        
    }
-    public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
-    {
+//    public void RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest)
+//    {
         
+//    }
+     public int RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest, int currentrecord, int number_of_records)
+    {
+        return number_of_records;
     }
    public void SetGuts()
    {
