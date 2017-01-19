@@ -607,10 +607,10 @@ else
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
- int changex = -1;
+
  for (int x = 0; x<number_of_rows; x++)
     {
-  
+   int changex = -1;
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
        if (SiteTest.cancelled)
@@ -855,14 +855,9 @@ else
         }
         else
         {
-            if (changex==0)
-            {
-                x = 0;
-            }
-            else
-            {
+        
         x=changex-1;
-            }
+          
         }
     }
     }
