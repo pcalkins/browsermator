@@ -237,27 +237,27 @@ public String doInBackground()
      // legacy file support
          if ("Windows".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
      }   
      if ("Windows32".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
      }
      if ("Windows64".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win64\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win64\\geckodriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-osx\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-osx\\geckodriver");
      }
      if ("Linux-32".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux32\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux32\\geckodriver");
      }
      if ("Linux-64".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux64\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux64\\geckodriver");
      }
    
     if (firefox_path!=null) {
@@ -288,27 +288,27 @@ public String doInBackground()
     //legacy support
      if ("Windows".equals(OSType))
      {
-        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");  
+        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");  
      }
      if ("Windows32".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win32\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
      }
      if ("Windows64".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-win64\\geckodriver.exe");
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win64\\geckodriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-osx\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-osx\\geckodriver");
      }
      if ("Linux-32".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux32\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux32\\geckodriver");
      }
      if ("Linux-64".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-0.11.1-linux64\\geckodriver");
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux64\\geckodriver");
      }
    
     if (firefox_path!=null) {
@@ -385,11 +385,11 @@ public String doInBackground()
      }
      if ("Linux-32".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver-linux32");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver");
      }
      if ("Linux-64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver-linux64");
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver");
      }
      try
      {

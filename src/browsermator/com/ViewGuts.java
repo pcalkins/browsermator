@@ -245,12 +245,12 @@ this.Guts+="\ndriver.close();\n}" +
      }
      if ("Linux-32".equals(OSType))
      {
-         this.Guts+="System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_linux32\\\\chromedriver-linux32\");";
+         this.Guts+="System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_linux32\\\\chromedriver\");";
      
      }
      if ("Linux-64".equals(OSType))
      {
-         this.Guts+="System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_linux64\\\\chromedriver-linux64\");";
+         this.Guts+="System.setProperty(\"webdriver.chrome.driver\", \"chromedriver_linux64\\\\chromedriver\");";
      
      }
      this.Guts+="driver = new ChromeDriver();";
