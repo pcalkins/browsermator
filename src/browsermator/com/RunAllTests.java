@@ -595,8 +595,11 @@ if (!"Dataloop".equals(thisbugview.Type))
 else
 {
     String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
+    if (selectedarraylist!="Select a stored URL List")
+    {
       thisbugview.setJTableSource(selectedarraylist);
       thisbug.setDataFile(selectedarraylist);
+    }
    
      
  int number_of_rows = thisbugview.myTable.DataTable.getRowCount();

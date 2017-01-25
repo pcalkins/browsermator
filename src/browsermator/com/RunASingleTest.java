@@ -40,7 +40,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
               this.driver = new HtmlUnitDriver();
-             
+              this.SiteTest.cancelled = false;
             
           }
     public String doInBackground()
@@ -350,7 +350,13 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  if (!"Dataloop".equals(thisbugview.Type))
   {
    for( Action ThisAction : bugtorun.ActionsList ) {
-       
+        if (SiteTest.cancelled)
+          {
+          
+             publish(bugtorun.index);
+             
+             break;
+          }  
            if (!ThisAction.Locked)
    {
    try
@@ -384,8 +390,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
        {
              if ("Pause with Continue Button".equals(ThisAction.Type))
         {
+         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", SiteTest, 0, 0); 
          
-          ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest,0,0);
         }
              else
              {
@@ -429,7 +435,14 @@ else
  
      for (int x = 0; x<number_of_rows; x++)
     {
+         int changex = -1;
     for( Action ThisAction : bugtorun.ActionsList ) {
+         if (SiteTest.cancelled)
+          {
+          
+             publish(bugtorun.index);
+             break;
+          }  
            String original_value1 = ThisAction.Variable1;
            String original_value2 = ThisAction.Variable2;
       if (!ThisAction.Locked)
@@ -443,24 +456,29 @@ else
          if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-          ThisAction.RunAction(driver, pause_message, this.SiteTest, x, number_of_rows);
+          changex =  ThisAction.RunAction(driver, pause_message, SiteTest, x, number_of_rows);
+  
         }
-         if (totalpause>0)
-         {
-         try
+         else
+                   try
+            {
+                   if (totalpause>0)
+       {
+                  try
   {
-   Thread.sleep(totalpause);  
+  Thread.sleep(totalpause);  
   }
   catch (Exception ex)
   {
-        System.out.println ("Exception when sleeping: " + ex.toString());
+  
+         System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
-          
+            publish(bugtorun.index);
           break;
   }
+      
          }
-       try
-       {
+   
                        String varfieldname="";
        if (ThisAction.Variable2.contains("[stored_varname-start]"))
        {
@@ -562,6 +580,19 @@ else
           ThisAction.Pass = true;
       }
      }
+                if (changex!=x)
+    {
+        if (changex==-1)
+        {
+      
+        }
+        else
+        {
+        
+        x=changex-1;
+          
+        }
+    }
     }
    }
 
