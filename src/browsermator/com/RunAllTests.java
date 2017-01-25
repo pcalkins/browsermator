@@ -595,7 +595,7 @@ if (!"Dataloop".equals(thisbugview.Type))
 else
 {
     String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
-    if (selectedarraylist!="Select a stored URL List")
+    if (!"Select a stored URL List".equals(selectedarraylist))
     {
       thisbugview.setJTableSource(selectedarraylist);
       thisbug.setDataFile(selectedarraylist);
@@ -968,6 +968,7 @@ else
   else
   {
       int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.DataTable.getRowCount();
+
     for (int x = 0; x<number_of_rows; x++)
     {
         
@@ -1077,6 +1078,8 @@ else
       int number_of_rows = 0;
      for (Action ThisAction: thisproc.ActionsList)
      {
+         if (!ThisAction.Locked)
+         {
       String concat_variable;
  
               DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
@@ -1096,6 +1099,7 @@ else
             SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
             
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
+
             }
             }
         } 
@@ -1116,7 +1120,7 @@ else
             }
             }
         } 
-    
+         }
     }
    
      return number_of_rows;

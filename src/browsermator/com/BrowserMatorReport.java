@@ -312,7 +312,8 @@ mainPanel = new JPanel(new BorderLayout());
         {
         action_INT = ActionViewIndex + 1;
         action_ID = Integer.toString(action_INT) + "-" + passindex;
-       
+           if (!SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Locked)  
+       {
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
             String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
@@ -382,6 +383,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
             pass_string = " has passed at ";
         }
+   
             String concat_variable;
             String concat_variable2;
  concat_variable = var1Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
@@ -394,6 +396,7 @@ mainPanel = new JPanel(new BorderLayout());
      {
     ThisValue2 = concat_variable2;  
      }
+      
  if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
@@ -439,6 +442,7 @@ mainPanel = new JPanel(new BorderLayout());
           
                 }
             }
+        }
             }
             }
             else

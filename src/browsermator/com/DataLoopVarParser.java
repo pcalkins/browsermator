@@ -29,14 +29,14 @@ public class DataLoopVarParser {
    hasDataLoopVar = true;  
   
    int end_fieldcount = 0;
-   int start_fieldcount = 0;
+
     if (textfieldvalue.contains("[dataloop-field-start]") && textfieldvalue.contains("[dataloop-field-end]"))   
     {
         String[] split_testfield_end = textfieldvalue.split("\\[dataloop\\-field\\-end\\]");
-        String[] split_testfield_start = textfieldvalue.split("\\[dataloop\\-field\\-start\\]");
+    
       
         end_fieldcount = split_testfield_end.length;
-        start_fieldcount = split_testfield_start.length;
+   
       //  DataLoopVars = new DataLoopVarHelper[end_fieldcount];
        
         for (int x=0; x<end_fieldcount; x++)
