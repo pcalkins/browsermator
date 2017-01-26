@@ -16,18 +16,25 @@ public class ClickAtImageSRCActionView extends ActionView  {
        
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
-       this.JCheckBoxBoolVal1 = new JCheckBox("Right Click");
-       this.JPanelAction.add(this.JCheckBoxBoolVal1);
+     this.JCheckBoxBoolVal1 = new JCheckBox("Right Click");
+               this.JCheckBoxBoolVal2 = new JCheckBox("Multi-Click");
+               this.JPanelAction.add(this.JCheckBoxBoolVal1);
+               this.JPanelAction.add(this.JCheckBoxBoolVal2);
      this.JPanelAction.add(this.JButtonOK);
          this.JPanelAction.add(this.JButtonDelete);
    }
    @Override  
  public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-    addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+         addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
           action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
           
        });
+       addJCheckBoxBoolVal2ActionListener((ActionEvent e) -> {
+          action.setBoolVal2(JCheckBoxBoolVal2.isSelected());
+          
+       });
+
         AddDraggers(action, Window, newbug, newbugview);
                      addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);

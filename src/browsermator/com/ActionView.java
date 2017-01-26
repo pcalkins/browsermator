@@ -45,6 +45,7 @@ public abstract class ActionView implements Listenable, Initializable{
    JLabel JLabelIndex;
 
    JCheckBox JCheckBoxBoolVal1;
+   JCheckBox JCheckBoxBoolVal2;
    JButton JButtonBrowseForFile;
    JButton JButtonDragIt;
    Boolean Locked;
@@ -62,6 +63,7 @@ public abstract class ActionView implements Listenable, Initializable{
       this.JLabelVariable1 = new JLabel("Generic");
       this.JLabelVariable2 = new JLabel("Generic");
       this.JCheckBoxBoolVal1 = new JCheckBox("Press Enter Key");
+      this.JCheckBoxBoolVal2 = new JCheckBox("Multi-Click");
     this.JButtonOK = new JButton("Disable");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
@@ -131,6 +133,10 @@ String stringactionindex = Integer.toString(this.index+1);
       public void addJCheckBoxBoolVal1ActionListener(ActionListener actlistener)
      {
          JCheckBoxBoolVal1.addActionListener(actlistener);
+     }
+         public void addJCheckBoxBoolVal2ActionListener(ActionListener actlistener)
+     {
+         JCheckBoxBoolVal2.addActionListener(actlistener);
      }
       public void addJTextFieldPasswordActionListener(ActionListener actlistener)
      {
@@ -210,7 +216,7 @@ String stringactionindex = Integer.toString(this.index+1);
   
        }
        @Override
-       public void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean LOCKED)
+       public void SetVars(String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean BoolVal2, Boolean LOCKED)
        {
          this.JTextFieldVariable1.setText(Variable1);
          this.JTextFieldVariable2.setText(Variable2);
@@ -220,6 +226,10 @@ String stringactionindex = Integer.toString(this.index+1);
          if (BoolVal1)
          {
              this.JCheckBoxBoolVal1.setSelected(true);
+         }
+          if (BoolVal2)
+         {
+             this.JCheckBoxBoolVal2.setSelected(true);
          }
          if (this.Locked)
          {

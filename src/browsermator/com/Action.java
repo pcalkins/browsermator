@@ -22,6 +22,7 @@ String Type;
 String Variable1;
 String Variable2;
 Boolean BoolVal1;
+Boolean BoolVal2;
 String BugURL;
 Boolean Locked;
 String Password;
@@ -48,6 +49,7 @@ LocalDateTime[] loop_time_of_test;
   this.Variable2 = "";
   this.Password = "";
   this.BoolVal1 = false;
+  this.BoolVal2 = false;
   this.Locked = false;
   this.BugURL = "https://www.browsermator.com";
   this.Loopable = false;
@@ -93,6 +95,7 @@ LocalDateTime[] loop_time_of_test;
   {
      return Guts; 
   }
+  
   public void ClickCatchAction(WebDriver driver, String xpather)
   {
      
@@ -101,7 +104,24 @@ LocalDateTime[] loop_time_of_test;
              
           List<WebElement> elements = driver.findElements(By.xpath(xpather));
           
+ if (this.BoolVal2)
+ {
 
+  if (elements.size()>1)
+ {
+  for (WebElement thiselement: elements)
+  {
+
+   //    actions.click(thiselement).perform();
+       thiselement.click();
+  }
+ 
+  
+  this.Pass = true;
+ }
+ }
+else
+  {
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
@@ -114,6 +134,7 @@ if (elements.isEmpty())
 {
     this.Pass = false;
 }
+  }
  }
  catch (Exception e)
  {
@@ -166,6 +187,11 @@ if (elements.isEmpty())
     this.BoolVal1 = BoolVal1;
     
 }
+    public void setBoolVal2 (Boolean BoolVal2)
+{
+    this.BoolVal2 = BoolVal2;
+    
+}
 public void setActionIndex (int newindex)
 {
     this.index = newindex;
@@ -181,12 +207,13 @@ public void setActionIndex (int newindex)
    
    }
 @Override
- public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean LOCKED)
+ public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean BoolVal2, Boolean LOCKED)
  {
      this.Variable1 = Variable1;
      this.Variable2 = Variable2;
      this.Password = Password;
      this.BoolVal1 = BoolVal1;
+     this.BoolVal2 = BoolVal2;
      this.Locked = LOCKED;
  }
  

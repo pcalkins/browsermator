@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.20b";
+private final String version = "1.0.21b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.20b";
+   public final String ProgramVersion = "1.0.21b";
    public String loginName;
    public String loginPassword;
    
@@ -1166,8 +1166,13 @@ for (Procedure thisproc: STAppFrame.BugArray)
         {
             checkingboolval1 = "true";
         }
-        
-        AllFieldValuesCheck.add(checkingboolval1);
+         AllFieldValuesCheck.add(checkingboolval1);
+        String checkingboolval2 = "false";
+           if (thisact.BoolVal2)
+        {
+            checkingboolval2 = "true";
+        }
+        AllFieldValuesCheck.add(checkingboolval2);
     }
 }
 if (!STAppFrame.AllFieldValues.equals(AllFieldValuesCheck))
@@ -1886,8 +1891,20 @@ int action_index_for_flatten = 0;
     {
         tempstringbool = "true";
     }
+    
     xmlfile.writeCharacters(tempstringbool);
     xmlfile.writeEndElement();
+    
+     xmlfile.writeStartElement("BoolVal2");
+    String tempstringbool2 = "false";
+    if (thisaction.BoolVal2)
+    {
+        tempstringbool2 = "true";
+    }
+    
+    xmlfile.writeCharacters(tempstringbool2);
+    xmlfile.writeEndElement();
+    
     String ActionIndex = Integer.toString(action_index_for_flatten);   
     
     xmlfile.writeStartElement("ActionIndex");
@@ -1973,6 +1990,15 @@ int action_index_for_flatten = 0;
     }
     xmlfile.writeCharacters(tempstringbool);
     xmlfile.writeEndElement();
+    
+    xmlfile.writeStartElement("BoolVal2");
+    String tempstringbool2 = "false";
+    if (thisaction.BoolVal2)
+    {
+        tempstringbool2 = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool2);
+    xmlfile.writeEndElement();
     String ActionIndex = Integer.toString(action_index_for_flatten);   
     xmlfile.writeStartElement("ActionIndex");
     xmlfile.writeCharacters(ActionIndex);
@@ -2053,6 +2079,16 @@ int action_index_for_flatten = 0;
     }
     xmlfile.writeCharacters(tempstringbool);
     xmlfile.writeEndElement();
+    
+     xmlfile.writeStartElement("BoolVal2");
+    String tempstringbool2 = "false";
+    if (thisaction.BoolVal2)
+    {
+        tempstringbool2 = "true";
+    }
+    xmlfile.writeCharacters(tempstringbool2);
+    xmlfile.writeEndElement();
+    
     String ActionIndex = Integer.toString(thisaction.index);   
     xmlfile.writeStartElement("ActionIndex");
     xmlfile.writeCharacters(ActionIndex);
@@ -2147,6 +2183,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
     for (Action thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";
+        String checkingboolval2 = "false";
         STAppFrame.AllFieldValues.add(thisact.Variable1);
        
         STAppFrame.AllFieldValues.add(thisact.Variable2);
@@ -2156,6 +2193,11 @@ for (Procedure thisproc: STAppFrame.BugArray)
             checkingboolval1 = "true";
         }
         STAppFrame.AllFieldValues.add(checkingboolval1);
+          if (thisact.BoolVal2)
+        {
+            checkingboolval2 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval2);
     }
 }
 STAppFrame.changes = false;
@@ -2463,6 +2505,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    String Variable2 = "";
    String LOCKED = "false";
    String BoolVal1 = "false";
+   String BoolVal2 = "false";
     String TimeOfTest;
     String ActionType = "none";
     String ActionIndex;
@@ -2471,6 +2514,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     
     
    Boolean RealBoolVal1 = false;
+   Boolean RealBoolVal2 = false;
    Boolean boolLOCKED = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
@@ -2499,6 +2543,13 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             if (BoolVal1.equals("true"))
                     {
                     RealBoolVal1 = true;
+                    }
+           break;
+         case "BoolVal2":
+            BoolVal2 = thisActionNodeValue;
+            if (BoolVal2.equals("true"))
+                    {
+                    RealBoolVal2 = true;
                     }
            break;
         case "LOCKED":
@@ -2541,8 +2592,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
@@ -2553,8 +2604,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
              {
                Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
               STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);

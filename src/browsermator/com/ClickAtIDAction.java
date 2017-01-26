@@ -7,11 +7,12 @@ import org.openqa.selenium.WebDriver;
 public class ClickAtIDAction extends Action
 {
     
-    ClickAtIDAction (String IDToClick, boolean BoolVal1)
+    ClickAtIDAction (String IDToClick, boolean BoolVal1, boolean BoolVal2)
     {
         this.Type = "Click at ID"; 
         this.Variable1 = IDToClick;
         this.BoolVal1 = BoolVal1;
+        this.BoolVal2 = BoolVal2;
     }
     @Override
         public void SetGuts()

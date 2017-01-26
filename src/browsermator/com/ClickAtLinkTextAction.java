@@ -9,11 +9,12 @@ import org.openqa.selenium.interactions.Actions;
 public class ClickAtLinkTextAction extends Action 
 {
     
-    ClickAtLinkTextAction (String LinkTextToClick, boolean BoolVal1)
+    ClickAtLinkTextAction (String LinkTextToClick, boolean BoolVal1, boolean BoolVal2)
     {
         this.Type = "Click at Link Text"; 
         this.Variable1 = LinkTextToClick;
          this.BoolVal1 = BoolVal1;
+         this.BoolVal2 = BoolVal2;
     }
     @Override
     public void SetGuts()

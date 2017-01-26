@@ -63,11 +63,11 @@ public class ActionsMaster {
     ActionViewHashMap.put("Up Arrow Key", new UpArrowKeyActionView());
  
   ActionHashMap.put("Back Button", new BackAction());
-  ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false));
-  ActionHashMap.put("Click at ID", new ClickAtIDAction("", false));
-  ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false));
-  ActionHashMap.put("Click at Link Text", new ClickAtLinkTextAction("", false));
-  ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false));
+  ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false, false));
+  ActionHashMap.put("Click at ID", new ClickAtIDAction("", false, false));
+  ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false, false));
+  ActionHashMap.put("Click at Link Text", new ClickAtLinkTextAction("", false, false));
+  ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false, false));
   ActionHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowAction());
   ActionHashMap.put("Down Arrow Key", new DownArrowKeyAction());
   ActionHashMap.put("Drag From XPATH to XPATH", new DragAndDropAction("", ""));

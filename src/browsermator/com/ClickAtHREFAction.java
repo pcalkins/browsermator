@@ -6,19 +6,19 @@ import org.openqa.selenium.WebDriver;
 public class ClickAtHREFAction extends Action 
 {
     
-    ClickAtHREFAction (String HREFToClick, boolean BoolVal1)
+    ClickAtHREFAction (String HREFToClick, boolean BoolVal1, boolean BoolVal2)
     {
         this.Type = "Click at HREF"; 
         this.Variable1 = HREFToClick;
          this.BoolVal1 = BoolVal1;
-       
+         this.BoolVal2 = BoolVal2;
     }
     
     @Override
      public void RunAction(WebDriver driver)
     {
  String xpather = "//a[@href='" + this.Variable1 + "']";
- if (this.BoolVal1.equals(true))
+ if (this.BoolVal1)
 {
      RightClickCatchAction(driver, xpather);
  }

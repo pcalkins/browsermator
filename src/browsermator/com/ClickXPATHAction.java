@@ -7,11 +7,12 @@ public class ClickXPATHAction extends Action
 {
 
     
-  ClickXPATHAction (String ToClick, boolean BoolVal1)
+  ClickXPATHAction (String ToClick, boolean BoolVal1, boolean BoolVal2)
     {
         this.Variable1 = ToClick;
         this.Type = "Click at XPATH";
         this.BoolVal1 = BoolVal1;
+        this.BoolVal2 = BoolVal2;
         this.Loopable = true;
     }
   @Override

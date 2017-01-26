@@ -1171,7 +1171,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
             this.changes=true;  
            });
             newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
-              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false);
+              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
               ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
              

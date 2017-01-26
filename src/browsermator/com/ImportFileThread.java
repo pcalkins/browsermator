@@ -1,28 +1,17 @@
 package browsermator.com;
 
 import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import javax.swing.event.InternalFrameEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -140,12 +129,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    String Password = "";
    String LOCKED = "false";
    String BoolVal1 = "false";
+   String BoolVal2 = "false";
     String TimeOfTest;
     String ActionType = "none";
     String ActionIndex;
     String ActionPass;
     
    Boolean RealBoolVal1 = false;
+   Boolean RealBoolVal2 = false;
    Boolean boolLOCKED = false;
     for (int k = 0; k<ActionNodes.getLength(); k++)
     {
@@ -174,6 +165,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             if (BoolVal1.equals("true"))
                     {
                     RealBoolVal1 = true;
+                    }
+            break;
+            
+        case "BoolVal2":
+            BoolVal2 = thisActionNodeValue;
+            if (BoolVal2.equals("true"))
+                    {
+                    RealBoolVal2 = true;
                     }
             break;
         case "LOCKED":
@@ -219,8 +218,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
@@ -231,8 +230,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
              {
                Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, boolLOCKED);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
