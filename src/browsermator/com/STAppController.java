@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.21b";
+private final String version = "1.0.22b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.21b";
+   public final String ProgramVersion = "1.0.22b";
    public String loginName;
    public String loginPassword;
    

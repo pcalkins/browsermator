@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -39,7 +40,18 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.thisbugview = in_thisbugview;
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
-              this.driver = new HtmlUnitDriver();
+                if (chrome_path!=null) {
+      ChromeOptions options = new ChromeOptions();
+     
+options.setBinary(chrome_path);
+ System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+  driver = new ChromeDriver(options);     
+   }
+   else
+   {
+  this.driver = new HtmlUnitDriver();
+   }
+            
               this.SiteTest.cancelled = false;
             
           }
@@ -200,9 +212,16 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false, 0,0);
-       
-        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+         SiteTest.setTargetBrowser("Chrome (WinXP)");
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
+   
     }
       
      break;
@@ -251,9 +270,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     catch (Exception ex)
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
-       
-        SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+         SiteTest.setTargetBrowser("Chrome (WinXP)");
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
     }
       
      break;
@@ -271,8 +296,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
+          if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
+         SiteTest.setTargetBrowser("Chrome (WinXP)");
+    }
+          else
+          {
          Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
      }
      break;
      case "Internet Explorer-64":
@@ -284,8 +316,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      catch (Exception ex)
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-              Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer 64 driver, will fallback to HTMLUnitDriver", false,0,0);
-         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");    
+         if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
+         SiteTest.setTargetBrowser("Chrome (WinXP)");
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
              }
      break;
      case "Chrome":
@@ -316,8 +355,17 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome driver, will fallback to HTMLUnitDriver", false,0,0);
-       SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+        if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("We could not launch the Chromedriver, will fallback to Chrome (WinXP)", false,0,0);
+         SiteTest.setTargetBrowser("Chrome (WinXP)");
+        
+         
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("We could not launch the Chromedriver, will fallback to HTMLUnitDriver", false,0,0);
+         SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
    }
      break;
    case "Chrome (WinXP)":

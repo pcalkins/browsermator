@@ -380,7 +380,7 @@ public void initVarLists()
         {
      String[] parts = keyname.split("-");
  String leftpart = parts[0];
- if (leftpart!="")
+ if (!"".equals(leftpart))
  {
  int bugindex = Integer.parseInt(leftpart);
  if (bugindex<BV.index+1)
