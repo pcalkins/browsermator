@@ -548,6 +548,10 @@ catch (Exception e) {
          public boolean getIncludeScreenshots()
     {
          boolean checked = this.jCheckBoxIncludeScreenshots.isSelected();
+         if (getShowReport()==false)
+         {
+             checked = false;
+         }
     this.IncludeScreenshots = checked;
     return checked;
        
