@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -606,11 +607,9 @@ if (!"Dataloop".equals(thisbugview.Type))
     { 
       try
        {
-     String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
-     String scrn = OneQuarterBase64(full_scrn);
-     
-    ThisAction.ScreenshotBase64 = "<img style = \"display: inline\" src=\"data:image/png;base64,"+scrn+"\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
- //  ThisAction.ScreenshotBase64 = "<img src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.ScreenshotBase64 = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
        }
        catch (Exception ex)
        {
@@ -684,7 +683,7 @@ else
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
            if (SiteTest.getIncludeScreenshots())
     { 
-       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
+       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
     } 
            else
@@ -778,9 +777,10 @@ else
     { 
               try
         {
-                  String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
-     String scrn = OneQuarterBase64(full_scrn);
-      ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+scrn+"\"></img>";
+    File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+  
         }
                  catch (Exception ex)
        {
@@ -849,10 +849,10 @@ else
     { 
         try
         {
-                      String full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
-     String scrn = OneQuarterBase64(full_scrn);
-          ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"data:image/png;base64,"+scrn+"\"></img>";
-        }
+     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+       }
                   catch (Exception ex)
        {
           ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";

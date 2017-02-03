@@ -78,8 +78,8 @@ public class ProcedureView {
    // JButton JButtonFindPageTitlePassFail = new JButton ("Find Page Title");
    // JButton JButtonDoNotFindPageTitlePassFail = new JButton ("Do Not Find Page Title");
     JButton JButtonYesNoPromptPassFail = new JButton ("Yes/No Question (Yes Passes Test)");
-    JLabel JLabelQuickActions = new JLabel ("Quick Select Action Buttons:");
-    JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Action Buttons:");
+    JLabel JLabelQuickActions = new JLabel ("Quick Select Actions:");
+    JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Actions:");
   //  JLabel JLabelQuickActionsPassFail = new JLabel ("Quick Select Pass/Fail Action Buttons:");
     MyTable myTable;
     int last_selected_procedure_index = 0;
@@ -164,11 +164,8 @@ for (String passfailaction_name : passfailaction_keys)
      setStandardButtonSize(JButtonGoAction);
      setStandardButtonSize(JButtonClickAtXPATH);
      setStandardButtonSize(JButtonTypeAtXPATH);
-  //   setStandardButtonSize(JButtonTypePasswordAtXPATH);
      setStandardButtonSize(JButtonFindXPATHPassFail);
      setStandardButtonSize(JButtonDoNotFindXPATHPassFail);
-  //   setStandardButtonSize(JButtonFindPageTitlePassFail);
-  //   setStandardButtonSize(JButtonDoNotFindPageTitlePassFail);
      setStandardButtonSize(JButtonYesNoPromptPassFail);
      
      LeftSideButtonsPanel.add(JLabelQuickActions);
@@ -185,7 +182,6 @@ for (String passfailaction_name : passfailaction_keys)
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      LeftSideButtonsPanel.add(JButtonDoNotFindXPATHPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
- 
      LeftSideButtonsPanel.add(JButtonYesNoPromptPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      
@@ -196,20 +192,14 @@ for (String passfailaction_name : passfailaction_keys)
      MoveButtonsPanel.add(JLabelPass);
  
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
-  
      AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty );
      RemoveRunButtonsPanel.add(JButtonDeleteBug);
      RemoveRunButtonsPanel.add(JButtonRunTest);
 
- // AddToGrid(JButtonDeleteBug, 1, 4, 1, 1, global_weightx, global_weighty);
- 
- // AddToGrid(JButtonRunTest, 1, 5, 1, 1, global_weightx, global_weighty);
-   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty);
-  AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
-     JLabelPass.setVisible(false);
 
- //   AddToGrid(JLabelPass, 1, 5, 1, 1, global_weightx, global_weighty);  
- 
+   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty);
+   AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
+    JLabelPass.setVisible(false);
    
     BugConstraints.insets = new Insets(2,2,4,2);
     JPanel DoActionComboPanel = new JPanel();
@@ -220,10 +210,10 @@ for (String passfailaction_name : passfailaction_keys)
     AddToGrid (JLabelPassFailActions, 2, 3, 1, 1, global_weightx, global_weighty);
     AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty); 
 
-    BugConstraints.insets = new Insets(10,10,10,10);
+    BugConstraints.insets = new Insets(1,1,1,1);
    AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, 0.1, global_weighty); 
   ActionScrollPane.setVisible(false);
-  ActionScrollPane.setSize(new Dimension(1024, 840));
+  ActionScrollPane.setSize(new Dimension(800, 840));
 
     AddToGrid (ActionScrollPanel, 3, 1, 6, 5, global_weightx, global_weighty);
     ActionScrollPanel.add(ActionScrollPane);
@@ -257,7 +247,7 @@ for (String passfailaction_name : passfailaction_keys)
       public final void setStandardButtonSize(JButton thisbutton)
      {
      //    thisbutton.setSize(new Dimension(5000, 5000));
-         thisbutton.setMaximumSize(new Dimension(225, 300));
+         thisbutton.setMaximumSize(new Dimension(200, 100));
      }
      public void ShowFieldInstructions(boolean showit, int textfieldindex, int bugindex, int actionindex)
      {
@@ -355,7 +345,7 @@ for (String passfailaction_name : passfailaction_keys)
        String stringbugindex = Integer.toString(this.index+1);
        
        this.JLabelBugIndex.setText(stringbugindex);
-        if (this.Type=="Procedure")
+        if ("Procedure".equals(this.Type))
         {
     JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
@@ -462,7 +452,7 @@ for (String passfailaction_name : passfailaction_keys)
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
    
-      JTableScrollPane.setSize(new Dimension(1024, 840));
+      JTableScrollPane.setSize(new Dimension(600, 840));
      JTableScrollPane.setVisible(true);
      
   
@@ -479,11 +469,11 @@ for (String passfailaction_name : passfailaction_keys)
     
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
       
-    panelForTable.add(JTableScrollPane);
+    panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 0, 2, 1, 1, 1);
    
-    AddToGrid(panelForTable, 10, 0, 5, 8, .5, .5);
+    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     
