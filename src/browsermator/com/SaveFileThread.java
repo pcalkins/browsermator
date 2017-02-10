@@ -73,6 +73,10 @@ public String doInBackground()
          STAppFrame.setFlattenFileButtonName("Flattenning...");
          
      }
+     else
+     {
+         mainApp.RefreshCleanState(STAppFrame);
+     }
      
  }
  @Override

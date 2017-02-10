@@ -78,9 +78,9 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.24b";
+private final String version = "1.0.25b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.24b";
+   public final String ProgramVersion = "1.0.25b";
    public String loginName;
    public String loginPassword;
    
@@ -224,9 +224,11 @@ super.setSize(Width-300,Height-300);
     
      Navigator.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
      Navigator.addInternalFrameListener(new InternalFrameAdapter(){
+
     @Override
     public void internalFrameDeactivated(    InternalFrameEvent event){
       JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
+      String frame_event_name = event.getInternalFrame().getTitle();
                 for (JInternalFrame iframe : iframes)
                 {
                   
@@ -235,6 +237,7 @@ super.setSize(Width-300,Height-300);
                        if ("".equals(thisFrameName))
                        {
                            SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
+                       
                        }
                   
                 }   
@@ -243,7 +246,7 @@ super.setSize(Width-300,Height-300);
         @Override
     public void internalFrameActivated(    InternalFrameEvent event){
       JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
-
+ String frame_event_name = event.getInternalFrame().getTitle();
       for (JInternalFrame iframe : iframes)
                 {
                   
@@ -254,6 +257,16 @@ super.setSize(Width-300,Height-300);
                            SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                         
                        }
+                       else
+                       if (frame_event_name.equals(thisFrameName))
+                       {
+                           if (iframes.length>1)
+                           {
+                         SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-2);
+                 
+                           }
+                       }
+                       
                 
                  
                  
@@ -282,22 +295,18 @@ super.setSize(Width-300,Height-300);
     CurrentMDIWindowIndex = -1;
      
 Navigator.setVisible(true);
-Navigator.setSize(1000,800);
+
 //Navigator.pack();
  initComponents();
 
  add(SeleniumToolDesktop);
 
 SeleniumToolDesktop.add(Navigator);
-      try
-        {
-        Navigator.setMaximum(true);
-        }
-        catch (PropertyVetoException e)
-        {
-            System.out.println("setting maximum error" + e);
-        }
-    
+
+ int super_width = super.getWidth();
+int super_height = super.getHeight()-20;
+
+Navigator.setSize(super_width,super_height);   
   if (args.length>0) { CheckArgs(args);}
   
   CurrentMDIWindowIndex = GetCurrentWindow();  
@@ -1123,7 +1132,7 @@ if (STAppFrame.getEmailReportFail())
 {
     sthisbool = "true";
 }
-sthisbool = "false";
+
 AllFieldValuesCheck.add(sthisbool);
 
 
@@ -2120,10 +2129,23 @@ xmlfile.writeEndElement();
      OpenFileThread OPENREF = new OpenFileThread(this, file, this.MDIClasses, calling_MDI_Index, true, false);
   OPENREF.execute();
             }
-            else
-            {
+
+        }
+if (isFlatten==false)
+{
+this.filename = file.getAbsolutePath();
+STAppFrame.setProperties(this.filename);
+this.Navigator.addRecentFile(file.getAbsolutePath());
+
+}
+
+     
+        }
+ public void RefreshCleanState(SeleniumTestTool STAppFrame)
+ {
+       
  
-    STAppFrame.setProperties(file.getAbsolutePath());
+   
             STAppFrame.AllFieldValues.clear();
            
 STAppFrame.AllFieldValues.add(STAppFrame.OSType);
@@ -2201,26 +2223,13 @@ for (Procedure thisproc: STAppFrame.BugArray)
     }
 }
 STAppFrame.changes = false;
-            }
-        }
-if (isFlatten==false)
-{
-this.filename = file.getAbsolutePath();
-STAppFrame.setProperties(this.filename);
-this.Navigator.addRecentFile(file.getAbsolutePath());
-
-}
-else
-{
-   
-}
-     
-        }
-
+            
+ }
   public void SaveFileNow (SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten) throws IOException, XMLStreamException
   {
        int current_MDI_Index = GetCurrentWindow();
   SaveFile (STAppFrame, isSaveAs, isFlatten, current_MDI_Index);
+  
   }
   public void ThreadSaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten)
   {
@@ -2354,7 +2363,7 @@ try
    {
        EmailReportFail = true;
    }
-       STAppFrame.setEmailReport(EmailReportFail);
+       STAppFrame.setEmailReportFail(EmailReportFail);
             break;
          
         case "ExitAfter":
@@ -2364,7 +2373,7 @@ try
    {
        ExitAfter = true;
    }
-       STAppFrame.setEmailReport(ExitAfter);
+       STAppFrame.setExitAfter(ExitAfter);
             break;        
        
         case "SMTPHostname":

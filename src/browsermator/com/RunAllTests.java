@@ -154,10 +154,11 @@ public String doInBackground()
      }
              FillReport();
     SiteTest.UpdateDisplay(); 
+     BrowserMatorReport = new BrowserMatorReport(SiteTest);
       if (SiteTest.getShowReport())
        {
-      this.BrowserMatorReport = new BrowserMatorReport(SiteTest);
-       BrowserMatorReport.OutPutReports();
+     
+
         if (SiteTest.getIncludeScreenshots())
        {
        BrowserMatorReport.ShowHTMLReport();

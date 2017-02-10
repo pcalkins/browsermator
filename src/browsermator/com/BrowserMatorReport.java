@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.internal.Base64Encoder;
 
 /**
@@ -60,25 +61,29 @@ final JFXPanel fxPanel = new JFXPanel();
 WebEngine webEngine;
 Stage webStage;
 Boolean ReportDisplayed;
-
+File TEMP_HTML_FILE;
 
 
     public BrowserMatorReport (SeleniumTestTool SiteTest)
  {
    this.SiteTest = SiteTest;
    this.ReportDisplayed = false;
+   this.TEMP_HTML_FILE = null;
+   this.HTMLReport = "";
+   this.TextReport = "";
  }
     public String GetTextReport()
     {
-        
-        return this.TextReport;
+        TextReport = OutPutReport(false);
+        return TextReport;
        
     }
     public String GetHTMLReport()
     {
-        return this.HTMLReport;
+    
+        return HTMLReport;
     }
-     public void EmailReport ()
+     public void EmailReport()
    {
             Properties applicationProps = new Properties();
 
@@ -98,7 +103,7 @@ Boolean ReportDisplayed;
    {
        subject = subject + " - Some Procedures FAILED";
    }
-  OutPutReports();
+  
    
        
    applicationProps.put("mail.smtp.host", this.SiteTest.getSMTPHostname());
@@ -157,7 +162,7 @@ mainPanel = new JPanel(new BorderLayout());
    ReportFrame = new JFrame("Browsermator Report");
 
     jButtonSaveFile.addActionListener(new ActionListener() {
-        
+       
        @Override
         public void actionPerformed (ActionEvent e )
         {
@@ -175,20 +180,24 @@ mainPanel = new JPanel(new BorderLayout());
    }
     public void ShowHTMLReport()
     {
-        String HTML_TO_SEND = GetHTMLReport();
+         this.HTMLReport = OutPutReport(true);
+   //     String HTML_TO_SEND = GetHTMLReport();
         jButtonSaveFile = new JButton("Save HTML Report");
    Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                    browser = new WebView();
+ if (HTMLReport!=null)
+{
+                browser = new WebView();
 webEngine = browser.getEngine();
-webEngine.loadContent(HTML_TO_SEND);
+
+webEngine.loadContent(HTMLReport);
 
  browser.setVisible(true);
 Scene scene = new Scene(browser);
         fxPanel.setScene(scene);
         
-
+}
             }
    });   
 
@@ -207,7 +216,7 @@ mainPanel = new JPanel(new BorderLayout());
        @Override
         public void actionPerformed (ActionEvent e )
         {
-         SaveAsHTMLFile();   
+         SaveAsHTMLFile(TEMP_HTML_FILE);   
         }
         });
 
@@ -222,9 +231,9 @@ mainPanel = new JPanel(new BorderLayout());
     }
      public void OutPutReports()
      {
-       this.HTMLReport = OutPutReport(true);
-       this.HTMLReportForSave = OutPutHTMLReportForSave();
-       this.TextReport = OutPutReport(false);
+     //  this.HTMLReport = OutPutReport(true);
+     //  this.HTMLReportForSave = OutPutHTMLReportForSave();
+     //  this.TextReport = OutPutReport(false);
      }
      public String FileToBase64(String ThisScreenshotPath)
      {
@@ -247,7 +256,7 @@ mainPanel = new JPanel(new BorderLayout());
          
          return Base64String;
      }
-     public String OutPutHTMLReportForSave()
+     public File OutPutHTMLReportForSave()
      {
          String ReportText = "<HTML></HTML>";
           LineBreak = "<BR>"; 
@@ -305,12 +314,59 @@ mainPanel = new JPanel(new BorderLayout());
     int bug_INT=0;
     String bug_ID="";
     String action_ID="";
+  
+   
+     FileWriter writer =null;
+     File temp_report_file = null;
+    String tempFileName = "report_results";
+    try {
+      temp_report_file = File.createTempFile(tempFileName, ".htm");
+   temp_report_file.deleteOnExit();
+        writer = new FileWriter(temp_report_file);
+     
+    } 
+    catch (Exception ex)
+    {
+        System.out.println ("Exception writing temp file for report: " + ex.toString());
+        
+ 
+    }
+    if (writer!=null)
+    {
+        try
+        {
+               writer.append(Header);
+               writer.append(LineBreak);
+        writer.append(ReportText);
+        }
+        catch (Exception ex)
+                {
+                    System.out.println ("Execpetion appending temp file: " + ex.toString());
+                }
+    }
+     String to_write = "</html>";
         for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
      {
        bug_INT = BugViewIndex + 1;
        bug_ID = Integer.toString(bug_INT);
-         ReportText = ReportText + "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
-        int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
+       
+        to_write = "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
+         if (writer!=null)
+    {
+         try
+        {
+         
+        writer.append(to_write);
+        to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
+        
+         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
         int passvalueslength = 0;
         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
         {
@@ -353,27 +409,25 @@ mainPanel = new JPanel(new BorderLayout());
         }
          if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+                   to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
-            
-         
-                  if ("null".equals(ThisScreenshot))
+                                 if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
+                 to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
              }
              
              
               }
          else
          {
-              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+              to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
@@ -381,13 +435,31 @@ mainPanel = new JPanel(new BorderLayout());
         
                   if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-      ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
+      to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
                   }
              }
+                        if (writer!=null)
+    {
+         try
+        {
+           
+        writer.append(to_write);
+         to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
+           
+            
+         
+    
             
       
     }
@@ -414,7 +486,7 @@ mainPanel = new JPanel(new BorderLayout());
       
  if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+             to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
@@ -423,18 +495,18 @@ mainPanel = new JPanel(new BorderLayout());
            
                   if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-         ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
+        to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
          }
                   
              }
               
          else
          {
-              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+              to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
@@ -443,13 +515,26 @@ mainPanel = new JPanel(new BorderLayout());
           
                    if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-            ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+            to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
          }
              } 
+                             if (writer!=null)
+    {
+         try
+        {
+        writer.append(to_write);
+         to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
               }
     
           
@@ -490,7 +575,7 @@ mainPanel = new JPanel(new BorderLayout());
         }
          if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
-             ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+            to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " ########" + 
                      
@@ -499,17 +584,30 @@ mainPanel = new JPanel(new BorderLayout());
     
                   if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-         ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
-         }   
+         to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+         } 
+                                       if (writer!=null)
+    {
+         try
+        {
+        writer.append(to_write);
+         to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
              }
             
          else
          {
-              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
+              to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
                 + " " + ThisValue2 +
                      
@@ -517,12 +615,28 @@ mainPanel = new JPanel(new BorderLayout());
        
                   if ("null".equals(ThisScreenshot))
              {
-                 ReportText += LineBreak;
+                 to_write += LineBreak;
              }
              else
              {
-         ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+         to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
          }
+                                       if (writer!=null)
+    {
+         try
+        {
+       
+            writer.append(to_write);
+            
+        
+         to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
              }
           
              
@@ -533,9 +647,35 @@ mainPanel = new JPanel(new BorderLayout());
         }
   
      }
-         ReportText = Header + LineBreak + ReportText + Footer;
-
-         return ReportText;   
+                                        if (writer!=null)
+    {
+         try
+        {
+       
+            writer.append(Footer);
+            
+        
+         to_write = "";
+        }
+        catch (Exception ex)
+                {
+                          System.out.println ("Execpetion appending temp file: " + ex.toString());
+                           to_write = "";
+                }
+    }
+ if (writer!=null)
+ {
+     try
+     {
+     writer.close();
+     }
+     catch (Exception ex)
+     {
+         System.out.println("Exception closing writer: " + ex.toString());
+     }
+     }
+         this.TEMP_HTML_FILE = temp_report_file;
+         return temp_report_file;   
          
       
          
@@ -597,6 +737,7 @@ mainPanel = new JPanel(new BorderLayout());
      }
      else
      {
+         Header = "";
      if (SiteTest.EmailReport)
      {
        LineBreak = "\n";
@@ -842,7 +983,7 @@ mainPanel = new JPanel(new BorderLayout());
          return ReportText;  
   }  
 
-    public void SaveAsHTMLFile()
+   public void SaveAsHTMLFile()
     {
          final JFileChooser fc = new JFileChooser(){
     @Override
@@ -913,6 +1054,77 @@ try {
             else
             {
                 return;
+            }
+    }
+    public void SaveAsHTMLFile(File sourceFile)
+    {
+         final JFileChooser fc = new JFileChooser(){
+    @Override
+    public void approveSelection(){
+        
+        File f = getSelectedFile();
+                String filestring = f.toString();
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 f = new File(left_side_of_dot[0] + ".html");
+       
+       
+        if(f.exists() && getDialogType() == SAVE_DIALOG){
+            int result = JOptionPane.showConfirmDialog(ReportFrame,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+            switch(result){
+                case JOptionPane.YES_OPTION:
+                    super.approveSelection();
+                 
+                    return;
+                case JOptionPane.NO_OPTION:
+                    return;
+                case JOptionPane.CLOSED_OPTION:
+                    return;
+                case JOptionPane.CANCEL_OPTION:
+                    cancelSelection();
+                    return;
+            }
+        }
+        super.approveSelection();
+    
+    }
+};
+File file=null;
+   
+   
+     FileNameExtensionFilter filefilter = new FileNameExtensionFilter("HTML file (*.html)","html");
+
+    fc.setFileFilter(filefilter);
+   
+        
+        fc.setSelectedFile(file);
+        
+    
+int returnVal = fc.showSaveDialog(this.ReportFrame);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = fc.getSelectedFile();
+                String filestring = file.toString();
+                
+                String[] left_side_of_dot = filestring.split("\\.");
+                
+                 file = new File(left_side_of_dot[0] + ".html");
+         
+          
+if (sourceFile!=null)
+{
+try {
+    FileUtils.copyFile(sourceFile, file);
+} catch (Exception ex) {
+  System.out.println ("Exception saving HTML file: " + ex.toString());
+}
+            
+}
+            }
+            else
+            {
+              
             }
     }
 }

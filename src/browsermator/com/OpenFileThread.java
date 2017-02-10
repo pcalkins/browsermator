@@ -391,7 +391,7 @@ try
    {
        EmailReportFail = true;
    }
-       STAppFrame.setEmailReport(EmailReportFail);
+       STAppFrame.setEmailReportFail(EmailReportFail);
             break;
          
         case "ExitAfter":
@@ -401,7 +401,7 @@ try
    {
        ExitAfter = true;
    }
-       STAppFrame.setEmailReport(ExitAfter);
+       STAppFrame.setExitAfter(ExitAfter);
             break;        
        
         case "SMTPHostname":

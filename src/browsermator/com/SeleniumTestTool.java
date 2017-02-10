@@ -1822,6 +1822,10 @@ this.changes=true;
   }
   else
   {
+      jCheckBoxEmailReportFail.setSelected(false);
+      this.EmailReportFail = false;
+      jCheckBoxEmailReport.setSelected(false);
+        this.EmailReport = false;
     jCheckBoxIncludeScreenshots.setEnabled(true);  
   }
   }
@@ -1836,6 +1840,10 @@ this.changes=true;
    this.EmailReport = jCheckBoxEmailReport.isSelected();
   if (this.EmailReport==true)
   {
+       jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+      jCheckBoxShowReport.setSelected(false);
+      this.ShowReport = false;
       jCheckBoxEmailReportFail.setSelected(false);
 
       this.EmailReportFail = false;
@@ -1852,7 +1860,10 @@ this.changes=true;
      this.EmailReportFail = jCheckBoxEmailReportFail.isSelected();
   if (this.EmailReportFail==true)
   {
-
+       jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+  jCheckBoxShowReport.setSelected(false);
+            this.ShowReport = false;
      jCheckBoxEmailReport.setSelected(false);
      this.EmailReport = false;
   }
@@ -2079,12 +2090,18 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         jCheckBoxShowReport.setSelected(showreport);
         if (this.ShowReport==false)
         {
-             jCheckBoxIncludeScreenshots.setSelected(false);
+    
       jCheckBoxIncludeScreenshots.setEnabled(false);
       this.IncludeScreenshots=false;   
         }
         else
         {
+        jCheckBoxEmailReportFail.setSelected(false);
+        this.EmailReportFail = false;
+        
+        jCheckBoxEmailReport.setSelected(false);
+        this.EmailReport = false;
+      
         jCheckBoxIncludeScreenshots.setEnabled(true);     
         }
     }
@@ -2100,6 +2117,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         this.EmailReport = emailreport;
         if (emailreport==true)
         {
+             jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+            jCheckBoxShowReport.setSelected(false);
+            this.ShowReport = false;
                     jCheckBoxIncludeScreenshots.setSelected(false);
       jCheckBoxIncludeScreenshots.setEnabled(false);
       this.IncludeScreenshots=false;   
@@ -2114,14 +2135,18 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         jCheckBoxEmailReportFail.setSelected(emailreportfail);
          if (emailreportfail==true)
         {
-            
+             jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+              jCheckBoxShowReport.setSelected(false);
+            this.ShowReport = false;
             jCheckBoxEmailReport.setSelected(false);
+            this.EmailReport = false;
         }
          else
          {
-                     jCheckBoxIncludeScreenshots.setSelected(false);
-      jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
+      
+         this.EmailReportFail = false;
+         
          }
     }
         public void setTargetBrowser (String targetbrowser)
