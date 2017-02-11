@@ -78,9 +78,8 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
       String filename;
       private JMenuItem importMenuItem;
-private final String version = "1.0.25b";
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.25b";
+   public final String ProgramVersion = "1.0.26b";
    public String loginName;
    public String loginPassword;
    
@@ -239,6 +238,19 @@ super.setSize(Width-300,Height-300);
                            SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                        
                        }
+                        if (iframe.isIcon())
+                 {
+                       iframe.toFront();
+                          
+                          try
+                          {
+                              iframe.setSelected(true);
+                          }
+                          catch (PropertyVetoException ec)
+                          {
+                              System.out.println("Error setting iframe: " + ec.toString());
+                          }
+                 }
                   
                 }   
     
@@ -268,7 +280,19 @@ super.setSize(Width-300,Height-300);
                        }
                        
                 
-                 
+                 if (iframe.isIcon())
+                 {
+                       iframe.toFront();
+                          
+                          try
+                          {
+                              iframe.setSelected(true);
+                          }
+                          catch (PropertyVetoException ec)
+                          {
+                              System.out.println("Error setting iframe: " + ec.toString());
+                          }
+                 }
                  
                 }   
     
@@ -296,17 +320,21 @@ super.setSize(Width-300,Height-300);
      
 Navigator.setVisible(true);
 
-//Navigator.pack();
+
  initComponents();
 
  add(SeleniumToolDesktop);
 
 SeleniumToolDesktop.add(Navigator);
 
- int super_width = super.getWidth();
-int super_height = super.getHeight()-20;
-
-Navigator.setSize(super_width,super_height);   
+  try
+        {
+        Navigator.setMaximum(true);
+        }
+        catch (PropertyVetoException e)
+        {
+            System.out.println("setting maximum error" + e);
+        }
   if (args.length>0) { CheckArgs(args);}
   
   CurrentMDIWindowIndex = GetCurrentWindow();  
@@ -379,7 +407,10 @@ Navigator.setSize(super_width,super_height);
       }
       else
       {
-       MDIClasses.remove(MDIClasses.size()-1); 
+      // RemoveWindow(MDIClasses.size()-1);
+         int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
        STAppFrame.dispose();
       }    
@@ -512,7 +543,10 @@ Navigator.setSize(super_width,super_height);
       }
       else
       {
-       MDIClasses.remove(MDIClasses.size()-1); 
+            int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
+       // RemoveWindow(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       }
   
@@ -926,7 +960,10 @@ Navigator.setSize(super_width,super_height);
       }
       else
       {
-       MDIClasses.remove(MDIClasses.size()-1); 
+            int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
+     //  RemoveWindow(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       }
         
@@ -2298,7 +2335,7 @@ STAppFrame.changes = false;
       }
       else 
       {
-       MDIClasses.remove(MDIClasses.size()-1); 
+       RemoveWindow(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       }
      
@@ -2798,7 +2835,23 @@ STAppFrame.addjButtonDoStuffActionListener(
     }
        
   }
-  
+   public void RemoveWindow (int MDI_CLASS_INDEX)
+   {
+       String removedWindow = MDIClasses.get(MDI_CLASS_INDEX).filename;
+   
+        for (int jm = 0; jm<jMenuView.getItemCount(); jm++)
+       {
+        String thisFileItemString = jMenuView.getItem(jm).getText();  
+        
+                       if (thisFileItemString.equals(removedWindow))
+                       {
+                       jMenuView.remove(jm);
+                       }
+                   
+                }
+            MDIClasses.remove(MDI_CLASS_INDEX);
+    }
+   
    public void DisplayWindow (int MDI_CLASS_INDEX)
    {
        if (MDI_CLASS_INDEX>=0)
@@ -2829,7 +2882,7 @@ STAppFrame.addjButtonDoStuffActionListener(
       Boolean hasitem = false;
        for (int jm = 0; jm<jMenuView.getItemCount(); jm++)
        {
-       if (jMenuView.getItem(jm).getText()==thisopenfile)
+       if (jMenuView.getItem(jm).getText() == null ? thisopenfile == null : jMenuView.getItem(jm).getText().equals(thisopenfile))
        {
            hasitem = true;
        }
@@ -2848,16 +2901,31 @@ STAppFrame.addjButtonDoStuffActionListener(
                 {
                   
                    String thisFrameName = iframe.getTitle();
-                     String twoslashes = "\\" + "\\";
+         
         
         
-                  
-                    
-                       if (newfileitem.getText().equals(thisFrameName))
+                  String thisFileItem = newfileitem.getText();
+                  String thisFrameNameParsed = "";
+                  if (thisFrameName.length()>15)
+                  {
+                  thisFrameNameParsed = thisFrameName.substring(15,thisFrameName.length());
+                  }
+                       if (thisFileItem.equals(thisFrameNameParsed))
                        {
+                                  if (iframe.isIcon())
+                                  {
+                                      try
+                                      {
+                                      iframe.setMaximum(rootPaneCheckingEnabled);
+                                      }
+                                      catch (Exception ex)
+                                      {
+                                          System.out.println ("Exception when maximizing window: " + ex.toString());
+                                      }
+                                  }
                          
                            iframe.toFront();
-                           // iframe.requestFocus(true);
+                          
                           try
                           {
                               iframe.setSelected(true);
@@ -2923,7 +2991,7 @@ catch (Exception e) {
    Navigator.setEmailTo(to);
    Navigator.setEmailFrom(from);
    Navigator.setSubject(subject);
-   Navigator.setVersion("Version: " + version);
+   Navigator.setVersion("Version: " + this.ProgramVersion);
   
 	}
  public void SaveGlobalEmailSettings() throws IOException

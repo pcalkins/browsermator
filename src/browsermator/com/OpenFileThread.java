@@ -313,7 +313,10 @@ for (Procedure thisproc: STAppFrame.BugArray)
       }
       else
       {
-       MDIClasses.remove(MDIClasses.size()-1); 
+          int thisMDIIndex = mainApp.GetCurrentWindow();
+          
+       mainApp.RemoveWindow(thisMDIIndex);
+       // mainApp.RemoveWindow(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       }
      
