@@ -75,6 +75,7 @@ File TEMP_HTML_FILE;
     public String GetTextReport()
     {
         TextReport = OutPutReport(false);
+        HTMLReportForSave = TextReport;
         return TextReport;
        
     }
@@ -216,7 +217,7 @@ mainPanel = new JPanel(new BorderLayout());
        @Override
         public void actionPerformed (ActionEvent e )
         {
-         SaveAsHTMLFile(TEMP_HTML_FILE);   
+         SaveAsHTMLFile(OutPutHTMLReportForSave());   
         }
         });
 
@@ -737,7 +738,8 @@ mainPanel = new JPanel(new BorderLayout());
      }
      else
      {
-         Header = "";
+         Header = "<HTML><BODY>";
+         Footer = "</BODY></HTML>";
      if (SiteTest.EmailReport)
      {
        LineBreak = "\n";
