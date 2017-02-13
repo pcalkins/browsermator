@@ -397,10 +397,18 @@ mainPanel = new JPanel(new BorderLayout());
         ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
                int index_of_fileslashes = ThisScreenshot.indexOf("file:///")+8;
         int index_of_id = ThisScreenshot.indexOf("id")-2;
+          if (index_of_fileslashes > 0 && index_of_id>index_of_fileslashes)
+        {
         ThisScreenshot = ThisScreenshot.substring(index_of_fileslashes, index_of_id);
-   
+
         
         ThisScreenshot = FileToBase64(ThisScreenshot);
+        }
+        else
+        {
+            ThisScreenshot = "";
+        }
+        
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
         

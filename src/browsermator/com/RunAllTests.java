@@ -1076,45 +1076,7 @@ else
 
  
   }
-  public String OneQuarterBase64(String in_image)
-  {
-  
-    String imageData = in_image;
  
-    //convert the image data String to a byte[]
-    byte[] dta = DatatypeConverter.parseBase64Binary(imageData);
-    try (InputStream in = new ByteArrayInputStream(dta);) {
-        BufferedImage fullSize = ImageIO.read(in);
-
-        // Create a new image .7 the size of the original image
-      double newheight_db = fullSize.getHeight() * .7;
-      double newwidth_db = fullSize.getWidth() * .7;
-   
-        int newheight = (int)newheight_db;
-        int newwidth = (int)newwidth_db;
-
-        BufferedImage resized = new BufferedImage(newwidth, newheight, BufferedImage.SCALE_REPLICATE);
-
-        Graphics2D g2 = (Graphics2D) resized.getGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      g2.drawImage(fullSize, 0, 0, newwidth, newheight, null);
-
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write( resized, "png", baos );
-            baos.flush();
-           byte[] resizedInByte = baos.toByteArray();
-      Base64Encoder enc_resized = new Base64Encoder();
- String out_image = enc_resized.encode(resizedInByte);
-
-        return out_image;
-        }
-
-
-    } catch (IOException e) {
-       System.out.println("error resizing screenshot" + e.toString());
-        return "";
-    }
-  }
   public int FillTables(Procedure thisproc, ProcedureView thisprocview)
   {
       int number_of_rows = 0;
