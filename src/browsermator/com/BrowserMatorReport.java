@@ -429,7 +429,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-                 to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
+                to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
              }
              
              
@@ -448,6 +448,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
+             
       to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
                   }
              }
@@ -508,7 +509,8 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-        to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
+             
+     to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" + LineBreak;
          }
                   
              }
@@ -528,7 +530,8 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-            to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+              
+        to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
          }
              } 
                              if (writer!=null)
@@ -604,7 +607,8 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-         to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+            
+      to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
          } 
                                        if (writer!=null)
     {
@@ -635,7 +639,8 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-         to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
+              
+       to_write +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + "<img src=\"data:image/png;base64," + ThisScreenshot + "\" style=\"display: inline;\" class = \"report_screenshots\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\"></img>" +  LineBreak;
          }
                                        if (writer!=null)
     {

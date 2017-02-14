@@ -684,7 +684,8 @@ else
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
            if (SiteTest.getIncludeScreenshots())
     { 
-       ThisAction.loop_ScreenshotsBase64[x] = "<img style = \"display: inline\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"\"></img>";
+   //     ThisAction.loop_ScreenshotsBase64[x] = "";
+       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: inline; visibility: visible;\" src=\"\"></img>";
 // ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"visibility: visible\" src=\"local.png\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
     } 
            else
