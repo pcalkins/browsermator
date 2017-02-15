@@ -127,7 +127,7 @@ File TEMP_HTML_FILE;
         Transport.send(msg, login_name, password);
     } catch (MessagingException mex) {
     //    System.out.println("send failed, exception: " + mex);
-     Prompter thisContinuePrompt = new Prompter("Sending Email has failed. Check settings.", false,0,0);    
+     Prompter thisContinuePrompt = new Prompter("Email Failure", "Sending Email has failed. Check settings.", false,0,0);    
      
     }
    

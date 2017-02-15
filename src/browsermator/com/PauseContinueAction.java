@@ -45,7 +45,7 @@ int changex = 0;
     @Override
     public void RunAction(WebDriver driver)
     {
-    Prompter thisContinuePrompt = new Prompter(this.pause_message, false, 0,0);
+    Prompter thisContinuePrompt = new Prompter("Actions Paused", this.pause_message, false, 0,0);
     this.Pass = true;
 while(thisContinuePrompt.isVisible() == true){
         try
@@ -63,7 +63,7 @@ Thread.sleep(200);
     @Override
     public void RunAction (WebDriver driver, String message)
     {
-       Prompter thisContinuePrompt = new Prompter(message, false,0, 0);
+       Prompter thisContinuePrompt = new Prompter("Actions Paused", message, false,0, 0);
     this.Pass = true;
     
 
@@ -86,7 +86,8 @@ while(thisContinuePrompt.isVisible() == true){
     @Override
     public int RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest, int currentrecord, int number_of_records)
     {
-       Prompter thisContinuePrompt = new Prompter(message, true, currentrecord, number_of_records);
+     
+       Prompter thisContinuePrompt = new Prompter(in_sitetest.short_filename, message, true, currentrecord, number_of_records);
        this.Pass = true;
        if (number_of_records>0)
        {

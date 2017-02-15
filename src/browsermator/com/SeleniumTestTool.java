@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
@@ -56,7 +57,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   HashMap<String, ArrayList> VarLists = new HashMap();
   boolean cancelled;
   boolean testRunning;
-  
+  String short_filename;
   public SeleniumTestTool(String filename)
   {
       this.cancelled = false;
@@ -71,6 +72,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   this.PromptToClose = false;
   this.ShowReport = false;
   this.filename = filename;
+  this.short_filename = Paths.get(filename).toFile().toString();
   this.URL = "";
   this.BugPanel = new JPanel();
   this.IncludeScreenshots = false;

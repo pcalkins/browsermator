@@ -202,12 +202,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
           if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
         FallbackDriver("Chrome49");
     }
           else
           {
-         Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
         FallbackDriver("HTMLUnit");
           }
    
@@ -260,12 +260,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
           if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error","Could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
         FallbackDriver("Chrome49");
     }
           else
           {
-         Prompter fallbackprompt = new Prompter ("We could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
         FallbackDriver("HTMLUnit");
           }
     }
@@ -286,12 +286,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
           if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
         FallbackDriver("Chrome49");
     }
           else
           {
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
         FallbackDriver("HTMLUnit");
           }
      }
@@ -306,12 +306,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
          if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Internet Explorer driver, will fallback to Chrome (WinXP)", false,0,0);
       FallbackDriver("Chrome49");
     }
           else
           {
-         Prompter fallbackprompt = new Prompter ("We could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Internet Explorer driver, will fallback to HTMLUnitDriver", false,0,0);
         FallbackDriver("HTMLUnit");
           }
              }
@@ -345,14 +345,14 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
         if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chromedriver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome (WinXP)", false,0,0);
        FallbackDriver("Chrome49");
         
          
     }
           else
           {
-         Prompter fallbackprompt = new Prompter ("We could not launch the Chromedriver, will fallback to HTMLUnitDriver", false,0,0);
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to HTMLUnitDriver", false,0,0);
          FallbackDriver("HTMLUnit");
           }
    }
@@ -375,7 +375,7 @@ options.setBinary(chrome_path);
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("We could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false,0, 0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false,0, 0);
       FallbackDriver("HTMLUnit");
    }
      break;

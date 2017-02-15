@@ -14,7 +14,7 @@ public class Prompter extends JFrame implements ActionListener
     Boolean hasCancelButton;
   int JumpToRecord = -1;
     int number_of_records = 0;
-     Prompter ( String messagetodisplay, Boolean in_hascancel, int currentrecord, int number_of_records)
+     Prompter ( String filename, String messagetodisplay, Boolean in_hascancel, int currentrecord, int number_of_records)
             {
            this.JLabelJumpTo = new JLabel("Skip to #: ");
            
@@ -68,7 +68,7 @@ public class Prompter extends JFrame implements ActionListener
         int x = (int) rect.getMaxX() - this.getWidth();
       
         this.setLocation(x, 0);
-                this.setTitle("Actions Paused");
+                this.setTitle(filename);
                 add(WholePrompt);
              
                 
