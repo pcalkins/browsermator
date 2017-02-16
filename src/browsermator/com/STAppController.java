@@ -79,10 +79,10 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.29b";
+   public final String ProgramVersion = "1.0.30b";
    public String loginName;
    public String loginPassword;
-   
+   public String old_filename;
   public int user_id;
 //  String rootURL = "http://localhost";
  String rootURL = "https://www.browsermator.com";
@@ -95,6 +95,7 @@ private ButtonGroup LookAndFeelGroup;
                  Properties newProps = new Properties();
                   this.loginName = "";
     this.loginPassword = "";
+    this.old_filename="";
          Boolean file_exists = false;
               String userdir = System.getProperty("user.home");
     try
@@ -227,8 +228,8 @@ super.setSize(Width-300,Height-300);
     @Override
     public void internalFrameDeactivated(    InternalFrameEvent event){
       JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
-      String frame_event_name = event.getInternalFrame().getTitle();
-                for (JInternalFrame iframe : iframes)
+
+                     for (JInternalFrame iframe : iframes)
                 {
                   
                       
@@ -238,6 +239,8 @@ super.setSize(Width-300,Height-300);
                            SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                        
                        }
+                    
+                       
                         if (iframe.isIcon())
                  {
                        iframe.toFront();
@@ -245,6 +248,10 @@ super.setSize(Width-300,Height-300);
                           try
                           {
                               iframe.setSelected(true);
+                              if (MDIClasses.size()>0)
+                              {
+                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                              }
                           }
                           catch (PropertyVetoException ec)
                           {
@@ -283,10 +290,16 @@ super.setSize(Width-300,Height-300);
                  if (iframe.isIcon())
                  {
                        iframe.toFront();
+                     
                           
                           try
                           {
                               iframe.setSelected(true);
+                               if (MDIClasses.size()>0)
+                              {
+                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                              }
+                              
                           }
                           catch (PropertyVetoException ec)
                           {
@@ -506,7 +519,7 @@ SeleniumToolDesktop.add(Navigator);
       STAppFrame.setOSType("Windows32");
    STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setTitle(STAppFrame.filename);
   STAppFrame.setResizable(true);
  
  
@@ -521,6 +534,7 @@ SeleniumToolDesktop.add(Navigator);
 
   STAppFrame.setVisible(true);
     STAppFrame.setSelected(true);
+   
  
   }
   catch (PropertyVetoException e)
@@ -532,6 +546,17 @@ SeleniumToolDesktop.add(Navigator);
   saveMenuItem.setEnabled(true);
   SeleniumToolDesktop.repaint();
   MDIClasses.add(STAppFrame);
+   if (MDIClasses.size()>0)
+                              {
+                                  try
+                                  {
+                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                                  }
+                                  catch (Exception ex)
+                                  {
+                                      System.out.println ("Exception when selecting window: " + ex.toString());
+                                  }
+                              }
  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
@@ -926,7 +951,7 @@ SeleniumToolDesktop.add(Navigator);
      STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setTitle(STAppFrame.filename);
   STAppFrame.setResizable(true);
   STAppFrame.setSize(1024, 800);
    SeleniumToolDesktop.add(STAppFrame);
@@ -939,6 +964,7 @@ SeleniumToolDesktop.add(Navigator);
    STAppFrame.setMaximum(true);
    STAppFrame.setVisible(true);
    STAppFrame.setSelected(true);
+    
   
   }
   catch (PropertyVetoException e)
@@ -948,6 +974,17 @@ SeleniumToolDesktop.add(Navigator);
   saveMenuItem.setEnabled(true);
   SeleniumToolDesktop.repaint();
   MDIClasses.add(STAppFrame);
+  if (MDIClasses.size()>0)
+                              {
+                                  try
+                                  {
+                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                                  }
+                                  catch (Exception ex)
+                                  {
+                                      System.out.println("Exception when selecting window: " + ex.toString());
+                                  }
+                              }
   
   STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
@@ -1635,7 +1672,7 @@ public void OpenBrowserMatorCloud()
   }
    public void SaveFile(SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index) throws IOException, XMLStreamException
     {
-
+    old_filename = STAppFrame.filename;
       final JFileChooser fc = new JFileChooser(){
     @Override
     public void approveSelection(){
@@ -2148,10 +2185,7 @@ int action_index_for_flatten = 0;
   
 }
 xmlfile.writeEndElement();
-// STAppFrame.AllFieldValues.clear();
 
-
-// System.out.println("Successfully Created XML...");
   
  
         } catch (Exception e) {
@@ -2170,10 +2204,26 @@ xmlfile.writeEndElement();
         }
 if (isFlatten==false)
 {
+ 
 this.filename = file.getAbsolutePath();
 STAppFrame.setProperties(this.filename);
+if (isSaveAs)
+{
+if (STAppFrame.filename.equals(old_filename))
+{
+  this.Navigator.addRecentFile(file.getAbsolutePath());
+}
+else
+{
 this.Navigator.addRecentFile(file.getAbsolutePath());
+this.UpdateWindowName(calling_MDI_Index, old_filename);
 
+}
+}
+else
+{
+this.Navigator.addRecentFile(this.filename);
+}
 }
 
      
@@ -2316,7 +2366,7 @@ STAppFrame.changes = false;
 
       STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setTitle(STAppFrame.filename);
   STAppFrame.setResizable(true);
   STAppFrame.setSize(1024, 800);
    STAppFrame.setClosable(true);
@@ -2835,8 +2885,25 @@ STAppFrame.addjButtonDoStuffActionListener(
     }
        
   }
+   public void UpdateWindowName (int MDI_CLASS_INDEX, String old_name)
+   {
+      String update_name = MDIClasses.get(MDI_CLASS_INDEX).filename;
+   
+        for (int jm = 0; jm<jMenuView.getItemCount(); jm++)
+       {
+        String thisFileItemString = jMenuView.getItem(jm).getText();  
+        
+                       if (thisFileItemString.equals(old_name))
+                       {
+                       jMenuView.getItem(jm).setText(update_name);
+                       }
+                   
+                }  
+   }
    public void RemoveWindow (int MDI_CLASS_INDEX)
    {
+       if (MDI_CLASS_INDEX>=0)
+       {
        String removedWindow = MDIClasses.get(MDI_CLASS_INDEX).filename;
    
         for (int jm = 0; jm<jMenuView.getItemCount(); jm++)
@@ -2850,20 +2917,21 @@ STAppFrame.addjButtonDoStuffActionListener(
                    
                 }
             MDIClasses.remove(MDI_CLASS_INDEX);
+       }
     }
    
    public void DisplayWindow (int MDI_CLASS_INDEX)
    {
        if (MDI_CLASS_INDEX>=0)
        {
-  MDIClasses.get(MDI_CLASS_INDEX).setTitle("Browsermator - " + MDIClasses.get(MDI_CLASS_INDEX).filename);
+  MDIClasses.get(MDI_CLASS_INDEX).setTitle(MDIClasses.get(MDI_CLASS_INDEX).filename);
   MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
   MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
   saveMenuItem.setEnabled(true);
   SeleniumToolDesktop.add(MDIClasses.get(MDI_CLASS_INDEX));
   
   MDIClasses.get(MDI_CLASS_INDEX).moveToFront();
-
+ 
        MDIClasses.get(MDI_CLASS_INDEX).setVisible(true); 
        try
        {
@@ -2882,7 +2950,7 @@ STAppFrame.addjButtonDoStuffActionListener(
       Boolean hasitem = false;
        for (int jm = 0; jm<jMenuView.getItemCount(); jm++)
        {
-       if (jMenuView.getItem(jm).getText() == null ? thisopenfile == null : jMenuView.getItem(jm).getText().equals(thisopenfile))
+       if (jMenuView.getItem(jm).getText().equals(thisopenfile))
        {
            hasitem = true;
        }
@@ -2905,18 +2973,17 @@ STAppFrame.addjButtonDoStuffActionListener(
         
         
                   String thisFileItem = newfileitem.getText();
-                  String thisFrameNameParsed = "";
-                  if (thisFrameName.length()>15)
-                  {
-                  thisFrameNameParsed = thisFrameName.substring(15,thisFrameName.length());
-                  }
-                       if (thisFileItem.equals(thisFrameNameParsed))
+       
+             
+                       if (thisFileItem.equals(thisFrameName))
                        {
+                            iframe.toFront();
                                   if (iframe.isIcon())
                                   {
                                       try
                                       {
-                                      iframe.setMaximum(rootPaneCheckingEnabled);
+                                      iframe.setIcon(false);
+                                      iframe.setMaximum(true);
                                       }
                                       catch (Exception ex)
                                       {
@@ -2924,11 +2991,14 @@ STAppFrame.addjButtonDoStuffActionListener(
                                       }
                                   }
                          
-                           iframe.toFront();
+                          
                           
                           try
                           {
                               iframe.setSelected(true);
+     
+        MDIClasses.get(MDI_CLASS_INDEX).setSelected(true);
+      
                           }
                           catch (PropertyVetoException ec)
                           {

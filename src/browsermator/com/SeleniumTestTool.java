@@ -652,7 +652,7 @@ public int GetWaitTime()
 public void setProperties (String filename)
     {
    
-    this.setTitle("Browsermator - " + filename); 
+    this.setTitle(filename); 
     this.filename = filename;
     
     }

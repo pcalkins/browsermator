@@ -133,9 +133,12 @@ int MDI_Index = -1;
 
 
               Boolean PromptForSameFileName = false;
-     String filealreadyopen ="";
+    
+     int alreadyopen_index = -1;
+     int thisfile_index = 0;
      for (SeleniumTestTool thisfile: MDIClasses)
      {
+         
         String twoslashes = "\\" + "\\";
         
          String thisfilename = thisfile.filename.replace(twoslashes, "\\");
@@ -144,8 +147,11 @@ int MDI_Index = -1;
                 
          if (browsedfile.equals(thisfilename))
          {   
-          filealreadyopen = browsedfile;
-             PromptForSameFileName = true; }
+           alreadyopen_index = thisfile_index;
+             PromptForSameFileName = true;
+          
+         }
+         thisfile_index++;
      }
      if (PromptForSameFileName==false)
     {
@@ -272,8 +278,29 @@ for (Procedure thisproc: STAppFrame.BugArray)
     }
    else
      {
-  
-    JOptionPane.showMessageDialog (null, filealreadyopen + " is already open", "File is open", JOptionPane.INFORMATION_MESSAGE);
+         if (mainApp.MDIClasses.get(alreadyopen_index).isIcon())
+         {
+             try
+             {
+             mainApp.MDIClasses.get(alreadyopen_index).setMaximum(true);
+             }
+             catch (Exception ex)
+             {
+                 System.out.println("Exception maximizing window: " + ex.toString());
+             }
+         }
+         mainApp.MDIClasses.get(alreadyopen_index).moveToFront();
+         try
+         {
+         mainApp.MDIClasses.get(alreadyopen_index).setSelected(true);
+         }
+         catch(Exception ex)
+         {
+             System.out.println("Exception selecting window: " + ex.toString());
+             
+         }
+//  mainApp.DisplayWindow(alreadyopen_index);
+ //   JOptionPane.showMessageDialog (null, filealreadyopen + " is already open", "File is open", JOptionPane.INFORMATION_MESSAGE);
                                
  
  return -1;
@@ -294,7 +321,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
    STAppFrame.filename = filename_read;
       STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle("Browsermator - " + STAppFrame.filename);
+  STAppFrame.setTitle(STAppFrame.filename);
   STAppFrame.setResizable(true);
   STAppFrame.setSize(1024, 800);
   STAppFrame.setClosable(true);
