@@ -62,7 +62,7 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
     
         this.Pass = true;
      }
-     System.out.println ("storelink_value" + link_value);
+
  }
  catch (NoSuchElementException e)
  {
