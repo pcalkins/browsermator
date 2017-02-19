@@ -63,15 +63,19 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
  {
 
         ArrayList<String> link_list = new ArrayList();
+
        List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));
         for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {
             WebElement e = it.next();
+          
             String thishref = e.getAttribute("href");
-            if (thishref.isEmpty())
-            {
-                thishref = e.getAttribute("src");
-            }
-            if (link_list.contains(thishref))
+              if (thishref==null){thishref = "";}
+           if (thishref.isEmpty())
+           {
+               thishref = e.getAttribute("src");
+                if (thishref==null){thishref = "";}
+           }
+            if (link_list.contains(thishref)||thishref=="")
             {
                 
             }

@@ -50,14 +50,19 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
  {
         
         String link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("href");
-//  if (link_value==null)
-//  {
-//      link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("src");
-//  }
-     
+           if (link_value==null){link_value = "";}
+  if (link_value=="")
+  {
+      link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("src");
+        if (link_value==null){link_value = "";}
+  }
+     if (!"".equals(link_value))
+     {
  SetStoredLinkHashValue (this.Variable2, link_value);
     
         this.Pass = true;
+     }
+     System.out.println ("storelink_value" + link_value);
  }
  catch (NoSuchElementException e)
  {

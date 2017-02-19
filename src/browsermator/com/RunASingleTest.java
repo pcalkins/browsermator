@@ -446,11 +446,13 @@ options.setBinary(chrome_path);
        {
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+   
        }
     if (ThisAction.tostore_varlist.size()>0)
        {
 
            SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+           
 
        }
       
@@ -520,6 +522,7 @@ else
   }
       
          }
+                   
    
                        String varfieldname="";
        if (ThisAction.Variable2.contains("[stored_varname-start]"))
@@ -542,6 +545,7 @@ else
        {
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+        
        }
       
     

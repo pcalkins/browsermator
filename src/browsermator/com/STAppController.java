@@ -79,7 +79,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.30b";
+   public final String ProgramVersion = "1.0.31b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -244,13 +244,15 @@ super.setSize(Width-300,Height-300);
                         if (iframe.isIcon())
                  {
                        iframe.toFront();
-                          
+                        
                           try
                           {
                               iframe.setSelected(true);
                               if (MDIClasses.size()>0)
                               {
                               MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                                iframe.setToolTipText(MDIClasses.get(MDIClasses.size()-1).short_filename);
+                           
                               }
                           }
                           catch (PropertyVetoException ec)
@@ -298,6 +300,8 @@ super.setSize(Width-300,Height-300);
                                if (MDIClasses.size()>0)
                               {
                               MDIClasses.get(MDIClasses.size()-1).setSelected(true);
+                             
+                               iframe.setToolTipText(MDIClasses.get(MDIClasses.size()-1).short_filename);
                               }
                               
                           }

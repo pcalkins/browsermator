@@ -541,7 +541,8 @@ if (!"Dataloop".equals(thisbugview.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
-          ThisAction.RunAction(driver);
+
+         ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
            else

@@ -51,7 +51,7 @@ public class TypeAtXPATHAction extends Action
  {
         
         WebElement element = driver.findElement(By.xpath(this.Variable1));
-  
+
         element.sendKeys(this.Variable2);
 if (this.BoolVal1.equals(true))
 {
@@ -63,6 +63,7 @@ if (this.BoolVal1.equals(true))
  }
  catch (NoSuchElementException e)
  {
+   System.out.println(e);  
   this.Pass = false;
   
  }

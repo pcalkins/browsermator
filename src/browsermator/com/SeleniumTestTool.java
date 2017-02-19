@@ -408,6 +408,7 @@ if (VarHashMap.containsKey(fieldname))
 {
     ret_val = VarHashMap.get(fieldname);
 }
+
 return ret_val;
 }
 
@@ -419,10 +420,12 @@ public void SetStoredVariableName(String varname)
 }
 public void SetStoredVariableValue (String varname, String varval)
 {
+
     if (VarHashMap.containsKey(varname))
     {
         VarHashMap.put(varname, varval);
     }
+
 }
 public void ShowStoredVarListControls(Boolean showhideval)
 {
