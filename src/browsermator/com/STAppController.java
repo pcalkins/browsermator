@@ -79,7 +79,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.31b";
+   public final String ProgramVersion = "1.0.32b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -241,25 +241,7 @@ super.setSize(Width-300,Height-300);
                        }
                     
                        
-                        if (iframe.isIcon())
-                 {
-                       iframe.toFront();
-                        
-                          try
-                          {
-                              iframe.setSelected(true);
-                              if (MDIClasses.size()>0)
-                              {
-                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
-                                iframe.setToolTipText(MDIClasses.get(MDIClasses.size()-1).short_filename);
-                           
-                              }
-                          }
-                          catch (PropertyVetoException ec)
-                          {
-                              System.out.println("Error setting iframe: " + ec.toString());
-                          }
-                 }
+         
                   
                 }   
     
@@ -267,7 +249,7 @@ super.setSize(Width-300,Height-300);
         @Override
     public void internalFrameActivated(    InternalFrameEvent event){
       JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
- String frame_event_name = event.getInternalFrame().getTitle();
+
       for (JInternalFrame iframe : iframes)
                 {
                   
@@ -278,38 +260,7 @@ super.setSize(Width-300,Height-300);
                            SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                         
                        }
-                       else
-                       if (frame_event_name.equals(thisFrameName))
-                       {
-                           if (iframes.length>1)
-                           {
-                         SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-2);
-                 
-                           }
-                       }
-                       
-                
-                 if (iframe.isIcon())
-                 {
-                       iframe.toFront();
-                     
-                          
-                          try
-                          {
-                              iframe.setSelected(true);
-                               if (MDIClasses.size()>0)
-                              {
-                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
-                             
-                               iframe.setToolTipText(MDIClasses.get(MDIClasses.size()-1).short_filename);
-                              }
-                              
-                          }
-                          catch (PropertyVetoException ec)
-                          {
-                              System.out.println("Error setting iframe: " + ec.toString());
-                          }
-                 }
+              
                  
                 }   
     
@@ -319,6 +270,7 @@ super.setSize(Width-300,Height-300);
  
                
      SeleniumToolDesktop = new JDesktopPane();
+     SeleniumToolDesktop.setDesktopManager(new browsermatorDesktopManager());
      SeleniumToolDesktop.setSize(1200,800);
      SeleniumToolDesktop.setVisible(true);
      
@@ -3000,8 +2952,8 @@ STAppFrame.addjButtonDoStuffActionListener(
                           try
                           {
                               iframe.setSelected(true);
-     
-        MDIClasses.get(MDI_CLASS_INDEX).setSelected(true);
+      int currentMDI_CLASS_INDEX = getThisFrameIndex(iframe.getTitle());
+        MDIClasses.get(currentMDI_CLASS_INDEX).setSelected(true);
       
                           }
                           catch (PropertyVetoException ec)
@@ -3023,7 +2975,20 @@ STAppFrame.addjButtonDoStuffActionListener(
        }
    }
 
-  
+  public int getThisFrameIndex(String frameName)
+  {
+         int mdi_index = 0;
+         int loopcount = 0;
+                     for (SeleniumTestTool thisMDIClass : MDIClasses)
+                {
+                    if (thisMDIClass.filename.equals(frameName))
+                    {
+                      mdi_index = loopcount;
+                    }
+                    loopcount++;
+                }  
+                     return mdi_index;
+  }
     public final void LoadGlobalEmailSettings() throws IOException 
  {
      Properties applicationProps = new Properties();
