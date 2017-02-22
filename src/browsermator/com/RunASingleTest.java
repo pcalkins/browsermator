@@ -8,6 +8,7 @@ package browsermator.com;
 import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 import javax.swing.SwingWorker;
@@ -387,6 +388,8 @@ options.setBinary(chrome_path);
  
   int WaitTime = SiteTest.GetWaitTime();
 // driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
+// driver.manage().timeouts().pageLoadTimeout(WaitTime, TimeUnit.SECONDS);
+// driver.manage().timeouts().setScriptTimeout(WaitTime, TimeUnit.SECONDS);
      int totalpause = WaitTime * 1000;
  
  if (!"Dataloop".equals(thisbugview.Type))

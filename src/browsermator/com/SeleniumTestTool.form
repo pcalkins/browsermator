@@ -428,7 +428,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;HTML&gt;*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).&lt;br/&gt;**HTMLUnit&apos;s Javascript engine is a bit quirky.&lt;br/&gt;***If a report fails to show the screenshots may have overrun Java&apos;s heap space.&lt;/HTML&gt; "/>
+        <Property name="text" type="java.lang.String" value="&lt;HTML&gt;*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).&lt;br/&gt;**HTMLUnit&apos;s Javascript engine is a bit quirky.&lt;/HTML&gt; "/>
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&lt;HTML&gt;*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).&lt;br/&gt;**HTMLUnit&apos;s Javascript engine is a bit quirky.&lt;br/&gt;*** If a report fails to show the number of screenshots may have overrun Java&apos;s heap space.&lt;/HTML&gt; "/>

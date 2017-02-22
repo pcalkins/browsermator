@@ -1551,7 +1551,7 @@ this.changes=true;
 
         jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
-        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.<br/>***If a report fails to show the screenshots may have overrun Java's heap space.</HTML> ");
+        jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.</HTML> ");
 
         jCheckBoxOSTypeWindows32.setText("Windows - 32");
         jCheckBoxOSTypeWindows32.setEnabled(false);

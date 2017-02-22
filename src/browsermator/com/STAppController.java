@@ -79,7 +79,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.32b";
+   public final String ProgramVersion = "1.0.33b";
    public String loginName;
    public String loginPassword;
    public String old_filename;

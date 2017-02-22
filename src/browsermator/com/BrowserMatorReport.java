@@ -153,11 +153,12 @@ Scene scene = new Scene(browser);
    });   
 
             fxPanel.setVisible(true);
-fxPanel.setSize(800,800);
+ fxPanel.setSize(900,920);
 
 mainPanel = new JPanel(new BorderLayout());
   mainPanel.add(jButtonSaveFile, BorderLayout.NORTH);
     mainPanel.add(fxPanel, BorderLayout.CENTER);
+    
     mainPanel.setVisible(true);
 
    ReportFrame = new JFrame("Browsermator Report");
@@ -173,8 +174,9 @@ mainPanel = new JPanel(new BorderLayout());
 
   
     ReportFrame.add(mainPanel);
-    ReportFrame.setSize(800, 800);
-    ReportFrame.setVisible(true);   
+   ReportFrame.setSize(910, 920);
+ //  ReportFrame.pack();
+  ReportFrame.setVisible(true);   
      
      
        this.ReportDisplayed = true;    
@@ -203,7 +205,7 @@ Scene scene = new Scene(browser);
    });   
 
             fxPanel.setVisible(true);
-fxPanel.setSize(800,800);
+ fxPanel.setSize(900,920);
 
 mainPanel = new JPanel(new BorderLayout());
   mainPanel.add(jButtonSaveFile, BorderLayout.NORTH);
@@ -223,7 +225,8 @@ mainPanel = new JPanel(new BorderLayout());
 
   
     ReportFrame.add(mainPanel);
-    ReportFrame.setSize(800, 800);
+    ReportFrame.setSize(910, 920);
+ // ReportFrame.pack();
     ReportFrame.setVisible(true);   
      
      
@@ -783,9 +786,12 @@ mainPanel = new JPanel(new BorderLayout());
          ReportText = ReportText + "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
         int passvalueslength = 0;
+        if (number_of_actions>0)
+        {
         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
         {
               passvalueslength = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values.length;
+        }
         }
               if (passvalueslength>0)
             {
