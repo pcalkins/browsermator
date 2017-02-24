@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,8 +72,8 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   this.changes = false;
   this.PromptToClose = false;
   this.ShowReport = false;
-  this.filename = filename;
-  this.short_filename = Paths.get(filename).toFile().toString();
+  this.filename = "";
+  this.short_filename=filename;
   this.URL = "";
   this.BugPanel = new JPanel();
   this.IncludeScreenshots = false;
@@ -654,15 +655,68 @@ public int GetWaitTime()
 }
 public void setProperties (String filename)
     {
-   
-    this.setTitle(filename); 
+    Path thisP = Paths.get(filename);
+    
+    
+String shortname = thisP.getFileName().toString();
+if (shortname.length()>1)
+{
+  int end_of_name = shortname.indexOf(".browsermation");
+  
+if (end_of_name<1)
+{
+    end_of_name=shortname.length();
+
+}
+
+   this.short_filename = shortname.substring(0, end_of_name );
+}
+else
+{
+    this.short_filename = shortname;
+}
+
+
+    this.setTitle(this.short_filename); 
     this.filename = filename;
     
     }
    
     @SuppressWarnings("unchecked")
 
-
+ public void disableAdds()
+ {
+   jButtonNewBug.setEnabled(false);
+   jButtonNewDataLoop.setEnabled(false);
+   for (ProcedureView PV: BugViewArray)
+   {
+       PV.JComboBoxDoActions.setEnabled(false);
+       PV.JComboBoxPassFailActions.setEnabled(false);
+       PV.JButtonGoAction.setEnabled(false);
+       PV.JButtonClickAtXPATH.setEnabled(false);
+       PV.JButtonTypeAtXPATH.setEnabled(false);
+       PV.JButtonFindXPATHPassFail.setEnabled(false);
+       PV.JButtonDoNotFindXPATHPassFail.setEnabled(false); 
+       PV.JButtonYesNoPromptPassFail.setEnabled(false);
+   }
+   
+ }
+ public void enableAdds()
+ {
+  jButtonNewBug.setEnabled(true);
+   jButtonNewDataLoop.setEnabled(true);
+   for (ProcedureView PV: BugViewArray)
+   {
+       PV.JComboBoxDoActions.setEnabled(true);
+       PV.JComboBoxPassFailActions.setEnabled(true);
+       PV.JButtonGoAction.setEnabled(true);
+       PV.JButtonClickAtXPATH.setEnabled(true);
+       PV.JButtonTypeAtXPATH.setEnabled(true);
+       PV.JButtonFindXPATHPassFail.setEnabled(true);
+       PV.JButtonDoNotFindXPATHPassFail.setEnabled(true); 
+       PV.JButtonYesNoPromptPassFail.setEnabled(true);
+   }    
+ }
  public void setRunActionsButtonName(String newtext)
  {
      jButtonDoStuff.setText(newtext);

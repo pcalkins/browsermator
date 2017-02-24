@@ -62,6 +62,7 @@ BrowserMatorReport BrowserMatorReport;
 @Override 
 public String doInBackground()
  {
+     SiteTest.disableAdds();
      SiteTest.testRunning = true;
      
     SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -78,6 +79,7 @@ public String doInBackground()
 @Override
  protected void done()
  {
+     SiteTest.enableAdds();
     SiteTest.testRunning = false; 
     try
     {
@@ -1024,6 +1026,7 @@ else
 
 
     LocalDateTime stringtime = TheseActions.TimeOfTest;
+   
        boolean TestState = TheseActions.loop_pass_values[x];
        if (TestState==true)
        {

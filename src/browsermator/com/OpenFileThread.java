@@ -13,6 +13,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,7 +179,7 @@ catch (ParserConfigurationException | SAXException | IOException e)
 finally 
 {
  
-    STAppFrame = BuildNewWindow(doc);
+    STAppFrame = BuildNewWindow(doc, full_filename);
     STAppFrame.UpdateDisplay();
    STAppFrame.setVisible(true);
   STAppFrame.setProperties(full_filename);
@@ -309,19 +310,20 @@ for (Procedure thisproc: STAppFrame.BugArray)
 
     }
   
-  public SeleniumTestTool BuildNewWindow(Document doc)
+  public SeleniumTestTool BuildNewWindow(Document doc, String full_filename)
   {
    
-    
+  
    NamedNodeMap NewAttributes = doc.getElementsByTagName("BrowserMatorWindow").item(0).getAttributes(); 
    
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
    SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
    
-   STAppFrame.filename = filename_read;
+
+
       STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle(STAppFrame.filename);
+  STAppFrame.setProperties(full_filename);
   STAppFrame.setResizable(true);
   STAppFrame.setSize(1024, 800);
   STAppFrame.setClosable(true);
@@ -526,7 +528,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
     
-    
+ 
    
     Element Procedure = (Element) ProcedureList.item(i);
    

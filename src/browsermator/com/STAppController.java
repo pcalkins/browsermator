@@ -48,10 +48,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
 
 
 public final class STAppController extends JFrame {
@@ -79,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.33b";
+   public final String ProgramVersion = "1.0.35b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -454,7 +450,8 @@ SeleniumToolDesktop.add(Navigator);
        });
   
  addFileMenuNewActionListener(
-  new ActionListener()
+  
+         new ActionListener()
   {
   public void actionPerformed (ActionEvent evt)
   {
@@ -468,52 +465,27 @@ SeleniumToolDesktop.add(Navigator);
            }
   
  
-      SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
-     STAppFrame.ShowStoredVarControls(false);
-
-      STAppFrame.setTargetBrowser("Chrome");
-      STAppFrame.setOSType("Windows32");
-   STAppFrame.setClosable(true);
+ 
+  SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+ STAppFrame.setProperties(filename);
+ STAppFrame.ShowStoredVarControls(false);
+  STAppFrame.setTargetBrowser("Chrome");
+  STAppFrame.setOSType("Windows32");
+     STAppFrame.setClosable(true);
+ 
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle(STAppFrame.filename);
+
   STAppFrame.setResizable(true);
- 
- 
-  SeleniumToolDesktop.add(STAppFrame);
-  STAppFrame.moveToFront();
+
+  
 
 
-  try
-  {
-       STAppFrame.setMaximum(true);
-    
 
-  STAppFrame.setVisible(true);
-    STAppFrame.setSelected(true);
-   
- 
-  }
-  catch (PropertyVetoException e)
-  {
-      System.out.println("Veto :" + e.toString());
-  }
-          
-  // STAppFrame.REFTHEMDIFRAME.moveToFront();
-  saveMenuItem.setEnabled(true);
-  SeleniumToolDesktop.repaint();
+// SeleniumToolDesktop.repaint();
   MDIClasses.add(STAppFrame);
-   if (MDIClasses.size()>0)
-                              {
-                                  try
-                                  {
-                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
-                                  }
-                                  catch (Exception ex)
-                                  {
-                                      System.out.println ("Exception when selecting window: " + ex.toString());
-                                  }
-                              }
- STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+    DisplayWindow (MDIClasses.size()-1);
+
+  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
                     int closed =  CheckToSaveChanges(STAppFrame, false);
@@ -527,29 +499,27 @@ SeleniumToolDesktop.add(Navigator);
             int thisMDIIndex = GetCurrentWindow();
           
       RemoveWindow(thisMDIIndex);
-       // RemoveWindow(MDIClasses.size()-1); 
+     //  RemoveWindow(MDIClasses.size()-1); 
        STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       }
-  
-     
-     
+        
      
       }
     });
-  
-  
+ 
+ 
     STAppFrame.addjButtonDoStuffActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-
+ 
  STAppFrame.RunActions(); 
-
+ 
   
         }
       }
     );
-    STAppFrame.addjButtonClearEmailSettingsListener(
+      STAppFrame.addjButtonClearEmailSettingsListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
@@ -560,7 +530,7 @@ SeleniumToolDesktop.add(Navigator);
         }
       }
     );
-       STAppFrame.addjButtonLoadEmailSettingsListener(
+          STAppFrame.addjButtonLoadEmailSettingsListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
@@ -576,7 +546,7 @@ SeleniumToolDesktop.add(Navigator);
         }
       }
     );
-   STAppFrame.addTargetBrowserItemListener( new ItemListener() {
+  STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
         {
@@ -589,7 +559,7 @@ SeleniumToolDesktop.add(Navigator);
          }
         }
         
-        });
+        }); 
     STAppFrame.addjButtonGutsViewActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -601,35 +571,34 @@ SeleniumToolDesktop.add(Navigator);
                                           
       }
     );
-    
     STAppFrame.addjButtonNewBugActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
     
    STAppFrame.AddNewBug();  
-
-        }
+ 
+ 
+  }
                                           
       }
     );
-     STAppFrame.addjButtonNewDataLoopActionListener(
+      STAppFrame.addjButtonNewDataLoopActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
+    
 //   File chosenCSVFile = BrowseForCSVFile();
 //   if (chosenCSVFile!=null)
 //   {
-//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-//   }
-              File blankfile = null;
+            File blankfile = new File("placeholder");
    STAppFrame.AddNewDataLoop(blankfile);  
-        }
+//   }
+ 
+  }
                                           
       }
     );
-  
-  
   
 
   }
@@ -901,47 +870,24 @@ SeleniumToolDesktop.add(Navigator);
  
  
   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
+ STAppFrame.setProperties(filename);
  STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows32");
      STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle(STAppFrame.filename);
+
   STAppFrame.setResizable(true);
-  STAppFrame.setSize(1024, 800);
-   SeleniumToolDesktop.add(STAppFrame);
-  STAppFrame.moveToFront();
+
   
 
-  try
-  {
-  
-   STAppFrame.setMaximum(true);
-   STAppFrame.setVisible(true);
-   STAppFrame.setSelected(true);
-    
-  
-  }
-  catch (PropertyVetoException e)
-  {
-      System.out.println("Veto: " + e.toString());
-  }
-  saveMenuItem.setEnabled(true);
-  SeleniumToolDesktop.repaint();
+
+
+// SeleniumToolDesktop.repaint();
   MDIClasses.add(STAppFrame);
-  if (MDIClasses.size()>0)
-                              {
-                                  try
-                                  {
-                              MDIClasses.get(MDIClasses.size()-1).setSelected(true);
-                                  }
-                                  catch (Exception ex)
-                                  {
-                                      System.out.println("Exception when selecting window: " + ex.toString());
-                                  }
-                              }
-  
+    DisplayWindow (MDIClasses.size()-1);
+
   STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
      @Override 
      public void internalFrameClosing(InternalFrameEvent e) {
@@ -2309,501 +2255,7 @@ STAppFrame.changes = false;
    
      }
   
-  public SeleniumTestTool BuildNewWindow(Document doc)
-  {
-   
-    
-   NamedNodeMap NewAttributes = doc.getElementsByTagName("BrowserMatorWindow").item(0).getAttributes(); 
-   
-   String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
-   SeleniumTestTool STAppFrame = new SeleniumTestTool(filename_read);
- // STAppFrame.ShowStoredVarControls(false);
-   STAppFrame.filename = filename_read;
-
-      STAppFrame.setClosable(true);
-  STAppFrame.setMaximizable(true);
-  STAppFrame.setTitle(STAppFrame.filename);
-  STAppFrame.setResizable(true);
-  STAppFrame.setSize(1024, 800);
-   STAppFrame.setClosable(true);
-  STAppFrame.setMaximizable(true);
-
-    STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-     @Override 
-     public void internalFrameClosing(InternalFrameEvent e) {
-    
-    
-      int closed =  CheckToSaveChanges(STAppFrame, false);
-           
-      if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else 
-      {
-       RemoveWindow(MDIClasses.size()-1); 
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      }
-     
-      }
-    });
-  NodeList FileSettingsNode = doc.getElementsByTagName("FileSettings");
  
-  String thisSettingsNodeName;
-  String thisSettingsNodeValue;
-  String stShowReport="false";
-  String stEmailReport = "false";
-  String stEmailReportFail = "false";
-  String stExitAfter = "false";
-  String SMTPHostname = "";
-  String EmailLoginName = "";
-  String stPromptToClose = "false";
-  String TargetBrowser = "Firefox";
-  String WaitTime = "3";
-  String Sessions = "1";
-  String OSType = "Windows32";
-  String EmailPassword = "";
-  String unepassword = "";
-  String EmailTo = "";
-  String EmailFrom = "";
-  String EmailSubject = "";
-  
-try
-{
-    NodeList SettingsNodes = FileSettingsNode.item(0).getChildNodes();
-
-
-    for (int k = 0; k<SettingsNodes.getLength(); k++)
-    {
-   thisSettingsNodeName = SettingsNodes.item(k).getNodeName();
-   thisSettingsNodeValue = SettingsNodes.item(k).getTextContent();
-    switch(thisSettingsNodeName)
-    {
-        case "ShowReport":
-            stShowReport = thisSettingsNodeValue;
-           Boolean ShowReport = false;
-   if (stShowReport.equals("true"))
-   {
-       ShowReport = true;
-   }
-   STAppFrame.setShowReport(ShowReport);
-            break;
-        
-        case "EmailReport":
-   stEmailReport = thisSettingsNodeValue;
-   Boolean EmailReport = false;
-    if (stEmailReport.equals("true"))
-   {
-       EmailReport = true;
-   }
-       STAppFrame.setEmailReport(EmailReport);
-            break;
-      
-        case "EmailReportFail":
-   stEmailReportFail = thisSettingsNodeValue;
-   Boolean EmailReportFail = false;
-    if (stEmailReportFail.equals("true"))
-   {
-       EmailReportFail = true;
-   }
-       STAppFrame.setEmailReportFail(EmailReportFail);
-            break;
-         
-        case "ExitAfter":
-   stExitAfter = thisSettingsNodeValue;
-   Boolean ExitAfter = false;
-    if (stExitAfter.equals("true"))
-   {
-       ExitAfter = true;
-   }
-       STAppFrame.setExitAfter(ExitAfter);
-            break;        
-       
-        case "SMTPHostname":
- SMTPHostname = thisSettingsNodeValue;
-      STAppFrame.setSMTPHostname(SMTPHostname);
-            break;  
-
-        case "EmailLoginName":
- EmailLoginName = thisSettingsNodeValue;
-      STAppFrame.setEmailLoginName(EmailLoginName);
-            break;  
-        
-        case "PromptToClose":
- stPromptToClose = thisSettingsNodeValue;
-   Boolean PromptToClose = false;
-    if (stPromptToClose.equals("true"))
-   {
-       PromptToClose = true;
-   }
-       STAppFrame.setPromptToClose(PromptToClose);
-            break; 
-          
-        case "TargetBrowser":
- TargetBrowser = thisSettingsNodeValue;
-      STAppFrame.setTargetBrowser(TargetBrowser);
-            break;   
-            
-       case "WaitTime":
- WaitTime = thisSettingsNodeValue;
- int intWaitTime = Integer.parseInt(WaitTime);
-      STAppFrame.setWaitTime(intWaitTime);
-            break;  
-       case "Sessions":
- Sessions = thisSettingsNodeValue;
- int intSessions = Integer.parseInt(Sessions);
-      STAppFrame.setSessions(intSessions);
-            break; 
-              
-       case "OSType":
- OSType = thisSettingsNodeValue;
-      STAppFrame.setOSType(OSType);
-            break;   
-     
-       case "EmailPassword":
- EmailPassword = thisSettingsNodeValue;
-  try
-   {
-   unepassword = Protector.decrypt(EmailPassword);
-   }
-   catch (GeneralSecurityException | IOException e)
-           {
-   //            System.out.println("decrypt error" + e.toString());
-           }
-      STAppFrame.setEmailPassword(unepassword);
-            break;  
-      
-       case "EmailTo":
- EmailTo = thisSettingsNodeValue;
-      STAppFrame.setEmailTo(EmailTo);
-            break;    
-      
-       case "EmailFrom":
- EmailFrom = thisSettingsNodeValue;
-      STAppFrame.setEmailFrom(EmailFrom);
-            break;   
-       
-       case "EmailSubject":
- EmailSubject = thisSettingsNodeValue;
-      STAppFrame.setSubject(EmailSubject);
-            break; 
-    }
-
-    }
-    }
-catch (Exception e)
-        {
-            System.out.println("Error loading filesettings: " + e.toString());
-          
-        }
-try
-{
-   NodeList ProcedureList = doc.getElementsByTagName("Procedure");
-   
-for (int i = 0; i < ProcedureList.getLength(); ++i)
-{
-    
-    
-    
-   
-    Element Procedure = (Element) ProcedureList.item(i);
-   
-    String DataFile = Procedure.getAttribute("DataLoopFile");
-    if (!"".equals(DataFile))
-    {
-        
-        File DataFile_file = new File(DataFile);
-         if (DataFile_file.exists())
-        {
-            STAppFrame.AddNewDataLoop(DataFile_file);
-        }
-        else
-        {
-           STAppFrame.AddNewBug();
-        }
-       
-    }
-    else
-    {
-     STAppFrame.AddNewBug();    
-    }
-    
-    STAppFrame.BugArray.get(i).BugTitle = Procedure.getAttribute("Title");
-    STAppFrame.BugViewArray.get(i).JTextFieldBugTitle.setText(Procedure.getAttribute("Title"));
-    STAppFrame.BugArray.get(i).BugURL = Procedure.getAttribute("URL");
-    
-    String stPass = Procedure.getAttribute("Pass");
-    Boolean Pass = false;
-    if (stPass.equals("true"))
-    {
-        Pass = true;
-    }
-    STAppFrame.BugArray.get(i).Pass = Pass;
-
-    
-    
- 
-    
-    NodeList ActionsList = Procedure.getElementsByTagName("Action");
-  
-    for (int j = 0; j <ActionsList.getLength(); j++)
-    {
-   Element Action = (Element) ActionsList.item(j);
-   NodeList ActionNodes = Action.getChildNodes();
-   String thisActionNodeName = "none";
-   String thisActionNodeValue = "none";
-   
-   String Variable1 = "";
-   String Variable2 = "";
-   String LOCKED = "false";
-   String BoolVal1 = "false";
-   String BoolVal2 = "false";
-    String TimeOfTest;
-    String ActionType = "none";
-    String ActionIndex;
-    String ActionPass;
-    String Password = "";
-    
-    
-   Boolean RealBoolVal1 = false;
-   Boolean RealBoolVal2 = false;
-   Boolean boolLOCKED = false;
-    for (int k = 0; k<ActionNodes.getLength(); k++)
-    {
-   thisActionNodeName = ActionNodes.item(k).getNodeName();
-   thisActionNodeValue = ActionNodes.item(k).getTextContent();
-   
-    switch(thisActionNodeName)
-    {
-        case "Pass":
-            ActionPass = thisActionNodeValue;
-            break;
-        case "ActionIndex":
-            ActionIndex = thisActionNodeValue;
-            break;
-        case "Type":
-            ActionType = thisActionNodeValue;
-            break;
-        case "Variable1":
-            Variable1 = thisActionNodeValue;
-            break;
-        case "Variable2":
-            Variable2 = thisActionNodeValue;
-            break;
-        case "BoolVal1":
-            BoolVal1 = thisActionNodeValue;
-            if (BoolVal1.equals("true"))
-                    {
-                    RealBoolVal1 = true;
-                    }
-           break;
-         case "BoolVal2":
-            BoolVal2 = thisActionNodeValue;
-            if (BoolVal2.equals("true"))
-                    {
-                    RealBoolVal2 = true;
-                    }
-           break;
-        case "LOCKED":
-            LOCKED = thisActionNodeValue;
-             if (LOCKED.equals("true"))
-                    {
-                   boolLOCKED = true;
-                    }
-            break;
-       
-
-        case "TimeOfTest":
-            TimeOfTest = thisActionNodeValue;
-            break;
-    }  
-                
-    } 
-    
-   Procedure NewProcedure = STAppFrame.BugArray.get(i);
-   ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
-   if (ActionType.contains("Password"))
-   {
-       try
-       {
-       Password = Protector.decrypt(Variable2);
-       Variable2 = Password;
-       }
-       catch (Exception e)
-       {
-     //   System.out.println("Load/decrypt error: " + e.toString());
-       }
-   }
-  ActionsMaster NewActionsMaster = new ActionsMaster();
-   
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionHashMap.containsKey(ActionType))
-           {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
-               STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
-               
-           }      
- 
-     if (thisPassFailActionHashMap.containsKey(ActionType))
-             {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
-               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
-              STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
-             }
- 
- 
-  
-STAppFrame.UpdateDisplay();
-        }   
-     
-    }
-    }
-catch (Exception e)
-        {
-            System.out.println("Error loading procedure: " + e.toString());
-          
-        }
-STAppFrame.addTargetBrowserItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowser(TargetBrowser);
-           
-          STAppFrame.changes = true;
-          
-         }
-        }
-        
-        });
-STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
-new ActionListener() {
-    public void actionPerformed (ActionEvent evt)
-    {
-           String TargetBrowser = STAppFrame.getTargetBrowser();
-    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
-   
-    FFProperties.BrowseforFFPath();
- 
-    }
-});
-
-STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.RunActions(); 
- 
-  
-        }
-      }
-    );
-   STAppFrame.addjButtonFlattenFileActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-   
-                   ThreadSaveFile(STAppFrame, true, true);
-                    
- 
-  
-        }
-      }
-    );
-      STAppFrame.addjButtonClearEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.ClearEmailSettings(); 
- 
-  
-        }
-      }
-    );
-         STAppFrame.addjButtonLoadEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- try
- {
- STAppFrame.LoadGlobalEmailSettings();
- }
- catch (Exception ex)
- {
-     System.out.println ("Exception loading global email settings: " + ex.toString());
- }
-  
-        }
-      }
-    );
-            STAppFrame.addjButtonGutsViewActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-   STAppFrame.ShowGuts();
-
-        }
-                                          
-      }
-    );
-      
-    STAppFrame.addjButtonNewBugActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-   STAppFrame.AddNewBug();  
- 
- 
-  }
-                                          
-      }
-    );
-     STAppFrame.addjButtonNewDataLoopActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-//   File chosenCSVFile = BrowseForCSVFile();
-//   if (chosenCSVFile!=null)
-//   {
-//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-//   }
-             File blankfile = null;
-   STAppFrame.AddNewDataLoop(blankfile);  
-  }
-                                          
-      }
-    );
-  
- 
-  
- return STAppFrame;
-
-  }
-   public void FlattenFile(SeleniumTestTool windowToFlatten)
- {
-  //   FlattenLoop FlatREF = new FlattenLoop(DataLoop );
-  //  FlatREF.execute();
-    
- }
   public int GetCurrentWindow()
   {
      
@@ -2880,7 +2332,7 @@ STAppFrame.addjButtonDoStuffActionListener(
    {
        if (MDI_CLASS_INDEX>=0)
        {
-  MDIClasses.get(MDI_CLASS_INDEX).setTitle(MDIClasses.get(MDI_CLASS_INDEX).filename);
+  MDIClasses.get(MDI_CLASS_INDEX).setProperties(MDIClasses.get(MDI_CLASS_INDEX).filename);
   MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
   MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
   saveMenuItem.setEnabled(true);
@@ -2919,12 +2371,10 @@ STAppFrame.addjButtonDoStuffActionListener(
        @Override
         public void actionPerformed (ActionEvent e )
         {
-
-       JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
-                for (JInternalFrame iframe : iframes)
-                {
-                  
-                   String thisFrameName = iframe.getTitle();
+            int current_index = 0;
+        for (SeleniumTestTool iframe : MDIClasses)
+        {
+                       String thisFrameName = iframe.filename;
          
         
         
@@ -2952,17 +2402,17 @@ STAppFrame.addjButtonDoStuffActionListener(
                           try
                           {
                               iframe.setSelected(true);
-      int currentMDI_CLASS_INDEX = getThisFrameIndex(iframe.getTitle());
-        MDIClasses.get(currentMDI_CLASS_INDEX).setSelected(true);
+     
+        MDIClasses.get(current_index).setSelected(true);
       
                           }
                           catch (PropertyVetoException ec)
                           {
                               System.out.println("Error setting iframe: " + ec.toString());
                           }
-                       }
-                  
-                }   
+                       }    
+                       current_index++;
+        }
         
              
          

@@ -12,7 +12,7 @@ public class TypeAtIDAction extends Action
     
   TypeAtIDAction (String TargetFieldID, String ToType, Boolean BoolVal1)
     {
-        this.Type = "Type at ID";
+        this.Type = "Type at Input ID";
         
         this.Variable1 = TargetFieldID;
         this.Variable2 = ToType;

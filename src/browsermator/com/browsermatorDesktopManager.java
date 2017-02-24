@@ -15,13 +15,16 @@ import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
+import java.util.HashMap;
 /**
  *
  * @author pcalkins
  */
 public class browsermatorDesktopManager extends DefaultDesktopManager
 {
+ 
+ HashMap<JInternalFrame, String> FrameHashMap;
+
 @Override
   public void deiconifyFrame(JInternalFrame f) {
     super.deiconifyFrame(f);
@@ -36,11 +39,13 @@ public class browsermatorDesktopManager extends DefaultDesktopManager
     }
    
   }  
-  @Override
+ 
     public void iconifyFrame(JInternalFrame f) {
   // f.addInternalFrameListener(ifl);
+ 
   int minWidth = computeMinFrameWidth();
   int minHeight = computeMinFrameHeight();
+
   int desiredWidth = computeDesktopIconWidth(minWidth, f.getTitle());
   // UIManager.put("DesktopIcon.width", desiredWidth);
   int desiredHeight = computeDesktopIconHeight(minHeight, f.getTitle());

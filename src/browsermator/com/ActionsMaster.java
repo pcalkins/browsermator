@@ -54,7 +54,9 @@ public class ActionsMaster {
     ActionViewHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHActionView());
     ActionViewHashMap.put("Switch To Frame", new SwitchToFrameActionView());
     ActionViewHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowActionView());
+    // legacy support for Type at ID
     ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
+    ActionViewHashMap.put("Type at Input ID", new TypeAtIDActionView());
     ActionViewHashMap.put("Type at Input Name", new TypeAtInputNameActionView());
     ActionViewHashMap.put("Type at XPATH", new TypeAtXPATHActionView());
     ActionViewHashMap.put("Type Password at ID", new TypePasswordAtIDActionView());
@@ -89,7 +91,9 @@ public class ActionsMaster {
   ActionHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHAction("", ""));
   ActionHashMap.put("Switch To Frame", new SwitchToFrameAction(""));
   ActionHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowAction(""));
+  //legacy support for Type at ID
   ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));
+  ActionHashMap.put("Type at Input ID", new TypeAtIDAction("", "", false));
   ActionHashMap.put("Type at Input Name", new TypeAtInputNameAction("","", false));
   ActionHashMap.put("Type at XPATH", new TypeAtXPATHAction("", "", false));
   ActionHashMap.put("Type Password at ID", new TypePasswordAtIDAction("", "", false));
