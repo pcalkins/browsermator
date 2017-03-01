@@ -61,7 +61,7 @@ public class Prompter extends JFrame implements ActionListener
                 WholePrompt.add(buttonpanel, BorderLayout.SOUTH);
                 
                
-                setSize(400, 200);
+              setSize(400, 200);
                  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
@@ -75,7 +75,7 @@ public class Prompter extends JFrame implements ActionListener
                 setVisible(true);
                 ContinueButton.addActionListener(this);
               
-               pack();
+             pack();
             }
      
  @Override

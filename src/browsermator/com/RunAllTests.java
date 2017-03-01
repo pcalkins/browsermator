@@ -4,22 +4,14 @@ package browsermator.com;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-import javax.xml.bind.DatatypeConverter;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -28,7 +20,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.internal.Base64Encoder;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class RunAllTests extends SwingWorker<String, Integer>
@@ -72,6 +63,7 @@ public String doInBackground()
           thisbugview.JLabelPass.setVisible(false);
       }
     RunAllActions(SiteTest, targetbrowser, OSType);
+    
     String donetext = "Run All Procedures";
      return donetext;
      
@@ -119,27 +111,8 @@ public String doInBackground()
     }
         if (SiteTest.getPromptToClose())
      {
-   Object[] options = {"OK"};
-    int n = JOptionPane.showOptionDialog(null,
-                   "Close webdriver/browser?","Prompt to close browser",
-                   JOptionPane.PLAIN_MESSAGE,
-                   JOptionPane.QUESTION_MESSAGE,
-                   null,
-                   options,
-                   options[0]);
-    if (n==0)
-    {
-        try
-        {
-        driver.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-            driver.quit();
-        }
-    driver.quit();
-    }
+  
+   
      }
      else
      {
@@ -622,7 +595,7 @@ if (!"Dataloop".equals(thisbugview.Type))
        catch (Exception ex)
        {
             ThisAction.ScreenshotBase64 = "Screenshot Failed";
-           System.out.println("Exception creating screenshot: " + ex.toString());     
+      //     System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
          else
@@ -793,7 +766,7 @@ else
                  catch (Exception ex)
        {
           ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
-           System.out.println("Exception creating screenshot: " + ex.toString());     
+     //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
                   else
@@ -864,7 +837,7 @@ else
                   catch (Exception ex)
        {
           ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
-           System.out.println("Exception creating screenshot: " + ex.toString());     
+     //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
         
     } 
@@ -961,8 +934,40 @@ else
     thisbugindex++;
       }
  
+         if (SiteTest.getPromptToClose())
+     {
+          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename, "Clicking continue will close webdriver/browser.", false,0, 0);
   
-     
+    
+
+
+    
+while(thisContinuePrompt.isVisible() == true){
+       try
+       {
+ Thread.sleep(200);
+
+       }
+       catch (InterruptedException e)
+               {
+                  System.out.println("pause exception: " + e.toString());
+                
+              }
+  
+}
+  
+   
+        try
+        {
+        driver.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            driver.quit();
+        }
+    driver.quit();
+     } 
  }
 
   public void FillReport()

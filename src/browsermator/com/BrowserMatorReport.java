@@ -426,7 +426,7 @@ mainPanel = new JPanel(new BorderLayout());
                 + " ########" + 
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
-                                 if ("null".equals(ThisScreenshot))
+                                 if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -445,7 +445,7 @@ mainPanel = new JPanel(new BorderLayout());
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
         
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -506,7 +506,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
            
            
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -527,7 +527,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
           
           
-                   if ("null".equals(ThisScreenshot))
+                   if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -604,7 +604,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
             
     
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -636,7 +636,7 @@ mainPanel = new JPanel(new BorderLayout());
                      
                pass_string + ThisTimeValue.toString() + LineBreak;
        
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  to_write += LineBreak;
              }
@@ -832,7 +832,7 @@ mainPanel = new JPanel(new BorderLayout());
             
              if (includescreens)
              {
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
@@ -852,7 +852,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
@@ -896,7 +896,7 @@ mainPanel = new JPanel(new BorderLayout());
            
              if (includescreens)
              {
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
@@ -917,7 +917,7 @@ mainPanel = new JPanel(new BorderLayout());
           
               if (includescreens)
              {
-                   if ("null".equals(ThisScreenshot))
+                   if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
@@ -969,7 +969,7 @@ mainPanel = new JPanel(new BorderLayout());
             
              if (includescreens)
              {
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
@@ -988,7 +988,7 @@ mainPanel = new JPanel(new BorderLayout());
                pass_string + ThisTimeValue.toString() + LineBreak;
                if (includescreens)
              {
-                  if ("null".equals(ThisScreenshot))
+                  if ("null".equals(ThisScreenshot) || "Screenshot Failed".equals(ThisScreenshot))
              {
                  ReportText += LineBreak;
              }
