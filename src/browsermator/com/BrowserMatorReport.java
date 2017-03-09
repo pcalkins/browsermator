@@ -320,13 +320,14 @@ mainPanel = new JPanel(new BorderLayout());
     String action_ID="";
   
    
-     FileWriter writer =null;
+     BufferedWriter writer =null;
      File temp_report_file = null;
     String tempFileName = "report_results";
     try {
       temp_report_file = File.createTempFile(tempFileName, ".htm");
    temp_report_file.deleteOnExit();
-        writer = new FileWriter(temp_report_file);
+  writer = new BufferedWriter(new FileWriter(temp_report_file));
+       
      
     } 
     catch (Exception ex)
@@ -651,7 +652,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
        
             writer.append(to_write);
-            
+            writer.flush();
         
          to_write = "";
         }
@@ -838,7 +839,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                 ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              
               }
@@ -859,7 +860,7 @@ mainPanel = new JPanel(new BorderLayout());
              else
              {
         ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton" 
-                + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              }
               }
@@ -902,7 +903,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-             ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+             ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
                   
              }
@@ -923,7 +924,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              } 
               }
@@ -975,7 +976,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }   
              }
               }
@@ -994,7 +995,7 @@ mainPanel = new JPanel(new BorderLayout());
              }
              else
              {
-                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Hide Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
+                ReportText +=  "\n<BUTTON NAME =\"ShowHideButton\" onclick = \"ShowHideThisScreen(this.id)\" id = \"ShowHideButton"  + bug_ID + "-" + action_ID + "\">Show Screenshot " + bug_ID + "-" + action_ID + "</BUTTON>" +LineBreak + ThisScreenshot + LineBreak;
              }
              }
           

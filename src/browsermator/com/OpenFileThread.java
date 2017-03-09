@@ -255,6 +255,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
     {
         String checkingboolval1 = "false";
         String checkingboolval2 = "false";
+        String checkingboolval3 = "false";
         STAppFrame.AllFieldValues.add(thisact.Variable1);
 
         STAppFrame.AllFieldValues.add(thisact.Variable2);
@@ -268,6 +269,11 @@ for (Procedure thisproc: STAppFrame.BugArray)
             checkingboolval2 = "true";
         }
         STAppFrame.AllFieldValues.add(checkingboolval2);
+          if (thisact.Locked)
+        {
+            checkingboolval3 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval3);
         
     }
 }

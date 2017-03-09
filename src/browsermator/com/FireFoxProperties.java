@@ -30,7 +30,7 @@ public class FireFoxProperties {
          //   System.out.println("Cannot find binary for Firefox");
   
   
-        if ("Chrome (WinXP)".equals(this.targetbrowser))
+        if ("Chrome 49".equals(this.targetbrowser))
       {
   FindFireFoxExe = new JFileChooser("Browse for Chrome executable");
  FindFireFoxExe.setDialogTitle("Browse for Chrome executable (for manual installs on XP.)");

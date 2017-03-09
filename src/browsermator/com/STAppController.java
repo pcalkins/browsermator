@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.36b";
+   public final String ProgramVersion = "1.0.37b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1158,6 +1158,12 @@ for (Procedure thisproc: STAppFrame.BugArray)
             checkingboolval2 = "true";
         }
         AllFieldValuesCheck.add(checkingboolval2);
+          String checkingboolval3 = "false";
+                if (thisact.Locked)
+        {
+            checkingboolval3 = "true";
+        }
+        AllFieldValuesCheck.add(checkingboolval3);
     }
 }
 if (!STAppFrame.AllFieldValues.equals(AllFieldValuesCheck))
@@ -2195,6 +2201,8 @@ for (Procedure thisproc: STAppFrame.BugArray)
     {
         String checkingboolval1 = "false";
         String checkingboolval2 = "false";
+        String checkingboolval3 = "false";
+        
         STAppFrame.AllFieldValues.add(thisact.Variable1);
        
         STAppFrame.AllFieldValues.add(thisact.Variable2);
@@ -2209,6 +2217,11 @@ for (Procedure thisproc: STAppFrame.BugArray)
             checkingboolval2 = "true";
         }
         STAppFrame.AllFieldValues.add(checkingboolval2);
+            if (thisact.Locked)
+        {
+            checkingboolval3 = "true";
+        }
+        STAppFrame.AllFieldValues.add(checkingboolval3);
     }
 }
 STAppFrame.changes = false;

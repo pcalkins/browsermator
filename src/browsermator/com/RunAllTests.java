@@ -4,13 +4,10 @@ package browsermator.com;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -53,6 +50,8 @@ BrowserMatorReport BrowserMatorReport;
 @Override 
 public String doInBackground()
  {
+    
+     SiteTest.clearPassFailColors();
      SiteTest.disableAdds();
      SiteTest.testRunning = true;
      
@@ -176,7 +175,7 @@ public String doInBackground()
 @Override
  protected void process ( List <Integer> bugindex)
  {
- //   int updatebugindex = bugindex.size()-1;
+ //  int only... how to update actions individually... remapping of ints?
     
     SiteTest.BugViewArray.get(bugindex.get(0)).JButtonRunTest.setText("Run");
       if (SiteTest.BugArray.get(bugindex.get(0)).Pass)
@@ -188,6 +187,7 @@ public String doInBackground()
       
        SiteTest.BugArray.get(bugindex.get(0)).Pass = true;
        SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
+    
     }
      else
      {
@@ -255,7 +255,7 @@ public String doInBackground()
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
         if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome 49", false,0,0);
               FallbackDriver("Chrome49");
          
     }
@@ -314,7 +314,7 @@ public String doInBackground()
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
        if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome 49", false,0,0);
             FallbackDriver("Chrome49");
       
     }
@@ -341,7 +341,7 @@ public String doInBackground()
      {
          System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
          if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome 49", false,0,0);
              FallbackDriver("Chrome49");
      
     }
@@ -362,7 +362,7 @@ public String doInBackground()
              {
              System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
           if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome 49", false,0,0);
            FallbackDriver("Chrome49");
         
     }
@@ -407,7 +407,7 @@ public String doInBackground()
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
         if (chrome_path!=null) {
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome (WinXP)", false,0,0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome 49", false,0,0);
          FallbackDriver("Chrome49");
      
 
@@ -420,7 +420,10 @@ public String doInBackground()
           }
    }
      break;
-   case "Chrome (WinXP)":
+
+     
+     
+   case "Chrome 49":
          ChromeOptions options = new ChromeOptions();
       if (chrome_path!=null) {
         
@@ -437,16 +440,53 @@ options.setBinary(chrome_path);
      }
    catch (Exception ex)
    {
-       System.out.println ("Problem launching Chromedriver for XP: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome WinXP driver, will fallback to HTMLUnitDriver", false,0, 0);
+       System.out.println ("Problem launching Chromedriver 49: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver, will fallback to HTMLUnitDriver", false,0, 0);
       FallbackDriver("HTMLUnit");
    }
      break;
          
          default: 
-            driver = new ChromeDriver();
-                     break;
+           //legacy support
+         if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Windows32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+       if ("Windows64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac64\\chromedriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver");
+     }
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+        if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome 49", false,0,0);
+         FallbackDriver("Chrome49");
+     
+
+    }
    }
+    }
   
   int WaitTime = SiteTest.GetWaitTime();
  
@@ -485,8 +525,10 @@ if (!"Dataloop".equals(thisbugview.Type))
              break;
           }  
        String original_value = ThisAction.Variable2;
+       
  action_INT++;
  action_ID = Integer.toString(action_INT);
+
            if (!ThisAction.Locked)
    {
    try
@@ -501,6 +543,7 @@ if (!"Dataloop".equals(thisbugview.Type))
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
+        thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
             publish(thisbugindex);
           break;
         
@@ -554,9 +597,11 @@ if (!"Dataloop".equals(thisbugview.Type))
                  {
          ThisAction.RunAction(driver);    
                  }
+                 
+                  thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
        }
        
-      
+  
        if (!"".equals(ThisAction.tostore_varvalue))
        {
         
@@ -577,7 +622,7 @@ if (!"Dataloop".equals(thisbugview.Type))
      {
   System.out.println(ex.toString());
       ThisAction.Pass = false;
-       
+        thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
  
               publish(thisbugindex);
           break;
@@ -590,7 +635,7 @@ if (!"Dataloop".equals(thisbugview.Type))
        {
      File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.ScreenshotBase64 = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+   ThisAction.ScreenshotBase64 = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
        }
        catch (Exception ex)
        {
@@ -610,6 +655,7 @@ if (!"Dataloop".equals(thisbugview.Type))
              ThisAction.Pass = true; 
            
            }
+            thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
    }  
 
 }
@@ -665,7 +711,7 @@ else
            if (SiteTest.getIncludeScreenshots())
     { 
 
-       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: inline; visibility: visible;\" src=\"\"></img>";
+       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>";
     } 
            else
            {
@@ -688,6 +734,7 @@ else
          System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
             publish(thisbugindex);
+             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
           break;
   }
        }
@@ -751,6 +798,7 @@ else
         
  
                publish(thisbugindex);
+                thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
           break;
        
      }
@@ -760,7 +808,7 @@ else
         {
     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
   
         }
                  catch (Exception ex)
@@ -817,6 +865,8 @@ else
          System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
             publish(thisbugindex);
+             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+         
           break;
   }
                  }
@@ -832,7 +882,7 @@ else
         {
      File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
        }
                   catch (Exception ex)
        {
@@ -853,7 +903,7 @@ else
        ThisAction.Variable2 = original_value2;
        ThisAction.loop_pass_values[x] = false;
         ThisAction.loop_time_of_test[x] = LocalDateTime.now();
-        
+         thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
   
                publish(thisbugindex);
           break;
@@ -867,9 +917,9 @@ else
           ThisAction.Pass = true;
           ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-        
+       
       }
-     
+      thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
      }
  
              if (changex!=x)
@@ -936,7 +986,7 @@ else
  
          if (SiteTest.getPromptToClose())
      {
-          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename, "Clicking continue will close webdriver/browser.", false,0, 0);
+          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
   
     
 

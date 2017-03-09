@@ -25,8 +25,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -66,7 +69,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
     this.hasStoredArray = false;
    this.VarHashMap = new HashMap();
    // super("Selenium Test Tool");
-  this.TargetBrowser = "Firefox";
+  this.TargetBrowser = "Chrome";
   this.OSType = "Windows32";
   this.Sessions = 1;
   this.changes = false;
@@ -716,6 +719,18 @@ else
        PV.JButtonDoNotFindXPATHPassFail.setEnabled(true); 
        PV.JButtonYesNoPromptPassFail.setEnabled(true);
    }    
+ }
+ public void clearPassFailColors()
+ {
+   for (ProcedureView PV: BugViewArray)
+   {
+       PV.JLabelPass.setText("");
+       for (ActionView TAV: PV.ActionsViewList)
+       {
+           
+           TAV.JButtonDragIt.setBackground(new JButton().getBackground());
+       }
+   }     
  }
  public void setRunActionsButtonName(String newtext)
  {
@@ -1506,7 +1521,6 @@ this.changes=true;
         jLabelTHISSITEURL = new javax.swing.JLabel();
         jSpinnerWaitTime = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jCheckBoxEmailReport = new javax.swing.JCheckBox();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -1545,6 +1559,7 @@ this.changes=true;
         jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
         jSpinnerSessions = new javax.swing.JSpinner();
         jLabelSessions = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1568,9 +1583,7 @@ this.changes=true;
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
 
-        jLabel1.setText("Timeout* (seconds)");
-
-        jLabel2.setText("*if set to zero all tests will fail. Need to wait for page to load.");
+        jLabel1.setText("Pause time (seconds)");
 
         jCheckBoxEmailReport.setText("Email Report");
 
@@ -1603,7 +1616,7 @@ this.changes=true;
 
         jLabel8.setText("Target Browser:");
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome", "Chrome (WinXP)", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
         jLabel9.setText("<HTML>*Additional configuration is needed for IE (this program does not adjust the registry or browser security zones settings).<br/>**HTMLUnit's Javascript engine is a bit quirky.</HTML> ");
 
@@ -1655,6 +1668,8 @@ this.changes=true;
 
         jLabelSessions.setText("Number of Sessions:");
 
+        jLabel12.setText("***Avoid including screenshots with large tests.  50 or more screenshots can overrun Java's heap space.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1698,18 +1713,15 @@ this.changes=true;
                                             .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonBrowseForFireFoxExe)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jLabelSessions)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxTargetBrowser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonBrowseForFireFoxExe)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabelSessions)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jCheckBoxOSTypeWindows32)
                                         .addGap(13, 13, 13)
@@ -1720,7 +1732,8 @@ this.changes=true;
                                         .addComponent(jCheckBoxOSTypeLinux64)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jCheckBoxOSTypeMac))
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12))
                                 .addGap(145, 145, 145)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
@@ -1747,7 +1760,7 @@ this.changes=true;
                                                 .addComponent(jButtonClearEmailSettings)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGap(0, 42, Short.MAX_VALUE))
+                                .addGap(0, 34, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1800,8 +1813,6 @@ this.changes=true;
                                 .addComponent(jLabel1)
                                 .addComponent(jCheckBoxEmailReport))
                             .addComponent(jCheckBoxEmailReportFail))
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1819,7 +1830,9 @@ this.changes=true;
                             .addComponent(jCheckBoxOSTypeLinux64)
                             .addComponent(jCheckBoxOSTypeWindows64))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
@@ -2233,7 +2246,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
             
             jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
-            this.TargetBrowser = targetbrowser;
+            this.TargetBrowser = jComboBoxTargetBrowser.getSelectedItem().toString();
             
             switch (targetbrowser)
             {
@@ -2252,7 +2265,8 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                      setOSTypeActive(true);
                     break;
-                case "Chrome (WinXP)":
+                
+                case "Chrome 49":
                      jButtonBrowseForFireFoxExe.setEnabled(true);
                      setOSTypeActive(true);
                     break;
@@ -2260,6 +2274,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
                 case "Silent Mode (HTMLUnit)":
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                     break;
+                default:
+                      jButtonBrowseForFireFoxExe.setEnabled(false);
+                     setOSTypeActive(true);
+                    break;
+                    
             }
         }
         public String getTargetBrowser ()
@@ -2396,7 +2415,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

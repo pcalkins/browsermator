@@ -1,7 +1,7 @@
 package browsermator.com;
 
 
-
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -38,18 +38,17 @@ public abstract class ActionView implements Listenable, Initializable{
    JLabel JLabelVariable1;
    JLabel JLabelVariable2;
 
-   JLabel JLabelPassFail;
 
    JButton JButtonOK;
    JButton JButtonDelete;
    JLabel JLabelIndex;
-
+   JLabel JLabelPassFail;
    JCheckBox JCheckBoxBoolVal1;
    JCheckBox JCheckBoxBoolVal2;
    JButton JButtonBrowseForFile;
    JButton JButtonDragIt;
    Boolean Locked;
-   
+
    ActionView()
    {
       this.Locked = false;
@@ -67,6 +66,7 @@ public abstract class ActionView implements Listenable, Initializable{
     this.JButtonOK = new JButton("Disable");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
+   
 
 String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
@@ -75,11 +75,34 @@ String stringactionindex = Integer.toString(this.index+1);
     
       this.JPanelAction.add(this.JLabelIndex);
       this.JPanelAction.add(this.JButtonDragIt);
+   
+
  this.ActionType = "";
                 
   
          
    }
+    public void setPassState(Boolean passvalue)
+    {
+   
+    if (passvalue)
+    {
+  
+   this.JButtonDragIt.setBackground(Color.green);   
+    }
+    else
+    {
+
+   this.JButtonDragIt.setBackground(Color.red);
+    }
+    
+    }
+    public void resetPassState()
+    {
+      this.JButtonDragIt.setBackground(Color.LIGHT_GRAY);
+     
+    }
+
      public void setFieldToStoredVariable(String stored_var_name, int field_num)
      {
        if (stored_var_name.contains("-"))
