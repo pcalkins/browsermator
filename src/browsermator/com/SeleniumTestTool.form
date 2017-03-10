@@ -96,7 +96,6 @@
                                       <Component id="jCheckBoxOSTypeMac" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -221,8 +220,6 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -303,7 +300,7 @@
     <Component class="javax.swing.JSpinner" name="jSpinnerWaitTime">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="3" maximum="99" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="0" maximum="99" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[41, 21]"/>
@@ -534,11 +531,6 @@
     <Component class="javax.swing.JLabel" name="jLabelSessions">
       <Properties>
         <Property name="text" type="java.lang.String" value="Number of Sessions:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel12">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="***Avoid including screenshots with large tests.  50 or more screenshots can overrun Java&apos;s heap space."/>
       </Properties>
     </Component>
   </SubComponents>

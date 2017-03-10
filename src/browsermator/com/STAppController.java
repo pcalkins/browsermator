@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.37b";
+   public final String ProgramVersion = "1.0.38b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1368,6 +1368,7 @@ return 1;
                 if (LookAndFeelOptions[count].isSelected())
                 try
                 {
+                  
                     UIManager.setLookAndFeel(LAFOptions[count].getClassName());
                     SwingUtilities.updateComponentTreeUI( getContentPane()  );
                 }
@@ -1492,7 +1493,7 @@ return 1;
   public File BrowseForCSVFile()
     {
  final JFileChooser CSVFileChooser = new JFileChooser();
-
+ CSVFileChooser.setPreferredSize(new Dimension(800,600));
    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
                     new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
                     "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
@@ -1525,14 +1526,15 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
   public File[] BrowseForFile()
   {
        
-   //    boolean fileexists;
+
         final JFileChooser fc = new JFileChooser();
+      
 fc.setMultiSelectionEnabled(true);
 
  FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
 
     fc.setFileFilter(filefilter);
-
+fc.setPreferredSize(new Dimension(800,600));
 int returnVal = fc.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1620,6 +1622,7 @@ File file=null;
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
 
     fc.setFileFilter(filefilter);
+    fc.setPreferredSize(new Dimension(800,600));
     if (STAppFrame.filename.contains("untitled") == false  && isSaveAs==true)
     {
           String[] left_side_of_dot = STAppFrame.filename.split("\\.");

@@ -6,11 +6,14 @@
 package browsermator.com;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -136,7 +139,7 @@ File TEMP_HTML_FILE;
    {
         String HTML_TO_SEND = GetTextReport();
   //      GetTextReport()
-        jButtonSaveFile = new JButton("Save HTML Report");
+        jButtonSaveFile = new JButton("Save and Open HTML Report");
    Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -183,9 +186,10 @@ mainPanel = new JPanel(new BorderLayout());
    }
     public void ShowHTMLReport()
     {
-         this.HTMLReport = OutPutReport(true);
-   //     String HTML_TO_SEND = GetHTMLReport();
-        jButtonSaveFile = new JButton("Save HTML Report");
+  
+        this.HTMLReport = "<HTML><HEAD></HEAD><BODY>Due to a memory problem in JavaFX, you'll need to save the report to view it.  Click the button above to save and open the file.</BODY></HTML>";
+    
+        jButtonSaveFile = new JButton("Save and Open HTML Report");
    Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -1052,11 +1056,11 @@ File file=null;
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("HTML file (*.html)","html");
 
     fc.setFileFilter(filefilter);
-   
+ 
         
         fc.setSelectedFile(file);
         
-    
+    fc.setPreferredSize(new Dimension(800,600));
 int returnVal = fc.showSaveDialog(this.ReportFrame);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1078,7 +1082,15 @@ try {
   System.out.println ("Exception saving HTML file: " + ex.toString());
 }
             
-   
+   if (Desktop.isDesktopSupported()) {
+    try {
+       
+      Desktop.getDesktop().open(file);
+     
+    } catch (Exception ex) {
+        System.out.println("Exception opening HTML file: " + ex.toString());
+    }
+}
             }
             else
             {
@@ -1128,8 +1140,9 @@ File file=null;
    
         
         fc.setSelectedFile(file);
-        
-    
+       
+fc.setPreferredSize(new Dimension(800,600));
+
 int returnVal = fc.showSaveDialog(this.ReportFrame);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1149,6 +1162,15 @@ try {
   System.out.println ("Exception saving HTML file: " + ex.toString());
 }
             
+}
+if (Desktop.isDesktopSupported()) {
+    try {
+       
+      Desktop.getDesktop().open(file);
+     
+    } catch (Exception ex) {
+        System.out.println("Exception opening HTML file: " + ex.toString());
+    }
 }
             }
             else

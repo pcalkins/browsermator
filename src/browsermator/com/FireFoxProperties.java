@@ -5,6 +5,7 @@
  */
 package browsermator.com;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -24,6 +25,7 @@ public class FireFoxProperties {
   {
   this.targetbrowser = in_tb;
   this.FindFireFoxExe = new JFileChooser("Browse for executable");
+   this.FindFireFoxExe.setPreferredSize(new Dimension(800,600));
   }
   public void BrowseforFFPath()
   {
@@ -33,6 +35,7 @@ public class FireFoxProperties {
         if ("Chrome 49".equals(this.targetbrowser))
       {
   FindFireFoxExe = new JFileChooser("Browse for Chrome executable");
+ 
  FindFireFoxExe.setDialogTitle("Browse for Chrome executable (for manual installs on XP.)");
       } 
         else
@@ -42,6 +45,7 @@ public class FireFoxProperties {
         }
       
  JPanel newJPanel = new JPanel();
+ 
  int returnVal = FindFireFoxExe.showOpenDialog(newJPanel);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -49,7 +53,7 @@ public class FireFoxProperties {
    
    WriteFireFoxPathToProperties(file.getAbsolutePath());
   
- Prompter closeDown = new Prompter("Restart to Update Path", "Close and re-open the Browsermator to update executable path.", false,0, 0);
+ // Prompter closeDown = new Prompter("Restart to Update Path", "Close and re-open the Browsermator to update executable path.", false,0, 0);
   
   
             }
@@ -102,7 +106,7 @@ try
          }
          catch (Exception e)
          {
-             System.out.println("error loading firefox path:" + e.toString());
+             System.out.println("error loading chrome path:" + e.toString());
            
              
          }

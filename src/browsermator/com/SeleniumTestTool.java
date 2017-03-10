@@ -25,11 +25,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -592,7 +590,7 @@ catch (Exception e) {
     }
 public int GetWaitTime()
 {
-    int fallbackValue = 3;
+    int fallbackValue = 1;
 
 
     
@@ -1176,7 +1174,7 @@ else
     // Turn off 'All Files' capability of file chooser,
     // so only our custom filter is used.
     CSVFileChooser.setAcceptAllFileFilterUsed(false);
-
+CSVFileChooser.setPreferredSize(new Dimension(800,600));
 
 int returnVal = CSVFileChooser.showOpenDialog(this);
 
@@ -1559,7 +1557,6 @@ this.changes=true;
         jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
         jSpinnerSessions = new javax.swing.JSpinner();
         jLabelSessions = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1579,7 +1576,7 @@ this.changes=true;
         MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         MainScrollPane.setName(""); // NOI18N
 
-        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(3, 0, 99, 1));
+        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
 
@@ -1668,8 +1665,6 @@ this.changes=true;
 
         jLabelSessions.setText("Number of Sessions:");
 
-        jLabel12.setText("***Avoid including screenshots with large tests.  50 or more screenshots can overrun Java's heap space.");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1732,8 +1727,7 @@ this.changes=true;
                                         .addComponent(jCheckBoxOSTypeLinux64)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jCheckBoxOSTypeMac))
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel12))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(145, 145, 145)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
@@ -1830,9 +1824,7 @@ this.changes=true;
                             .addComponent(jCheckBoxOSTypeLinux64)
                             .addComponent(jCheckBoxOSTypeWindows64))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12))
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
@@ -2415,7 +2407,6 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
