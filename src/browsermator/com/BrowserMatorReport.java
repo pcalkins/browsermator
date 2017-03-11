@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -1051,17 +1052,22 @@ mainPanel = new JPanel(new BorderLayout());
     }
 };
 File file=null;
-   
-   
+        BrowserMatorConfig theseProps = new BrowserMatorConfig();
+      String lastReportSaveDir = theseProps.getKeyValue("lastused_dir_save_report");
+     
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("HTML file (*.html)","html");
 
     fc.setFileFilter(filefilter);
- 
+ fc.setPreferredSize(new Dimension(800,600));
         
         fc.setSelectedFile(file);
-        
+        if (lastReportSaveDir!=null)
+        {
+        fc.setCurrentDirectory(new File(lastReportSaveDir));
+        }
     fc.setPreferredSize(new Dimension(800,600));
 int returnVal = fc.showSaveDialog(this.ReportFrame);
+
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
@@ -1072,6 +1078,7 @@ int returnVal = fc.showSaveDialog(this.ReportFrame);
                  file = new File(left_side_of_dot[0] + ".html");
            FileWriter fWriter = null;
 BufferedWriter writer = null;
+
 try {
     fWriter = new FileWriter(file);
     writer = new BufferedWriter(fWriter);
@@ -1094,8 +1101,11 @@ try {
             }
             else
             {
-                return;
+               
             }
+            File chosenDir = fc.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_dir_save_report", chosenDir.getAbsolutePath());
+ 
     }
     public void SaveAsHTMLFile(File sourceFile)
     {
@@ -1132,12 +1142,17 @@ try {
     }
 };
 File file=null;
-   
+      BrowserMatorConfig theseProps = new BrowserMatorConfig();
+
+      String lastReportSaveDir = theseProps.getKeyValue("lastused_dir_save_report");
    
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("HTML file (*.html)","html");
 
     fc.setFileFilter(filefilter);
-   
+    if (lastReportSaveDir!=null)
+        {
+        fc.setCurrentDirectory(new File(lastReportSaveDir));
+        } 
         
         fc.setSelectedFile(file);
        
@@ -1177,5 +1192,7 @@ if (Desktop.isDesktopSupported()) {
             {
               
             }
+                  File chosenDir = fc.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_dir_save_report", chosenDir.getAbsolutePath());
     }
 }

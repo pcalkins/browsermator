@@ -1158,7 +1158,13 @@ else
       {
    
   final JFileChooser CSVFileChooser = new JFileChooser();
+BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
+      String lastused_datafile_dir = theseProps.getKeyValue("lastused_datafile_dir");
+      if (lastused_datafile_dir!=null)
+      {
+      CSVFileChooser.setCurrentDirectory(new File(lastused_datafile_dir));
+      }
    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
                     new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
                     "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
@@ -1177,7 +1183,8 @@ else
 CSVFileChooser.setPreferredSize(new Dimension(800,600));
 
 int returnVal = CSVFileChooser.showOpenDialog(this);
-
+      File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_datafile_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = CSVFileChooser.getSelectedFile();   
 
@@ -1363,13 +1370,20 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
    public File BrowseForJSFileAction ()
    {
            final JFileChooser CSVFileChooser = new JFileChooser();
+   BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
+      String lastJSOpenDir = theseProps.getKeyValue("lastused_js_open_dir");
+       if (lastJSOpenDir!=null)
+        {
+        CSVFileChooser.setCurrentDirectory(new File(lastJSOpenDir));
+        } 
  FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Javascript file (*.js)","js");
 
     CSVFileChooser.setFileFilter(filefilter);
-
+CSVFileChooser.setPreferredSize(new Dimension(800,600));
 int returnVal = CSVFileChooser.showOpenDialog(this);
-
+        File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = CSVFileChooser.getSelectedFile();   
 

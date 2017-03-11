@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.38b";
+   public final String ProgramVersion = "1.0.39b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1509,10 +1509,17 @@ return 1;
     // Turn off 'All Files' capability of file chooser,
     // so only our custom filter is used.
     CSVFileChooser.setAcceptAllFileFilterUsed(false);
+  BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
-
+      String lastused_datafile_dir = theseProps.getKeyValue("lastused_datafile_dir");
+      if (lastused_datafile_dir!=null)
+      {
+      CSVFileChooser.setCurrentDirectory(new File(lastused_datafile_dir));
+      }
+       
 int returnVal = CSVFileChooser.showOpenDialog(this);
-
+        File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_datafile_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = CSVFileChooser.getSelectedFile();   
 
@@ -1532,11 +1539,18 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
 fc.setMultiSelectionEnabled(true);
 
  FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
+ BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
+      String lastused_open_dir = theseProps.getKeyValue("lastused_open_dir");
+      if (lastused_open_dir!=null)
+      {
+      fc.setCurrentDirectory(new File(lastused_open_dir));
+      }
     fc.setFileFilter(filefilter);
 fc.setPreferredSize(new Dimension(800,600));
 int returnVal = fc.showOpenDialog(this);
-
+       File chosenDir = fc.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_open_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File[] files = fc.getSelectedFiles();   
   
@@ -1616,7 +1630,14 @@ public void OpenBrowserMatorCloud()
     }
 };
 File file=null;
-   
+  BrowserMatorConfig theseProps = new BrowserMatorConfig();
+
+      String lastused_save_dir = theseProps.getKeyValue("lastused_save_dir");
+      if (lastused_save_dir!=null)
+      {
+      fc.setCurrentDirectory(new File(lastused_save_dir));
+      }  
+      
     if (isSaveAs==true || STAppFrame.filename.contains("untitled") == true)
     {
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
@@ -1638,7 +1659,8 @@ File file=null;
         
     }
 int returnVal = fc.showSaveDialog(STAppFrame);
-
+      File chosenDir = fc.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_save_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
                 String filestring = file.toString();
