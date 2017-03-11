@@ -566,7 +566,6 @@ try
                 result.setSystemId(java.net.URLDecoder.decode(result.getSystemId(), "UTF-8"));
                 	transformer.transform(source, result);
 
-		System.out.println("File saved!");
 
 	  } catch (Exception ex) {
 		System.out.println("Exception doctofile:"+ ex.toString());
