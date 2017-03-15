@@ -123,7 +123,7 @@ else
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
-  element.click();
+element.click();
   this.Pass = true;
  }
 
