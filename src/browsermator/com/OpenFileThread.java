@@ -198,7 +198,8 @@ STAppFrame.AllFieldValues.add(STAppFrame.OSType);
 STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 STAppFrame.AllFieldValues.add(stringWaitTime);
-
+String stringTimeout = String.valueOf(STAppFrame.getTimeout());
+STAppFrame.AllFieldValues.add(stringTimeout);
 String stringSessions = String.valueOf(STAppFrame.getSessions());
 STAppFrame.AllFieldValues.add(stringSessions);
 STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
@@ -378,6 +379,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String EmailTo = "";
   String EmailFrom = "";
   String EmailSubject = "";
+  String Timeout = "";
  if (FileSettingsNode!=null)
  {
 try
@@ -475,7 +477,13 @@ try
  WaitTime = thisSettingsNodeValue;
  int intWaitTime = Integer.parseInt(WaitTime);
       STAppFrame.setWaitTime(intWaitTime);
+            break;  
+           case "Timeout":
+Timeout = thisSettingsNodeValue;
+ int intTimeout = Integer.parseInt(Timeout);
+      STAppFrame.setTimeout(intTimeout);
             break;   
+            
         case "Sessions":
  Sessions = thisSettingsNodeValue;
  int intSessions = Integer.parseInt(Sessions);

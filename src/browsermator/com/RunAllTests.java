@@ -8,6 +8,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -489,10 +490,10 @@ options.setBinary(chrome_path);
     }
   
   int WaitTime = SiteTest.GetWaitTime();
- 
-//   driver.manage().timeouts().implicitlyWait(WaitTime, TimeUnit.SECONDS);
-// driver.manage().timeouts().pageLoadTimeout(WaitTime, TimeUnit.SECONDS);
-// driver.manage().timeouts().setScriptTimeout(WaitTime, TimeUnit.SECONDS);
+  int Timeout = SiteTest.getTimeout();
+  driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
         

@@ -446,7 +446,14 @@ String WaitTimeString = WaitTime.toString();
 xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
     xmlfile.writeEndElement();   
-
+ 
+    Integer Timeout = STAppFrame.getTimeout();
+String TimeoutString = Timeout.toString();
+xmlfile.writeStartElement("Timeout");
+    xmlfile.writeCharacters(TimeoutString);
+    xmlfile.writeEndElement();  
+    
+    
 Integer Sessions = STAppFrame.getSessions();
 String SessionsString = Sessions.toString();
 xmlfile.writeStartElement("Sessions");

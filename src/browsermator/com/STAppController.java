@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.39b";
+   public final String ProgramVersion = "1.0.40b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1089,6 +1089,8 @@ AllFieldValuesCheck.add(STAppFrame.OSType);
 AllFieldValuesCheck.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 AllFieldValuesCheck.add(stringWaitTime);
+String stringTimeout = String.valueOf(STAppFrame.getTimeout());
+AllFieldValuesCheck.add(stringTimeout);
 String stringSessions = String.valueOf(STAppFrame.getSessions());
 AllFieldValuesCheck.add(stringSessions);
 AllFieldValuesCheck.add(STAppFrame.getSMTPHostname());
@@ -1750,6 +1752,12 @@ xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
     xmlfile.writeEndElement();  
     
+ Integer Timeout = STAppFrame.getTimeout();
+String TimeoutString = Timeout.toString();
+xmlfile.writeStartElement("Timeout");
+    xmlfile.writeCharacters(TimeoutString);
+    xmlfile.writeEndElement();  
+    
 Integer NumberOfSessions = STAppFrame.getSessions();
 String NumberOfSessionsString = NumberOfSessions.toString();
 xmlfile.writeStartElement("Sessions");
@@ -2167,11 +2175,13 @@ this.Navigator.addRecentFile(this.filename);
  
    
             STAppFrame.AllFieldValues.clear();
-           
+       
 STAppFrame.AllFieldValues.add(STAppFrame.OSType);
 STAppFrame.AllFieldValues.add(STAppFrame.TargetBrowser);
 String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
 STAppFrame.AllFieldValues.add(stringWaitTime);
+String stringTimeout = String.valueOf(STAppFrame.getTimeout());
+STAppFrame.AllFieldValues.add(stringTimeout);
 String stringSessions = String.valueOf(STAppFrame.getSessions());
 STAppFrame.AllFieldValues.add(stringSessions);
 STAppFrame.AllFieldValues.add(STAppFrame.getSMTPHostname());
@@ -2180,6 +2190,7 @@ STAppFrame.AllFieldValues.add(STAppFrame.getEmailLoginName());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailPassword());
 STAppFrame.AllFieldValues.add(STAppFrame.getEmailTo());
 STAppFrame.AllFieldValues.add(STAppFrame.getSubject());
+
 String thisbool = "false";
 if (STAppFrame.getEmailReport())
 {
@@ -2217,6 +2228,8 @@ if (STAppFrame.getIncludeScreenshots())
     thisbool = "true";
 }
 STAppFrame.AllFieldValues.add(thisbool);
+
+
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     
