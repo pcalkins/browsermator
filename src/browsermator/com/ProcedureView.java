@@ -10,7 +10,6 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -37,13 +36,12 @@ import javax.swing.event.DocumentListener;
 
 public class ProcedureView {
       int index;
-  //  static final long serialVersionUID = -1406026899421845272L;
-   //   JLabel JLabelAddActions = new JLabel("Add Actions:");
+ 
       JLabel JLabelBugIndex = new JLabel ("#");
-  //    JLabel JLabelBugNumber = new JLabel("Bug Number: ");
+ 
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
-     JTextField JTextFieldBugTitle = new JTextField("", 32);
+     JTextField JTextFieldBugTitle = new JTextField("", 25);
   
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
  JComboBox JComboBoxStoredArrayLists;
@@ -101,9 +99,6 @@ TitledBorder BugPanelBorder;
     ProcedureView()
      {
    
-         
-
-
 JLabelPass.setOpaque(true);
          myTable=new MyTable("");
              JLabelOR = new JLabel("OR:");
@@ -147,10 +142,10 @@ for (String passfailaction_name : passfailaction_keys)
   
 
      JPanelBug.setLayout(BugLayout);
-     JPanelBug.setSize(600, 252);
-     BugConstraints.fill = GridBagConstraints.NONE;
-     BugConstraints.anchor = GridBagConstraints.EAST;
-     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
+   JPanelBug.setSize(920, 252);
+ //    BugConstraints.fill = GridBagConstraints.NONE;
+//     BugConstraints.anchor = GridBagConstraints.WEST;
+//     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
      double global_weightx = 1/6;
      double global_weighty = 1/4;
      JPanel ProcedurePlusIndex = new JPanel();
@@ -190,33 +185,38 @@ for (String passfailaction_name : passfailaction_keys)
      MoveButtonsPanel.add(JButtonMoveProcedureUp);
      MoveButtonsPanel.add(JButtonMoveProcedureDown);
      MoveButtonsPanel.add(JLabelPass);
- 
-     AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty);
-     AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty );
+    AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, 0.1, global_weighty, GridBagConstraints.WEST); 
+    
+     AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
+     AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST );
      RemoveRunButtonsPanel.add(JButtonDeleteBug);
      RemoveRunButtonsPanel.add(JButtonRunTest);
 
 
-   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty);
-   AddToGrid(MoveButtonsPanel, 1, 5, 1, 1, global_weightx, global_weighty);
+   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
+   AddToGrid(MoveButtonsPanel, 1, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
     JLabelPass.setVisible(false);
    
-    BugConstraints.insets = new Insets(2,2,4,2);
-    JPanel DoActionComboPanel = new JPanel();
-    DoActionComboPanel.add(JLabelDoActions);
-    DoActionComboPanel.add(JComboBoxDoActions);
+ //   BugConstraints.insets = new Insets(2,2,4,2);
+ //   JPanel DoActionComboPanel = new JPanel();
+ //   DoActionComboPanel.add(JLabelDoActions);
+ //   DoActionComboPanel.add(JComboBoxDoActions);
+    AddToGrid(JLabelDoActions, 2, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
+    AddToGrid(JComboBoxDoActions, 2, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
     
-    AddToGrid (DoActionComboPanel, 2, 1, 2, 1, global_weightx, global_weighty);
-    AddToGrid (JLabelPassFailActions, 2, 3, 1, 1, global_weightx, global_weighty);
-    AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty); 
+  //  AddToGrid (DoActionComboPanel, 2, 1, 1, 1, global_weightx, global_weighty);
+     
+    AddToGrid (JLabelPassFailActions, 2, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
+    AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST); 
 
-    BugConstraints.insets = new Insets(1,1,1,1);
-   AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, 0.1, global_weighty); 
+ //   BugConstraints.insets = new Insets(1,1,1,1);
+
   ActionScrollPane.setVisible(false);
-  ActionScrollPane.setSize(new Dimension(800, 840));
-
-    AddToGrid (ActionScrollPanel, 3, 1, 6, 5, global_weightx, global_weighty);
-    ActionScrollPanel.add(ActionScrollPane);
+// ActionScrollPane.setSize(new Dimension(920, 840));
+   ActionScrollPanel.add(ActionScrollPane);
+  // ActionScrollPanel.setSize(920,480);
+    AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
+ 
   
     
  JButtonSubmitBug.setActionCommand("Update");
@@ -248,6 +248,7 @@ for (String passfailaction_name : passfailaction_keys)
      {
      //    thisbutton.setSize(new Dimension(5000, 5000));
          thisbutton.setMaximumSize(new Dimension(200, 100));
+         thisbutton.setMinimumSize(new Dimension(180, 100));
      }
      public void ShowFieldInstructions(boolean showit, int textfieldindex, int bugindex, int actionindex)
      {
@@ -266,7 +267,7 @@ for (String passfailaction_name : passfailaction_keys)
              this.JLabelAddFieldInstructions.setText(" ");
          }
      }
-     public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty)
+     public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int anchor_value)
      {
          BugConstraints.gridx = column;
          BugConstraints.gridy = row;
@@ -274,6 +275,7 @@ for (String passfailaction_name : passfailaction_keys)
          BugConstraints.gridheight = height;
          BugConstraints.weightx = weightx;
          BugConstraints.weighty = weighty;
+         BugConstraints.anchor = anchor_value;
          BugLayout.setConstraints(component, BugConstraints);
          JPanelBug.add(component);
      }
@@ -471,9 +473,9 @@ for (String passfailaction_name : passfailaction_keys)
       
     panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
    // JLabelAddFieldInstructions.setVisible(false);
-   AddToGrid(JLabelAddFieldInstructions, 9, 0, 2, 1, 1, 1);
+   AddToGrid(JLabelAddFieldInstructions, 9, 0, 2, 1, 1, 1, GridBagConstraints.WEST);
    
-    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1);
+    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     
