@@ -22,7 +22,7 @@ public class FindHREFPassFailAction extends Action
     @Override
     public void SetGuts()
     {
-             String xpather = "//a[contains(@href='" + this.Variable1 + "')]"; 
+             String xpather = "//a[contains(@href,'" + this.Variable1 + "')]"; 
              this.Guts = "\n List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
 "    \n" +
 "    this.Pass = false;\n" +
@@ -40,7 +40,7 @@ public class FindHREFPassFailAction extends Action
      public void RunAction(WebDriver driver)
     {
 
-         String xpather = "//a[contains(@href='" + this.Variable1 + "')]";
+         String xpather = "//a[contains(@href,'" + this.Variable1 + "')]";
     List<WebElement> element = driver.findElements(By.xpath(xpather));
     
     this.Pass = false;

@@ -631,35 +631,38 @@ public int GetWaitTime()
     }
    public int getTimeout()
    {
-      int fallbackValue = 1;
+//      int fallbackValue = 1;
          
-    try {
-       jSpinnerTimeout.commitEdit();
-   }
-   catch (ParseException pe) {
+//    try {
+//       jSpinnerTimeout.commitEdit();
+//   }
+//   catch (ParseException pe) {
      
-       JComponent editor =jSpinnerTimeout.getEditor();
+//       JComponent editor =jSpinnerTimeout.getEditor();
        
-       if (editor instanceof DefaultEditor) {
-           ((DefaultEditor)editor).getTextField().setValue(jSpinnerTimeout.getValue());
-       }
+//       if (editor instanceof DefaultEditor) {
+//           ((DefaultEditor)editor).getTextField().setValue(jSpinnerTimeout.getValue());
+//       }
      
-       jSpinnerTimeout.setValue(fallbackValue);
+ //      jSpinnerTimeout.setValue(fallbackValue);
      
       
-   }
- int timeout = (Integer)this.jSpinnerTimeout.getValue();
-     return timeout;
-     
+//   }
+// int timeout = (Integer)this.jSpinnerTimeout.getValue();
+//     return timeout;
+       
+       //timeouts buggy, return 0
+   return 0;  
    }
    public void setTimeout(int timeout_seconds)
    {
      
-        this.Timeout = timeout_seconds;
+ //       this.Timeout = timeout_seconds;
 
-       jSpinnerTimeout.setValue(Timeout);
+//       jSpinnerTimeout.setValue(Timeout);
   
- 
+ //timeouts buggy, set to 0
+       this.Timeout = 0;
    }
    public void setSessions (int number_of_sessions)
    {
@@ -1615,10 +1618,7 @@ this.changes=true;
         jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
         jSpinnerSessions = new javax.swing.JSpinner();
         jLabelSessions = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jSpinnerTimeout = new javax.swing.JSpinner();
         jCheckBoxEnableMultiSession = new javax.swing.JCheckBox();
-        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1726,13 +1726,7 @@ this.changes=true;
 
         jLabelSessions.setText("Number of Sessions:");
 
-        jLabel2.setText("Timeout (seconds)");
-
-        jSpinnerTimeout.setModel(new javax.swing.SpinnerNumberModel(10, 0, 99, 1));
-
         jCheckBoxEnableMultiSession.setText("Enable Multi-Session");
-
-        jLabel12.setText("*Actions fail if not completed before timeout period (implicit)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1748,18 +1742,13 @@ this.changes=true;
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinnerTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(6, 6, 6)
-                                            .addComponent(jLabel1)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(jButtonDoStuff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jButtonDoStuff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -1799,10 +1788,7 @@ this.changes=true;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBoxEnableMultiSession))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jCheckBoxEnableMultiSession)))
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -1829,7 +1815,7 @@ this.changes=true;
                                         .addComponent(jButtonClearEmailSettings)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 147, Short.MAX_VALUE))
                     .addComponent(MainScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1887,13 +1873,7 @@ this.changes=true;
                                 .addComponent(jLabel1)
                                 .addComponent(jCheckBoxEmailReport))
                             .addComponent(jCheckBoxEmailReportFail))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel8)
@@ -2503,8 +2483,6 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2515,7 +2493,6 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
     private javax.swing.JSpinner jSpinnerSessions;
-    private javax.swing.JSpinner jSpinnerTimeout;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;
     private javax.swing.JTextField jTextFieldEmailLoginName;

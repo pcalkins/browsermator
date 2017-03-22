@@ -386,8 +386,10 @@ options.setBinary(chrome_path);
    }
  
   int WaitTime = SiteTest.GetWaitTime();
-  int Timeout = SiteTest.getTimeout();
-  driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+ 
+//timeouts still buggy... removed
+// int Timeout = SiteTest.getTimeout();
+//  driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
 // driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
 // driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
