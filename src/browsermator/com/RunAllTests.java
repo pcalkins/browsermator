@@ -682,6 +682,7 @@ else
 
  for (int x = 0; x<number_of_rows; x++)
     {
+   SiteTest.clearProcedurePassFailColors(thisbugview);
    int changex = -1;
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
@@ -919,7 +920,7 @@ else
           ThisAction.Pass = true;
           ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-       
+            
       }
       thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
      }

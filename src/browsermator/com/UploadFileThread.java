@@ -498,6 +498,8 @@ xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
 xmlfile.writeAttribute("index", index);
 xmlfile.writeAttribute("Type", thisbug.Type);
+String LockedString = Boolean.toString(thisbug.getLocked());
+xmlfile.writeAttribute("Locked", LockedString);
 
 if ("Dataloop".equals(thisbug.Type))
 {

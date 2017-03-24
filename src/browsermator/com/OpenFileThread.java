@@ -13,12 +13,12 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Paths;
+
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JOptionPane;
+
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -829,7 +829,21 @@ STAppFrame.addjButtonDoStuffActionListener(
                                           
       }
     );
-  
+  for (ProcedureView PV: STAppFrame.BugViewArray)
+{
+    int avlockcount = 0;
+    for (ActionView AV: PV.ActionsViewList)
+    {
+       if (AV.Locked)
+       {
+           avlockcount++;
+       }
+    }
+    if (avlockcount==PV.ActionsViewList.size())
+    {
+        PV.setLocked(true);
+    }
+}
 // STAppFrame.ShowStoredVarControls(false);
  return STAppFrame;
 

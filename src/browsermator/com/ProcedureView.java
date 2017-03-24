@@ -96,9 +96,11 @@ JLabel JLabelUseList;
 JLabel JLabelOR;
 String Type;
 TitledBorder BugPanelBorder;
+Boolean Locked;
+JButton JButtonOK = new JButton("Disable");
     ProcedureView()
      {
-   
+JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
          myTable=new MyTable("");
              JLabelOR = new JLabel("OR:");
@@ -189,6 +191,7 @@ for (String passfailaction_name : passfailaction_keys)
     
      AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
      AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST );
+     RemoveRunButtonsPanel.add(JButtonOK);
      RemoveRunButtonsPanel.add(JButtonDeleteBug);
      RemoveRunButtonsPanel.add(JButtonRunTest);
 
@@ -222,7 +225,19 @@ for (String passfailaction_name : passfailaction_keys)
  JButtonSubmitBug.setActionCommand("Update");
     
      }
-     
+     public void setLocked(Boolean lockedstate)
+   {
+     Locked = lockedstate;
+     if (Locked)
+     {
+     JButtonOK.setText("Enable");
+     JButtonOK.setActionCommand("Edit");
+     }
+   }
+   public Boolean getLocked()
+   {
+       return Locked;
+   } 
      public void clearLastSelectedValues ()
      {
          last_selected_procedure_index = 0;
@@ -279,6 +294,35 @@ for (String passfailaction_name : passfailaction_keys)
          BugLayout.setConstraints(component, BugConstraints);
          JPanelBug.add(component);
      }
+         public void Disable()
+       {
+  
+   this.JButtonOK.setText("Enable");
+   this.JButtonOK.setActionCommand("Edit");
+    for (ActionView AV: ActionsViewList)
+    {
+        
+        AV.UpdateActionView();
+       
+    }
+    
+       }
+       public void Enable()
+       {
+  
+   this.JButtonOK.setText("Disable");
+   this.JButtonOK.setActionCommand("Update");
+    for (ActionView AV: ActionsViewList)
+    {
+        AV.EditActionView();
+      
+    }
+       }
+       public void addJButtonOKActionListener(ActionListener listener)
+       {
+       JButtonOK.addActionListener(listener);
+           
+       }
          public void addJButtonMoveProcedureUpActionListener(ActionListener listener)
        {
        JButtonMoveProcedureUp.addActionListener(listener);

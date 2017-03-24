@@ -234,6 +234,7 @@ String stringactionindex = Integer.toString(this.index+1);
    this.JTextFieldVariable2.setEditable(true);
    this.JTextFieldPassword.setEnabled(true);
    this.JTextFieldPassword.setEditable(true);
+  
    this.JButtonOK.setText("Disable");
    this.JButtonOK.setActionCommand("Update");
   

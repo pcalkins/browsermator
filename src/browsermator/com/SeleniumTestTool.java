@@ -773,6 +773,15 @@ else
        }
    }     
  }
+ public void clearProcedurePassFailColors(ProcedureView PV)
+ {
+          PV.JLabelPass.setText("");
+       for (ActionView TAV: PV.ActionsViewList)
+       {
+           
+           TAV.JButtonDragIt.setBackground(new JButton().getBackground());
+       }
+ }
  public void setRunActionsButtonName(String newtext)
  {
      jButtonDoStuff.setText(newtext);
@@ -1245,9 +1254,38 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
             }
 
       }
+      public void DisableProcedure(ProcedureView thisbugview, Procedure thisbug)
+      {
+      thisbugview.Disable();
+      thisbug.Disable();
+ 
+      }
+      public void EnableProcedure(ProcedureView thisbugview, Procedure thisbug)
+      {
+      thisbugview.Enable(); 
+      thisbug.Enable();
   
+      }
       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
       {
+          newbugview.addJButtonOKActionListener((ActionEvent evt) -> {
+           
+               String ACommand = evt.getActionCommand();
+               if (ACommand.equals("Update"))
+         {
+             
+          DisableProcedure(newbugview, newbug);
+            newbugview.Locked= true;
+            newbug.Locked = true;
+         }
+         if (ACommand.equals("Edit"))
+         {
+             EnableProcedure(newbugview, newbug);
+             newbugview.Locked = false;
+             newbug.Locked = false;
+         } 
+          
+           });
          
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
                MoveProcedure(newbugview.index, -1);
