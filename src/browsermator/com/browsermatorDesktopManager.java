@@ -118,8 +118,8 @@ public class browsermatorDesktopManager extends DefaultDesktopManager
         {
             JInternalFrame iframe = e.getInternalFrame();
             JInternalFrame.JDesktopIcon icon = iframe.getDesktopIcon();
-            Rectangle r = icon.getBounds();
-            System.out.println("icon size = " + r.width + ", " + r.height);
+          
+           
         }
     };
 }

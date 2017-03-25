@@ -251,7 +251,7 @@ public String doInBackground()
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-            System.out.println(evt);
+         
        if ("login".equals(loginDialog.mode) && loginDialog.isActive )
        {
       loginDialog.setStatus("");

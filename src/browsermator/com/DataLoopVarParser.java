@@ -95,7 +95,7 @@ public class DataLoopVarParser {
     
     else
     {
-        System.out.println("not finding field");
+     
     }
    }
  }
