@@ -745,6 +745,28 @@ else
    }
    
  }
+ public void disableRemoves()
+ {
+    for (ProcedureView PV: BugViewArray)
+   {
+      PV.JButtonDeleteBug.setEnabled(false);
+      for (ActionView AV: PV.ActionsViewList)
+      {
+          AV.JButtonDelete.setEnabled(false);
+      }
+   }       
+ }
+ public void enableRemoves()
+ {  
+     for (ProcedureView PV: BugViewArray)
+   {
+      PV.JButtonDeleteBug.setEnabled(true);
+      for (ActionView AV: PV.ActionsViewList)
+      {
+          AV.JButtonDelete.setEnabled(true);
+      }
+   }      
+ }
  public void enableAdds()
  {
   jButtonNewBug.setEnabled(true);

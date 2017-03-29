@@ -54,6 +54,7 @@ public String doInBackground()
     
      SiteTest.clearPassFailColors();
      SiteTest.disableAdds();
+     SiteTest.disableRemoves();
      SiteTest.testRunning = true;
      
     SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -72,6 +73,7 @@ public String doInBackground()
  protected void done()
  {
      SiteTest.enableAdds();
+     SiteTest.enableRemoves();
     SiteTest.testRunning = false; 
     try
     {
