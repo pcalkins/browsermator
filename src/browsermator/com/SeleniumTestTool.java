@@ -887,7 +887,8 @@ int bugindex = 0;
          {
               if ("".equals(oldname))
               {
-              addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
+          // wrong:    addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
+            addSelectedArrayName(bugdashactionindex); 
               }
               else
               {

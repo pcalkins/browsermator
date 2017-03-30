@@ -62,6 +62,10 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
     
         this.Pass = true;
      }
+     else
+     {
+         this.Pass = false;
+     }
 
  }
  catch (NoSuchElementException e)
