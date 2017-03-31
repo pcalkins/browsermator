@@ -8,7 +8,6 @@ package browsermator.com;
 import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
@@ -84,43 +83,28 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
       
     }
    SiteTest.setCursor(Cursor.getDefaultCursor()); 
-      if (SiteTest.getPromptToClose())
+       if (SiteTest.getPromptToClose())
      {
-   Object[] options = {"OK"};
-    int n = JOptionPane.showOptionDialog(null,
-                   "Close webdriver/browser?","Prompt to close browser",
-                   JOptionPane.PLAIN_MESSAGE,
-                   JOptionPane.QUESTION_MESSAGE,
-                   null,
-                   options,
-                   options[0]);
-    if (n==0)
-    {
-         try
-        {
-        driver.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-            driver.quit();
-        }
-
-    driver.quit();
-    }
+  
+   
      }
      else
      {
-          try
+ try
         {
         driver.close();
         }
         catch(Exception e)
         {
             System.out.println(e.toString());
-            driver.quit();
+            try {
+                driver.quit();
+            }
+            catch (Exception ex)
+            {
+                System.out.println(ex.toString());
+            }
         }
-
    driver.quit();
      }
 
@@ -647,7 +631,46 @@ else
     }
     }
    }
+         if (SiteTest.getPromptToClose())
+     {
+          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
+  
+    
 
+
+    
+while(thisContinuePrompt.isVisible() == true){
+       try
+       {
+ Thread.sleep(200);
+
+       }
+       catch (InterruptedException e)
+               {
+                  System.out.println("pause exception: " + e.toString());
+                
+              }
+  
+}
+  
+   
+        try
+        {
+        driver.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+           try {
+                driver.quit();
+            }
+            catch (Exception ex)
+            {
+                System.out.println(ex.toString());
+            }
+        }
+    driver.quit();
+     } 
     
  } 
  public void FallbackDriver(String fallbackdriver)

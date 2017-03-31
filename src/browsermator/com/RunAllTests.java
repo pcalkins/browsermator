@@ -99,7 +99,13 @@ public String doInBackground()
  catch (Exception e)
  {
      System.out.println(e.toString());
-     driver.quit();
+     try {
+                driver.quit();
+            }
+            catch (Exception exce)
+            {
+                System.out.println(exce.toString());
+            }
  }
    driver.quit();
   
@@ -125,7 +131,13 @@ public String doInBackground()
         catch(Exception e)
         {
             System.out.println(e.toString());
-            driver.quit();
+           try {
+                driver.quit();
+            }
+            catch (Exception ex)
+            {
+                System.out.println(ex.toString());
+            }
         }
    driver.quit();
      }
@@ -494,10 +506,10 @@ options.setBinary(chrome_path);
   int WaitTime = SiteTest.GetWaitTime();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
- int Timeout = 10;
- // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+ // int Timeout = 10;
+// driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
         
@@ -1020,7 +1032,13 @@ while(thisContinuePrompt.isVisible() == true){
         catch(Exception e)
         {
             System.out.println(e.toString());
-            driver.quit();
+            try {
+                driver.quit();
+            }
+            catch (Exception ex)
+            {
+                System.out.println(ex.toString());
+            }
         }
     driver.quit();
      } 
