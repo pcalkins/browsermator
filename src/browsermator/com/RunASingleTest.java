@@ -115,7 +115,9 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    for( ActionView TheseActionViews : ActionView ) {
 
 
-    LocalDateTime stringtime = bugtorun.ActionsList.get(ActionIndex).TimeOfTest;
+    LocalDateTime stringtime = LocalDateTime.now();
+    
+            bugtorun.ActionsList.get(ActionIndex).TimeOfTest = stringtime;
        boolean TestState = bugtorun.ActionsList.get(ActionIndex).Pass;
        if (TestState==true)
        {

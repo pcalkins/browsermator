@@ -315,7 +315,7 @@ mainPanel = new JPanel(new BorderLayout());
 "   }"
                  + "}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
          Footer = "</DIV>\n</BODY>\n</HTML>"; 
-            ReportText= "Procedure report: " + SiteTest.filename + LineBreak;
+            ReportText= "Procedure report: " + SiteTest.filename + SiteTest.TimeOfRun.toString() + LineBreak;
     int action_INT=0;
     int bug_INT=0;
     String bug_ID="";
@@ -777,7 +777,7 @@ mainPanel = new JPanel(new BorderLayout());
          LineBreak = "<br>";
      }
      }
-      String ReportText= "Procedure report: " + SiteTest.filename + LineBreak;
+      String ReportText= "Procedure report: " + SiteTest.filename + SiteTest.TimeOfRun.toString() + LineBreak;
     int action_INT=0;
     int bug_INT=0;
     String bug_ID="";

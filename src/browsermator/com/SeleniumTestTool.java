@@ -24,6 +24,7 @@ import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -62,6 +63,8 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   boolean testRunning;
   String short_filename;
   int Timeout;
+  LocalDateTime TimeOfRun;
+  
   public SeleniumTestTool(String filename)
   {
       this.MultiSession = false;
@@ -1080,6 +1083,7 @@ else
  {
      if (this.getRunActionsButtonName()=="Run All Procedures")
      {
+         
           int sessions = 1;
          if (this.MultiSession)
          {

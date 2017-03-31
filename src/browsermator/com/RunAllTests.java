@@ -5,6 +5,8 @@ package browsermator.com;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -220,8 +222,8 @@ public String doInBackground()
  }
   public void RunAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
  {
-
-
+ SiteTest.TimeOfRun = LocalDateTime.now();
+    LocalDate today = LocalDate.now();
     switch (TargetBrowser)
    {
         // legacy file support
@@ -258,10 +260,15 @@ public String doInBackground()
 
     try
     {
- DesiredCapabilities cap = DesiredCapabilities.firefox();
-        cap.setJavascriptEnabled(true);
-        cap.setCapability("marionette", true);
-        driver = new FirefoxDriver(cap);
+
+// FirefoxProfile profile = new FirefoxProfile();
+
+ // DesiredCapabilities cap = DesiredCapabilities.firefox();
+    //    cap.setJavascriptEnabled(true);
+    //    cap.setCapability("marionette", true);
+        
+   //     profile.setPreference("dom.max_script_run_time", 1);
+        driver = new FirefoxDriver();
     
 
     //  driver =  new MarionetteDriver();
@@ -506,7 +513,7 @@ options.setBinary(chrome_path);
   int WaitTime = SiteTest.GetWaitTime();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
- // int Timeout = 10;
+//  int Timeout = 10;
 // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
 // driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
 // driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
@@ -1062,7 +1069,8 @@ while(thisContinuePrompt.isVisible() == true){
    for( Action TheseActions : ActionsToLoop ) {
 
 
-    LocalDateTime stringtime = TheseActions.TimeOfTest;
+    LocalDateTime stringtime =  LocalDateTime.now();
+    TheseActions.TimeOfTest = stringtime;
        boolean TestState = TheseActions.Pass;
        if (TestState==true)
        {
@@ -1104,8 +1112,8 @@ while(thisContinuePrompt.isVisible() == true){
     for( Action TheseActions : ActionsToLoop ) {
 
 
-    LocalDateTime stringtime = TheseActions.TimeOfTest;
-   
+    LocalDateTime stringtime =  LocalDateTime.now();
+   TheseActions.TimeOfTest = stringtime;
        boolean TestState = TheseActions.loop_pass_values[x];
        if (TestState==true)
        {
