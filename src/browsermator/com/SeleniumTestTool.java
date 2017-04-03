@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -2473,7 +2474,19 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
- 
+  public void RandomizeAndLimitList(String URLListName, int limit)
+  {
+   if (VarLists.containsKey(URLListName))
+            {    
+             long seed = System.nanoTime();
+Collections.shuffle(VarLists.get(URLListName), new Random(seed));
+
+ int cropper = VarLists.get(URLListName).size() - limit;
+   VarLists.get(URLListName).subList(0, cropper).clear();
+           
+            }
+  }
+      
  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
   {
       int number_of_rows = 0;

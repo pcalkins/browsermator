@@ -5,12 +5,10 @@ package browsermator.com;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -46,6 +44,8 @@ BrowserMatorReport BrowserMatorReport;
 
   SiteTest.VarHashMap.clear();
   SiteTest.VarLists.clear();
+
+  
  
     
  }
@@ -688,8 +688,11 @@ else
     String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
     if (!"Select a stored URL List".equals(selectedarraylist))
     {
+        
       thisbugview.setJTableSource(selectedarraylist);
+      
       thisbug.setDataFile(selectedarraylist);
+      
     }
    
      
@@ -1194,9 +1197,12 @@ while(thisContinuePrompt.isVisible() == true){
             String URLListName = parts2[1];
                if (SiteTest.VarLists.containsKey(URLListName))
             {
-      
+      // testing random/limit
+            SiteTest.RandomizeAndLimitList(URLListName, 20);
             SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
-            
+        
+
+          
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
 
             }

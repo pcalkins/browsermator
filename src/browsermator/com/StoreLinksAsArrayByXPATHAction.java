@@ -80,6 +80,7 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
         ArrayList<String> link_list = new ArrayList();
 
        List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));
+       
        if (!link_elements.isEmpty())
        {
         for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {

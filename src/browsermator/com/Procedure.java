@@ -71,7 +71,7 @@ this.Type = "";
    {
        DataFile = dataFile;
        if (!"placeholder".equals(DataFile))
-       {  DataSet = new MyTable(DataFile); }
+       {  DataSet = new MyTable(DataFile);}
    }
   public void setType(String type)
   {

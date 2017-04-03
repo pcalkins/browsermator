@@ -102,7 +102,7 @@ JButton JButtonOK = new JButton("Disable");
      {
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
-         myTable=new MyTable("");
+         myTable=new MyTable(""); 
              JLabelOR = new JLabel("OR:");
        JLabelUseList = new JLabel("Use Stored URL List");
 JTextFieldDataFile = new JTextField();
@@ -488,6 +488,9 @@ for (String passfailaction_name : passfailaction_keys)
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
+
+    
+    
    myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      myTable.DataTable.getTableHeader().setReorderingAllowed(false);
 
@@ -517,9 +520,9 @@ for (String passfailaction_name : passfailaction_keys)
       
     panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
    // JLabelAddFieldInstructions.setVisible(false);
-   AddToGrid(JLabelAddFieldInstructions, 9, 0, 2, 1, 1, 1, GridBagConstraints.WEST);
+   AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
    
-    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
+    AddToGrid(panelForTable, 10, 2, 3, 8, 1, 1, GridBagConstraints.WEST);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     
