@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.53b";
+   public final String ProgramVersion = "1.0.54b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1826,6 +1826,16 @@ if ("Dataloop".equals(thisbug.Type))
 {
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
+String limit = String.valueOf(thisbug.limit);
+xmlfile.writeAttribute("Limit", limit);
+Boolean randbool = thisbug.random;
+String randstring = "false";
+if (randbool)
+{
+randstring = "true";    
+}
+
+xmlfile.writeAttribute("Random", randstring);
 
 }
   if (isFlatten==true && "Dataloop".equals(thisbug.Type))

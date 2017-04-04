@@ -30,6 +30,8 @@ import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -1217,8 +1219,8 @@ else
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
       newbugview.setJTableSource(selectedarraylist);
       newbug.setDataFile(selectedarraylist);
-   //   UpdateDisplay();
-
+ //  ScrollActionPaneDown(newbugview);
+UpdateDisplay();
                }
             
         }
@@ -1294,8 +1296,22 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
       thisbug.Enable();
   
       }
+     
       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
       {
+         newbugview.addJSpinnerLimitListener(new ChangeListener() {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+        newbug.limit = (Integer) newbugview.JSpinnerLimit.getValue();
+        }
+    });
+         newbugview.addJCheckBoxRandomActionListener((ActionEvent evt) -> {
+          newbug.random = newbugview.JCheckBoxRandom.isSelected();
+         });
+         
+             
+         
           newbugview.addJButtonOKActionListener((ActionEvent evt) -> {
            
                String ACommand = evt.getActionCommand();
@@ -2474,16 +2490,22 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
-  public void RandomizeAndLimitList(String URLListName, int limit)
+  public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
   {
    if (VarLists.containsKey(URLListName))
-            {    
+            {
+                if (randval)
+                {
              long seed = System.nanoTime();
 Collections.shuffle(VarLists.get(URLListName), new Random(seed));
+                }
+                if (limit>0)
+                {
+                    int sizeofvarlist = VarLists.get(URLListName).size();
 
- int cropper = VarLists.get(URLListName).size() - limit;
-   VarLists.get(URLListName).subList(0, cropper).clear();
-           
+ 
+   VarLists.get(URLListName).subList(limit, sizeofvarlist).clear();
+                }
             }
   }
       

@@ -1198,7 +1198,9 @@ while(thisContinuePrompt.isVisible() == true){
                if (SiteTest.VarLists.containsKey(URLListName))
             {
       // testing random/limit
-            SiteTest.RandomizeAndLimitList(URLListName, 20);
+        
+            SiteTest.RandomizeAndLimitList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
+           
             SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
         
 
@@ -1219,8 +1221,10 @@ while(thisContinuePrompt.isVisible() == true){
             String URLListName = parts2[1];
                   if (SiteTest.VarLists.containsKey(URLListName))
             {
-     
+        SiteTest.RandomizeAndLimitList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
+           
             SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+    
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }
             }

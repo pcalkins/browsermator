@@ -554,7 +554,24 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         File DataFile_file = new File(DataFile);
        
             STAppFrame.AddNewDataLoop(DataFile_file);
-    
+      if (Procedure.hasAttribute("Random"))
+  {
+  String stRand = Procedure.getAttribute("Random");
+    Boolean Rand = false;
+    if (stRand.equals("true"))
+    {
+        Rand = true;
+    }
+   
+    STAppFrame.BugArray.get(i).random = Rand;
+    STAppFrame.BugViewArray.get(i).setRandom(Rand);
+  }
+    if (Procedure.hasAttribute("Limit"))
+  {
+    int limit = Integer.parseInt(Procedure.getAttribute("Limit"));
+    STAppFrame.BugArray.get(i).limit = limit;
+    STAppFrame.BugViewArray.get(i).setLimit(limit);
+  }
     }
     else
     {
@@ -573,10 +590,6 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     }
     STAppFrame.BugArray.get(i).Pass = Pass;
 
-    
-    
- 
-    
     NodeList ActionsList = Procedure.getElementsByTagName("Action");
   
     for (int j = 0; j <ActionsList.getLength(); j++)

@@ -18,16 +18,18 @@ MyTable DataSet;
 String DataFile;
 String Type;
 Boolean Locked;
-
+int limit;
 CSVReader CSVFileReader;
 int number_of_columns;
 int number_of_records;
-
+Boolean random;
    ArrayList<Action> ActionsList = new ArrayList();    
   
    Procedure ()
    {
+       this.limit = 0;
        this.Locked = false;
+       this.random = false;
 this.Pass = false;
 this.BugURL = "https://www.browsermator.com";
 this.BugTitle = "";

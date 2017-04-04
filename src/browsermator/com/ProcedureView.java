@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -20,23 +21,31 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultFormatter;
 // import net.miginfocom.swing.MigLayout;
 
 public class ProcedureView {
       int index;
- 
+      int limit;
+      Boolean random;
       JLabel JLabelBugIndex = new JLabel ("#");
  
    JLabel JLabelBugTitle = new JLabel ("Procedure");
@@ -93,13 +102,22 @@ public class ProcedureView {
    CSVReader CSVFileReader;
 JPanel panelForTable;
 JLabel JLabelUseList;
+
 JLabel JLabelOR;
 String Type;
 TitledBorder BugPanelBorder;
 Boolean Locked;
 JButton JButtonOK = new JButton("Disable");
+JCheckBox JCheckBoxRandom = new JCheckBox("Randomize");
+JLabel JLabelSpinnerLimit = new JLabel("Limit:");
+JSpinner JSpinnerLimit = new JSpinner( new SpinnerNumberModel(0, //initial value
+                               0, //min
+                              100000, //max
+                               1));                //step);
+
     ProcedureView()
      {
+         limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
          myTable=new MyTable(""); 
@@ -225,6 +243,46 @@ for (String passfailaction_name : passfailaction_keys)
  JButtonSubmitBug.setActionCommand("Update");
     
      }
+    public void addJCheckBoxRandomActionListener(ActionListener listener)
+    {
+        JCheckBoxRandom.addActionListener(listener);
+    }
+    public Boolean getRandom()
+    {
+       return JCheckBoxRandom.isSelected();
+    }
+    public void setRandom(Boolean randval)
+    {
+            JCheckBoxRandom.setSelected(randval);
+    }
+    public int getLimit()
+    {
+           int fallbackValue = 0;
+
+    
+    try {
+        this.JSpinnerLimit.commitEdit();
+   }
+   catch (ParseException pe) {
+     
+       JComponent editor = this.JSpinnerLimit.getEditor();
+       
+       if (editor instanceof JSpinner.DefaultEditor) {
+           ((JSpinner.DefaultEditor)editor).getTextField().setValue( this.JSpinnerLimit.getValue());
+       }
+     
+        this.JSpinnerLimit.setValue(fallbackValue);
+     
+      
+   }
+   limit = (Integer) this.JSpinnerLimit.getValue();
+    return limit;
+    }
+    public void setLimit(int Limit)
+    {
+           this.limit = Limit;
+ this.JSpinnerLimit.setValue(Limit);
+    }
      public void setLocked(Boolean lockedstate)
    {
      Locked = lockedstate;
@@ -371,7 +429,20 @@ for (String passfailaction_name : passfailaction_keys)
      {
          JButtonYesNoPromptPassFail.addActionListener(listener);
      }
-  
+  public void addJSpinnerLimitListener(ChangeListener listener)
+  {
+    
+    JComponent comp = JSpinnerLimit.getEditor();
+    JFormattedTextField field = (JFormattedTextField) comp.getComponent(0);
+    DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+    formatter.setCommitsOnValidEdit(true);
+    JSpinnerLimit.addChangeListener(listener);
+    
+  }
+  public String getStoredArrayListName()
+  {
+      return JComboBoxStoredArrayLists.getSelectedItem().toString();
+  }
   public void addJComboBoxStoredArrayListsItemListener(ItemListener listener)
   {
       JComboBoxStoredArrayLists.addItemListener(listener);
@@ -501,7 +572,7 @@ for (String passfailaction_name : passfailaction_keys)
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
    
-      JTableScrollPane.setSize(new Dimension(600, 840));
+  //    JTableScrollPane.setSize(new Dimension(600, 840));
      JTableScrollPane.setVisible(true);
      
   
@@ -515,6 +586,9 @@ for (String passfailaction_name : passfailaction_keys)
     panelForBrowseAndPulldown.add(JLabelOR);
     panelForBrowseAndPulldown.add(JLabelUseList);
     panelForBrowseAndPulldown.add(JComboBoxStoredArrayLists);
+    panelForBrowseAndPulldown.add(JLabelSpinnerLimit);
+    panelForBrowseAndPulldown.add(JSpinnerLimit);
+    panelForBrowseAndPulldown.add(JCheckBoxRandom);
     
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
       

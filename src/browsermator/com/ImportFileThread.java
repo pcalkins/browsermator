@@ -92,7 +92,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
         else
         {
-           MDIClasses.get(MDI_INDEX).AddNewBug();  
+           MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);  
         }
     }
     else
