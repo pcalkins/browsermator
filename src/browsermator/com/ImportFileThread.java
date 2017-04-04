@@ -94,6 +94,25 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         {
            MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);  
         }
+                  MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
+      if (Procedure.hasAttribute("Random"))
+  {
+  String stRand = Procedure.getAttribute("Random");
+    Boolean Rand = false;
+    if (stRand.equals("true"))
+    {
+        Rand = true;
+    }
+   
+   MDIClasses.get(MDI_INDEX).BugArray.get(i).random = Rand;
+   MDIClasses.get(MDI_INDEX).BugViewArray.get(i).setRandom(Rand);
+  }
+    if (Procedure.hasAttribute("Limit"))
+  {
+    int limit = Integer.parseInt(Procedure.getAttribute("Limit"));
+   MDIClasses.get(MDI_INDEX).BugArray.get(i).limit = limit;
+   MDIClasses.get(MDI_INDEX).BugViewArray.get(i).setLimit(limit);
+  }
     }
     else
     {
@@ -201,6 +220,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
        try
        {
        Password = Protector.decrypt(Variable2);
+       Variable2 = Password;
      
        }
        catch (Exception e)
@@ -237,9 +257,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
              }
             
-
+ MDIClasses.get(MDI_INDEX).UpdateDisplay();
         }   
-   
+  
     }     
   }
    public void ImportFile (File file, int MDI_INDEX)
