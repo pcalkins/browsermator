@@ -241,7 +241,7 @@ public void initVarLists()
  if (bugindex<BV.index+1)
  {
                        BV.JComboBoxStoredArrayLists.addItem(varname);
-
+ VarLists.put(varname, new ArrayList());
  
   //      BV.JComboBoxStoredArrayLists.setSelectedIndex(newitemindex); 
  }
@@ -295,6 +295,8 @@ public void initVarLists()
  jComboBoxStoredVariables.addItem(varname);
  int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
         jComboBoxStoredVariables.setSelectedIndex(newitemindex);
+       
+        VarHashMap.put(varname, "");
 }
       }
  
@@ -868,12 +870,13 @@ int bugindex = 0;
      ActionConstraints.anchor = GridBagConstraints.WEST;
  
       int actionindex = 0;
-      
+     
       for (ActionView AV : BV.ActionsViewList )
         {
 
        
         AV.SetIndexes(bugindex, actionindex);
+       
     if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
             
@@ -1072,8 +1075,8 @@ else
       }
       if (actionindex < 9)
       {
-          
-     newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
+        newbugview.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));    
+ //   newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
    
           }
       
@@ -1601,7 +1604,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
 
        }
    }
-  
+  UpdateDisplay();
        this.changes=true;
    }
   

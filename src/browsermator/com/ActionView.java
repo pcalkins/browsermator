@@ -577,7 +577,7 @@ if (!potentialDrag) return;
     AddDraggers(action, Window, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateScrollPane(newbugview);
+                            Window.UpdateDisplay();
                      
    
    });

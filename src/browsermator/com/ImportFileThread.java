@@ -85,15 +85,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
       
          String DataFile = Procedure.getAttribute("DataLoopFile");
         File DataFile_file = new File(DataFile);
-        if (DataFile_file.exists())
-        {
-            MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
-         
-        }
-        else
-        {
-           MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);  
-        }
+    
                   MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
       if (Procedure.hasAttribute("Random"))
   {

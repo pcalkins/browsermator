@@ -262,7 +262,7 @@ catch (Exception ex)
         int number_of_rows = DataTable.getRowCount();
         if (number_of_rows < 20)
         {
-        DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
+      DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
         }
        
  
@@ -277,8 +277,8 @@ else
 
 
         DataTable = new JTable(tableModel);
-        DataTable.getColumnModel().getColumn(0).setPreferredWidth(600);
-        DataTable.setPreferredScrollableViewportSize(new Dimension (600, 100));
+     DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
+   //     DataTable.setPreferredScrollableViewportSize(new Dimension (600, 100));
         
 
 }
@@ -318,7 +318,7 @@ else
         {
             int rowheight = DataTable.getRowHeight();
             
-        DataTable.setPreferredScrollableViewportSize(new Dimension (1200, number_of_rows * DataTable.getRowHeight()));
+     //   DataTable.setPreferredScrollableViewportSize(new Dimension (1200, number_of_rows * DataTable.getRowHeight()));
         }
       
 }

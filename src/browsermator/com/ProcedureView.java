@@ -233,9 +233,9 @@ for (String passfailaction_name : passfailaction_keys)
  //   BugConstraints.insets = new Insets(1,1,1,1);
 
   ActionScrollPane.setVisible(false);
-// ActionScrollPane.setSize(new Dimension(920, 840));
+ // ActionScrollPane.setSize(new Dimension(920, 840));
    ActionScrollPanel.add(ActionScrollPane);
-  // ActionScrollPanel.setSize(920,480);
+//  ActionScrollPanel.setSize(920,480);
     AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
   
