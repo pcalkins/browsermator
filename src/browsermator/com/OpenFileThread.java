@@ -252,6 +252,16 @@ for (Procedure thisproc: STAppFrame.BugArray)
 {
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
     STAppFrame.AllFieldValues.add(thisproc.DataFile);
+      String randboolval = "false";
+    if (thisproc.random)
+    {
+        randboolval = "true";
+    }
+    
+    STAppFrame.AllFieldValues.add(randboolval);
+ 
+    String limitstring = Integer.toString(thisproc.limit);
+    STAppFrame.AllFieldValues.add(limitstring);
     for (Action thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";
@@ -711,7 +721,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
  
   
-STAppFrame.UpdateDisplay();
+// STAppFrame.UpdateDisplay();
         }   
      
     }

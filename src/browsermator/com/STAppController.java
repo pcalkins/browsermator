@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.56b";
+   public final String ProgramVersion = "1.0.57b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1142,6 +1142,16 @@ for (Procedure thisproc: STAppFrame.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
     AllFieldValuesCheck.add(thisproc.DataFile);
+     String randboolval = "false";
+    if (thisproc.random)
+    {
+        randboolval = "true";
+    }
+    
+    AllFieldValuesCheck.add(randboolval);
+ 
+    String limitstring = Integer.toString(thisproc.limit);
+    AllFieldValuesCheck.add(limitstring);
     for (Action thisact: thisproc.ActionsList)
     {
         AllFieldValuesCheck.add(thisact.Variable1);
@@ -2245,6 +2255,17 @@ for (Procedure thisproc: STAppFrame.BugArray)
     
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
     STAppFrame.AllFieldValues.add(thisproc.DataFile);
+    String randboolval = "false";
+    if (thisproc.random)
+    {
+        randboolval = "true";
+    }
+    
+    STAppFrame.AllFieldValues.add(randboolval);
+ 
+    String limitstring = Integer.toString(thisproc.limit);
+    STAppFrame.AllFieldValues.add(limitstring);
+    
     for (Action thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";

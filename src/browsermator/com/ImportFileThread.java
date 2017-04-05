@@ -85,7 +85,19 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
       
          String DataFile = Procedure.getAttribute("DataLoopFile");
         File DataFile_file = new File(DataFile);
-    
+    if (DataFile_file.isAbsolute())
+    {
+        
+    }
+    else
+    {
+        String[] dataloop_list_parser = DataFile.split("-");
+        if (dataloop_list_parser.length>1)
+        {
+        DataFile = newbug_index + "-" + dataloop_list_parser[1];
+        DataFile_file = new File(DataFile);
+        }
+    }
                   MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
       if (Procedure.hasAttribute("Random"))
   {
@@ -96,14 +108,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         Rand = true;
     }
    
-   MDIClasses.get(MDI_INDEX).BugArray.get(i).random = Rand;
-   MDIClasses.get(MDI_INDEX).BugViewArray.get(i).setRandom(Rand);
+   MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).random = Rand;
+   MDIClasses.get(MDI_INDEX).BugViewArray.get(newbug_index).setRandom(Rand);
   }
     if (Procedure.hasAttribute("Limit"))
   {
     int limit = Integer.parseInt(Procedure.getAttribute("Limit"));
-   MDIClasses.get(MDI_INDEX).BugArray.get(i).limit = limit;
-   MDIClasses.get(MDI_INDEX).BugViewArray.get(i).setLimit(limit);
+   MDIClasses.get(MDI_INDEX).BugArray.get(newbug_index).limit = limit;
+   MDIClasses.get(MDI_INDEX).BugViewArray.get(newbug_index).setLimit(limit);
   }
     }
     else
@@ -249,7 +261,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                MDIClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, thisActionViewToAdd,NewProcedure, NewProcedureView);
              }
             
- MDIClasses.get(MDI_INDEX).UpdateDisplay();
+// MDIClasses.get(MDI_INDEX).UpdateDisplay();
         }   
   
     }     
@@ -289,6 +301,7 @@ finally
 {
  
   ImportNewWindow(doc, MDI_INDEX);
+  MDIClasses.get(MDI_INDEX).UpdateDisplay();
  MDIClasses.get(MDI_INDEX).changes = true;
 }
     
