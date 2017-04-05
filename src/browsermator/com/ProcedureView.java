@@ -233,7 +233,7 @@ for (String passfailaction_name : passfailaction_keys)
  //   BugConstraints.insets = new Insets(1,1,1,1);
 
   ActionScrollPane.setVisible(false);
- // ActionScrollPane.setSize(new Dimension(920, 840));
+//  ActionScrollPane.setSize(new Dimension(920, 840));
    ActionScrollPanel.add(ActionScrollPane);
 //  ActionScrollPanel.setSize(920,480);
     AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
@@ -476,9 +476,9 @@ for (String passfailaction_name : passfailaction_keys)
               
     JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
-     BugPanelBorder = BorderFactory.createTitledBorder("Procedure (Data Loop) " + stringbugindex);
+     BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-          setTitle("Procedure (Data Loop) ");
+          setTitle("Data Loop ");
         }
    }
    
@@ -596,7 +596,7 @@ for (String passfailaction_name : passfailaction_keys)
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
    
-    AddToGrid(panelForTable, 10, 2, 3, 8, 1, 1, GridBagConstraints.WEST);
+    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
      JTextFieldDataFile.setText(sourceCSVfile);
 
     

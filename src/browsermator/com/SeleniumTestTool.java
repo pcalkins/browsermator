@@ -946,9 +946,12 @@ int bugindex = 0;
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));
+     BV.ActionScrollPane.setPreferredSize(new Dimension(800, 36*actionindex+40));
           }
-      
+      else
+      {
+  BV.ActionScrollPane.setPreferredSize(new Dimension(800, 400));   
+      }  
 BV.ActionScrollPane.setVisible(true);
        BV.ActionScrollPane.setViewportView(ActionPanel);
 
@@ -1075,10 +1078,14 @@ else
       }
       if (actionindex < 9)
       {
-        newbugview.ActionScrollPane.setPreferredSize(new Dimension(1024, 36*actionindex+40));    
+        newbugview.ActionScrollPane.setPreferredSize(new Dimension(800, 36*actionindex+40));    
  //   newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
    
           }
+      else
+      {
+       newbugview.ActionScrollPane.setPreferredSize(new Dimension(800, 400));   
+      }
       
       newbugview.ActionScrollPane.setVisible(true);
 
