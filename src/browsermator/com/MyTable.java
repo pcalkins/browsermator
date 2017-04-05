@@ -264,6 +264,10 @@ catch (Exception ex)
         {
       DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
         }
+        else
+        {
+       DataTable.setPreferredScrollableViewportSize(new Dimension (800,400));     
+        }
        
  
        
@@ -278,8 +282,8 @@ else
 
         DataTable = new JTable(tableModel);
      DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
-   //     DataTable.setPreferredScrollableViewportSize(new Dimension (600, 100));
-        
+   DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));
+    DataTable.setPreferredSize(new Dimension (700,150));
 
 }
 
@@ -318,7 +322,11 @@ else
         {
             int rowheight = DataTable.getRowHeight();
             
-       DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
+       DataTable.setPreferredScrollableViewportSize(new Dimension (700, number_of_rows * DataTable.getRowHeight()));
+        }
+        else
+        {
+        DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));       
         }
       
 }
