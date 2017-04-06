@@ -162,7 +162,7 @@ for (String passfailaction_name : passfailaction_keys)
   
 
      JPanelBug.setLayout(BugLayout);
-   JPanelBug.setSize(920, 252);
+ //  JPanelBug.setSize(920, 252);
  //    BugConstraints.fill = GridBagConstraints.NONE;
 //     BugConstraints.anchor = GridBagConstraints.WEST;
 //     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
@@ -232,11 +232,11 @@ for (String passfailaction_name : passfailaction_keys)
 
  //   BugConstraints.insets = new Insets(1,1,1,1);
 
-  ActionScrollPane.setVisible(false);
-//  ActionScrollPane.setSize(new Dimension(920, 840));
-   ActionScrollPanel.add(ActionScrollPane);
+//  ActionScrollPane.setVisible(false);
+// ActionScrollPane.setSize(new Dimension(920, 840));
+//   ActionScrollPanel.add(ActionScrollPane);
 //  ActionScrollPanel.setSize(920,480);
-    AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
+    AddToGrid (ActionScrollPane, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
   
     

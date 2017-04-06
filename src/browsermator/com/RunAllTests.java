@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
@@ -328,13 +329,13 @@ public String doInBackground()
 // DesiredCapabilities cap = DesiredCapabilities.firefox();
   //      cap.setJavascriptEnabled(false);
 
-   //    FirefoxProfile profile = new FirefoxProfile();
+       FirefoxProfile profile = new FirefoxProfile();
 
  // DesiredCapabilities cap = DesiredCapabilities.firefox();
   //    cap.setJavascriptEnabled(true);
   //     cap.setCapability("marionette", true);
         
-   //    profile.setPreference("dom.max_script_run_time", 30);
+       profile.setPreference("dom.max_script_run_time", 30);
         driver = new FirefoxDriver();
        
 
@@ -521,7 +522,7 @@ options.setBinary(chrome_path);
   int WaitTime = SiteTest.GetWaitTime();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
-  int Timeout = 1;
+  int Timeout = 20;
   
  // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
  driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);

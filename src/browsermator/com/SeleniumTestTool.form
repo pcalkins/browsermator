@@ -31,7 +31,7 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -128,7 +128,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="147" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="157" max="32767" attributes="0"/>
                   </Group>
                   <Component id="MainScrollPane" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">

@@ -74,6 +74,7 @@ public String doInBackground()
          if (MDI_CLASS_INDEX>=0)
      {
            mainApp.DisplayWindow(MDI_CLASS_INDEX);
+           
      }
        }
        catch (IOException | ClassNotFoundException ex) {
@@ -338,11 +339,10 @@ for (Procedure thisproc: STAppFrame.BugArray)
    
 
 
-      STAppFrame.setClosable(true);
-  STAppFrame.setMaximizable(true);
+
   STAppFrame.setProperties(full_filename);
   STAppFrame.setResizable(true);
-  STAppFrame.setSize(1024, 800);
+
   STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
 

@@ -75,7 +75,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.60b";
+   public final String ProgramVersion = "1.0.62b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -2416,12 +2416,20 @@ STAppFrame.changes = false;
        {
   MDIClasses.get(MDI_CLASS_INDEX).setProperties(MDIClasses.get(MDI_CLASS_INDEX).filename);
   MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
-  MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
+//  MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
   saveMenuItem.setEnabled(true);
   SeleniumToolDesktop.add(MDIClasses.get(MDI_CLASS_INDEX));
-  
+
   MDIClasses.get(MDI_CLASS_INDEX).moveToFront();
- 
+        try
+  {
+ MDIClasses.get(MDI_CLASS_INDEX).setMaximum(true);
+  }
+  catch(Exception ex)
+  {
+      System.out.println("Veto maximum: " + ex.toString());
+      MDIClasses.get(MDI_CLASS_INDEX).setSize(880, 600);
+  } 
        MDIClasses.get(MDI_CLASS_INDEX).setVisible(true); 
        try
        {
@@ -2502,7 +2510,7 @@ STAppFrame.changes = false;
     });
        }
        
-       
+ 
        
        }
    }

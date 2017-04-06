@@ -2,6 +2,7 @@
 package browsermator.com;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -837,7 +838,7 @@ else
  
  
  ModifiedFlowLayout layout = new ModifiedFlowLayout();
- 
+ layout.setAlignment(FlowLayout.LEFT);
 //     layout.setVgap(1);
  //  layout.setHgap(5);
 
@@ -946,11 +947,11 @@ int bugindex = 0;
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(880, 36*actionindex+40));
+     BV.ActionScrollPane.setPreferredSize(new Dimension(920, 36*actionindex+40));
           }
       else
       {
-  BV.ActionScrollPane.setPreferredSize(new Dimension(880, 400));   
+  BV.ActionScrollPane.setPreferredSize(new Dimension(920, 400));   
       }  
 BV.ActionScrollPane.setVisible(true);
        BV.ActionScrollPane.setViewportView(ActionPanel);
@@ -1642,7 +1643,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
      }
      }
  
- 
+  UpdateDisplay();
   this.changes=true;
    }
    public void DeleteBug (int BugIndex)
@@ -1829,7 +1830,7 @@ this.changes=true;
                 .addComponent(jLabelTHISSITEURL)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1907,7 +1908,7 @@ this.changes=true;
                                         .addComponent(jButtonClearEmailSettings)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 147, Short.MAX_VALUE))
+                        .addGap(0, 157, Short.MAX_VALUE))
                     .addComponent(MainScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
