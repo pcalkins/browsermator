@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -18,7 +19,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+
 
 public class RunAllTests extends SwingWorker<String, Integer>
 {
@@ -263,9 +264,9 @@ public String doInBackground()
 
 // FirefoxProfile profile = new FirefoxProfile();
 
- // DesiredCapabilities cap = DesiredCapabilities.firefox();
-    //    cap.setJavascriptEnabled(true);
-    //    cap.setCapability("marionette", true);
+ //DesiredCapabilities cap = DesiredCapabilities.firefox();
+   //     cap.setJavascriptEnabled(true);
+   //     cap.setCapability("marionette", false);
         
    //     profile.setPreference("dom.max_script_run_time", 1);
         driver = new FirefoxDriver();
@@ -292,7 +293,7 @@ public String doInBackground()
      break;
             
     case "Firefox":
-    //legacy support
+   
      if ("Windows".equals(OSType))
      {
         System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");  
@@ -324,11 +325,18 @@ public String doInBackground()
 
     try
     {
- DesiredCapabilities cap = DesiredCapabilities.firefox();
-        cap.setJavascriptEnabled(true);
-        cap.setCapability("marionette", true);
-        driver = new FirefoxDriver(cap);
-    
+// DesiredCapabilities cap = DesiredCapabilities.firefox();
+  //      cap.setJavascriptEnabled(false);
+
+   //    FirefoxProfile profile = new FirefoxProfile();
+
+ // DesiredCapabilities cap = DesiredCapabilities.firefox();
+  //    cap.setJavascriptEnabled(true);
+  //     cap.setCapability("marionette", true);
+        
+   //    profile.setPreference("dom.max_script_run_time", 30);
+        driver = new FirefoxDriver();
+       
 
     //  driver =  new MarionetteDriver();
     }
@@ -513,10 +521,11 @@ options.setBinary(chrome_path);
   int WaitTime = SiteTest.GetWaitTime();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
-//  int Timeout = 10;
-// driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
-// driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
-// driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+  int Timeout = 1;
+  
+ // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
         
