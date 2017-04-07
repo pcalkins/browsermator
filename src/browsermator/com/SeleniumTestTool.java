@@ -1,6 +1,7 @@
 
 package browsermator.com;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -825,12 +826,7 @@ else
  {
      jButtonFlattenFile.setText(newtext);
  }
- public void ScrollActionPaneDown(ProcedureView bugview)
- {
-  
-        JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
- action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
- }
+
  
  public void UpdateDisplay()
  {
@@ -838,7 +834,7 @@ else
  
  
  ModifiedFlowLayout layout = new ModifiedFlowLayout();
- layout.setAlignment(FlowLayout.LEFT);
+ layout.setAlignment(FlowLayout.CENTER);
 //     layout.setVgap(1);
  //  layout.setHgap(5);
 
@@ -853,7 +849,7 @@ int bugindex = 0;
       {
 
           BV.SetIndex(bugindex);
-          
+       
           this.BugPanel.add(BV.JPanelBug);
      JPanel ActionAdderPanel = new JPanel();
 
@@ -862,12 +858,13 @@ int bugindex = 0;
   
    GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints();
-            JPanel ActionPanel = new JPanel();
+         
+   JPanel ActionPanel = new JPanel();
 
             
       ActionPanel.setLayout(ActionLayout); 
       
-     ActionConstraints.fill = GridBagConstraints.NONE;
+   //  ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;
  
       int actionindex = 0;
@@ -940,23 +937,23 @@ int bugindex = 0;
          ActionConstraints.gridheight = 1;
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
          
-         ActionPanel.add(AV.JPanelAction);
-    
+         BV.ActionScrollPanel.add(AV.JPanelAction);
+        
          actionindex++;
 
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(920, 36*actionindex+40));
+     BV.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));
           }
       else
       {
-  BV.ActionScrollPane.setPreferredSize(new Dimension(920, 400));   
+  BV.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));   
       }  
-BV.ActionScrollPane.setVisible(true);
-       BV.ActionScrollPane.setViewportView(ActionPanel);
+BV.ActionScrollPanel.setVisible(true);
+ //      BV.ActionScrollPane.setViewportView(ActionPanel);
 
-   
+ UpdateScrollPane(BV);  
 bugindex++;
      }
 if (hasStoredVar)
@@ -986,20 +983,20 @@ else
      public void UpdateScrollPane(ProcedureView newbugview)
      {
               GridBagConstraints ActionConstraints = new GridBagConstraints();
-        
+       
           
-            JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
-            ActionPanel.removeAll();
+  //          JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
+            newbugview.ActionScrollPanel.removeAll();
               GridBagLayout ActionLayout = new GridBagLayout();
-      ActionPanel.setLayout(ActionLayout); 
+      newbugview.ActionScrollPanel.setLayout(ActionLayout); 
       
-     ActionConstraints.fill = GridBagConstraints.NONE;
+  //   ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;            
          int actionindex = 0;
 
       for (ActionView AV : newbugview.ActionsViewList )
         {
-       
+          
           AV.SetIndexes(newbugview.index, actionindex);
           if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
@@ -1060,10 +1057,10 @@ else
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
-         
+      
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
          
-         ActionPanel.add(AV.JPanelAction);
+        newbugview.ActionScrollPanel.add(AV.JPanelAction);
     
          actionindex++;
 
@@ -1079,18 +1076,18 @@ else
       }
       if (actionindex < 9)
       {
-        newbugview.ActionScrollPane.setPreferredSize(new Dimension(880, 36*actionindex+40));    
+       newbugview.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));    
  //   newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
    
           }
       else
       {
-       newbugview.ActionScrollPane.setPreferredSize(new Dimension(880, 400));   
+       newbugview.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));   
       }
       
-      newbugview.ActionScrollPane.setVisible(true);
+     newbugview.ActionScrollPanel.setVisible(true);
 
-       newbugview.ActionScrollPane.setViewportView(ActionPanel);
+   
 
      }
  public void RunActions()
@@ -1391,7 +1388,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+           
             this.changes=true;  
            });
             newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
@@ -1402,7 +1399,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                      thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+          
             this.changes=true;  
            });
            newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
@@ -1412,7 +1409,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+        
             this.changes=true;  
            });
            newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
@@ -1422,7 +1419,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+          
             this.changes=true;  
            });
            newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
@@ -1432,7 +1429,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+         
             this.changes=true;  
            });
                newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
@@ -1442,7 +1439,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+          
             this.changes=true;  
            });
            
@@ -1467,7 +1464,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
          
             
             UpdateDisplay();
-            ScrollActionPaneDown(newbugview);
+          
             this.changes=true;
         }
            });
@@ -1491,7 +1488,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
           
              
              UpdateDisplay();
-             ScrollActionPaneDown(newbugview);
+           
              this.changes=true;
          }
            });
@@ -1504,8 +1501,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
             newbug.ActionsList.add(action);
             actionview.index = newbugview.ActionsViewList.size()-1;
             action.index = newbug.ActionsList.size()-1;
-  //          actionview.AddDraggers(this, newbug, newbugview, actionview);
-          
+
 }
 
    public File BrowseForJSFileAction ()
@@ -1712,6 +1708,7 @@ this.changes=true;
         jSpinnerSessions = new javax.swing.JSpinner();
         jLabelSessions = new javax.swing.JLabel();
         jCheckBoxEnableMultiSession = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1821,6 +1818,8 @@ this.changes=true;
 
         jCheckBoxEnableMultiSession.setText("Enable Multi-Session");
 
+        jLabel2.setText("*To use Internet Explorer all security zones must have Enable Protected Mode checked.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1881,7 +1880,8 @@ this.changes=true;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBoxEnableMultiSession)))
+                                .addComponent(jCheckBoxEnableMultiSession))
+                            .addComponent(jLabel2))
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -1982,7 +1982,9 @@ this.changes=true;
                             .addComponent(jCheckBoxOSTypeMac)
                             .addComponent(jCheckBoxOSTypeLinux32)
                             .addComponent(jCheckBoxOSTypeLinux64)
-                            .addComponent(jCheckBoxOSTypeWindows64)))
+                            .addComponent(jCheckBoxOSTypeWindows64))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
@@ -2594,6 +2596,7 @@ Collections.shuffle(VarLists.get(URLListName), new Random(seed));
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

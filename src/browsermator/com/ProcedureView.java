@@ -5,11 +5,13 @@ import com.opencsv.CSVReader;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -33,8 +35,6 @@ import javax.swing.JTable;
 
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
@@ -47,7 +47,7 @@ public class ProcedureView {
       int limit;
       Boolean random;
       JLabel JLabelBugIndex = new JLabel ("#");
- 
+  
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
      JTextField JTextFieldBugTitle = new JTextField("", 25);
@@ -71,8 +71,13 @@ public class ProcedureView {
     GridBagConstraints BugConstraints = new GridBagConstraints();
     JPanel JPanelBug = new JPanel();
    ArrayList<ActionView> ActionsViewList = new ArrayList();   
-     JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
-     
+  //   JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+     GridBagLayout ActionLayout = new GridBagLayout();
+   GridBagConstraints ActionConstraints = new GridBagConstraints();
+         
+
+            
+      
      JPanel ActionScrollPanel = new JPanel();
        JLabel JLabelDoActions = new JLabel("Add Actions: ");
      JLabel JLabelPassFailActions = new JLabel("Add Pass/Fail Actions: ");
@@ -117,6 +122,8 @@ JSpinner JSpinnerLimit = new JSpinner( new SpinnerNumberModel(0, //initial value
 
     ProcedureView()
      {
+
+
          limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
@@ -233,10 +240,11 @@ for (String passfailaction_name : passfailaction_keys)
  //   BugConstraints.insets = new Insets(1,1,1,1);
 
 //  ActionScrollPane.setVisible(false);
-// ActionScrollPane.setSize(new Dimension(920, 840));
+// ActionScrollPanel.setSize(new Dimension(920, 840));
+ //   ActionScrollPanel.setLayout(ActionLayout); 
 //   ActionScrollPanel.add(ActionScrollPane);
 //  ActionScrollPanel.setSize(920,480);
-    AddToGrid (ActionScrollPane, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
+    AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
   
     
@@ -464,8 +472,8 @@ for (String passfailaction_name : passfailaction_keys)
        this.JLabelBugIndex.setText(stringbugindex);
         if ("Procedure".equals(this.Type))
         {
-    JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
-    ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+  //  JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
+ //   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
  BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
          setTitle("Procedure ");
@@ -474,8 +482,8 @@ for (String passfailaction_name : passfailaction_keys)
         else
         {
               
-    JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
-    ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+  //  JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
+ //   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
      BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
           setTitle("Data Loop ");

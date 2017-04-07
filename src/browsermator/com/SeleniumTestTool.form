@@ -94,6 +94,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jCheckBoxEnableMultiSession" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -223,6 +224,8 @@
                           <Component id="jCheckBoxOSTypeLinux64" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBoxOSTypeWindows64" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -532,6 +535,11 @@
     <Component class="javax.swing.JCheckBox" name="jCheckBoxEnableMultiSession">
       <Properties>
         <Property name="text" type="java.lang.String" value="Enable Multi-Session"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="*To use Internet Explorer all security zones must have Enable Protected Mode checked."/>
       </Properties>
     </Component>
   </SubComponents>

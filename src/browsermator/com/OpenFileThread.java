@@ -705,7 +705,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, NewProcedure, NewProcedureView);
                STAppFrame.AddActionToArray (thisActionToAdd, thisActionViewToAdd, NewProcedure, NewProcedureView);
-               
+              
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -721,7 +721,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
  
   
-// STAppFrame.UpdateDisplay();
+
         }   
      
     }
@@ -867,7 +867,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         PV.setLocked(true);
     }
 }
-// STAppFrame.ShowStoredVarControls(false);
+
  return STAppFrame;
 
   }
