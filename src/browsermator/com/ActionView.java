@@ -16,12 +16,15 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
@@ -202,6 +205,10 @@ String stringactionindex = Integer.toString(this.index+1);
        JButtonDragIt.addMouseListener(listener);
            
        }
+        public void addActionPanelMouseListener(MouseAdapter listener)
+        {
+            JPanelAction.addMouseListener(listener);
+        }
         public void removeJButtonDragItMouserAdapter(MouseAdapter listener)
         {
             JButtonDragIt.removeMouseListener(listener);
@@ -311,9 +318,35 @@ String stringactionindex = Integer.toString(this.index+1);
             }
         });    
        }
+   
        public void AddDraggers(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
        {
-    
+         addActionPanelMouseListener(new MouseAdapter(){
+    @Override
+       public void mouseClicked(java.awt.event.MouseEvent evt) {
+                 
+                    if (evt.getButton()==3)
+                    {
+                        ShowContextMenu(action, newbug, newbugview, Window, evt);
+                    }
+                }
+       @Override
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+               
+                }
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+               
+                }
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent evt) {
+                
+                }
+                @Override
+                public void mouseReleased(java.awt.event.MouseEvent evt) {
+                  
+                }
+   });   
              this.addJButtonDragItMouseAdapter(new MouseAdapter() {
 
  
@@ -568,11 +601,75 @@ if (!potentialDrag) return;
 
    });
        }
+       class PopUpDemo extends JPopupMenu {
+    JMenuItem anItem;
+    Action thisAct;
+    Procedure this_bug;
+    ProcedureView this_bugview;
+    SeleniumTestTool window;
+    public PopUpDemo(Action Act, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window){
+        anItem = new JMenuItem("Clone Action");
+        add(anItem);
+        this.thisAct = Act;
+        this.this_bug = this_bug;
+        this.this_bugview = this_bugview;
+        this.window = window;
+        anItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent ev) {
+      cloneAction(thisAct, this_bug, this_bugview, window);
+      }
+    });      
+    }
+  
+      public void cloneAction(Action ACT, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window)
+      {
+      String ActionType = ACT.Type;
 
+  
+  ActionsMaster NewActionsMaster = new ActionsMaster();
+   
+   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
+   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
+    if (thisActionHashMap.containsKey(ActionType))
+           {
+               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
+               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+              window.UpdateDisplay();
+           }      
+ 
+     if (thisPassFailActionHashMap.containsKey(ActionType))
+             {
+               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
+              window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+              window.UpdateDisplay();
+             }
+      }
+}
+
+
+ public void ShowContextMenu(Action ACT,Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window, MouseEvent evt)
+ {
+   PopUpDemo menu = new PopUpDemo(ACT, this_bug, this_bugview, window);
+        menu.show(evt.getComponent(), evt.getX(), evt.getY());
+  
+        
+ }
  @Override
    public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
    {
-   
+  
     
     AddDraggers(action, Window, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {

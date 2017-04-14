@@ -56,7 +56,7 @@ public class OpenNewTabAction extends Action {
     
 // driver.findElement(By.cssSelector("body")).sendKeys(Keys.chord(Keys.CONTROL, "t"));
 // Actions actions = new Actions(driver); 
-// actions.keyDown(Keys.CONTROL).sendKeys("t").keyUp(Keys.CONTROL).build().perform();  
+//  actions.keyDown(Keys.CONTROL).sendKeys("t").keyUp(Keys.CONTROL).build().perform();  
         Set<String> tab_handles = driver.getWindowHandles();
         int number_of_tabs = tab_handles.size();
         int new_tab_index = number_of_tabs-1;
