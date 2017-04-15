@@ -76,6 +76,7 @@ public String doInBackground()
  {
      SiteTest.enableAdds();
      SiteTest.enableRemoves();
+     SiteTest.RefreshData();
     SiteTest.testRunning = false; 
     try
     {
@@ -702,9 +703,14 @@ else
       thisbug.setDataFile(selectedarraylist);
       
     }
+ if (!thisbugview.myTable.myEntries.isEmpty())
+    {
+         SiteTest.RandomizeAndLimitList(thisbugview.myTable,thisbugview.getLimit(), thisbugview.getRandom());
+      
+    }
    
      
- int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ int number_of_rows = thisbugview.myTable.runtimeEntries.length;
  if (number_of_rows==0)
  {
   number_of_rows = FillTables(thisbug, thisbugview);
@@ -1114,7 +1120,8 @@ while(thisContinuePrompt.isVisible() == true){
   }
   else
   {
-      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.DataTable.getRowCount();
+           
+      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.runtimeEntries.length;
 
     for (int x = 0; x<number_of_rows; x++)
     {
@@ -1217,6 +1224,7 @@ while(thisContinuePrompt.isVisible() == true){
 
             }
             }
+      
         } 
     if (var2Parser.hasDataLoopVar)
     {

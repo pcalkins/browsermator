@@ -1,11 +1,11 @@
 
 package browsermator.com;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -827,7 +827,16 @@ else
      jButtonFlattenFile.setText(newtext);
  }
 
- 
+ public void RefreshData()
+ {
+     for (ProcedureView procview: this.BugViewArray)
+     {
+         if ("Dataloop".equals(procview.Type))
+         {
+         procview.myTable.refreshRuntimeEntries();
+         }
+     }
+ }
  public void UpdateDisplay()
  {
  this.MainScrollPane.setVisible(false);
@@ -2503,6 +2512,25 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
+  public void RandomizeAndLimitList(MyTable table_in, int limit, Boolean randval)
+  {
+     String[] to_send_list;
+    
+             if (randval)
+                {
+             long seed = System.nanoTime();
+Collections.shuffle(table_in.myEntries, new Random(seed));
+                }
+                if (limit>0)
+                {
+                    int sizeofvarlist = table_in.myEntries.size();
+
+ 
+   table_in.myEntries.subList(limit, sizeofvarlist).clear();
+                }
+               to_send_list = table_in.myEntries.get(0);
+     table_in.setRunTimeFileSet(to_send_list);
+  }
   public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
   {
    if (VarLists.containsKey(URLListName))

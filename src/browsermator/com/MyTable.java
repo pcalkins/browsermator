@@ -38,12 +38,13 @@ public class MyTable {
    Object[] columnnames = {""};
    int rowcount;
    List<String[]> myEntries;
-   
+   String[] runtimeEntries;
  MyTable (String csvFile)
  {
         DataFile = csvFile;
         DataTable = new JTable();
         myEntries = new ArrayList<>();
+        runtimeEntries = new String[0];
           File filecheck = new File(csvFile);
 if (filecheck.isAbsolute()) {
       
@@ -289,6 +290,29 @@ else
 
   
         }
+ public void refreshRuntimeEntries()
+ {
+     if (runtimeEntries.length>0)
+     {
+     runtimeEntries = new String[0];
+     try
+     {
+      CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
+              myEntries = CSVFileReader.readAll();   
+     }
+     catch(Exception ex)
+     {
+         System.out.println("Exception reading csv file: " + ex.toString());
+     }
+     }
+     }
+ 
+ public void setRunTimeFileSet(String[] runtime_entries)
+ {
+     this.runtimeEntries = new String[runtime_entries.length];
+     
+     this.runtimeEntries = runtime_entries;
+ }
  public void setSourceToURLList(ArrayList<String> storedURLlist)
 {
  
