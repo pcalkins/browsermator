@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -26,7 +27,9 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -249,6 +252,7 @@ for (String passfailaction_name : passfailaction_keys)
  JButtonSubmitBug.setActionCommand("Update");
     
      }
+    
     public void addJCheckBoxRandomActionListener(ActionListener listener)
     {
         JCheckBoxRandom.addActionListener(listener);
@@ -382,11 +386,107 @@ for (String passfailaction_name : passfailaction_keys)
       
     }
        }
+             class PopUpDemo extends JPopupMenu {
+    JMenuItem anItem;
+    Action thisAct;
+    Procedure this_bug;
+    ProcedureView this_bugview;
+    SeleniumTestTool window;
+    public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window){
+        anItem = new JMenuItem("Clone Procedure");
+        add(anItem);
+     
+        this.this_bug = this_bug;
+        this.this_bugview = this_bugview;
+        this.window = window;
+        anItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent ev) {
+      cloneProcedure(this_bug, this_bugview, window);
+      }
+    });      
+    }
+             }
+              public void ShowContextMenu(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window, MouseEvent evt)
+ {
+   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(this_bug, this_bugview, window);
+        menu.show(evt.getComponent(), evt.getX(), evt.getY());
+  
+        
+ }
+          public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool window)
+      {
+          if ("Dataloop".equals(this_bug_in.Type))
+          {
+              File this_data_file = new File(this_bug_in.DataFile);
+              
+          window.AddNewDataLoop(this_data_file);    
+          }
+          else
+          {
+          window.AddNewBug();
+          }
+          
+          
+          window.BugViewArray.get(window.BugViewArray.size()-1).setTitle(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE" );
+          window.BugViewArray.get(window.BugViewArray.size()-1).JTextFieldBugTitle.setText(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE");
+          Procedure this_bug = window.BugArray.get(window.BugArray.size()-1);
+          
+          ProcedureView this_bugview = window.BugViewArray.get(window.BugViewArray.size()-1);
+          for (Action ACT: this_bug_in.ActionsList)
+          {
+      String ActionType = ACT.Type;
+
+  
+  ActionsMaster NewActionsMaster = new ActionsMaster();
+   
+   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
+   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
+    if (thisActionHashMap.containsKey(ActionType))
+           {
+               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
+               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+              window.UpdateDisplay();
+           }      
+ 
+     if (thisPassFailActionHashMap.containsKey(ActionType))
+             {
+               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
+              window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+              window.UpdateDisplay();
+             }
+      }
+      }
+
        public void addJButtonOKActionListener(ActionListener listener)
        {
        JButtonOK.addActionListener(listener);
            
        }
+       public void addRightClickPanelListener(Procedure newbug, ProcedureView newbugview, SeleniumTestTool Window)
+       {
+             JPanelBug.addMouseListener(new MouseAdapter(){
+    @Override
+       public void mouseClicked(java.awt.event.MouseEvent evt) {
+                 
+                    if (evt.getButton()==3)
+                    {
+                        ShowContextMenu(newbug, newbugview, Window, evt);
+                    }
+                }
+             });
+                     }
          public void addJButtonMoveProcedureUpActionListener(ActionListener listener)
        {
        JButtonMoveProcedureUp.addActionListener(listener);
