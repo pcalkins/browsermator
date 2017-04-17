@@ -1579,14 +1579,11 @@ File newfile = new File(path + ".js");
         }
     }
       UpdateDisplay();
-         
-
-
      
       JComponent component = (JComponent) this.MainScrollPane.getViewport().getView();
 
         Rectangle bounds =  BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
-
+     bounds.height = 50;
       component.scrollRectToVisible(bounds);
    }
    public void MoveAction (Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)

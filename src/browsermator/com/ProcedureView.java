@@ -48,7 +48,7 @@ public class ProcedureView {
       int limit;
       Boolean random;
       JLabel JLabelBugIndex = new JLabel ("#");
-  
+   JPanel LeftSideButtonsPanel;
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
      JTextField JTextFieldBugTitle = new JTextField("", 25);
@@ -182,7 +182,7 @@ for (String passfailaction_name : passfailaction_keys)
      ProcedurePlusIndex.add(JLabelBugTitle2);
      
      
-     JPanel LeftSideButtonsPanel = new JPanel();
+      LeftSideButtonsPanel = new JPanel();
      BoxLayout LeftSideButtonsLayout = new BoxLayout(LeftSideButtonsPanel, BoxLayout.Y_AXIS);
      setStandardButtonSize(JButtonGoAction);
      setStandardButtonSize(JButtonClickAtXPATH);
