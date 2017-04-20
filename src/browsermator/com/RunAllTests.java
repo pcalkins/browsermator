@@ -710,7 +710,7 @@ else
     }
    
      
- int number_of_rows = thisbugview.myTable.runtimeEntries.length;
+ int number_of_rows = thisbugview.myTable.runtimeEntries.size();
  if (number_of_rows==0)
  {
   number_of_rows = FillTables(thisbug, thisbugview);
@@ -1121,7 +1121,7 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
            
-      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.runtimeEntries.length;
+      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.runtimeEntries.size();
 
     for (int x = 0; x<number_of_rows; x++)
     {

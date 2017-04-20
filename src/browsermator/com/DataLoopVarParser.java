@@ -109,13 +109,14 @@ public class DataLoopVarParser {
        concat_variable+= theseDataLoopVars.beforevar;
        if (theseDataLoopVars.field_column_index!=-1)
        {
-           if (my_Table.runtimeEntries.length==0)
+           if (my_Table.runtimeEntries.size()==0)
            {
            concat_variable+= my_Table.DataTable.getValueAt(row_number, theseDataLoopVars.field_column_index);
            }
            else
            {
-            concat_variable+= my_Table.runtimeEntries[row_number];    
+            String[] this_data_row = my_Table.runtimeEntries.get(row_number);
+            concat_variable+=   this_data_row[theseDataLoopVars.field_column_index]; 
            }
        }
        concat_variable+=theseDataLoopVars.aftervar;

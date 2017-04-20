@@ -2521,8 +2521,8 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         }
   public void RandomizeAndLimitList(MyTable table_in, int limit, Boolean randval)
   {
-     String[] to_send_list;
-    
+    // first row is column names, remove it
+    table_in.myEntries.remove(0);
              if (randval)
                 {
              long seed = System.nanoTime();
@@ -2530,13 +2530,14 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
                 }
                 if (limit>0)
                 {
+                    
                     int sizeofvarlist = table_in.myEntries.size();
 
  
    table_in.myEntries.subList(limit, sizeofvarlist).clear();
                 }
-               to_send_list = table_in.myEntries.get(0);
-     table_in.setRunTimeFileSet(to_send_list);
+              
+     table_in.setRunTimeFileSet(table_in.myEntries);
   }
   public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
   {

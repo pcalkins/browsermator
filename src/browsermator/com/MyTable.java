@@ -38,13 +38,13 @@ public class MyTable {
    Object[] columnnames = {""};
    int rowcount;
    List<String[]> myEntries;
-   String[] runtimeEntries;
+   List<String[]> runtimeEntries;
  MyTable (String csvFile)
  {
         DataFile = csvFile;
         DataTable = new JTable();
         myEntries = new ArrayList<>();
-        runtimeEntries = new String[0];
+        runtimeEntries = new ArrayList<>();
           File filecheck = new File(csvFile);
 if (filecheck.isAbsolute()) {
       
@@ -292,9 +292,9 @@ else
         }
  public void refreshRuntimeEntries()
  {
-     if (runtimeEntries.length>0)
+     if (runtimeEntries.size()>0)
      {
-     runtimeEntries = new String[0];
+     runtimeEntries = new ArrayList<>();
      try
      {
       CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
@@ -307,9 +307,9 @@ else
      }
      }
  
- public void setRunTimeFileSet(String[] runtime_entries)
+ public void setRunTimeFileSet(List<String[]> runtime_entries)
  {
-     this.runtimeEntries = new String[runtime_entries.length];
+  //   this.runtimeEntries = new ArrayList<>(runtime_entries.size());
      
      this.runtimeEntries = runtime_entries;
  }
