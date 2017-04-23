@@ -294,7 +294,7 @@ else
  {
      if (runtimeEntries.size()>0)
      {
-     runtimeEntries = new ArrayList<>();
+     runtimeEntries.clear();
      try
      {
       CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');

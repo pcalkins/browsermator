@@ -429,6 +429,8 @@ for (String passfailaction_name : passfailaction_keys)
           
           window.BugViewArray.get(window.BugViewArray.size()-1).setTitle(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE" );
           window.BugViewArray.get(window.BugViewArray.size()-1).JTextFieldBugTitle.setText(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE");
+          window.BugViewArray.get(window.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
+          window.BugViewArray.get(window.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
           Procedure this_bug = window.BugArray.get(window.BugArray.size()-1);
           
           ProcedureView this_bugview = window.BugViewArray.get(window.BugViewArray.size()-1);

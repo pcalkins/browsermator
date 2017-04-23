@@ -503,8 +503,18 @@ xmlfile.writeAttribute("Locked", LockedString);
 
 if ("Dataloop".equals(thisbug.Type))
 {
+String string_limit = Integer.toString(thisbug.limit);
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+xmlfile.writeAttribute("Limit", string_limit);
+
+String string_randval = "false";
+if (thisbug.random)
+{
+    string_randval = "true";
+}
+xmlfile.writeAttribute("Random", string_randval);
+
 
 
 }

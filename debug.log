@@ -1,0 +1,12 @@
+[0415/071840.870:ERROR:scoped_process_suspend.cc(30)] NtSuspendProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0415/071840.909:ERROR:process_info.cc(116)] ReadProcessMemory bool __cdecl crashpad::`anonymous-namespace'::ReadStruct<struct crashpad::process_types::PEB<struct crashpad::process_types::internal::Traits32>>(void *,unsigned __int64,struct crashpad::process_types::PEB<struct crashpad::process_types::internal::Traits32> *): Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0415/071840.909:ERROR:process_info.cc(559)] ReadProcessData failed
+[0415/071840.909:ERROR:process_reader_win.cc(233)] ReadMemory at 0x66c87dc8 of 12 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0415/071840.909:WARNING:process_snapshot_win.cc(68)] ReadMemory ExceptionInformation failed
+[0415/071840.909:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
+[0421/193048.605:ERROR:scoped_process_suspend.cc(30)] NtSuspendProcess: An attempt was made to access an exiting process.  (0xc000010a)
+[0421/193048.661:ERROR:process_info.cc(116)] ReadProcessMemory bool __cdecl crashpad::`anonymous-namespace'::ReadStruct<struct crashpad::process_types::PEB<struct crashpad::process_types::internal::Traits32>>(void *,unsigned __int64,struct crashpad::process_types::PEB<struct crashpad::process_types::internal::Traits32> *): Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0421/193048.661:ERROR:process_info.cc(559)] ReadProcessData failed
+[0421/193048.661:ERROR:process_reader_win.cc(233)] ReadMemory at 0x6b0d7dc8 of 12 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0421/193048.661:WARNING:process_snapshot_win.cc(68)] ReadMemory ExceptionInformation failed
+[0421/193048.661:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
