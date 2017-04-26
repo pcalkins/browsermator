@@ -36,6 +36,8 @@ import javax.swing.JTable;
 
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
@@ -72,7 +74,7 @@ public class ProcedureView {
     GridBagConstraints BugConstraints = new GridBagConstraints();
     JPanel JPanelBug = new JPanel();
    ArrayList<ActionView> ActionsViewList = new ArrayList();   
-  //   JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+  JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
      GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints();
          
@@ -243,9 +245,13 @@ for (String passfailaction_name : passfailaction_keys)
 //  ActionScrollPane.setVisible(false);
 // ActionScrollPanel.setSize(new Dimension(920, 840));
  //   ActionScrollPanel.setLayout(ActionLayout); 
-//   ActionScrollPanel.add(ActionScrollPane);
+ 
+     ActionScrollPane.setViewportView(ActionScrollPanel);
+
+   
 //  ActionScrollPanel.setSize(920,480);
-    AddToGrid (ActionScrollPanel, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
+ActionScrollPane.setVisible(true);
+    AddToGrid (ActionScrollPane, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
   
     
@@ -572,8 +578,8 @@ for (String passfailaction_name : passfailaction_keys)
        this.JLabelBugIndex.setText(stringbugindex);
         if ("Procedure".equals(this.Type))
         {
-  //  JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
- //   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+  JLabel ActionScrollPaneTitle = new JLabel ("Procedure " + stringbugindex + " actions:");
+  ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
  BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
          setTitle("Procedure ");
@@ -582,8 +588,8 @@ for (String passfailaction_name : passfailaction_keys)
         else
         {
               
-  //  JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
- //   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
+   JLabel ActionScrollPaneTitle = new JLabel ("Data Loop " + stringbugindex + " actions:");
+    ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
      BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
           setTitle("Data Loop ");

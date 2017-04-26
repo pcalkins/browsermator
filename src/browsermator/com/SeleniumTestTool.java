@@ -946,25 +946,28 @@ int bugindex = 0;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
-         
-         BV.ActionScrollPanel.add(AV.JPanelAction);
-        
+         ActionPanel.add(AV.JPanelAction);
+          BV.ActionScrollPane.setViewportView(ActionPanel);
          actionindex++;
 
         }
       if (actionindex < 9)
       {
-     BV.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));
+     BV.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));
           }
-      else
+   else
       {
-  BV.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));   
-      }  
-BV.ActionScrollPanel.setVisible(true);
- //      BV.ActionScrollPane.setViewportView(ActionPanel);
+      BV.ActionScrollPane.setPreferredSize(new Dimension(950, 400));   
+      }
+BV.ActionScrollPane.setVisible(true);
+ActionPanel.setVisible(true);
 
+       BV.ActionScrollPane.setViewportView(ActionPanel);
+       
  UpdateScrollPane(BV);  
 bugindex++;
+       
+
      }
 if (hasStoredVar)
 {
@@ -992,21 +995,21 @@ else
  }
      public void UpdateScrollPane(ProcedureView newbugview)
      {
-              GridBagConstraints ActionConstraints = new GridBagConstraints();
-       
+                GridBagConstraints ActionConstraints = new GridBagConstraints();
+        
           
-  //          JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
-            newbugview.ActionScrollPanel.removeAll();
+            JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
+            ActionPanel.removeAll();
               GridBagLayout ActionLayout = new GridBagLayout();
-      newbugview.ActionScrollPanel.setLayout(ActionLayout); 
+      ActionPanel.setLayout(ActionLayout); 
       
-  //   ActionConstraints.fill = GridBagConstraints.NONE;
+     ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;            
          int actionindex = 0;
 
       for (ActionView AV : newbugview.ActionsViewList )
         {
-          
+       
           AV.SetIndexes(newbugview.index, actionindex);
           if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
@@ -1067,10 +1070,10 @@ else
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
-      
+         
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
          
-        newbugview.ActionScrollPanel.add(AV.JPanelAction);
+         ActionPanel.add(AV.JPanelAction);
     
          actionindex++;
 
@@ -1086,18 +1089,19 @@ else
       }
       if (actionindex < 9)
       {
-       newbugview.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));    
+        newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));    
  //   newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
    
           }
       else
       {
-       newbugview.ActionScrollPanel.setPreferredSize(new Dimension(950, 36*actionindex+40));   
+       newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 400));   
       }
       
-     newbugview.ActionScrollPanel.setVisible(true);
+      newbugview.ActionScrollPane.setVisible(true);
 
-   
+       newbugview.ActionScrollPane.setViewportView(ActionPanel);
+
 
      }
  public void RunActions()
@@ -1398,6 +1402,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
+          ScrollActionPaneDown(newbugview);
            
             this.changes=true;  
            });
@@ -1409,7 +1414,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                      thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-          
+       ScrollActionPaneDown(newbugview);
             this.changes=true;  
            });
            newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
@@ -1419,7 +1424,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-        
+       ScrollActionPaneDown(newbugview);
             this.changes=true;  
            });
            newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
@@ -1429,7 +1434,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-          
+        ScrollActionPaneDown(newbugview);
             this.changes=true;  
            });
            newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
@@ -1439,7 +1444,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-         
+        ScrollActionPaneDown(newbugview);
             this.changes=true;  
            });
                newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
@@ -1449,7 +1454,7 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
             UpdateDisplay();
-          
+        ScrollActionPaneDown(newbugview);
             this.changes=true;  
            });
            
@@ -1469,13 +1474,13 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);
-               
+                   UpdateDisplay();
+       ScrollActionPaneDown(newbugview);
+            this.changes=true; 
            }      
          
             
-            UpdateDisplay();
-          
-            this.changes=true;
+       
         }
            });
      newbugview.addPassFailActionsItemListener((ItemEvent e) -> {
@@ -1494,25 +1499,33 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
                thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
                AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview); 
+                UpdateDisplay();
+        ScrollActionPaneDown(newbugview);
+             this.changes=true;
              }
           
              
-             UpdateDisplay();
-           
-             this.changes=true;
+        
          }
            });
      
       }
-              
+       public void ScrollActionPaneDown(ProcedureView bugview)
+ {
+  
+        JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
+ action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
+ }       
       public void AddActionToArray (Action action, ActionView actionview, Procedure newbug, ProcedureView newbugview)
 {
             newbugview.ActionsViewList.add(actionview);
             newbug.ActionsList.add(action);
             actionview.index = newbugview.ActionsViewList.size()-1;
             action.index = newbug.ActionsList.size()-1;
+            
 
 }
+  
 
    public File BrowseForJSFileAction ()
    {
@@ -1578,13 +1591,15 @@ File newfile = new File(path + ".js");
  
         }
     }
+   
       UpdateDisplay();
-     
-      JComponent component = (JComponent) this.MainScrollPane.getViewport().getView();
+         JComponent component = (JComponent) this.MainScrollPane.getViewport().getView();
 
         Rectangle bounds =  BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
      bounds.height = 50;
       component.scrollRectToVisible(bounds);
+     
+    
    }
    public void MoveAction (Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
    {
