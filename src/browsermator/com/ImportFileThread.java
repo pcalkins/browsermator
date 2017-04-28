@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JScrollBar;
 import javax.swing.SwingWorker;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -99,6 +100,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
     }
                   MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
+            
       if (Procedure.hasAttribute("Random"))
   {
   String stRand = Procedure.getAttribute("Random");
@@ -301,7 +303,7 @@ finally
 {
  
   ImportNewWindow(doc, MDI_INDEX);
-  MDIClasses.get(MDI_INDEX).UpdateDisplay();
+//  MDIClasses.get(MDI_INDEX).UpdateDisplay();
  MDIClasses.get(MDI_INDEX).changes = true;
 }
     

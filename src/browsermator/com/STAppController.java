@@ -36,6 +36,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -75,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.75b";
+   public final String ProgramVersion = "1.0.76b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -577,8 +578,10 @@ SeleniumToolDesktop.add(Navigator);
         { 
     
    STAppFrame.AddNewBug();  
- 
- 
+  STAppFrame.UpdateDisplay();
+     
+           JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
                                           
       }
@@ -592,7 +595,8 @@ SeleniumToolDesktop.add(Navigator);
 //   if (chosenCSVFile!=null)
 //   {
             File blankfile = new File("placeholder");
-   STAppFrame.AddNewDataLoop(blankfile);  
+   STAppFrame.AddNewDataLoop(blankfile); 
+  
 //   }
  
   }
@@ -980,8 +984,9 @@ SeleniumToolDesktop.add(Navigator);
         { 
     
    STAppFrame.AddNewBug();  
- 
- 
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
                                           
       }
@@ -996,6 +1001,7 @@ SeleniumToolDesktop.add(Navigator);
 //   {
             File blankfile = new File("placeholder");
    STAppFrame.AddNewDataLoop(blankfile);  
+ 
 //   }
  
   }

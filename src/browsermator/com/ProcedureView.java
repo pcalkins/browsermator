@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -430,6 +431,7 @@ ActionScrollPane.setVisible(true);
           else
           {
           window.AddNewBug();
+    
           }
           
           
@@ -460,7 +462,7 @@ ActionScrollPane.setVisible(true);
                thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
                window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
-              window.UpdateDisplay();
+          //    window.UpdateDisplay();
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -472,9 +474,12 @@ ActionScrollPane.setVisible(true);
                thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
-              window.UpdateDisplay();
+          //    window.UpdateDisplay();
              }
       }
+                window.UpdateDisplay();
+           JScrollBar vertical = window.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
       }
 
        public void addJButtonOKActionListener(ActionListener listener)

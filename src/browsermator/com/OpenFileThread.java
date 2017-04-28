@@ -18,6 +18,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JScrollBar;
 
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -87,6 +88,10 @@ public String doInBackground()
  protected void done()
  {
   mainApp.Navigator.setCursor(Cursor.getDefaultCursor()); 
+  int last_index = MDIClasses.size()-1;
+     MDIClasses.get(last_index).UpdateDisplay();
+  JScrollBar vertical =  MDIClasses.get(last_index).MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   if (isFlatten)
   {
   MDIClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
@@ -181,8 +186,8 @@ finally
 {
  
     STAppFrame = BuildNewWindow(doc, full_filename);
-    STAppFrame.UpdateDisplay();
-   STAppFrame.setVisible(true);
+  
+ //  STAppFrame.setVisible(true);
   STAppFrame.setProperties(full_filename);
   if (this.fromCloud)
   {
@@ -585,7 +590,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     }
     else
     {
-     STAppFrame.AddNewBug();    
+     STAppFrame.AddNewBug();   
+    
     }
     
     STAppFrame.BugArray.get(i).BugTitle = Procedure.getAttribute("Title");
@@ -725,6 +731,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }   
      
     }
+
     }
 catch (Exception e)
         {
@@ -828,7 +835,9 @@ STAppFrame.addjButtonDoStuffActionListener(
         { 
     
    STAppFrame.AddNewBug();  
- 
+    STAppFrame.UpdateDisplay();
+  JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
  
   }
                                           
@@ -847,7 +856,8 @@ STAppFrame.addjButtonDoStuffActionListener(
        String userdir = System.getProperty("user.home");
       File placeholder =  new File(userdir + File.separator + "data_loop_placeholder.csv");
    
-   STAppFrame.AddNewDataLoop(placeholder);  
+   STAppFrame.AddNewDataLoop(placeholder); 
+  
   }
                                           
       }

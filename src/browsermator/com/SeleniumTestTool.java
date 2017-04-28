@@ -842,7 +842,7 @@ else
  {
  this.MainScrollPane.setVisible(false);
  
- 
+ this.BugPanel.setVisible(false);
  ModifiedFlowLayout layout = new ModifiedFlowLayout();
  layout.setAlignment(FlowLayout.CENTER);
 //     layout.setVgap(1);
@@ -987,6 +987,7 @@ else
 }
 
   this.setProperties(this.filename);
+  this.BugPanel.setVisible(true);
      this.MainScrollPane.setViewportView(this.BugPanel);
 
      this.MainScrollPane.setVisible(true);
@@ -1106,7 +1107,7 @@ else
      }
  public void RunActions()
  {
-     if (this.getRunActionsButtonName()=="Run All Procedures")
+     if ("Run All Procedures".equals(this.getRunActionsButtonName()))
      {
          
           int sessions = 1;
@@ -1116,7 +1117,7 @@ else
          }
          
           String tbrowser = this.getTargetBrowser();
-      if (tbrowser=="Firefox/IE/Chrome")
+      if ("Firefox/IE/Chrome".equals(tbrowser))
       {
  for (int x=0; x<sessions; x++)
  {
@@ -1168,9 +1169,6 @@ else
          newbug.index = BugArray.size();
          newbugview.index = BugViewArray.size();
         AddNewHandlers(this, newbugview, newbug);
-        UpdateDisplay();
- JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
 
         }
            public void AddNewDataLoop(File CSVFile)
