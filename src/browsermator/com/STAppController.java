@@ -76,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.76b";
+   public final String ProgramVersion = "1.0.77b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1508,46 +1508,7 @@ return 1;
    }
    
 
-  public File BrowseForCSVFile()
-    {
- final JFileChooser CSVFileChooser = new JFileChooser();
- CSVFileChooser.setPreferredSize(new Dimension(800,600));
-   CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
-                    "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
-
-    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".CSV" },
-                    "Comma Delimited File (*.CSV)"));
-    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
-                    "Excel File (*.XLSX|XLSXM|XLS|XLSM)"));
-
-
-    // Turn off 'All Files' capability of file chooser,
-    // so only our custom filter is used.
-    CSVFileChooser.setAcceptAllFileFilterUsed(false);
-  BrowserMatorConfig theseProps = new BrowserMatorConfig();
-
-      String lastused_datafile_dir = theseProps.getKeyValue("lastused_datafile_dir");
-      if (lastused_datafile_dir!=null)
-      {
-      CSVFileChooser.setCurrentDirectory(new File(lastused_datafile_dir));
-      }
-       
-int returnVal = CSVFileChooser.showOpenDialog(this);
-        File chosenDir = CSVFileChooser.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_datafile_dir", chosenDir.getAbsolutePath());
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = CSVFileChooser.getSelectedFile();   
-
-    return file;
-            }
-            else
-            {
-            return null;
-            }
-    }
+ 
   public File[] BrowseForFile()
   {
        

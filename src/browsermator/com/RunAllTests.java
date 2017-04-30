@@ -76,7 +76,9 @@ public String doInBackground()
  {
      SiteTest.enableAdds();
      SiteTest.enableRemoves();
+    
      SiteTest.RefreshData();
+     
     SiteTest.testRunning = false; 
     try
     {
@@ -1240,7 +1242,6 @@ while(thisContinuePrompt.isVisible() == true){
         SiteTest.RandomizeAndLimitList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
            
             SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
-    
             number_of_rows = SiteTest.VarLists.get(URLListName).size();
             }
             }

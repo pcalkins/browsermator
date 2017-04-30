@@ -5,14 +5,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.List;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +37,15 @@ import javax.swing.JFileChooser;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 
@@ -70,9 +80,10 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String short_filename;
   int Timeout;
   LocalDateTime TimeOfRun;
-  
+  boolean checkUniqueList;
   public SeleniumTestTool(String filename)
   {
+      this.checkUniqueList = true;
       this.MultiSession = false;
       this.cancelled = false;
     this.hasStoredVar = false;
@@ -1253,6 +1264,7 @@ UpdateDisplay();
              File chosenCSVFile = ChangeCSVFile();
    if (chosenCSVFile!=null)
    {
+ 
    newbugview.SetJComboBoxStoredArraylists("Select a stored URL List");
    newbugview.setJTableSource(chosenCSVFile.getAbsolutePath());
    newbug.setDataFile(chosenCSVFile.getAbsolutePath());
@@ -2549,13 +2561,86 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
  
    table_in.myEntries.subList(limit, sizeofvarlist).clear();
                 }
-              
+            
      table_in.setRunTimeFileSet(table_in.myEntries);
   }
+
   public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
   {
    if (VarLists.containsKey(URLListName))
             {
+                      if (this.checkUniqueList)
+{
+   String userdir = System.getProperty("user.home");
+        String visited_list_file_path = userdir + File.separator + this.short_filename + "_visited_list.xml";
+        
+         File file = new File(visited_list_file_path);
+         if (file.exists())
+         {
+                   Document doc=null;
+try
+{
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+String file_path = file.getAbsolutePath();
+
+doc = builder.parse(file_path);
+   ArrayList<String> currentlist = VarLists.get(URLListName);
+   
+
+ ArrayList<String> removeList = new ArrayList<String>();
+  
+for (String grabbedURL: currentlist)
+{   
+     
+    
+    
+    NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
+   NodeList SettingsNodes = theseElements.item(0).getChildNodes();
+String URL_FROM_FILE="";
+Boolean hasValue = false;
+int node_match_index = 0;
+    for (int k = 0; k<SettingsNodes.getLength(); k++)
+    {
+          URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
+  // NamedNodeMap Times = doc.getElementsByTagName("URL").item(0).getAttributes(); 
+     if (URL_FROM_FILE.equals(grabbedURL))
+     {
+      removeList.add(grabbedURL);
+     }
+     else
+     {
+     
+     }
+    }
+
+    }
+ 
+  
+for (int x = 0; x<VarLists.get(URLListName).size(); x++)
+{ 
+    for (int y = 0; y<removeList.size(); y++)
+    {
+   if (VarLists.get(URLListName).get(x).equals(removeList.get(y)))
+   {
+       currentlist.remove(x);
+       
+   }
+    }
+
+}
+// VarLists.get(URLListName).clear();
+VarLists.replace(URLListName, currentlist);
+
+}
+catch (Exception ex)
+{
+    
+}
+         }
+}
+      
                 if (randval)
                 {
              long seed = System.nanoTime();
@@ -2565,12 +2650,167 @@ Collections.shuffle(VarLists.get(URLListName), new Random(seed));
                 {
                     int sizeofvarlist = VarLists.get(URLListName).size();
 
- 
+ if (limit<sizeofvarlist)
+ {
    VarLists.get(URLListName).subList(limit, sizeofvarlist).clear();
-                }
-            }
+ }
+else
+ {
+   
+ }
+ }
+                AddURLListToUniqueFile(VarLists.get(URLListName));
+            }         
   }
+  
+ public void AddURLListToUniqueFile(ArrayList<String> in_list)
+ {
       
+     
+        String userdir = System.getProperty("user.home");
+        String visited_list_file_path = userdir + File.separator + this.short_filename + "_visited_list.xml";
+        
+         File file = new File(visited_list_file_path);
+         if (file.exists())
+         {
+                   Document doc=null;
+try
+{
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+String file_path = file.getAbsolutePath();
+
+doc = builder.parse(file_path);
+for (int x=0; x<in_list.size(); x++)
+ {
+     String URL_To_Store = in_list.get(x);
+     
+NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
+   NodeList SettingsNodes = theseElements.item(0).getChildNodes();
+
+String URL_FROM_FILE="";
+Boolean hasValue = false;
+int node_match_index = 0;
+    for (int k = 0; k<SettingsNodes.getLength(); k++)
+    {
+  
+   URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
+ 
+      NamedNodeMap Times = doc.getElementsByTagName("URL").item(0).getAttributes(); 
+   
+   if (URL_To_Store.equals(URL_FROM_FILE))
+   {
+    hasValue = true; 
+    node_match_index = k;
+   }
+}
+    if (hasValue)
+    {
+     String visits = SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").getNodeValue();
+     int visit_int = Integer.parseInt(visits);
+     visit_int++;
+     String visits_to_write = String.valueOf(visit_int);
+     SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").setNodeValue(visits_to_write);
+     
+    }
+    else
+    {
+  Node root = doc.getFirstChild();
+
+Element new_url = doc.createElement("URL");
+new_url.setTextContent(URL_To_Store);
+root.appendChild(new_url);
+
+   
+    }
+    
+ }
+            try
+             {
+   XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
+                        new FileOutputStream(file)));
+     
+             try {
+xmlfile.writeStartElement("URLsVisitted");
+xmlfile.writeAttribute("Filename",file.getName());
+NodeList urls_to_write = doc.getElementsByTagName("URL");
+
+    for (int k = 0; k<urls_to_write.getLength(); k++)
+    {
+
+  
+     String visits_to_write = "1";
+    
+ 
+   String thisSettingsNodeValue = urls_to_write.item(k).getTextContent();
+   if (urls_to_write.item(k).getAttributes().getLength()>0)
+   {
+      visits_to_write = urls_to_write.item(k).getAttributes().getNamedItem("Visits").getTextContent();
+       
+   }
+          xmlfile.writeStartElement("URL");
+      xmlfile.writeAttribute("Visits", visits_to_write);
+    xmlfile.writeCharacters(thisSettingsNodeValue);
+  
+    xmlfile.writeEndElement();
+ }
+    xmlfile.writeEndElement();    
+     } catch (Exception e) {
+           System.out.println("Write error:" + e.toString());
+ 
+        } finally {
+            xmlfile.flush();
+            xmlfile.close();
+} 
+             }
+             catch (Exception e) {
+           System.out.println("Write error:" + e.toString());
+ 
+        }
+
+}
+catch (Exception e)
+{
+    System.out.println("DocumentBuilder error:" + e.toString());
+   
+}
+         }
+         else
+         {
+             try
+             {
+   XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
+                        new FileOutputStream(file)));
+     
+             try {
+xmlfile.writeStartElement("URLsVisitted");
+xmlfile.writeAttribute("Filename",file.getName());
+ for (String URL_To_Store: in_list)
+ {
+        xmlfile.writeStartElement("URL");
+      xmlfile.writeAttribute("Visits", "1");
+    xmlfile.writeCharacters(URL_To_Store);
+  
+    xmlfile.writeEndElement();
+ }
+    xmlfile.writeEndElement();    
+     } catch (Exception e) {
+           System.out.println("Write error:" + e.toString());
+ 
+        } finally {
+            xmlfile.flush();
+            xmlfile.close();
+} 
+             }
+             catch (Exception e) {
+           System.out.println("Write error:" + e.toString());
+ 
+        }
+         }
+
+         
+ }
  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
   {
       int number_of_rows = 0;
