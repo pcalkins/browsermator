@@ -144,7 +144,14 @@ public String doInBackground()
                 System.out.println(ex.toString());
             }
         }
+ try
+ {
    driver.quit();
+ }
+ catch (Exception ex)
+ {
+     // don't worry it should close
+ }
      }
              FillReport();
     SiteTest.UpdateDisplay(); 
@@ -1123,21 +1130,44 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
            
-      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.runtimeEntries.size();
-
+      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.number_of_records;
+if (number_of_rows==0)
+{
+   int ActionIndex = 0;
+    for( Action TheseActions : ActionsToLoop ) {
+          LocalDateTime stringtime =  LocalDateTime.now();
+          TheseActions.Pass = false;
+         ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);  
+         ActionIndex++;
+    }  
+}
     for (int x = 0; x<number_of_rows; x++)
     {
         
  int ActionIndex = 0;
     for( Action TheseActions : ActionsToLoop ) {
 
-
+         
     LocalDateTime stringtime =  LocalDateTime.now();
    TheseActions.TimeOfTest = stringtime;
        boolean TestState = TheseActions.loop_pass_values[x];
        if (TestState==true)
        {
            ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+          String URL_TO_WRITE = "";
+           if (TheseActions.Type=="Go to URL")
+           {
+                DataLoopVarParser var1Parser = new DataLoopVarParser(TheseActions.Variable1);
+            if (var1Parser.hasDataLoopVar==true)
+            {
+                 String concat_variable;
+    
+ concat_variable = var1Parser.GetFullValue(x, SiteTest.BugViewArray.get(BugIndex).myTable);
+     URL_TO_WRITE = concat_variable;
+       
+             SiteTest.AddURLToUniqueFileList(URL_TO_WRITE);
+            }
+           }
            NumberOfActionsPassed++;
        }
        else
@@ -1176,10 +1206,15 @@ while(thisContinuePrompt.isVisible() == true){
        
    
    }
+  
    SiteTest.BugViewArray.get(BugIndex).JButtonRunTest.setText("Run");
    BugIndex++;
       }
-
+     if (SiteTest.getUniqueList())
+     {
+ SiteTest.AddURLListToUniqueFile();
+ SiteTest.ClearVisittedURLList();
+     }
      if (NumberOfTestsPassed==SiteTest.BugArray.size())
      {
      SiteTest.AllTestsPassed = true;

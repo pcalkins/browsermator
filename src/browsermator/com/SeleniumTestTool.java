@@ -56,6 +56,7 @@ String filename;
 ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
 ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
     ArrayList<String> AllFieldValues;
+    ArrayList<String> Visitted_URL_List;
   JPanel BugPanel;
   Thread ActionThread;
   Boolean AllTestsPassed;
@@ -80,10 +81,10 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   String short_filename;
   int Timeout;
   LocalDateTime TimeOfRun;
-  boolean checkUniqueList;
+  boolean UniqueList;
   public SeleniumTestTool(String filename)
   {
-      this.checkUniqueList = true;
+      this.UniqueList = false;
       this.MultiSession = false;
       this.cancelled = false;
     this.hasStoredVar = false;
@@ -103,6 +104,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   this.IncludeScreenshots = false;
   this.testRunning = false;
   this.AllFieldValues = new ArrayList<>();
+  this.Visitted_URL_List = new ArrayList<>();
  this.setIconifiable(true);
       initComponents();
 jButtonPlaceStoredVariable.setFocusable(false);
@@ -113,6 +115,13 @@ jComboBoxStoredVariables.setFocusable(false);
               jCheckBoxEmailReportActionPerformed(evt);
             }
         });
+       jCheckBoxUniqueURLs.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxUniqueURLsActionPerformed(evt);
+            }
+        });
+       
        jCheckBoxExitAfter.addActionListener(new java.awt.event.ActionListener() {
           @Override
            public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1750,6 +1759,8 @@ this.changes=true;
         jLabelSessions = new javax.swing.JLabel();
         jCheckBoxEnableMultiSession = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
+        jCheckBoxUniqueURLs = new javax.swing.JCheckBox();
+        jLabelUniqueNote = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1861,6 +1872,11 @@ this.changes=true;
 
         jLabel2.setText("*To use Internet Explorer all security zones must have Enable Protected Mode checked.");
 
+        jCheckBoxUniqueURLs.setText("Unique Random URLs Only");
+        jCheckBoxUniqueURLs.setToolTipText("");
+
+        jLabelUniqueNote.setText("*Per file");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1893,12 +1909,18 @@ this.changes=true;
                                         .addComponent(jCheckBoxIncludeScreenshots)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxPromptToClose)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonFlattenFile))
                                     .addComponent(jCheckBoxExitAfter)
-                                    .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCheckBoxPromptToClose)
+                                            .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCheckBoxUniqueURLs)
+                                            .addComponent(jButtonFlattenFile)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(21, 21, 21)
+                                                .addComponent(jLabelUniqueNote))))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jCheckBoxOSTypeWindows32)
                                 .addGap(13, 13, 13)
@@ -1909,6 +1931,7 @@ this.changes=true;
                                 .addComponent(jCheckBoxOSTypeLinux64)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jCheckBoxOSTypeMac))
+                            .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel8)
@@ -1921,9 +1944,8 @@ this.changes=true;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSpinnerSessions, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBoxEnableMultiSession))
-                            .addComponent(jLabel2))
-                        .addGap(32, 32, 32)
+                                .addComponent(jCheckBoxEnableMultiSession)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addGroup(layout.createSequentialGroup()
@@ -1949,7 +1971,7 @@ this.changes=true;
                                         .addComponent(jButtonClearEmailSettings)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 157, Short.MAX_VALUE))
+                        .addGap(0, 141, Short.MAX_VALUE))
                     .addComponent(MainScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2006,8 +2028,12 @@ this.changes=true;
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel1)
                                 .addComponent(jCheckBoxEmailReport))
-                            .addComponent(jCheckBoxEmailReportFail))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBoxEmailReportFail)
+                                .addComponent(jCheckBoxUniqueURLs)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelUniqueNote, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel8)
@@ -2107,6 +2133,10 @@ this.changes=true;
       
   }
  
+  }
+  private void jCheckBoxUniqueURLsActionPerformed(ActionEvent evt)
+  {
+     this.UniqueList = jCheckBoxUniqueURLs.isSelected();
   }
   private void jCheckBoxEmailReportActionPerformed(ActionEvent evt)
   {
@@ -2564,12 +2594,24 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
             
      table_in.setRunTimeFileSet(table_in.myEntries);
   }
-
+ public void setUniqueList(boolean unique)
+ {
+     this.UniqueList = unique;
+    jCheckBoxUniqueURLs.setSelected(unique);
+ }
+ 
+ public boolean getUniqueList()
+ {
+    
+         boolean checked = this.jCheckBoxUniqueURLs.isSelected();
+   
+    return checked;  
+ }
   public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
   {
    if (VarLists.containsKey(URLListName))
             {
-                      if (this.checkUniqueList)
+                      if (this.UniqueList)
 {
    String userdir = System.getProperty("user.home");
         String visited_list_file_path = userdir + File.separator + this.short_filename + "_visited_list.xml";
@@ -2659,11 +2701,19 @@ else
    
  }
  }
-                AddURLListToUniqueFile(VarLists.get(URLListName));
+            
             }         
   }
-  
- public void AddURLListToUniqueFile(ArrayList<String> in_list)
+ public void  AddURLToUniqueFileList(String thisURL)
+ {
+     Visitted_URL_List.add(thisURL);
+   
+ }
+ public void ClearVisittedURLList()
+ {
+     Visitted_URL_List.clear();
+ }
+ public void AddURLListToUniqueFile()
  {
       
      
@@ -2682,9 +2732,9 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 String file_path = file.getAbsolutePath();
 
 doc = builder.parse(file_path);
-for (int x=0; x<in_list.size(); x++)
+for (int x=0; x<Visitted_URL_List.size(); x++)
  {
-     String URL_To_Store = in_list.get(x);
+     String URL_To_Store = Visitted_URL_List.get(x);
      
 NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
    NodeList SettingsNodes = theseElements.item(0).getChildNodes();
@@ -2707,6 +2757,7 @@ int node_match_index = 0;
 }
     if (hasValue)
     {
+                 
      String visits = SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").getNodeValue();
      int visit_int = Integer.parseInt(visits);
      visit_int++;
@@ -2741,7 +2792,7 @@ NodeList urls_to_write = doc.getElementsByTagName("URL");
 
   
      String visits_to_write = "1";
-    
+       LocalDateTime stringtime =  LocalDateTime.now();
  
    String thisSettingsNodeValue = urls_to_write.item(k).getTextContent();
    if (urls_to_write.item(k).getAttributes().getLength()>0)
@@ -2751,6 +2802,8 @@ NodeList urls_to_write = doc.getElementsByTagName("URL");
    }
           xmlfile.writeStartElement("URL");
       xmlfile.writeAttribute("Visits", visits_to_write);
+      xmlfile.writeAttribute("Time", stringtime.toString());
+
     xmlfile.writeCharacters(thisSettingsNodeValue);
   
     xmlfile.writeEndElement();
@@ -2786,10 +2839,12 @@ catch (Exception e)
              try {
 xmlfile.writeStartElement("URLsVisitted");
 xmlfile.writeAttribute("Filename",file.getName());
- for (String URL_To_Store: in_list)
+ for (String URL_To_Store: Visitted_URL_List)
  {
         xmlfile.writeStartElement("URL");
       xmlfile.writeAttribute("Visits", "1");
+         LocalDateTime stringtime =  LocalDateTime.now();
+        xmlfile.writeAttribute("Time", stringtime.toString());  
     xmlfile.writeCharacters(URL_To_Store);
   
     xmlfile.writeEndElement();
@@ -2880,6 +2935,7 @@ xmlfile.writeAttribute("Filename",file.getName());
     private javax.swing.JCheckBox jCheckBoxOSTypeWindows64;
     private javax.swing.JCheckBox jCheckBoxPromptToClose;
     private javax.swing.JCheckBox jCheckBoxShowReport;
+    private javax.swing.JCheckBox jCheckBoxUniqueURLs;
     private javax.swing.JComboBox<String> jComboBoxStoredVariables;
     private javax.swing.JComboBox jComboBoxTargetBrowser;
     private javax.swing.JLabel jLabel1;
@@ -2895,6 +2951,7 @@ xmlfile.writeAttribute("Filename",file.getName());
     private javax.swing.JLabel jLabelSessions;
     private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
+    private javax.swing.JLabel jLabelUniqueNote;
     private javax.swing.JSpinner jSpinnerSessions;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;

@@ -253,6 +253,13 @@ if (STAppFrame.getIncludeScreenshots())
     thisbool = "true";
 }
 STAppFrame.AllFieldValues.add(thisbool);
+thisbool = "false";
+if (STAppFrame.getUniqueList())
+{
+    thisbool = "true";
+}
+
+STAppFrame.AllFieldValues.add(thisbool);
 
 for (Procedure thisproc: STAppFrame.BugArray)
 {
@@ -395,6 +402,7 @@ for (Procedure thisproc: STAppFrame.BugArray)
   String EmailFrom = "";
   String EmailSubject = "";
   String Timeout = "";
+  String stUniqueList = "false";
  if (FileSettingsNode!=null)
  {
 try
@@ -478,6 +486,16 @@ try
    }
        STAppFrame.setPromptToClose(PromptToClose);
             break; 
+      case "UniqueList":
+ stUniqueList = thisSettingsNodeValue;
+   Boolean UniqueList = false;
+    if (stUniqueList.equals("true"))
+   {
+      UniqueList = true;
+   }
+       STAppFrame.setUniqueList(UniqueList);
+       
+            break; 
           
         case "TargetBrowser":
  TargetBrowser = thisSettingsNodeValue;
@@ -493,6 +511,7 @@ try
  int intWaitTime = Integer.parseInt(WaitTime);
       STAppFrame.setWaitTime(intWaitTime);
             break;  
+            
            case "Timeout":
 Timeout = thisSettingsNodeValue;
  int intTimeout = Integer.parseInt(Timeout);
@@ -536,7 +555,7 @@ Timeout = thisSettingsNodeValue;
        case "EmailSubject":
  EmailSubject = thisSettingsNodeValue;
       STAppFrame.setSubject(EmailSubject);
-            break; 
+            
     }
 
     }

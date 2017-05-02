@@ -76,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.77b";
+   public final String ProgramVersion = "1.0.78b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1144,6 +1144,15 @@ if (STAppFrame.getIncludeScreenshots())
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
+sthisbool = "false";
+if (STAppFrame.getUniqueList())
+{
+    sthisbool = "true";
+}
+
+AllFieldValuesCheck.add(sthisbool);
+
+
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
@@ -1714,9 +1723,12 @@ xmlfile.writeStartElement("EmailLoginName");
 String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
 xmlfile.writeStartElement("PromptToClose");
     xmlfile.writeCharacters(PromptToClose);
+    xmlfile.writeEndElement();   
+    String UniqueList = Boolean.toString(STAppFrame.getUniqueList());
+xmlfile.writeStartElement("UniqueList");
+    xmlfile.writeCharacters(UniqueList);
     xmlfile.writeEndElement();     
-// String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
-//    xmlfile.writeAttribute("PromptToClose", PromptToClose);
+
 String TargetBrowser = STAppFrame.TargetBrowser;
 xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeCharacters(TargetBrowser);
@@ -2216,6 +2228,13 @@ if (STAppFrame.getIncludeScreenshots())
 }
 STAppFrame.AllFieldValues.add(thisbool);
 
+thisbool = "false";
+if (STAppFrame.getUniqueList())
+{
+    thisbool = "true";
+}
+
+STAppFrame.AllFieldValues.add(thisbool);
 
 for (Procedure thisproc: STAppFrame.BugArray)
 {
@@ -2382,7 +2401,8 @@ STAppFrame.changes = false;
        if (MDI_CLASS_INDEX>=0)
        {
   MDIClasses.get(MDI_CLASS_INDEX).setProperties(MDIClasses.get(MDI_CLASS_INDEX).filename);
-  MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
+// MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
+ // MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
 //  MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
   saveMenuItem.setEnabled(true);
   SeleniumToolDesktop.add(MDIClasses.get(MDI_CLASS_INDEX));
