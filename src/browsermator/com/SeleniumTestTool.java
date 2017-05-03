@@ -2593,6 +2593,7 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
                 }
             
      table_in.setRunTimeFileSet(table_in.myEntries);
+     table_in.number_of_records = table_in.myEntries.size();
   }
  public void setUniqueList(boolean unique)
  {
