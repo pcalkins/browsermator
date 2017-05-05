@@ -261,6 +261,7 @@ if (STAppFrame.getUniqueList())
 
 STAppFrame.AllFieldValues.add(thisbool);
 
+STAppFrame.AllFieldValues.add(STAppFrame.getUniqueFileOption());
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     STAppFrame.AllFieldValues.add(thisproc.BugTitle);
@@ -494,8 +495,13 @@ try
       UniqueList = true;
    }
        STAppFrame.setUniqueList(UniqueList);
-       
+     
             break; 
+         case "UniqueFileOption":
+       STAppFrame.setUniqueFileOption(thisSettingsNodeValue);
+     
+            break;          
+            
           
         case "TargetBrowser":
  TargetBrowser = thisSettingsNodeValue;

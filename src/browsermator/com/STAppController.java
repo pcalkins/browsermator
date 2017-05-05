@@ -76,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.79b";
+   public final String ProgramVersion = "1.0.80b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1152,7 +1152,7 @@ if (STAppFrame.getUniqueList())
 
 AllFieldValuesCheck.add(sthisbool);
 
-
+AllFieldValuesCheck.add(STAppFrame.getUniqueFileOption());
 for (Procedure thisproc: STAppFrame.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
@@ -1729,6 +1729,11 @@ xmlfile.writeStartElement("UniqueList");
     xmlfile.writeCharacters(UniqueList);
     xmlfile.writeEndElement();     
 
+     String UniqueFileOption = STAppFrame.getUniqueFileOption();
+    xmlfile.writeStartElement("UniqueFileOption");
+    xmlfile.writeCharacters(UniqueFileOption);
+    xmlfile.writeEndElement();   
+    
 String TargetBrowser = STAppFrame.TargetBrowser;
 xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeCharacters(TargetBrowser);
@@ -2235,6 +2240,8 @@ if (STAppFrame.getUniqueList())
 }
 
 STAppFrame.AllFieldValues.add(thisbool);
+
+STAppFrame.AllFieldValues.add(STAppFrame.getUniqueFileOption());
 
 for (Procedure thisproc: STAppFrame.BugArray)
 {

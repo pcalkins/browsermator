@@ -82,8 +82,10 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   int Timeout;
   LocalDateTime TimeOfRun;
   boolean UniqueList;
+  String UniqueOption;
   public SeleniumTestTool(String filename)
   {
+      this.UniqueOption = "file";
       this.UniqueList = false;
       this.MultiSession = false;
       this.cancelled = false;
@@ -113,6 +115,18 @@ jComboBoxStoredVariables.setFocusable(false);
           @Override
            public void actionPerformed(java.awt.event.ActionEvent evt) {
               jCheckBoxEmailReportActionPerformed(evt);
+            }
+        });
+         jRadioButtonUniquePerFile.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jRadioButtonUniquePerFileActionPerformed(evt);
+            }
+        });
+           jRadioButtonUniqueGlobal.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jRadioButtonUniqueGlobalActionPerformed(evt);
             }
         });
        jCheckBoxUniqueURLs.addActionListener(new java.awt.event.ActionListener() {
@@ -1760,7 +1774,8 @@ this.changes=true;
         jCheckBoxEnableMultiSession = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jCheckBoxUniqueURLs = new javax.swing.JCheckBox();
-        jLabelUniqueNote = new javax.swing.JLabel();
+        jRadioButtonUniquePerFile = new javax.swing.JRadioButton();
+        jRadioButtonUniqueGlobal = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -1875,7 +1890,11 @@ this.changes=true;
         jCheckBoxUniqueURLs.setText("Unique Random URLs Only");
         jCheckBoxUniqueURLs.setToolTipText("");
 
-        jLabelUniqueNote.setText("*Per file");
+        jRadioButtonUniquePerFile.setText("Per File");
+        jRadioButtonUniquePerFile.setEnabled(false);
+
+        jRadioButtonUniqueGlobal.setText("Global");
+        jRadioButtonUniqueGlobal.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1909,18 +1928,18 @@ this.changes=true;
                                         .addComponent(jCheckBoxIncludeScreenshots)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxExitAfter)
+                                    .addComponent(jCheckBoxPromptToClose)
+                                    .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCheckBoxExitAfter))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonFlattenFile)
+                                    .addComponent(jCheckBoxUniqueURLs)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxPromptToClose)
-                                            .addComponent(jCheckBoxEmailReportFail, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxUniqueURLs)
-                                            .addComponent(jButtonFlattenFile)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(21, 21, 21)
-                                                .addComponent(jLabelUniqueNote))))))
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jRadioButtonUniquePerFile)
+                                        .addGap(7, 7, 7)
+                                        .addComponent(jRadioButtonUniqueGlobal))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jCheckBoxOSTypeWindows32)
                                 .addGap(13, 13, 13)
@@ -2018,9 +2037,11 @@ this.changes=true;
                                     .addComponent(jCheckBoxPromptToClose)
                                     .addComponent(jButtonFlattenFile))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jCheckBoxIncludeScreenshots)
-                                    .addComponent(jCheckBoxExitAfter)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jCheckBoxIncludeScreenshots)
+                                        .addComponent(jCheckBoxExitAfter))
+                                    .addComponent(jCheckBoxUniqueURLs)))
                             .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2028,12 +2049,11 @@ this.changes=true;
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel1)
                                 .addComponent(jCheckBoxEmailReport))
+                            .addComponent(jCheckBoxEmailReportFail)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jCheckBoxEmailReportFail)
-                                .addComponent(jCheckBoxUniqueURLs)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelUniqueNote, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButtonUniquePerFile)
+                                .addComponent(jRadioButtonUniqueGlobal)))
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel8)
@@ -2134,9 +2154,68 @@ this.changes=true;
   }
  
   }
+  public void setUniqueFileOption(String option)
+  {
+      if (option.equals("file"))
+      {
+         jRadioButtonUniquePerFile.setSelected(true);
+         jRadioButtonUniqueGlobal.setSelected(false);
+       UniqueOption = option; 
+         
+      }
+      if (option.equals("global"))
+      {
+          jRadioButtonUniquePerFile.setSelected(false);
+         jRadioButtonUniqueGlobal.setSelected(true);
+         UniqueOption = option;
+         
+      }
+      
+      
+  }
+  public String getUniqueFileOption()
+  {
+      return UniqueOption;
+  }
+  
+  private void jRadioButtonUniquePerFileActionPerformed(ActionEvent evt)
+  {
+      if (jRadioButtonUniquePerFile.isSelected())
+      {
+          jRadioButtonUniqueGlobal.setSelected(false);
+           UniqueOption = "file";
+      }
+      else
+      {
+          jRadioButtonUniqueGlobal.setSelected(true);
+           UniqueOption = "global";
+      }
+  }
+    private void jRadioButtonUniqueGlobalActionPerformed(ActionEvent evt)
+  {
+       if (jRadioButtonUniqueGlobal.isSelected())
+      {
+          jRadioButtonUniquePerFile.setSelected(false);
+          UniqueOption = "global";
+      }
+      else
+      {
+          jRadioButtonUniquePerFile.setSelected(true);
+          UniqueOption = "file";
+      }  
+  }
   private void jCheckBoxUniqueURLsActionPerformed(ActionEvent evt)
   {
-     this.UniqueList = jCheckBoxUniqueURLs.isSelected();
+     UniqueList = jCheckBoxUniqueURLs.isSelected();
+    
+        jRadioButtonUniquePerFile.setEnabled(UniqueList);
+        jRadioButtonUniqueGlobal.setEnabled(UniqueList);
+        if (!jRadioButtonUniquePerFile.isSelected() && !jRadioButtonUniqueGlobal.isSelected() )
+        {
+           setUniqueFileOption("file");
+        }
+    
+  
   }
   private void jCheckBoxEmailReportActionPerformed(ActionEvent evt)
   {
@@ -2599,6 +2678,9 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
  {
      this.UniqueList = unique;
     jCheckBoxUniqueURLs.setSelected(unique);
+    jRadioButtonUniquePerFile.setEnabled(unique);
+    jRadioButtonUniqueGlobal.setEnabled(unique);
+     setUniqueFileOption(UniqueOption);
  }
  
  public boolean getUniqueList()
@@ -2615,7 +2697,12 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
                       if (this.UniqueList)
 {
    String userdir = System.getProperty("user.home");
-        String visited_list_file_path = userdir + File.separator + this.short_filename + "_visited_list.xml";
+   String file_name_to_check = "global";
+       if (UniqueOption.equals("file"))
+       {
+           file_name_to_check = this.short_filename;
+       }
+        String visited_list_file_path = userdir + File.separator + file_name_to_check + "_visited_list.xml";
         
          File file = new File(visited_list_file_path);
          if (file.exists())
@@ -2714,13 +2801,16 @@ else
  {
      Visitted_URL_List.clear();
  }
- public void AddURLListToUniqueFile()
+ public void AddURLListToUniqueFile(String fileOption)
  {
       
-     
+     String file_name_to_write = "global";
         String userdir = System.getProperty("user.home");
-        String visited_list_file_path = userdir + File.separator + this.short_filename + "_visited_list.xml";
-        
+        if (fileOption.equals("file"))
+        {
+        file_name_to_write = this.short_filename;
+        }
+        String visited_list_file_path = userdir + File.separator + file_name_to_write + "_visited_list.xml";
          File file = new File(visited_list_file_path);
          if (file.exists())
          {
@@ -2952,7 +3042,8 @@ xmlfile.writeAttribute("Filename",file.getName());
     private javax.swing.JLabel jLabelSessions;
     private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
-    private javax.swing.JLabel jLabelUniqueNote;
+    private javax.swing.JRadioButton jRadioButtonUniqueGlobal;
+    private javax.swing.JRadioButton jRadioButtonUniquePerFile;
     private javax.swing.JSpinner jSpinnerSessions;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;

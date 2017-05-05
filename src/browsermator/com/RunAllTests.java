@@ -1212,7 +1212,8 @@ if (number_of_rows==0)
       }
      if (SiteTest.getUniqueList())
      {
- SiteTest.AddURLListToUniqueFile();
+         String file_option = SiteTest.getUniqueFileOption();
+ SiteTest.AddURLListToUniqueFile(file_option);
  SiteTest.ClearVisittedURLList();
      }
      if (NumberOfTestsPassed==SiteTest.BugArray.size())

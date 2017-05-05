@@ -60,21 +60,19 @@
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCheckBoxExitAfter" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxPromptToClose" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxEmailReportFail" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxExitAfter" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jButtonFlattenFile" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxUniqueURLs" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBoxPromptToClose" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBoxEmailReportFail" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBoxUniqueURLs" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButtonFlattenFile" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                              <Component id="jLabelUniqueNote" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                      <Component id="jRadioButtonUniquePerFile" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                      <Component id="jRadioButtonUniqueGlobal" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -196,9 +194,12 @@
                                   <Component id="jButtonFlattenFile" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jCheckBoxIncludeScreenshots" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jCheckBoxExitAfter" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jCheckBoxIncludeScreenshots" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jCheckBoxExitAfter" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jCheckBoxUniqueURLs" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jButtonDoStuff" min="-2" pref="40" max="-2" attributes="0"/>
@@ -210,14 +211,13 @@
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jCheckBoxEmailReport" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jCheckBoxEmailReportFail" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="jCheckBoxEmailReportFail" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBoxUniqueURLs" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jRadioButtonUniquePerFile" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jRadioButtonUniqueGlobal" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabelUniqueNote" min="-2" pref="17" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -562,9 +562,16 @@
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelUniqueNote">
+    <Component class="javax.swing.JRadioButton" name="jRadioButtonUniquePerFile">
       <Properties>
-        <Property name="text" type="java.lang.String" value="*Per file"/>
+        <Property name="text" type="java.lang.String" value="Per File"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="jRadioButtonUniqueGlobal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Global"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>
