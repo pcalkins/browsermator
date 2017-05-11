@@ -2702,7 +2702,7 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
        {
            file_name_to_check = this.short_filename;
        }
-        String visited_list_file_path = userdir + File.separator + file_name_to_check + "_visited_list.xml";
+        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_check + "_visited_url_log.xml";
         
          File file = new File(visited_list_file_path);
          if (file.exists())
@@ -2810,7 +2810,7 @@ else
         {
         file_name_to_write = this.short_filename;
         }
-        String visited_list_file_path = userdir + File.separator + file_name_to_write + "_visited_list.xml";
+        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
          File file = new File(visited_list_file_path);
          if (file.exists())
          {
