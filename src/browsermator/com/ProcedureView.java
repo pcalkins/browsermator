@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -34,7 +35,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
@@ -55,7 +55,6 @@ public class ProcedureView {
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
      JTextField JTextFieldBugTitle = new JTextField("", 25);
-  
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
  JComboBox JComboBoxStoredArrayLists;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
@@ -63,25 +62,18 @@ public class ProcedureView {
      JLabel JLabelBugSeverity = new JLabel ("Importance:");
      JComboBox JComboBoxBugSeverity = new JComboBox();
         JButton JButtonSubmitBug = new JButton("OK");
-
-      
      JComboBox JComboBoxDoActions = new JComboBox();
      JComboBox JComboBoxPassFailActions = new JComboBox();
      JButton JButtonDeleteBug = new JButton("Remove");
      JButton JButtonRunTest = new JButton("Run");
     JLabel JLabelPass = new JLabel ("Procedure not run yet.");
-    
     GridBagLayout BugLayout = new GridBagLayout();
     GridBagConstraints BugConstraints = new GridBagConstraints();
     JPanel JPanelBug = new JPanel();
    ArrayList<ActionView> ActionsViewList = new ArrayList();   
   JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
      GridBagLayout ActionLayout = new GridBagLayout();
-   GridBagConstraints ActionConstraints = new GridBagConstraints();
-         
-
-            
-      
+   GridBagConstraints ActionConstraints = new GridBagConstraints(); 
      JPanel ActionScrollPanel = new JPanel();
        JLabel JLabelDoActions = new JLabel("Add Actions: ");
      JLabel JLabelPassFailActions = new JLabel("Add Pass/Fail Actions: ");
@@ -111,7 +103,6 @@ public class ProcedureView {
    CSVReader CSVFileReader;
 JPanel panelForTable;
 JLabel JLabelUseList;
-
 JLabel JLabelOR;
 String Type;
 TitledBorder BugPanelBorder;
@@ -123,11 +114,38 @@ JSpinner JSpinnerLimit = new JSpinner( new SpinnerNumberModel(0, //initial value
                                0, //min
                               100000, //max
                                1));                //step);
-
+String DataLoopSource;
+String URLListName; // values for DataLoopSource are 'urllist' or 'file'
+SortedComboBoxModel <String> sortmodel;
+   static final Comparator<String> URLLIST_ORDER = 
+                                        new Comparator<String>() {
+            public int compare(String list_item1, String list_item2) {
+              
+              if ("Select a stored URL List".equals(list_item1)) { list_item1 = "0-0"; }
+              if ("Select a stored URL List".equals(list_item2)) { list_item2 = "0-0"; }
+              String[] left_and_right_item1 = list_item1.split("-");
+              String[] left_and_right_item2 = list_item2.split("-");
+              Integer leftitem1 = Integer.parseInt(left_and_right_item1[0]);
+              Integer leftitem2 = Integer.parseInt(left_and_right_item2[0]);
+              Integer rightitem1 = Integer.parseInt(left_and_right_item1[1]);
+              Integer rightitem2 = Integer.parseInt(left_and_right_item2[1]);
+              
+            if (leftitem1.compareTo(leftitem2)==0)
+             {
+                 return rightitem1.compareTo(rightitem2);
+                 
+             }
+            else
+             {
+                return leftitem1.compareTo(leftitem2);
+             }
+            }
+    };
+   
     ProcedureView()
      {
-
-
+URLListName = "placeholder";
+ DataLoopSource = "urllist";
          limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
@@ -143,7 +161,9 @@ JTextFieldDataFile.setVisible(true);
  JButtonBrowseForDataFile.setVisible(true);
 panelForTable = new JPanel();
 
- JComboBoxStoredArrayLists = new JComboBox();
+sortmodel = new SortedComboBoxModel<>(URLLIST_ORDER);
+
+ JComboBoxStoredArrayLists = new JComboBox<String>(sortmodel);
  JComboBoxStoredArrayLists.addItem("Select a stored URL List");
        JComboBoxBugSeverity.addItem("Trivial");
      JComboBoxBugSeverity.addItem("Low");
@@ -560,7 +580,7 @@ ActionScrollPane.setVisible(true);
   }
   public String getStoredArrayListName()
   {
-      return JComboBoxStoredArrayLists.getSelectedItem().toString();
+      return URLListName;
   }
   public void addJComboBoxStoredArrayListsItemListener(ItemListener listener)
   {
@@ -721,7 +741,7 @@ ActionScrollPane.setVisible(true);
     
     File file = new File(sourceCSVfile);
 if (file.isAbsolute()) {
- 
+ DataLoopSource = "file";
 }
 else
 {
@@ -731,7 +751,8 @@ else
     }
     else
     {
-   
+    DataLoopSource = "urllist";
+    URLListName = sourceCSVfile;
     JTextFieldDataFile.setText("Will use stored URL List " + sourceCSVfile);
     }
 }

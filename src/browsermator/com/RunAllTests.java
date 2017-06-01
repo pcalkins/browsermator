@@ -703,13 +703,13 @@ if (!"Dataloop".equals(thisbugview.Type))
 }
 else
 {
-    String selectedarraylist = thisbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
-    if (!"Select a stored URL List".equals(selectedarraylist))
+    
+    if ("urllist".equals(thisbugview.DataLoopSource))
     {
         
-      thisbugview.setJTableSource(selectedarraylist);
+      thisbugview.setJTableSource(thisbugview.URLListName);
       
-      thisbug.setDataFile(selectedarraylist);
+      thisbug.setDataFile(thisbugview.URLListName);
       
     }
  if (!thisbugview.myTable.myEntries.isEmpty())

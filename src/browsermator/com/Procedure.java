@@ -23,8 +23,9 @@ CSVReader CSVFileReader;
 int number_of_columns;
 int number_of_records;
 Boolean random;
+String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
-  
+  String URLListName;
    Procedure ()
    {
        this.limit = 0;
@@ -38,6 +39,8 @@ this.TargetBrowser = "Firefox";
 this.DataSet=null;
 this.DataFile="";
 this.Type = "";
+this.DataLoopSource = "urllist";
+this.URLListName = "placeholder";
 
    }
           public void Disable()
@@ -73,7 +76,10 @@ this.Type = "";
    {
        DataFile = dataFile;
        if (!"placeholder".equals(DataFile))
-       {  DataSet = new MyTable(DataFile);}
+       {   DataLoopSource = "file";
+           DataSet = new MyTable(DataFile);
+       URLListName = dataFile;
+       }
    }
   public void setType(String type)
   {
