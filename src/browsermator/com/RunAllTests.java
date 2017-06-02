@@ -41,7 +41,8 @@ BrowserMatorReport BrowserMatorReport;
     this.SiteTest.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
-
+  SiteTest.showTaskGUI();
+    
   SiteTest.VarHashMap.clear();
   SiteTest.VarLists.clear();
 
@@ -76,9 +77,9 @@ public String doInBackground()
  {
      SiteTest.enableAdds();
      SiteTest.enableRemoves();
-    
+    SiteTest.hideTaskGUI();
      SiteTest.RefreshData();
-     
+       SiteTest.setJTextFieldProgress("");
     SiteTest.testRunning = false; 
     try
     {
@@ -541,11 +542,27 @@ options.setBinary(chrome_path);
   
   int thisbugindex = 0;
   
+
   
      for (Procedure thisbug : SiteTest.BugArray)
       {
-     
-       
+          String bugtitle = SiteTest.BugViewArray.get(thisbugindex).JTextFieldBugTitle.getText();
+      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(bugtitle);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();
+
+                    
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
@@ -565,7 +582,8 @@ if (!"Dataloop".equals(thisbugview.Type))
              publish(thisbugindex);
              
              break;
-          }  
+          } 
+      
        String original_value = ThisAction.Variable2;
        
  action_INT++;
@@ -573,6 +591,21 @@ if (!"Dataloop".equals(thisbugview.Type))
 
            if (!ThisAction.Locked)
    {
+          String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+               LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();
    try
    {
        if (totalpause>0)
@@ -739,7 +772,10 @@ else
        
              publish(thisbugindex);
              break;
-          }   
+          }  
+     
+         
+          
        action_INT++;
  action_ID = Integer.toString(action_INT) + "-" + Integer.toString(x);   
         String original_value1 = ThisAction.Variable1;
@@ -806,6 +842,21 @@ else
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+        String action_title3 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2; 
+                    LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title3);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -822,16 +873,48 @@ else
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable1 = SiteTest.GetStoredVariableValue(fieldname);
+        String action_title2 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title2);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
            }
            
        }
+       
        else
        {
+              String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();   
          ThisAction.RunAction(driver);    
        }   
+         
           if (!"".equals(ThisAction.tostore_varvalue))
        {
         
@@ -921,6 +1004,21 @@ else
           break;
   }
                  }
+                      String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            }
+        }).execute();   
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
