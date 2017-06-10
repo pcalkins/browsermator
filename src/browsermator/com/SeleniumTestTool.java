@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.List;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,12 +30,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -76,7 +77,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   boolean hasStoredArray;
   boolean IncludeScreenshots;
   HashMap<String, String> VarHashMap = new HashMap();
-  HashMap<String, ArrayList> VarLists = new HashMap();
+  HashMap<String, String[]> VarLists = new HashMap();
   boolean cancelled;
   boolean testRunning;
   String short_filename;
@@ -268,11 +269,11 @@ public void initVarLists()
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
-  public void UpdateDataLoopTable(String ListName, ArrayList<String> storedURLlist, Procedure thisproc, ProcedureView thisprocview)
+  public void UpdateDataLoopURLListTable(String ListName, String[] storedURLlist, Procedure thisproc, ProcedureView thisprocview)
   {
 
-    thisprocview.myTable.setSourceToURLList(storedURLlist);   
-    thisproc.DataSet.setSourceToURLList(storedURLlist);
+    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
+    thisproc.setURLListData(storedURLlist, ListName);
    
   }
          
@@ -297,7 +298,7 @@ public void initVarLists()
  if (bugindex<BV.index+1)
  {
                        BV.JComboBoxStoredArrayLists.addItem(varname);
- VarLists.put(varname, new ArrayList());
+ VarLists.put(varname, new String[0]);
  
   //      BV.JComboBoxStoredArrayLists.setSelectedIndex(newitemindex); 
  }
@@ -371,7 +372,8 @@ public void initVarLists()
           if (oldname.equals(PROC.DataFile))
           {
       PROC.setDataFile(newname);
-      BugViewArray.get(bugindex).setJTableSource(newname);
+      BugArray.get(bugindex).setURLListName(newname);
+  //    BugViewArray.get(bugindex).setJTableSource(newname);
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
 
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
@@ -385,7 +387,7 @@ public void initVarLists()
         else
         {
             VarLists.remove(oldname);
-            VarLists.put(newname, new ArrayList());
+            VarLists.put(newname, new String[0]);
   //          updatePlacedListVariables();
          
              int bugindex = 0;  
@@ -397,7 +399,8 @@ public void initVarLists()
       
       PROC.setDataFile(newname);
      
-      BugViewArray.get(bugindex).setJTableSource(newname);
+    //  BugViewArray.get(bugindex).setJTableSource(newname);
+     BugArray.get(bugindex).setURLListName(newname);
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
       BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
@@ -887,7 +890,14 @@ else
      {
          if ("Dataloop".equals(procview.Type))
          {
-         procview.myTable.refreshRuntimeEntries();
+             if ("file".equals(procview.DataLoopSource))
+             {
+         procview.myTable.refreshRuntimeEntriesFile();
+             }
+             else
+             {
+           procview.myTable.refreshURLListRunTimeEntries();
+             }
          }
      }
  }
@@ -1224,74 +1234,93 @@ else
         AddNewHandlers(this, newbugview, newbug);
 
         }
-           public void AddNewDataLoop(File CSVFile)
+        public void AddDataLoopProcs(Procedure newdataloop, ProcedureView newdataloopview)
         {
-        Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-        ProcedureView newdataloopview = new ProcedureView();
-        newdataloopview.setType("Dataloop");
-        Boolean SetVarListPulldown = false;
-if (CSVFile.isAbsolute()) {
-        if (CSVFile.exists())
-         {
-         newdataloopview.setJTableSource(CSVFile.getAbsolutePath());
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
-         
-         }
-         else
-         {
-          newdataloopview.setJTableSource("");
-         newdataloop.setDataFile("");  
-         newdataloop.DataSet = new MyTable("");
-         
-         }
-}
-else
-{
- newdataloop.setDataFile(CSVFile.toString());   
-  newdataloopview.setJTableSource(CSVFile.toString());
- 
-         newdataloop.setDataFile(CSVFile.toString());  
-        
-         newdataloop.DataSet = new MyTable(CSVFile.toString());
-         SetVarListPulldown = true;
-       newdataloopview.SetJComboBoxStoredArraylists(CSVFile.toString());  
-}
-
-         BugArray.add(newdataloop);
+              BugArray.add(newdataloop);
          BugViewArray.add(newdataloopview);
          newdataloop.index = BugArray.size();
          newdataloopview.index = BugViewArray.size();
         AddNewHandlers(this, newdataloopview, newdataloop);
         AddLoopHandlers(this, newdataloopview, newdataloop);
        UpdateDisplay();
-        if (SetVarListPulldown)
-        {
-            newdataloopview.SetJComboBoxStoredArraylists(CSVFile.toString());
-        }
-        else
-        {
-            newdataloopview.SetJComboBoxStoredArraylists("Select a stored URL List");
-        }
+      
+      
+       
         
  JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
    jButtonFlattenFile.setEnabled(true);
-   
+        }
+        public void AddNewDataLoop()
+        {
+             Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+              String[] blanklist = new String[0];
+  newdataloopview.setJTableSourceToURLList(blanklist, "");
+         AddDataLoopProcs(newdataloop, newdataloopview);
+        }
+        public void AddNewDataLoopURLList(String in_listname)
+        {
+            Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("urllist");
+      
+        newdataloop.setDataLoopSource("urllist");
+     
+        String[] blanklist = new String[0];
+  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
+ 
+       
+        newdataloop.setURLListData(blanklist, in_listname);
+       
+       newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
+   AddDataLoopProcs(newdataloop, newdataloopview);
+        }
+           public void AddNewDataLoopFile(File CSVFile)
+        {
+        Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         newdataloop.setDataLoopSource("file");
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("file");
+        if (CSVFile.exists())
+         {
+         newdataloopview.setJTableSourceToFile(CSVFile.getAbsolutePath());
+         newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         
+         }
+         else
+         {
+          newdataloopview.setJTableSourceToFile("");
+         newdataloop.setDataFile("");  
+         newdataloop.DataSet = null;
+         
+         }
+   AddDataLoopProcs(newdataloop, newdataloopview);
         }
   
       public void AddLoopHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug) 
       {
+          String[] blanklist = new String[0];
            newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
         if ((e.getStateChange() == ItemEvent.SELECTED)) {
          if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
                {
-                   
+             newbugview.setDataLoopSource("urllist");
+             newbug.setDataLoopSource("urllist");
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
-      newbugview.setJTableSource(selectedarraylist);
-      newbug.setDataFile(selectedarraylist);
+      newbugview.setJTableSourceToURLList(blanklist, selectedarraylist);
+      newbug.setURLListData(blanklist, selectedarraylist);
  //  ScrollActionPaneDown(newbugview);
 UpdateDisplay();
                }
@@ -1308,8 +1337,10 @@ UpdateDisplay();
    {
  
    newbugview.SetJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSource(chosenCSVFile.getAbsolutePath());
+   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
+   newbugview.setDataLoopSource("file");
    newbug.setDataFile(chosenCSVFile.getAbsolutePath());
+   newbug.setDataLoopSource("file");
    UpdateDisplay();
    }
           });
@@ -2686,26 +2717,27 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
-  public void RandomizeAndLimitList(MyTable table_in, int limit, Boolean randval)
+  public java.util.List<String[]> RandomizeAndLimitFileList(java.util.List<String[]> data_in, int limit, Boolean randval)
   {
     // first row is column names, remove it
-    table_in.myEntries.remove(0);
+   java.util.List<String[]> ret_val = null;
              if (randval)
                 {
              long seed = System.nanoTime();
-Collections.shuffle(table_in.myEntries, new Random(seed));
+Collections.shuffle(data_in, new Random(seed));
                 }
                 if (limit>0)
                 {
                     
-                    int sizeofvarlist = table_in.myEntries.size();
+                    int sizeofvarlist = data_in.size();
 
  
-   table_in.myEntries.subList(limit, sizeofvarlist).clear();
+   data_in.subList(limit, sizeofvarlist).clear();
                 }
             
-     table_in.setRunTimeFileSet(table_in.myEntries);
-     table_in.number_of_records = table_in.myEntries.size();
+     ret_val = data_in;
+     return ret_val;
+             
   }
  public void setUniqueList(boolean unique)
  {
@@ -2723,7 +2755,7 @@ Collections.shuffle(table_in.myEntries, new Random(seed));
    
     return checked;  
  }
-  public void RandomizeAndLimitList(String URLListName, int limit, Boolean randval)
+  public void RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
   {
    if (VarLists.containsKey(URLListName))
             {
@@ -2749,7 +2781,7 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 String file_path = file.getAbsolutePath();
 
 doc = builder.parse(file_path);
-   ArrayList<String> currentlist = VarLists.get(URLListName);
+   String[] currentlist = VarLists.get(URLListName);
    
 
  ArrayList<String> removeList = new ArrayList<String>();
@@ -2781,16 +2813,19 @@ int node_match_index = 0;
     }
  
   
-for (int x = 0; x<VarLists.get(URLListName).size(); x++)
+for (int x = 0; x<VarLists.get(URLListName).length; x++)
 { 
+  ArrayList<String> convert_list = new ArrayList(Arrays.asList(currentlist));
+
     for (int y = 0; y<removeList.size(); y++)
     {
-   if (VarLists.get(URLListName).get(x).equals(removeList.get(y)))
+   if (VarLists.get(URLListName)[x].equals(removeList.get(y)))
    {
-       currentlist.remove(x);
+       convert_list.remove(x);
        
    }
     }
+    currentlist = convert_list.toArray(new String[convert_list.size()]);
 
 }
 // VarLists.get(URLListName).clear();
@@ -2804,18 +2839,29 @@ catch (Exception ex)
          }
 }
       
+                       ArrayList<String> convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
+                   
                 if (randval)
                 {
              long seed = System.nanoTime();
-Collections.shuffle(VarLists.get(URLListName), new Random(seed));
+             
+ 
+             
+Collections.shuffle(convert_list, new Random(seed));
+   String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
+
+ VarLists.replace(URLListName, currentlist);
                 }
                 if (limit>0)
                 {
-                    int sizeofvarlist = VarLists.get(URLListName).size();
+                    int sizeofvarlist = VarLists.get(URLListName).length;
 
  if (limit<sizeofvarlist)
  {
-   VarLists.get(URLListName).subList(limit, sizeofvarlist).clear();
+     convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
+   convert_list.subList(limit, sizeofvarlist).clear();
+     String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
+    VarLists.replace(URLListName, currentlist);
  }
 else
  {
@@ -2825,7 +2871,7 @@ else
             
             }         
   }
- public void  AddURLToUniqueFileList(String thisURL)
+ public void AddURLToUniqueFileList(String thisURL)
  {
      Visitted_URL_List.add(thisURL);
    
@@ -2891,13 +2937,15 @@ int node_match_index = 0;
     }
     else
     {
+      if (URL_To_Store!="")
+      {
   Node root = doc.getFirstChild();
 
 Element new_url = doc.createElement("URL");
 new_url.setTextContent(URL_To_Store);
 root.appendChild(new_url);
 
-   
+      }
     }
     
  }
@@ -2949,7 +2997,7 @@ NodeList urls_to_write = doc.getElementsByTagName("URL");
 }
 catch (Exception e)
 {
-    System.out.println("DocumentBuilder error:" + e.toString());
+    System.out.println("DocumentBuilder error(seleniumtesttoolline2990):" + e.toString());
    
 }
          }
@@ -3010,8 +3058,8 @@ xmlfile.writeAttribute("Filename",file.getName());
             String URLListName = parts2[1];
                if (this.VarLists.containsKey(URLListName))
             {
-            this.UpdateDataLoopTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
-            number_of_rows = this.VarLists.get(URLListName).size();
+            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = this.VarLists.get(URLListName).length;
             }
             }
         } 
@@ -3026,8 +3074,9 @@ xmlfile.writeAttribute("Filename",file.getName());
             String URLListName = parts2[1];
             if (this.VarLists.containsKey(URLListName))
             {
-            this.UpdateDataLoopTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
-            number_of_rows = this.VarLists.get(URLListName).size();
+              
+            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
+            number_of_rows = this.VarLists.get(URLListName).length;
             }
             }
         } 

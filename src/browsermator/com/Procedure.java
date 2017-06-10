@@ -2,7 +2,9 @@ package browsermator.com;
 
 
 import com.opencsv.CSVReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Procedure {
@@ -14,7 +16,8 @@ String BugURL;
 String BugTitle;
 int index;
 String TargetBrowser;
-MyTable DataSet;
+List<String[]> DataSet;
+List<String[]> RunTimeDataSet;
 String DataFile;
 String Type;
 Boolean Locked;
@@ -26,6 +29,8 @@ Boolean random;
 String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
   String URLListName;
+  String[] URLListData;
+ 
    Procedure ()
    {
        this.limit = 0;
@@ -41,6 +46,7 @@ this.DataFile="";
 this.Type = "";
 this.DataLoopSource = "urllist";
 this.URLListName = "placeholder";
+this.URLListData = new String[0];
 
    }
           public void Disable()
@@ -75,12 +81,45 @@ this.URLListName = "placeholder";
     public void setDataFile(String dataFile)
    {
        DataFile = dataFile;
+       
        if (!"placeholder".equals(DataFile))
        {   DataLoopSource = "file";
-           DataSet = new MyTable(DataFile);
-       URLListName = dataFile;
-       }
+           DataSet = CreateArrayListFromFile(DataFile);
+          }
+           
    }
+    public List<String[]> CreateArrayListFromFile(String in_file)
+    {
+      List<String[]> return_array = new ArrayList();
+         try
+     {
+      CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
+             return_array = CSVFileReader.readAll();   
+     }
+     catch(Exception ex)
+     {
+         System.out.println("Exception reading csv file: " + ex.toString());
+     }
+       return return_array;
+    }
+   public void setRunTimeDataSet(List<String[]> in_set)
+   {
+       this.RunTimeDataSet = in_set;
+   }
+   public void setURLListName(String in_name)
+   {
+       URLListName = in_name;
+   }
+   public void setURLListData(String[] in_list, String list_name)
+   {
+       URLListData = in_list;
+       URLListName = list_name;
+   }
+   public void setDataLoopSource(String in_looptype)
+     {
+         this.DataLoopSource = in_looptype;
+     }
+   
   public void setType(String type)
   {
       this.Type = type;

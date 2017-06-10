@@ -99,6 +99,7 @@ public class DataLoopVarParser {
     }
    }
  }
+
  public String GetFullValue(int row_number, MyTable my_Table)
  {
      String concat_variable = "";
@@ -109,14 +110,12 @@ public class DataLoopVarParser {
        concat_variable+= theseDataLoopVars.beforevar;
        if (theseDataLoopVars.field_column_index!=-1)
        {
-           if (my_Table.runtimeEntries.size()==0)
+           //this is wrong...
+           if (my_Table.URLListRunTimeEntries.length>0)
+          
            {
-           concat_variable+= my_Table.DataTable.getValueAt(row_number, theseDataLoopVars.field_column_index);
-           }
-           else
-           {
-            String[] this_data_row = my_Table.runtimeEntries.get(row_number);
-            concat_variable+=   this_data_row[theseDataLoopVars.field_column_index]; 
+            concat_variable+= my_Table.URLListRunTimeEntries[row_number];
+            
            }
        }
        concat_variable+=theseDataLoopVars.aftervar;

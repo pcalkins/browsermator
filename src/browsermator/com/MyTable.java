@@ -39,12 +39,16 @@ public class MyTable {
    int rowcount;
    List<String[]> myEntries;
    List<String[]> runtimeEntries;
+   String[] URLListRunTimeEntries;
+
  MyTable (String csvFile)
  {
         DataFile = csvFile;
         DataTable = new JTable();
         myEntries = new ArrayList<>();
         runtimeEntries = new ArrayList<>();
+        URLListRunTimeEntries = new String[0];
+
           File filecheck = new File(csvFile);
 if (filecheck.isAbsolute()) {
       
@@ -273,10 +277,12 @@ catch (Exception ex)
  
        
 }
-else
+ }
+ MyTable(String[] in_entries, String list_name)
+
 {
     
-          columnnames[0] = "Stored URL List:" + csvFile;
+          columnnames[0] = "Stored URL List:" + list_name;
            DefaultTableModel tableModel = new DefaultTableModel(columnnames, 0); 
         
 
@@ -285,12 +291,12 @@ else
      DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
    DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));
     DataTable.setPreferredSize(new Dimension (700,150));
-
+this.URLListRunTimeEntries = in_entries;
 }
 
   
-        }
- public void refreshRuntimeEntries()
+     
+ public void refreshRuntimeEntriesFile()
  {
      if (runtimeEntries.size()>0)
      {
@@ -305,54 +311,17 @@ else
          System.out.println("Exception reading csv file: " + ex.toString());
      }
      }
-     }
- 
+ }
+ public void refreshURLListRunTimeEntries()
+ {
+     URLListRunTimeEntries = new String[0];
+ }
  public void setRunTimeFileSet(List<String[]> runtime_entries)
  {
   //   this.runtimeEntries = new ArrayList<>(runtime_entries.size());
      
      this.runtimeEntries = runtime_entries;
  }
- public void setSourceToURLList(ArrayList<String> storedURLlist)
-{
  
-         
-               
-          this.number_of_records = storedURLlist.size();
-          rowcount = this.number_of_records;
-          DefaultTableModel model = (DefaultTableModel) DataTable.getModel();
-          DataTable.removeAll();
-          
-          for (int x = 0; x<rowcount+1; x++)
-           {
-            
-              int columnnumber = 0;
-             if (x>0)
-             {
-          model.addRow(new Object[]{storedURLlist.get(x-1)});
-       
-             }
-   
-          
-           }
-          
-        
-            DataTable = new JTable(model);
-                
-   
-        int number_of_rows = DataTable.getRowCount();
-     
-        if (number_of_rows < 20)
-        {
-            int rowheight = DataTable.getRowHeight();
-            
-       DataTable.setPreferredScrollableViewportSize(new Dimension (700, number_of_rows * DataTable.getRowHeight()));
-        }
-        else
-        {
-        DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));       
-        }
-      
-}
 
 }

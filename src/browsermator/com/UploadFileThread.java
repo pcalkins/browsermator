@@ -505,7 +505,8 @@ if ("Dataloop".equals(thisbug.Type))
 {
 String string_limit = Integer.toString(thisbug.limit);
 
-xmlfile.writeAttribute("DataLoopFile", thisbug.DataSet.DataFile);
+xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
+xmlfile.writeAttribute("DataLoopSource", thisbug.DataLoopSource);
 xmlfile.writeAttribute("Limit", string_limit);
 
 String string_randval = "false";

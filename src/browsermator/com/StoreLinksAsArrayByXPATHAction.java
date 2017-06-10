@@ -102,8 +102,8 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
                 link_list.add(thishref);
             } }
   
-     
- SetStoredLinkArray(link_list);
+     String[] convert_list = link_list.toArray(new String[link_list.size()]);
+ SetStoredLinkArray(convert_list);
     
         this.Pass = true;
     }
@@ -120,7 +120,7 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
     
     }
 
-    public void SetStoredLinkArray (ArrayList<String> to_storelist)
+    public void SetStoredLinkArray (String[] to_storelist)
     {
        this.tostore_varlist = to_storelist;
        

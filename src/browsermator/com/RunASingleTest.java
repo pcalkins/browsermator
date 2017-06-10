@@ -440,7 +440,7 @@ options.setBinary(chrome_path);
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
    
        }
-    if (ThisAction.tostore_varlist.size()>0)
+    if (ThisAction.tostore_varlist.length>0)
        {
 
            SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);

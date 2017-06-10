@@ -76,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.83b";
+   public final String ProgramVersion = "1.0.84b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -595,7 +595,7 @@ SeleniumToolDesktop.add(Navigator);
 //   if (chosenCSVFile!=null)
 //   {
             File blankfile = new File("placeholder");
-   STAppFrame.AddNewDataLoop(blankfile); 
+   STAppFrame.AddNewDataLoop(); 
   
 //   }
  
@@ -999,8 +999,8 @@ SeleniumToolDesktop.add(Navigator);
 //   File chosenCSVFile = BrowseForCSVFile();
 //   if (chosenCSVFile!=null)
 //   {
-            File blankfile = new File("placeholder");
-   STAppFrame.AddNewDataLoop(blankfile);  
+     
+   STAppFrame.AddNewDataLoop();  
  
 //   }
  
@@ -1818,8 +1818,15 @@ xmlfile.writeAttribute("Type", thisbug.Type);
 }
 if ("Dataloop".equals(thisbug.Type))
 {
-
+if ("file".equals(thisbug.DataLoopSource))
+{
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
+}
+else
+{
+    xmlfile.writeAttribute("DataLoopFile", thisbug.URLListName);
+}
+xmlfile.writeAttribute("DataLoopSource", thisbug.DataLoopSource);
 String limit = String.valueOf(thisbug.limit);
 xmlfile.writeAttribute("Limit", limit);
 Boolean randbool = thisbug.random;
@@ -1944,18 +1951,7 @@ int action_index_for_flatten = 0;
     }
     else
     {
-               String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(x, thisbug.DataSet);
- if (!"".equals(concat_variable))
- {
-      thisaction.Variable1 = concat_variable;
- }
-      concat_variable2 = var2Parser.GetFullValue(x, thisbug.DataSet);
-     if (!"".equals(concat_variable2))
-     {
-      thisaction.Variable2 = concat_variable2;  
-     }   
+  
            xmlfile.writeStartElement("Action");
 
     String LOCKED = Boolean.toString(thisaction.Locked);

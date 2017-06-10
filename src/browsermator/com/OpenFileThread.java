@@ -587,13 +587,30 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     Element Procedure = (Element) ProcedureList.item(i);
    
     String ProcType = Procedure.getAttribute("Type");
+    String DataLoopSource = "urllist";
+    if (Procedure.hasAttribute("DataLoopSource"))
+    {
+     DataLoopSource = Procedure.getAttribute("DataLoopSource");
+    }
     if ("Dataloop".equals(ProcType))
     {
-        String DataFile = Procedure.getAttribute("DataLoopFile");
         
+        
+        String DataFile = "";
+        if (Procedure.hasAttribute("DataLoopFile"))
+                {
+                    DataFile = Procedure.getAttribute("DataLoopFile");
+                }
+        if ("file".equals(DataLoopSource))
+        {
         File DataFile_file = new File(DataFile);
        
-            STAppFrame.AddNewDataLoop(DataFile_file);
+            STAppFrame.AddNewDataLoopFile(DataFile_file);
+        }
+       if ("urllist".equals(DataLoopSource))
+        {
+            STAppFrame.AddNewDataLoopURLList(DataFile);
+        }
       if (Procedure.hasAttribute("Random"))
   {
   String stRand = Procedure.getAttribute("Random");
@@ -873,15 +890,8 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
     
-//   File chosenCSVFile = mainApp.BrowseForCSVFile();
-//   if (chosenCSVFile!=null)
-//   {
-//   STAppFrame.AddNewDataLoop(chosenCSVFile);  
-//   }
-       String userdir = System.getProperty("user.home");
-      File placeholder =  new File(userdir + File.separator + "data_loop_placeholder.csv");
-   
-   STAppFrame.AddNewDataLoop(placeholder); 
+
+   STAppFrame.AddNewDataLoop(); 
   
   }
                                           

@@ -80,26 +80,30 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     int newbug_index = MDIClasses.get(MDI_INDEX).BugArray.size();
    Element Procedure = (Element) ProcedureList.item(i);
      String ProcType = Procedure.getAttribute("Type");
- 
+     String DataLoopSource = "urllist";
     if ("Dataloop".equals(ProcType))
     {
       
-         String DataFile = Procedure.getAttribute("DataLoopFile");
-        File DataFile_file = new File(DataFile);
-    if (DataFile_file.isAbsolute())
+         String DataFile = "";
+        if (Procedure.hasAttribute("DataLoopFile"))
+                {
+                    DataFile = Procedure.getAttribute("DataLoopFile");
+                }
+         if (Procedure.hasAttribute("DataLoopSource"))
+         {
+             DataLoopSource = Procedure.getAttribute("DataLoopSource");
+         }
+       
+    if ("file".equals(DataLoopSource))
     {
-        
+         File DataFile_file = new File(DataFile);
+       MDIClasses.get(MDI_INDEX).AddNewDataLoopFile(DataFile_file);   
     }
     else
     {
-        String[] dataloop_list_parser = DataFile.split("-");
-        if (dataloop_list_parser.length>1)
-        {
-        DataFile = newbug_index + "-" + dataloop_list_parser[1];
-        DataFile_file = new File(DataFile);
-        }
+       MDIClasses.get(MDI_INDEX).AddNewDataLoopURLList(DataFile);
     }
-                  MDIClasses.get(MDI_INDEX).AddNewDataLoop(DataFile_file);
+                
             
       if (Procedure.hasAttribute("Random"))
   {

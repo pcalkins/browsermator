@@ -35,12 +35,12 @@ LocalDateTime[] loop_time_of_test;
  String Guts;
  String tostore_varname;
  String tostore_varvalue;
- ArrayList<String> tostore_varlist;
+ String[] tostore_varlist;
    Action ()
    {
   this.tostore_varname = "";
   this.tostore_varvalue = "";
-  this.tostore_varlist = new ArrayList();
+  this.tostore_varlist = new String[0];
   this.Pass = false;
   this.TimeOfTest = LocalDateTime.now();
   this.NOT = false;

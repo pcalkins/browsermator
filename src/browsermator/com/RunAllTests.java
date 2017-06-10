@@ -682,7 +682,7 @@ if (!"Dataloop".equals(thisbugview.Type))
         
            SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-    if (ThisAction.tostore_varlist.size()>0)
+    if (ThisAction.tostore_varlist.length>0)
        {
       
            SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
@@ -736,23 +736,30 @@ if (!"Dataloop".equals(thisbugview.Type))
 }
 else
 {
-    
-    if ("urllist".equals(thisbugview.DataLoopSource))
+     int number_of_rows = 0;
+    if ("urllist".equals(thisbug.DataLoopSource))
     {
         
-      thisbugview.setJTableSource(thisbugview.URLListName);
       
-      thisbug.setDataFile(thisbugview.URLListName);
+      SiteTest.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
       
+      thisbug.setURLListData(SiteTest.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+      number_of_rows = SiteTest.VarLists.get(thisbug.URLListName).length;
     }
- if (!thisbugview.myTable.myEntries.isEmpty())
+    else
     {
-         SiteTest.RandomizeAndLimitList(thisbugview.myTable,thisbugview.getLimit(), thisbugview.getRandom());
-      
+   if ("file".equals(thisbug.DataLoopSource))
+    {
+         thisbug.setRunTimeDataSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+         number_of_rows = thisbug.DataSet.size();
+    }     
     }
+ 
    
      
- int number_of_rows = thisbugview.myTable.runtimeEntries.size();
+
+
  if (number_of_rows==0)
  {
   number_of_rows = FillTables(thisbug, thisbugview);
@@ -1228,7 +1235,7 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
            
-      int number_of_rows = SiteTest.BugViewArray.get(BugIndex).myTable.number_of_records;
+      int number_of_rows = SiteTest.BugArray.get(BugIndex).URLListData.length;
 if (number_of_rows==0)
 {
    int ActionIndex = 0;
@@ -1253,10 +1260,10 @@ if (number_of_rows==0)
        {
            ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
           String URL_TO_WRITE = "";
-           if (TheseActions.Type=="Go to URL")
+           if ("Go to URL".equals(TheseActions.Type))
            {
                 DataLoopVarParser var1Parser = new DataLoopVarParser(TheseActions.Variable1);
-            if (var1Parser.hasDataLoopVar==true)
+            if (var1Parser.hasDataLoopVar)
             {
                  String concat_variable;
     
@@ -1346,17 +1353,16 @@ if (number_of_rows==0)
             {  
             String[] parts2 = parts[2].split(":");
             String URLListName = parts2[1];
-               if (SiteTest.VarLists.containsKey(URLListName))
+               if ("urllist".equals(thisproc.DataLoopSource))
             {
       // testing random/limit
         
-            SiteTest.RandomizeAndLimitList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
+            SiteTest.RandomizeAndLimitURLList(thisproc.URLListName, thisprocview.getLimit(), thisprocview.getRandom());
            
-            SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
-        
-
+            SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);   
+      
           
-            number_of_rows = SiteTest.VarLists.get(URLListName).size();
+            number_of_rows = SiteTest.VarLists.get(URLListName).length;
 
             }
             }
@@ -1371,12 +1377,13 @@ if (number_of_rows==0)
             {  
             String[] parts2 = parts[2].split(":");
             String URLListName = parts2[1];
-                  if (SiteTest.VarLists.containsKey(URLListName))
+                if ("urllist".equals(thisproc.DataLoopSource))
             {
-        SiteTest.RandomizeAndLimitList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
+        SiteTest.RandomizeAndLimitURLList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
            
-            SiteTest.UpdateDataLoopTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
-            number_of_rows = SiteTest.VarLists.get(URLListName).size();
+            SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+      
+            number_of_rows = SiteTest.VarLists.get(URLListName).length;
             }
             }
         } 

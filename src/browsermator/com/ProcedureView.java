@@ -444,9 +444,24 @@ ActionScrollPane.setVisible(true);
       {
           if ("Dataloop".equals(this_bug_in.Type))
           {
+            if ("urllist".equals(this_bug_in.DataLoopSource))
+            {
+                String[] blanklist = new String[0];
+              if ("".equals(this_bug_in.URLListName))  
+              {
+               window.AddNewDataLoop();     
+              }
+              else
+              {
+               window.AddNewDataLoopURLList(this_bug_in.URLListName);  
+              }
+            }
+            else
+            {
               File this_data_file = new File(this_bug_in.DataFile);
-              
-          window.AddNewDataLoop(this_data_file);    
+               window.AddNewDataLoopFile(this_data_file);    
+            } 
+         
           }
           else
           {
@@ -644,11 +659,11 @@ ActionScrollPane.setVisible(true);
          JTextFieldDataFile.setText(dataFile);
 
      }
-     public void UpdatePlacedLoopVars(String newsource)
+     public void UpdatePlacedLoopVars(String newsource, String dataloopsource)
      {
          Boolean isStoredList = true;
-             File checkfile = new File(newsource);
-             if (checkfile.isAbsolute())
+          
+             if ("file".equals(dataloopsource))
              {
                 isStoredList = false; 
              }
@@ -691,17 +706,9 @@ ActionScrollPane.setVisible(true);
          }
     
      }
-  
-     public void setJTableSource (String sourceCSVfile)
-     {
-     UpdatePlacedLoopVars(sourceCSVfile);
-         JPanelBug.remove(panelForTable);
-     myTable = null;
-     myTable = new MyTable(sourceCSVfile);
-
-    
-    
-   myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    public void AddTableToGrid()
+    {
+         myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      myTable.DataTable.getTableHeader().setReorderingAllowed(false);
 
     myTable.DataTable.setFillsViewportHeight( true );
@@ -736,28 +743,7 @@ ActionScrollPane.setVisible(true);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
    
     AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
-     JTextFieldDataFile.setText(sourceCSVfile);
-
-    
-    File file = new File(sourceCSVfile);
-if (file.isAbsolute()) {
- DataLoopSource = "file";
-}
-else
-{
-    if ("".equals(sourceCSVfile))
-    {
-        JTextFieldDataFile.setText ("No data file or URL list set.");
-    }
-    else
-    {
-    DataLoopSource = "urllist";
-    URLListName = sourceCSVfile;
-    JTextFieldDataFile.setText("Will use stored URL List " + sourceCSVfile);
-    }
-}
-     
-    myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {
         int columnindex = myTable.DataTable.columnAtPoint(e.getPoint());
@@ -775,8 +761,47 @@ else
     }
     
 });
+    }
+     public void setJTableSourceToFile (String sourceCSVfile)
+     {
+     UpdatePlacedLoopVars(sourceCSVfile, "file");
+         JPanelBug.remove(panelForTable);
+     myTable = null;
+     myTable = new MyTable(sourceCSVfile);
     
+     
+     AddTableToGrid();
+         JTextFieldDataFile.setText(sourceCSVfile);
+   
+         
      }
+     public void setDataLoopSource(String in_looptype)
+     {
+         this.DataLoopSource = in_looptype;
+     }
+     public void setJTableSourceToURLList(String[] in_list, String list_name)
+     {
+      UpdatePlacedLoopVars(list_name, "urllist");
+         JPanelBug.remove(panelForTable);
+     myTable = null;
+     myTable = new MyTable(in_list, list_name);
+   
+     
+     AddTableToGrid();   
+         if ("".equals(list_name))
+    {
+        JTextFieldDataFile.setText ("No data file or URL list set.");
+    }
+    else
+    {
+   
+    URLListName = list_name;
+    JTextFieldDataFile.setText("Will use stored URL List " + list_name);
+    JComboBoxStoredArrayLists.addItem(list_name);
+    SetJComboBoxStoredArraylists(list_name);
+    }
+     }
+     
 
   
 }
