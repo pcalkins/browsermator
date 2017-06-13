@@ -558,9 +558,17 @@ else
     {
   
        
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
+            String concat_variable="";
+            String concat_variable2="";
+                 if ("urllist".equals(bugtorun.DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(x, bugtorun.URLListData);
+            }
+            if ("file".equals(bugtorun.DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(x, bugtorun.RunTimeFileSet);             
+            }
+
  if (var1Parser.hasDataLoopVar)
  {
      ThisAction.Variable1 = concat_variable;
@@ -569,8 +577,15 @@ else
                ThisAction.Variable1 = " ";
            }
  }
-
-           concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+  if ("urllist".equals(bugtorun.DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(x, bugtorun.URLListData);
+            }
+            if ("file".equals(bugtorun.DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(x, bugtorun.RunTimeFileSet);             
+            }
+        
    if (var2Parser.hasDataLoopVar)
  {
      ThisAction.Variable2 = concat_variable2;

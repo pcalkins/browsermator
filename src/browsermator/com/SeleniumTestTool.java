@@ -1303,7 +1303,7 @@ else
          {
           newdataloopview.setJTableSourceToFile("");
          newdataloop.setDataFile("");  
-         newdataloop.DataSet = null;
+        
          
          }
    AddDataLoopProcs(newdataloop, newdataloopview);

@@ -600,6 +600,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         if (Procedure.hasAttribute("DataLoopFile"))
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
+                   
                 }
         if ("file".equals(DataLoopSource))
         {

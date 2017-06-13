@@ -76,7 +76,7 @@ private ButtonGroup LookAndFeelGroup;
       String filename;
       private JMenuItem importMenuItem;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.84b";
+   public final String ProgramVersion = "1.0.85b";
    public String loginName;
    public String loginPassword;
    public String old_filename;
@@ -1844,12 +1844,30 @@ xmlfile.writeAttribute("Random", randstring);
     
         int indexer = thisbug.index;
            ProcedureView thisbugview = STAppFrame.BugViewArray.get(indexer-1);
-       int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
-       if (number_of_rows == 0)
-       {
-         
-           STAppFrame.FillTables(thisbug, thisbugview);
-       }
+       int number_of_rows = 0;
+         if ("urllist".equals(thisbug.DataLoopSource))
+    {
+        
+      if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+      {
+      STAppFrame.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
+      }
+      thisbug.setURLListData(STAppFrame.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+      number_of_rows = STAppFrame.VarLists.get(thisbug.URLListName).length;
+    }
+    else
+    {
+   if ("file".equals(thisbug.DataLoopSource))
+    {
+        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+        {
+         thisbug.setRunTimeFileSet(STAppFrame.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+        }
+         number_of_rows = thisbug.RunTimeFileSet.size();
+    }  
+    }   
+ 
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 

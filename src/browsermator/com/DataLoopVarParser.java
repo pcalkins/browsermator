@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -99,10 +100,9 @@ public class DataLoopVarParser {
     }
    }
  }
-
- public String GetFullValue(int row_number, MyTable my_Table)
+ public String GetFullValueFromURLList(int row_number, String[] in_list)
  {
-     String concat_variable = "";
+   String concat_variable = "";
        for (int y=0; y<DataLoopVars.size(); y++)
       {
        
@@ -111,10 +111,34 @@ public class DataLoopVarParser {
        if (theseDataLoopVars.field_column_index!=-1)
        {
            //this is wrong...
-           if (my_Table.URLListRunTimeEntries.length>0)
+           if (in_list.length>0)
           
            {
-            concat_variable+= my_Table.URLListRunTimeEntries[row_number];
+            concat_variable+= in_list[row_number];
+            
+           }
+       }
+       concat_variable+=theseDataLoopVars.aftervar;
+      }
+       return concat_variable;
+    
+ }
+ public String GetFullValueFromFile(int row_number, List<String[]> in_dataset)
+ {
+     String concat_variable = "";
+     
+       for (int y=0; y<DataLoopVars.size(); y++)
+      {
+       
+       DataLoopVarHelper theseDataLoopVars = this.DataLoopVars.get(y);
+       concat_variable+= theseDataLoopVars.beforevar;
+       if (theseDataLoopVars.field_column_index!=-1)
+       {
+          
+           if (in_dataset.size()>0)
+          
+           {
+            concat_variable+= in_dataset.get(theseDataLoopVars.field_column_index)[row_number];
             
            }
        }

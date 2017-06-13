@@ -740,9 +740,10 @@ else
     if ("urllist".equals(thisbug.DataLoopSource))
     {
         
-      
+      if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+      {
       SiteTest.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
-      
+      }
       thisbug.setURLListData(SiteTest.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
       number_of_rows = SiteTest.VarLists.get(thisbug.URLListName).length;
@@ -751,8 +752,16 @@ else
     {
    if ("file".equals(thisbug.DataLoopSource))
     {
-         thisbug.setRunTimeDataSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
-         number_of_rows = thisbug.DataSet.size();
+        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+        {
+         thisbug.setRunTimeFileSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+     number_of_rows = thisbug.RunTimeFileSet.size();
+        }
+        else
+        {
+            number_of_rows = thisbug.DataSet.size();
+        }
+        
     }     
     }
  
@@ -969,9 +978,16 @@ else
     {
   
        
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
+            String concat_variable="";
+            String concat_variable2="";
+            if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
  if (var1Parser.hasDataLoopVar)
  {
      ThisAction.Variable1 = concat_variable;
@@ -981,8 +997,15 @@ else
            }
       
  }
-
-           concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+    if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
+        
    if (var2Parser.hasDataLoopVar)
  {
      ThisAction.Variable2 = concat_variable2;
@@ -1265,9 +1288,16 @@ if (number_of_rows==0)
                 DataLoopVarParser var1Parser = new DataLoopVarParser(TheseActions.Variable1);
             if (var1Parser.hasDataLoopVar)
             {
-                 String concat_variable;
-    
- concat_variable = var1Parser.GetFullValue(x, SiteTest.BugViewArray.get(BugIndex).myTable);
+                 String concat_variable="";
+         if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
+
      URL_TO_WRITE = concat_variable;
        
              SiteTest.AddURLToUniqueFileList(URL_TO_WRITE);

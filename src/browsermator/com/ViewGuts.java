@@ -308,12 +308,29 @@ if (!"Dataloop".equals(thisbugview.Type))
 }
 else
 {
-     int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
- if (number_of_rows==0)
- {
-  number_of_rows = SiteTest.FillTables(thisbug, thisbugview);
- }
-
+     int number_of_rows = 0;
+ if ("urllist".equals(thisbug.DataLoopSource))
+    {
+        
+      if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+      {
+      SiteTest.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
+      }
+      thisbug.setURLListData(SiteTest.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+      number_of_rows = SiteTest.VarLists.get(thisbug.URLListName).length;
+    }
+    else
+    {
+   if ("file".equals(thisbug.DataLoopSource))
+    {
+        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+        {
+         thisbug.setRunTimeFileSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+        }
+         number_of_rows = thisbug.RunTimeFileSet.size();
+    }     
+    }
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
@@ -356,9 +373,16 @@ else
     {
   
        
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(x, thisbugview.myTable);
+            String concat_variable="";
+            String concat_variable2="";
+                  if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
  if (var1Parser.hasDataLoopVar)
  {
      ThisAction.Variable1 = concat_variable;
@@ -367,8 +391,15 @@ else
                ThisAction.Variable1 = " ";
            }
  }
-
-           concat_variable2 = var2Parser.GetFullValue(x, thisbugview.myTable);
+  if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
+       
    if (var2Parser.hasDataLoopVar)
  {
      ThisAction.Variable2 = concat_variable2;

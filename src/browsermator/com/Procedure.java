@@ -17,7 +17,7 @@ String BugTitle;
 int index;
 String TargetBrowser;
 List<String[]> DataSet;
-List<String[]> RunTimeDataSet;
+List<String[]> RunTimeFileSet;
 String DataFile;
 String Type;
 Boolean Locked;
@@ -41,7 +41,8 @@ this.BugURL = "https://www.browsermator.com";
 this.BugTitle = "";
 this.index = 0;
 this.TargetBrowser = "Firefox";
-this.DataSet=null;
+this.DataSet = new ArrayList(); 
+this.RunTimeFileSet = new ArrayList();
 this.DataFile="";
 this.Type = "";
 this.DataLoopSource = "urllist";
@@ -102,9 +103,9 @@ this.URLListData = new String[0];
      }
        return return_array;
     }
-   public void setRunTimeDataSet(List<String[]> in_set)
+   public void setRunTimeFileSet(List<String[]> in_set)
    {
-       this.RunTimeDataSet = in_set;
+       this.RunTimeFileSet = in_set;
    }
    public void setURLListName(String in_name)
    {

@@ -487,14 +487,30 @@ mainPanel = new JPanel(new BorderLayout());
             pass_string = " has passed at ";
         }
    
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+            String concat_variable="";
+            String concat_variable2="";
+                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+            }
+            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+            }
+
  if (!"".equals(concat_variable))
  {
      ThisValue1 = concat_variable;
  }
-      concat_variable2 = var2Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+            }
+            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+            }
+  
      if (!"".equals(concat_variable2))
      {
     ThisValue2 = concat_variable2;  
@@ -876,14 +892,30 @@ mainPanel = new JPanel(new BorderLayout());
             pass_string = " has passed at ";
         }
    
-            String concat_variable;
-            String concat_variable2;
- concat_variable = var1Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+            String concat_variable="";
+            String concat_variable2="";
+                         if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+            }
+            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+            }      
+ 
  if (!"".equals(concat_variable))
  {
      ThisValue1 = concat_variable;
  }
-      concat_variable2 = var2Parser.GetFullValue(passindex, SiteTest.BugViewArray.get(BugViewIndex).myTable);
+                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+            }
+            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+            }
+   
      if (!"".equals(concat_variable2))
      {
     ThisValue2 = concat_variable2;  
