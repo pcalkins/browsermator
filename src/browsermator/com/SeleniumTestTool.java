@@ -5,216 +5,170 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Properties;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+
 
 
 
 public class SeleniumTestTool extends JInternalFrame {
 
-String URL;
-String filename;
-ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
-ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
-    ArrayList<String> AllFieldValues;
-    ArrayList<String> Visitted_URL_List;
-  JPanel BugPanel;
-  Thread ActionThread;
-  Boolean AllTestsPassed;
-  Boolean ShowReport;
-  Boolean EmailReport;
-  Boolean EmailReportFail;
-  Boolean ExitAfter;
-  Boolean PromptToClose;
-  Boolean changes;
-  String TargetBrowser;
-  Boolean MultiSession;
-  String OSType;
-  int WaitTime;
-  int Sessions;
-  boolean hasStoredVar;
-  boolean hasStoredArray;
-  boolean IncludeScreenshots;
-  HashMap<String, String> VarHashMap = new HashMap();
-  HashMap<String, String[]> VarLists = new HashMap();
-  boolean cancelled;
-  boolean testRunning;
-  String short_filename;
-  int Timeout;
-  LocalDateTime TimeOfRun;
-  boolean UniqueList;
-  String UniqueOption;
 
-  public SeleniumTestTool(String filename)
+
+  JPanel BugPanel;
+ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
+
+  public SeleniumTestTool(ArrayList<ProcedureView> BugViewArray)
   {
-      this.UniqueOption = "file";
-      this.UniqueList = false;
-      this.MultiSession = false;
-      this.cancelled = false;
-    this.hasStoredVar = false;
-    this.hasStoredArray = false;
-   this.VarHashMap = new HashMap();
-   // super("Selenium Test Tool");
-  this.TargetBrowser = "Chrome";
-  this.OSType = "Windows32";
-  this.Sessions = 1;
-  this.changes = false;
-  this.PromptToClose = false;
-  this.ShowReport = false;
-  this.filename = "";
-  this.short_filename=filename;
-  this.URL = "";
+  this.BugViewArray = BugViewArray;
   this.BugPanel = new JPanel();
-  this.IncludeScreenshots = false;
-  this.testRunning = false;
-  this.AllFieldValues = new ArrayList<>();
-  this.Visitted_URL_List = new ArrayList<>();
+  
  this.setIconifiable(true);
       initComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
-       jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxEmailReportActionPerformed(evt);
-            }
-        });
-         jRadioButtonUniquePerFile.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jRadioButtonUniquePerFileActionPerformed(evt);
-            }
-        });
-           jRadioButtonUniqueGlobal.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jRadioButtonUniqueGlobalActionPerformed(evt);
-            }
-        });
-       jCheckBoxUniqueURLs.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxUniqueURLsActionPerformed(evt);
-            }
-        });
-       
-       jCheckBoxExitAfter.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxExitAfterActionPerformed(evt);
-            }
-        });
-       jCheckBoxEnableMultiSession.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxEnableMultiSessionActionPerformed(evt);
-            }  
-       });
-        jCheckBoxEmailReportFail.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxEmailReportFailActionPerformed(evt);
-            }
-        });
-         jCheckBoxPromptToClose.addActionListener(new java.awt.event.ActionListener() {
-          @Override
-             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxPromptToCloseActionPerformed(evt);
-            }
-        });
-                  jCheckBoxShowReport.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-                      public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxShowReportActionPerformed(evt);
-            }
-        });
-         jCheckBoxOSTypeWindows32.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeWindows32ActionPerformed(evt);
-            }
-        });
-             jCheckBoxOSTypeWindows64.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeWindows64ActionPerformed(evt);
-            }
-        });
-          jCheckBoxOSTypeMac.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-              public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeMacActionPerformed(evt);
-            }
-        });
-           jCheckBoxOSTypeLinux32.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeLinux32ActionPerformed(evt);
-            }
-        });
-            jCheckBoxOSTypeLinux64.addActionListener(new java.awt.event.ActionListener() {
-           @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-              jCheckBoxOSTypeLinux64ActionPerformed(evt);
-            }
-        });
-      
+ 
   
- // this.setVisible(true);
-  this.EmailReport = false;
-  this.EmailReportFail = false;
-  this.ExitAfter = false;
-  this.AllTestsPassed = false;
-  try{
-      LoadGlobalEmailSettings();
-  }
-      catch (Exception e) {
-	System.out.println("Exception on loading email settings: " + e);
-    }
-
 }
+        public void setOSType(String OSType)
+        {
+            if ("Windows".equals(OSType))
+            {
+                OSType = "Windows32";
+            }
+          
+            switch (OSType)
+            {
+                case "Windows":
+                   jCheckBoxOSTypeWindows32.setSelected(true); 
+                    break;
+                    
+                case "Windows32":
+                jCheckBoxOSTypeWindows32.setSelected(true);
+                break;
+                case "Windows64":
+                jCheckBoxOSTypeWindows64.setSelected(true);
+                break;
+                case "Mac":
+                jCheckBoxOSTypeMac.setSelected(true);
+                break;
+                case "Linux-32":
+                jCheckBoxOSTypeLinux32.setSelected(true);
+                break;
+                case "Linux-64":
+                jCheckBoxOSTypeLinux64.setSelected(true);
+                break;
+                
+            }
+                
+        }
+        
+     public void setTargetBrowser (String targetbrowser)
+        {   
+            //legacy stuff
+            if ("Firefox-Marionette".equals(targetbrowser))
+            {
+                targetbrowser = "Firefox";
+            }
+            
+            jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
+          
+            
+            switch (targetbrowser)
+            {
+                case "Firefox":
+                    jButtonBrowseForFireFoxExe.setEnabled(true);
+                     setOSTypeActive(true);
+                    break;
+         
+                case "Internet Explorer-32":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;
+                case "Internet Explorer-64":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;  
+                case "Chrome":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                     setOSTypeActive(true);
+                    break;
+                
+                case "Chrome 49":
+                     jButtonBrowseForFireFoxExe.setEnabled(true);
+                     setOSTypeActive(true);
+                    break;
+                    
+                case "Silent Mode (HTMLUnit)":
+                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    break;
+                default:
+                      jButtonBrowseForFireFoxExe.setEnabled(false);
+                     setOSTypeActive(true);
+                    break;
+                    
+            }
+        }
+  public void setFilename(String in_filename)
+  {
+     this.title = in_filename;
+  }
+       public File ChangeCSVFile()
+      {
+   
+  final JFileChooser CSVFileChooser = new JFileChooser();
+BrowserMatorConfig theseProps = new BrowserMatorConfig();
+
+      String lastused_datafile_dir = theseProps.getKeyValue("lastused_datafile_dir");
+      if (lastused_datafile_dir!=null)
+      {
+      CSVFileChooser.setCurrentDirectory(new File(lastused_datafile_dir));
+      }
+   CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
+                    "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
+
+    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".CSV" },
+                    "Comma Delimited File (*.CSV)"));
+    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
+                    new String[] { ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
+                    "Excel File (*.XLSX|XLSXM|XLS|XLSM)"));
+
+
+    // Turn off 'All Files' capability of file chooser,
+    // so only our custom filter is used.
+    CSVFileChooser.setAcceptAllFileFilterUsed(false);
+CSVFileChooser.setPreferredSize(new Dimension(800,600));
+
+int returnVal = CSVFileChooser.showOpenDialog(this);
+      File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_datafile_dir", chosenDir.getAbsolutePath());
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+
+ return file;
+            }
+            else
+            {
+           return null;
+            }
+
+      }
 public void hideTaskGUI()
 {
  jLabelTasks.setVisible(false);
@@ -233,34 +187,10 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
     String actionindex = indexes[1];
     int bugindexnum = Integer.parseInt(bugindex)-1;
     int actionindexnum = Integer.parseInt(actionindex)-1;
-    BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString(), fieldnum);
+   BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString(), fieldnum);
 
 }
-public void setJTextFieldProgress(String value)
-{
-    JTextFieldProgress.setText(value);
-}
-public void setHasStoredVar(boolean hasit)
-{
-    this.hasStoredVar=hasit;
-}
-public void setHasStoredArray(boolean hasit)
-{
-    this.hasStoredArray=hasit;
-}
 
-public void initVarHashMap()
-{
-    this.VarHashMap = new HashMap();
-}
-
-public void initVarLists()
-{
-    
-   this.VarLists = new HashMap();
-
-   
-}
   public String getSelectedVariableName()
       {
           String ret_val = "";
@@ -268,54 +198,7 @@ public void initVarLists()
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
-  public void UpdateDataLoopURLListTable(String ListName, String[] storedURLlist, Procedure thisproc, ProcedureView thisprocview)
-  {
-
-    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
-    thisproc.setURLListData(storedURLlist, ListName);
-   
-  }
-         
-     
-  
-  
-   public void addSelectedArrayName(String varname)
-      {
-          int itemcount = 0;
-       for (ProcedureView BV : BugViewArray)
-      {
-         
-          if ("Dataloop".equals(BV.Type))
-          {
-                   if(((DefaultComboBoxModel)BV.JComboBoxStoredArrayLists.getModel()).getIndexOf(varname) == -1) {
- String[] parts = varname.split("-");
- if (parts.length>1)
- {
- String leftpart = parts[0];
-
- int bugindex = Integer.parseInt(leftpart);
- if (bugindex<BV.index+1)
- {
-   
- VarLists.put(varname, new String[0]);
- UpdateStoredListsPulldown(varname);
-  //      BV.JComboBoxStoredArrayLists.setSelectedIndex(newitemindex); 
- }
  
-          }
-  itemcount = BV.JComboBoxStoredArrayLists.getItemCount();
- int newitemindex = itemcount-1;
-                   if (itemcount>1)
-                   {
-                       BV.EnableArrayListsPulldown();
-                     
-                   }
-                   }
-      }   
- 
-}
-      
-      }
     public void updatePlacedVariables(String to_updatename, String update_toname)
     {
     int bugindex = 0;
@@ -352,101 +235,13 @@ public void initVarLists()
  int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
         jComboBoxStoredVariables.setSelectedIndex(newitemindex);
        
-        VarHashMap.put(varname, "");
+   
 }
       }
  
 
-    public void updateSelectedArrayName(String oldname, String newname)
-    {
-// fix this... only update varlist... then have display recreate jcombobox according to varlist names
-          
-        if (VarLists.containsKey(newname))
-        {       
-      
-            
-       int bugindex = 0;  
-            for (Procedure PROC: BugArray)
-      {
-          if (oldname.equals(PROC.URLListName))
-          {
-      PROC.setURLListName(newname);
-      BugArray.get(bugindex).setURLListName(newname);
-  //    BugViewArray.get(bugindex).setJTableSource(newname);
-        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
-       //check for dupes
-       String thisitem = "";
-       Boolean alreadyhas = false;
-      for (int x = 0; x<BugViewArray.get(bugindex).JComboBoxStoredArrayLists.getItemCount(); x++)
-              {
-      thisitem = BugViewArray.get(bugindex).JComboBoxStoredArrayLists.getItemAt(x).toString();
-      if (newname.equals(thisitem))
-      {
-          alreadyhas = true;
-      }
-              }
-      if (alreadyhas)
-      {
-  
-      }
-      else
-      {
-     BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname);    
-   
-      }
-         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
-   //   UpdateDisplay();
-          }
-          bugindex++;
-      }
-        }
-        else
-        {
-            VarLists.remove(oldname);
-            VarLists.put(newname, new String[0]);
-  //          updatePlacedListVariables();
-         
-             int bugindex = 0;  
-            for (Procedure PROC: BugArray)
-      {
-          if (oldname.equals(PROC.URLListName))
-          {
-     
-      
-      PROC.setURLListName(newname);
-     
-  
-  
-    UpdateStoredListsPulldown(newname);
-          }
-          bugindex++;
-      }
-        }
-      
-     
-    
-    }
-    public void updateSelectedVariableName(String oldname, String newname)
-      {
-      
-          
-        if (VarHashMap.containsKey(newname))
-        {       
-            updatePlacedVariables(newname, oldname);
-            updatePlacedVariables(oldname, newname);
-            VarHashMap.put(newname, "");
-            VarHashMap.put(oldname, "");
-        }
-        else
-        {
-            VarHashMap.remove(oldname);
-            VarHashMap.put(newname, "");
-           updatePlacedVariables(oldname, newname);
-        }
-      UpdateStoredVarPulldown();
-       
-      }
-  public void UpdateStoredVarPulldown()
+ 
+  public void UpdateStoredVarPulldownView( HashMap<String, String> VarHashMap)
   {
         jComboBoxStoredVariables.removeAllItems();
         jComboBoxStoredVariables.addItem("Select a stored variable");
@@ -455,7 +250,7 @@ public void initVarLists()
             jComboBoxStoredVariables.addItem(keyname);
         }
   }
-    public void UpdateStoredListsPulldown(String selecteditem)
+    public void UpdateStoredListsPulldownView(String selecteditem,  HashMap<String, String[]> VarLists)
   {
       for (ProcedureView BV : BugViewArray)
       {
@@ -492,42 +287,7 @@ public void initVarLists()
     
   }
   
-public String GetStoredVariableValue(String fieldname)
-{
-    String ret_val = "";
-if (VarHashMap.containsKey(fieldname))
-{
-    ret_val = VarHashMap.get(fieldname);
-}
 
-return ret_val;
-}
-
-public void SetStoredVariableName(String varname)
-{
-    VarHashMap.put(varname, "");  
-    addSelectedVariableName(varname);
-    
-}
-public void SetStoredVariableValue (String varname, String varval)
-{
-
-    if (VarHashMap.containsKey(varname))
-    {
-        VarHashMap.put(varname, varval);
-    }
-
-}
-public void ShowStoredVarListControls(Boolean showhideval)
-{
- for (ProcedureView DLV: BugViewArray)
- {
-     if ("Dataloop".equals(DLV.Type))
-     {
-    DLV.EnableArrayListsPulldown();
-     }
- }
-}
 public void ShowStoredVarControls(Boolean showhideval)
 {
     if (showhideval)
@@ -579,66 +339,21 @@ public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int
     }
 }
 
-public void setAllFieldValues(ArrayList<String> allfieldvalues)
-{
-    this.AllFieldValues = allfieldvalues;
-}
-      public final void LoadGlobalEmailSettings() throws IOException 
- {
-     Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
-try
-{
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
-             applicationProps.load(input);
-         }
-         catch (Exception e)
-         {
-             System.out.println(e);
-         }
-}
-catch (Exception e) {
-			System.out.println("Exception loading email70: " + e);
-		} 
 
-   String smtp_hostname = applicationProps.getProperty("smtp_hostname");
-   String login_name = applicationProps.getProperty("email_login_name");
-   String password = applicationProps.getProperty("email_login_password");
-   String to = applicationProps.getProperty("email_to");
-   String from = applicationProps.getProperty("email_from");
-   String subject = applicationProps.getProperty("email_subject");
- 
-   setSMTPHostname(smtp_hostname);
-   setEmailLoginName(login_name);
-   try
-   {
-   password = Protector.decrypt(password);
-   }
-   catch (Exception ex)
-   {
-       System.out.println("Exception getting email password: " + ex.toString());
-   }
-   setEmailPassword(password);
-   setEmailTo(to);
-   setEmailFrom(from);
-   setSubject(subject);
-   
-        
-	}
     
       
       
       public boolean getExitAfter()
       {
           boolean checked = this.jCheckBoxExitAfter.isSelected();
-          this.ExitAfter = checked;
+        
           return checked;
       }
       
       public boolean getEmailReport()
     {
     boolean checked = this.jCheckBoxEmailReport.isSelected();
-    this.EmailReport = checked;
+
     return checked;
     }
          public boolean getIncludeScreenshots()
@@ -648,33 +363,33 @@ catch (Exception e) {
          {
              checked = false;
          }
-    this.IncludeScreenshots = checked;
+ 
     return checked;
        
     }
       public boolean getEmailReportFail()
     {
     boolean checked = this.jCheckBoxEmailReportFail.isSelected();
-    this.EmailReportFail = checked;
+  
     return checked;
     }
     public void setPromptToClose(Boolean prompttoclose)
     {
-        this.PromptToClose = prompttoclose;
+  
         jCheckBoxPromptToClose.setSelected(prompttoclose);
      
     }
     public boolean getPromptToClose()
     {
        boolean checked = this.jCheckBoxPromptToClose.isSelected();
-    this.PromptToClose = checked;
+  
     return checked;  
     }
  
     public boolean getShowReport()
     {
     boolean checked = this.jCheckBoxShowReport.isSelected();
-    this.ShowReport = checked;
+  
     return checked;
     }
 public int GetWaitTime()
@@ -702,56 +417,9 @@ public int GetWaitTime()
     return wait;
     
 }
-   public void setWaitTime (int timeout_seconds)
-    {   
-    
-        this.WaitTime = timeout_seconds;
+ 
 
-        this.jSpinnerWaitTime.setValue(WaitTime);
-    }
-   public int getTimeout()
-   {
-//      int fallbackValue = 1;
-         
-//    try {
-//       jSpinnerTimeout.commitEdit();
-//   }
-//   catch (ParseException pe) {
-     
-//       JComponent editor =jSpinnerTimeout.getEditor();
-       
-//       if (editor instanceof DefaultEditor) {
-//           ((DefaultEditor)editor).getTextField().setValue(jSpinnerTimeout.getValue());
-//       }
-     
- //      jSpinnerTimeout.setValue(fallbackValue);
-     
-      
-//   }
-// int timeout = (Integer)this.jSpinnerTimeout.getValue();
-//     return timeout;
-       
-       //timeouts buggy, return 0
-   return 0;  
-   }
-   public void setTimeout(int timeout_seconds)
-   {
-     
- //       this.Timeout = timeout_seconds;
 
-//       jSpinnerTimeout.setValue(Timeout);
-  
- //timeouts buggy, set to 0
-       this.Timeout = 0;
-   }
-   public void setSessions (int number_of_sessions)
-   {
-       this.Sessions = number_of_sessions;
-    
-       jSpinnerSessions.setValue(Sessions);
-      
-     
-   }
    public int getSessions()
 {
     int fallbackValue = 1;
@@ -777,35 +445,7 @@ public int GetWaitTime()
     return wait;
     
 }
-public void setProperties (String filename)
-    {
-    Path thisP = Paths.get(filename);
-    
-    
-String shortname = thisP.getFileName().toString();
-if (shortname.length()>1)
-{
-  int end_of_name = shortname.indexOf(".browsermation");
-  
-if (end_of_name<1)
-{
-    end_of_name=shortname.length();
 
-}
-
-   this.short_filename = shortname.substring(0, end_of_name );
-}
-else
-{
-    this.short_filename = shortname;
-}
-
-
-    this.setTitle(this.short_filename); 
-    this.filename = filename;
-    
-    }
-   
     @SuppressWarnings("unchecked")
 
  public void disableAdds()
@@ -914,6 +554,16 @@ else
          }
      }
  }
+      public void AddNewDataLoop()
+        {
+
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+              String[] blanklist = new String[0];
+  newdataloopview.setJTableSourceToURLList(blanklist, "");
+   //      AddDataLoopProcs(newdataloop, newdataloopview);
+    
+        }
  public void UpdateDisplay()
  {
  this.MainScrollPane.setVisible(false);
@@ -929,7 +579,7 @@ this.BugPanel.removeAll();
 this.BugPanel.setLayout(layout);
 
 
-   setHasStoredArray(false);
+ 
 int bugindex = 0;
     for (ProcedureView BV : BugViewArray)
       {
@@ -960,63 +610,7 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
-       
-    if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
-        {
-            
-            setHasStoredArray(true);
-                             String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(BV.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        String oldname = AV.JTextFieldVariableVARINDEX.getText();
-         String newname = bugdashactionindex;
-         if (oldname.equals(newname))
-         {
-          // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
-        VarLists.put(newname, new String[0]);
-       //  addSelectedArrayName(bugdashactionindex);
-          }
-          else
-         {
-              if ("".equals(oldname))
-              {
-          // wrong:    addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
-            addSelectedArrayName(bugdashactionindex); 
-              }
-              else
-              {
-                 
-         updateSelectedArrayName(oldname, newname);
-              }
-        }
-          AV.JTextFieldVariableVARINDEX.setText(newname);
-    
-        }
-       if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
-        {
-              setHasStoredVar(true);
-                                      String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(BV.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        String oldname = AV.JTextFieldVariableVARINDEX.getText();
-         String newname = bugdashactionindex;
-      
-              if ("".equals(oldname))
-          {
-           addSelectedVariableName(bugdashactionindex);
-           AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
-         
-          }
-          else
-          {
-         updateSelectedVariableName(oldname, newname);
-     //    updateInsertedVariableNames(oldname, newname);
-          AV.JTextFieldVariableVARINDEX.setText(newname);
-          }
- 
-        }
-    
-  //      AV.AddDraggers(this, this.BugArray.get(bugindex), BV, AV);
+
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
@@ -1045,24 +639,7 @@ bugindex++;
        
 
      }
-if (hasStoredVar)
-{
-    ShowStoredVarControls(true);
-}
-else
-{
-    ShowStoredVarControls(false);
-}
- if (hasStoredArray)
-{
-    ShowStoredVarListControls(true);
-}
-else
-{
-    ShowStoredVarListControls(false);
-}
 
-  this.setProperties(this.filename);
   this.BugPanel.setVisible(true);
      this.MainScrollPane.setViewportView(this.BugPanel);
 
@@ -1070,6 +647,10 @@ else
   this.revalidate();
 
  }
+     public void setJTextFieldProgress(String value)
+{
+    JTextFieldProgress.setText(value);
+}
      public void UpdateScrollPane(ProcedureView newbugview)
      {
                 GridBagConstraints ActionConstraints = new GridBagConstraints();
@@ -1088,60 +669,7 @@ else
         {
        
           AV.SetIndexes(newbugview.index, actionindex);
-          if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
-        {
-            
-            setHasStoredArray(true);
-                      String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(newbugview.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        String oldname = AV.JTextFieldVariableVARINDEX.getText();
-         String newname = bugdashactionindex;
-         if (oldname.equals(newname))
-        {
-          // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
-         
-     //wrong:  addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
-     //   addSelectedArrayName(bugdashactionindex); 
-         }
-       else
-        {
-              if ("".equals(oldname))
-              {
-              addSelectedArrayName(bugdashactionindex);    
-              }
-              else
-              {
-                       
-         updateSelectedArrayName(oldname, newname);
-              }
-          AV.JTextFieldVariableVARINDEX.setText(newname);
-        }
-         }
-
-        if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
-        {
-                              String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(newbugview.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        String oldname = AV.JTextFieldVariableVARINDEX.getText();
-         String newname = bugdashactionindex;
-         
-         if ("".equals(oldname))
-          {
-           addSelectedVariableName(bugdashactionindex);
-         
-         
-          }
-          else
-          {
-         updateSelectedVariableName(oldname, newname);
-     //    updateInsertedVariableNames(oldname, newname);
-          AV.JTextFieldVariableVARINDEX.setText(newname);
-          }
-        }
-     
-     
+       
       
          
          ActionConstraints.gridx = 1;
@@ -1156,15 +684,7 @@ else
          actionindex++;
 
         }
-      if (hasStoredVar)
-      {
-        ShowStoredVarControls(true);
-        
-      }
-      else
-      {
-          ShowStoredVarControls(false);
-      }
+   
       if (actionindex < 9)
       {
         newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));    
@@ -1182,90 +702,39 @@ else
 
 
      }
- public void RunActions()
- {
-     if ("Run All Procedures".equals(this.getRunActionsButtonName()))
-     {
-         
-          int sessions = 1;
-         if (this.MultiSession)
-         {
-          sessions = getSessions();
-         }
-         
-          String tbrowser = this.getTargetBrowser();
-      if ("Firefox/IE/Chrome".equals(tbrowser))
-      {
- for (int x=0; x<sessions; x++)
- {
-    
-      this.setTargetBrowser("Firefox");
-       RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();   
-    this.setTargetBrowser("Chrome");
-       RunAllTests REFSYNCH2 = new RunAllTests(this);
-    REFSYNCH2.execute();  
-    this.setTargetBrowser("Internet Explorer-32");
-      RunAllTests REFSYNCH3 = new RunAllTests(this);
-    REFSYNCH3.execute();  
-    this.setTargetBrowser("Firefox/IE/Chrome");
- }
-      }
-      else
-      {
-     for (int x=0; x<sessions; x++)
- {
-    RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();      
- }     
-      }
-     }
-     else
-     {
-         this.cancelled = true;
-     }
- 
- }
-
- public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
- {
-      RunASingleTest REFSYNCH = new RunASingleTest(this, bugtorun, thisbugview, this.TargetBrowser, this.OSType);
-    REFSYNCH.execute();
- }
 
  
 
-        public void AddNewBug()
+        public void AddNewBugView()
         {
-         Procedure newbug = new Procedure();
+       
          ProcedureView newbugview = new ProcedureView();
-         newbug.setType("Procedure");
+       
          newbugview.setType("Procedure");
-         BugArray.add(newbug);
+      
          BugViewArray.add(newbugview);
-         newbug.index = BugArray.size();
+      
          newbugview.index = BugViewArray.size();
-        AddNewHandlers(this, newbugview, newbug);
+    
 
         }
-        public void AddDataLoopProcs(Procedure newdataloop, ProcedureView newdataloopview)
+        public void AddDataLoopProcView(ProcedureView newdataloopview)
         {
-              BugArray.add(newdataloop);   
+         
          BugViewArray.add(newdataloopview);
-         newdataloop.index = BugArray.size();
-         newdataloopview.index = BugViewArray.size();
-        AddNewHandlers(this, newdataloopview, newdataloop);
-        AddLoopHandlers(this, newdataloopview, newdataloop);
-       UpdateDisplay();
       
-       UpdateStoredListsPulldown(newdataloop.URLListName);
+         newdataloopview.index = BugViewArray.size();
+    
+     
+      
+    
        
         
  JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
    jButtonFlattenFile.setEnabled(true);
         }
-        public void AddNewDataLoop()
+        public void AddNewDataLoopView()
         {
              Procedure newdataloop = new Procedure();
       
@@ -1275,137 +744,59 @@ else
         newdataloopview.setType("Dataloop");
               String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, "");
-         AddDataLoopProcs(newdataloop, newdataloopview);
+         AddDataLoopProcView(newdataloopview);
     
         }
-        public void AddNewDataLoopURLList(String in_listname)
+         public void UpdateDataLoopURLListTableView(String ListName, String[] storedURLlist, ProcedureView thisprocview)
+  {
+
+    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
+
+   
+  }
+        public void AddNewDataLoopURLListView(String in_listname)
         {
-            Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
+          
         ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("urllist");
       
-        newdataloop.setDataLoopSource("urllist");
-     
+    
         newdataloopview.setURLListName(in_listname);
         String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
-       
-        newdataloop.setURLListData(blanklist, in_listname);
-       
+      
        newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
      
-   AddDataLoopProcs(newdataloop, newdataloopview);
+   AddDataLoopProcView(newdataloopview);
         }
-           public void AddNewDataLoopFile(File CSVFile)
+           public void AddNewDataLoopFileView(File CSVFile)
         {
-        Procedure newdataloop = new Procedure();
+     
       
-         newdataloop.setType("Dataloop");
-         newdataloop.setDataLoopSource("file");
+      
         ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("file");
         if (CSVFile.exists())
          {
          newdataloopview.setJTableSourceToFile(CSVFile.getAbsolutePath());
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
+        
          
          }
          else
          {
           newdataloopview.setJTableSourceToFile("");
-         newdataloop.setDataFile("");  
+   
         
          
          }
-   AddDataLoopProcs(newdataloop, newdataloopview);
+   AddDataLoopProcView(newdataloopview);
         }
   
-      public void AddLoopHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug) 
-      {
-          String[] blanklist = new String[0];
-           newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
-        if ((e.getStateChange() == ItemEvent.SELECTED)) {
-         if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
-               {
-             newbugview.setDataLoopSource("urllist");
-             newbug.setDataLoopSource("urllist");
-          String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
-      newbugview.setJTableSourceToURLList(blanklist, selectedarraylist);
-      newbug.setURLListData(blanklist, selectedarraylist);
- //  ScrollActionPaneDown(newbugview);
-UpdateDisplay();
-               }
-            
-        }
-         
-            
-         
-        });
-       
-            newbugview.addJButtonBrowseForDataFileActionListener((ActionEvent evt) -> {
-             File chosenCSVFile = ChangeCSVFile();
-   if (chosenCSVFile!=null)
-   {
+
  
-   newbugview.SetJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
-   newbugview.setDataLoopSource("file");
-   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
-   newbug.setDataLoopSource("file");
-   UpdateDisplay();
-   }
-          });
-      
-      }
-      public File ChangeCSVFile()
-      {
-   
-  final JFileChooser CSVFileChooser = new JFileChooser();
-BrowserMatorConfig theseProps = new BrowserMatorConfig();
-
-      String lastused_datafile_dir = theseProps.getKeyValue("lastused_datafile_dir");
-      if (lastused_datafile_dir!=null)
-      {
-      CSVFileChooser.setCurrentDirectory(new File(lastused_datafile_dir));
-      }
-   CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".CSV", ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
-                    "Data File (*.CSV|XLSX|XLSXM|XLS|XLSM)"));
-
-    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".CSV" },
-                    "Comma Delimited File (*.CSV)"));
-    CSVFileChooser.addChoosableFileFilter(new ExtensionFileFilter(
-                    new String[] { ".XLSX", ".XLSXM", ".XLS", ".XLSM" },
-                    "Excel File (*.XLSX|XLSXM|XLS|XLSM)"));
-
-
-    // Turn off 'All Files' capability of file chooser,
-    // so only our custom filter is used.
-    CSVFileChooser.setAcceptAllFileFilterUsed(false);
-CSVFileChooser.setPreferredSize(new Dimension(800,600));
-
-int returnVal = CSVFileChooser.showOpenDialog(this);
-      File chosenDir = CSVFileChooser.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_datafile_dir", chosenDir.getAbsolutePath());
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = CSVFileChooser.getSelectedFile();   
-
-
- return file;
-            }
-            else
-            {
-           return null;
-            }
-
-      }
       public void DisableProcedure(ProcedureView thisbugview, Procedure thisbug)
       {
       thisbugview.Disable();
@@ -1419,379 +810,25 @@ int returnVal = CSVFileChooser.showOpenDialog(this);
   
       }
      
-      public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
-      {
-         newbugview.addJSpinnerLimitListener(new ChangeListener() {
-
-        @Override
-        public void stateChanged(ChangeEvent e) {
-        newbug.limit = (Integer) newbugview.JSpinnerLimit.getValue();
-        }
-    });
-         newbugview.addJCheckBoxRandomActionListener((ActionEvent evt) -> {
-          newbug.random = newbugview.JCheckBoxRandom.isSelected();
-         });
-         
-             
-         
-          newbugview.addJButtonOKActionListener((ActionEvent evt) -> {
-           
-               String ACommand = evt.getActionCommand();
-               if (ACommand.equals("Update"))
-         {
-             
-          DisableProcedure(newbugview, newbug);
-            newbugview.Locked= true;
-            newbug.Locked = true;
-         }
-         if (ACommand.equals("Edit"))
-         {
-             EnableProcedure(newbugview, newbug);
-             newbugview.Locked = false;
-             newbug.Locked = false;
-         } 
-          
-           });
-         newbugview.addRightClickPanelListener(newbug, newbugview, Window);
-         newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
-               MoveProcedure(newbugview.index, -1);
-           });
-         newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
-               MoveProcedure(newbugview.index, 1);
-           });  
-           newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
-               
-               RunSingleTest(newbug, newbugview);
-           });
-           
-           newbugview.addJTextFieldBugTitleDocListener(
-
-           new DocumentListener()
-           {
-       @Override
-       public void changedUpdate(DocumentEvent documentEvent) {
-       newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
- //      Window.changes = true;
-      }
-       @Override
-      public void insertUpdate(DocumentEvent documentEvent) {
-      newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
-//    Window.changes = true;
-      }
-      @Override
-      public void removeUpdate(DocumentEvent documentEvent) {
-      newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
-//      Window.changes = true;
-      }
-      }
-           );
-           
- newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
-               DeleteBug(newbugview.index);
-           
-               UpdateDisplay();
-
-           });
-
- 
- 
-           newbugview.addJButtonGoActionActionListener((ActionEvent evt) -> {
-              GoAction thisActionToAdd = new GoAction("");
-               GoActionView thisActionViewToAdd = new GoActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-          ScrollActionPaneDown(newbugview);
-           
-            this.changes=true;  
-           });
-            newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
-              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
-              ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-             
-                     thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-       ScrollActionPaneDown(newbugview);
-            this.changes=true;  
-           });
-           newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
-              TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
-              TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-                  thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-       ScrollActionPaneDown(newbugview);
-            this.changes=true;  
-           });
-           newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
-             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
-             FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-        ScrollActionPaneDown(newbugview);
-            this.changes=true;  
-           });
-           newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
-             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
-             NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-        ScrollActionPaneDown(newbugview);
-            this.changes=true;  
-           });
-               newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
-             YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
-             YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
-            UpdateDisplay();
-        ScrollActionPaneDown(newbugview);
-            this.changes=true;  
-           });
-           
-    newbugview.addDoActionItemListener((ItemEvent e) -> {
-        if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String ActionToAdd = ActionType.toString();
-            ActionsMaster newActionsMaster = new ActionsMaster();
-            HashMap<String, Action> ActionHashMap = newActionsMaster.ActionHashMap;
-            HashMap<String, ActionView> ActionViewHashMap = newActionsMaster.ActionViewHashMap;
-            
-            newbugview.JComboBoxDoActions.setSelectedIndex(0);
-           if (ActionHashMap.containsKey(ActionToAdd))
-           {
-               Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
-               ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);
-                   UpdateDisplay();
-       ScrollActionPaneDown(newbugview);
-            this.changes=true; 
-           }      
-         
-            
-       
-        }
-           });
-     newbugview.addPassFailActionsItemListener((ItemEvent e) -> {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-             Object PassFailActionType = e.getItem();
-             String PassFailActionToAdd = PassFailActionType.toString();
-             ActionsMaster newActionsMaster = new ActionsMaster();
-             HashMap<String, Action> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
-             HashMap<String, ActionView> PassFailActionViewHashMap = newActionsMaster.PassFailActionViewHashMap;
-             
-             newbugview.JComboBoxPassFailActions.setSelectedIndex(0);
-             if (PassFailActionHashMap.containsKey(PassFailActionToAdd))
-             {
-                 Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
-               ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview); 
-                UpdateDisplay();
-        ScrollActionPaneDown(newbugview);
-             this.changes=true;
-             }
-          
-             
-        
-         }
-           });
-     
-      }
+  
        public void ScrollActionPaneDown(ProcedureView bugview)
  {
   
         JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
  action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
  }       
-      public void AddActionToArray (Action action, ActionView actionview, Procedure newbug, ProcedureView newbugview)
+      public void AddActionToViewArray (Action action, ActionView actionview, Procedure newbug, ProcedureView newbugview)
 {
             newbugview.ActionsViewList.add(actionview);
-            newbug.ActionsList.add(action);
+          
             actionview.index = newbugview.ActionsViewList.size()-1;
-            action.index = newbug.ActionsList.size()-1;
+         
             
 
 }
   
 
-   public File BrowseForJSFileAction ()
-   {
-           final JFileChooser CSVFileChooser = new JFileChooser();
-   BrowserMatorConfig theseProps = new BrowserMatorConfig();
-
-      String lastJSOpenDir = theseProps.getKeyValue("lastused_js_open_dir");
-       if (lastJSOpenDir!=null)
-        {
-        CSVFileChooser.setCurrentDirectory(new File(lastJSOpenDir));
-        } 
- FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Javascript file (*.js)","js");
-
-    CSVFileChooser.setFileFilter(filefilter);
-CSVFileChooser.setPreferredSize(new Dimension(800,600));
-int returnVal = CSVFileChooser.showOpenDialog(this);
-        File chosenDir = CSVFileChooser.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = CSVFileChooser.getSelectedFile();   
-
-    if (file.getAbsoluteFile().getName().contains(".js"))
-{
  
-}
-else
-{
-   String path = file.getAbsolutePath();
-    
-File newfile = new File(path + ".js");
- file = newfile;
- 
-}  
-    return file;
-            }
-            else
-            {
-            return null;
-            }   
-   }
-   public void MoveProcedure (int toMoveIndex, int Direction)
-   {
-     int SwapIndex = toMoveIndex + Direction;
-    if (Direction == 1)
-       {
-      if (SwapIndex<BugArray.size())
-      {
-    Collections.swap(BugArray, toMoveIndex, SwapIndex);
-  Collections.swap(BugViewArray, toMoveIndex, SwapIndex);
-  BugArray.get(toMoveIndex).index = toMoveIndex;
-  BugViewArray.get(SwapIndex).index = SwapIndex;
-    
-      }
-       }  
-    if (Direction == -1)
-    {
-        if (SwapIndex >= 0)
-        {
-    Collections.swap(BugArray, toMoveIndex, SwapIndex);
-  Collections.swap(BugViewArray, toMoveIndex, SwapIndex);
-  BugArray.get(toMoveIndex).index = toMoveIndex;
-  BugViewArray.get(SwapIndex).index = SwapIndex;
- 
-        }
-    }
-   
-      UpdateDisplay();
-         JComponent component = (JComponent) this.MainScrollPane.getViewport().getView();
-
-        Rectangle bounds =  BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
-     bounds.height = 50;
-      component.scrollRectToVisible(bounds);
-     
-    
-   }
-   public void MoveAction (Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
-   {
-
-    int SwapIndex = toMoveIndex + Direction;
-    if (Direction == 1)
-       {
-                if (toMoveIndex<thisBug.ActionsList.size()-1)
-     {
-
-
-  Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
-    
-
-
-      
-  
-    }
-
-       }
-       if (Direction == -1)
-       {
-     if (toMoveIndex!=0)
-    {
-    Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
-
-
-       }
-   }
-  UpdateDisplay();
-
-       this.changes=true;
-   }
-  
-   public void DeleteAction (Procedure thisBug, ProcedureView thisBugView, int atIndex)
-   {
-     String stringactionindex = Integer.toString(atIndex+1);
-        String stringbugindex = Integer.toString(thisBugView.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        if (VarHashMap.containsKey(bugdashactionindex))
-        {
-            VarHashMap.remove(bugdashactionindex);
-            UpdateStoredVarPulldown();
-        }
-        if (VarLists.containsKey(bugdashactionindex))
-        {
-            VarLists.remove(bugdashactionindex);
-            UpdateStoredListsPulldown("Select a stored URL List");
-        }
-    thisBug.ActionsList.remove(atIndex);
-    thisBugView.ActionsViewList.remove(atIndex);
-
-  for(int BugIndex=0; BugIndex<thisBug.ActionsList.size(); BugIndex++)
-     {
-     if (BugIndex>=atIndex)
-     {
-     thisBug.ActionsList.get(BugIndex).index--;
-     thisBugView.ActionsViewList.get(BugIndex).index--;
-     }
-     }
- 
-  UpdateDisplay();
-  this.changes=true;
-   }
-   public void DeleteBug (int BugIndex)
-   {
-   for (Action A: this.BugArray.get(BugIndex).ActionsList)
-   {
-       if ("Store Link as Variable by XPATH".equals(A.Type))
-       {
-           VarHashMap.remove(A.Variable2);
-       }
-       if ("Store Links as URL List by XPATH".equals(A.Type))
-       {
-           VarLists.remove(A.Variable2);
-       }
-   }
-   UpdateStoredVarPulldown();
-   this.BugArray.remove(BugIndex);
-   this.BugViewArray.remove(BugIndex);
-this.changes=true;
-   }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -2199,217 +1236,29 @@ this.changes=true;
     private void jButtonNewDataLoopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewDataLoopActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNewDataLoopActionPerformed
-  private void jCheckBoxPromptToCloseActionPerformed(ActionEvent evt)
-  {
-  this.PromptToClose = jCheckBoxPromptToClose.isSelected();
-  // this.changes=true;
-  }
-  private void jCheckBoxShowReportActionPerformed(ActionEvent evt)
-  {
-  this.ShowReport = jCheckBoxShowReport.isSelected();
-  if (this.ShowReport==false)
-  {
-      jCheckBoxIncludeScreenshots.setEnabled(false);
-    
-  }
-  else
-  {
-      jCheckBoxEmailReportFail.setSelected(false);
-      this.EmailReportFail = false;
-      jCheckBoxEmailReport.setSelected(false);
-        this.EmailReport = false;
-    jCheckBoxIncludeScreenshots.setEnabled(true);  
-      jCheckBoxExitAfter.setSelected(false);
-        this.ExitAfter = false;
-  }
-  }
-  
-   private void jCheckBoxExitAfterActionPerformed(ActionEvent evt)
-  {
-  this.ExitAfter = jCheckBoxExitAfter.isSelected();
-  if (this.ExitAfter)
-  {
-      jCheckBoxShowReport.setSelected(false);
-      this.ShowReport = false;
-      
-      
-  }
  
-  }
-  public void setUniqueFileOption(String option)
+  public void setUniqueFileOptionView(String option)
   {
       if (option.equals("file"))
       {
          jRadioButtonUniquePerFile.setSelected(true);
          jRadioButtonUniqueGlobal.setSelected(false);
-       UniqueOption = option; 
+   
          
       }
       if (option.equals("global"))
       {
           jRadioButtonUniquePerFile.setSelected(false);
          jRadioButtonUniqueGlobal.setSelected(true);
-         UniqueOption = option;
+      
          
       }
       
       
   }
-  public String getUniqueFileOption()
-  {
-      return UniqueOption;
-  }
-  
-  private void jRadioButtonUniquePerFileActionPerformed(ActionEvent evt)
-  {
-      if (jRadioButtonUniquePerFile.isSelected())
-      {
-          jRadioButtonUniqueGlobal.setSelected(false);
-           UniqueOption = "file";
-      }
-      else
-      {
-          jRadioButtonUniqueGlobal.setSelected(true);
-           UniqueOption = "global";
-      }
-  }
-    private void jRadioButtonUniqueGlobalActionPerformed(ActionEvent evt)
-  {
-       if (jRadioButtonUniqueGlobal.isSelected())
-      {
-          jRadioButtonUniquePerFile.setSelected(false);
-          UniqueOption = "global";
-      }
-      else
-      {
-          jRadioButtonUniquePerFile.setSelected(true);
-          UniqueOption = "file";
-      }  
-  }
-  private void jCheckBoxUniqueURLsActionPerformed(ActionEvent evt)
-  {
-     UniqueList = jCheckBoxUniqueURLs.isSelected();
-    
-        jRadioButtonUniquePerFile.setEnabled(UniqueList);
-        jRadioButtonUniqueGlobal.setEnabled(UniqueList);
-        if (!jRadioButtonUniquePerFile.isSelected() && !jRadioButtonUniqueGlobal.isSelected() )
-        {
-           setUniqueFileOption("file");
-        }
-    
-  
-  }
-  private void jCheckBoxEmailReportActionPerformed(ActionEvent evt)
-  {
-   this.EmailReport = jCheckBoxEmailReport.isSelected();
-  if (this.EmailReport==true)
-  {
-       jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
-      jCheckBoxShowReport.setSelected(false);
-      this.ShowReport = false;
-      jCheckBoxEmailReportFail.setSelected(false);
-
-      this.EmailReportFail = false;
-  }
  
-  // this.changes=true;
-  }
-  private void jCheckBoxEnableMultiSessionActionPerformed(ActionEvent evt)
-  {
-    if (jCheckBoxEnableMultiSession.isSelected())
-    {
-     jSpinnerSessions.setEnabled(true);
-     this.MultiSession = true;
-     
-    } 
-    else
-    {
-        jSpinnerSessions.setEnabled(false);
-        this.MultiSession = false;
-    }
-  }
-
-  private void jCheckBoxEmailReportFailActionPerformed(ActionEvent evt)
-  {
-     this.EmailReportFail = jCheckBoxEmailReportFail.isSelected();
-  if (this.EmailReportFail==true)
-  {
-       jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
-  jCheckBoxShowReport.setSelected(false);
-            this.ShowReport = false;
-     jCheckBoxEmailReport.setSelected(false);
-     this.EmailReport = false;
-  }
-
-
-  }
- private void jCheckBoxOSTypeWindows32ActionPerformed(ActionEvent evt)
- {
-     
-     if (jCheckBoxOSTypeWindows32.isSelected())
-     {
-         this.OSType = "Windows32";
-         jCheckBoxOSTypeWindows64.setSelected(false);
-     jCheckBoxOSTypeMac.setSelected(false);
-     jCheckBoxOSTypeLinux32.setSelected(false);
-     jCheckBoxOSTypeLinux64.setSelected(false);
-     }
-   
- }
-  private void jCheckBoxOSTypeWindows64ActionPerformed(ActionEvent evt)
- {
-     
-     if (jCheckBoxOSTypeWindows64.isSelected())
-     {
-         this.OSType = "Windows64";
-         jCheckBoxOSTypeWindows32.setSelected(false);
-     jCheckBoxOSTypeMac.setSelected(false);
-     jCheckBoxOSTypeLinux32.setSelected(false);
-     jCheckBoxOSTypeLinux64.setSelected(false);
-     }
-   
- }
-
-
-   private void jCheckBoxOSTypeMacActionPerformed(ActionEvent evt)
- {
-     
-     if (jCheckBoxOSTypeMac.isSelected())
-     {
-         this.OSType = "Mac";
-     jCheckBoxOSTypeWindows32.setSelected(false);
-     jCheckBoxOSTypeLinux32.setSelected(false);
-     jCheckBoxOSTypeLinux64.setSelected(false);
-     jCheckBoxOSTypeWindows64.setSelected(false);
-     }
- }
-    private void jCheckBoxOSTypeLinux32ActionPerformed(ActionEvent evt)
- {
-     
-     if (jCheckBoxOSTypeLinux32.isSelected())
-     {
-         this.OSType = "Linux32";
-     jCheckBoxOSTypeMac.setSelected(false);
-     jCheckBoxOSTypeWindows32.setSelected(false);
-     jCheckBoxOSTypeLinux64.setSelected(false);
-     jCheckBoxOSTypeWindows64.setSelected(false);
-     }
- }
-     private void jCheckBoxOSTypeLinux64ActionPerformed(ActionEvent evt)
- {
-     
-     if (jCheckBoxOSTypeLinux64.isSelected())
-     {
-         this.OSType = "Linux64";
-     jCheckBoxOSTypeMac.setSelected(false);
-     jCheckBoxOSTypeLinux32.setSelected(false);
-     jCheckBoxOSTypeWindows32.setSelected(false);
-     jCheckBoxOSTypeWindows64.setSelected(false);
-     }
-
- }
+  
+ 
 public void setOSTypeActive (Boolean Active)
 {
     if (Active)
@@ -2466,7 +1315,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    {
        jButtonGutsView.addActionListener(listener);
    }
- public void ClearEmailSettings ()
+ public void clearEmailSettings()
  {
      setSMTPHostname("");
      setEmailLoginName("");
@@ -2476,15 +1325,30 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
      setSubject("");
      
  }
-   public void ShowGuts()
+    public void setEmailSettings(SeleniumTestToolData in_appdata)
+    {
+          String smtp_hostname = in_appdata.SMTPHostName;
+   String login_name = in_appdata.EmailLoginName;
+   String password = in_appdata.EmailPassword;
+   String to = in_appdata.EmailTo;
+   String from = in_appdata.EmailFrom;
+   String subject = in_appdata.EmailSubject;
+ 
+   setSMTPHostname(smtp_hostname);
+   setEmailLoginName(login_name);
+   try
    {
-     
-        ViewGuts GUTSREF = new ViewGuts(this);
-  GUTSREF.execute();
-     
-       
-       
+   password = Protector.decrypt(password);
    }
+   catch (Exception ex)
+   {
+       System.out.println("Exception getting email password: " + ex.toString());
+   }
+   setEmailPassword(password);
+   setEmailTo(to);
+   setEmailFrom(from);
+   setSubject(subject);
+    }
     public void setGutsViewButtonName(String button_name)
     {
         jButtonGutsView.setText(button_name);
@@ -2554,84 +1418,83 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     {
       jTextFieldSubject.setText(Subject);
     } 
-    public void setExitAfter (Boolean exitafter)
+    public void setExitAfterView (Boolean exitafter)
     {
-        this.ExitAfter = exitafter;
+      
         jCheckBoxExitAfter.setSelected(exitafter);
-        if (this.ExitAfter)
+        if (exitafter)
         {
          jCheckBoxShowReport.setSelected(false);
-      this.ShowReport = false;
+    
         }
     }
-    public void setShowReport (Boolean showreport)
+    public void setShowReportView (Boolean showreport)
     {
-        this.ShowReport = showreport;
+      
         jCheckBoxShowReport.setSelected(showreport);
-        if (this.ShowReport==false)
+        if (showreport==false)
         {
     
       jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
+   
         }
         else
         {
         jCheckBoxEmailReportFail.setSelected(false);
-        this.EmailReportFail = false;
-        
+      
         jCheckBoxEmailReport.setSelected(false);
-        this.EmailReport = false;
+       
       
         jCheckBoxIncludeScreenshots.setEnabled(true);
         jCheckBoxExitAfter.setSelected(false);
-        this.ExitAfter = false;
+      
         }
     }
-    public void setIncludeScreenshots(Boolean includescreenshots)
+    public void setIncludeScreenshotsView(Boolean includescreenshots)
     {
-        this.IncludeScreenshots = includescreenshots;
+    
         jCheckBoxIncludeScreenshots.setSelected(includescreenshots);
     }
  
-    public void setEmailReport (Boolean emailreport)
+    public void setEmailReportView(Boolean emailreport)
     {
         jCheckBoxEmailReport.setSelected(emailreport);
-        this.EmailReport = emailreport;
+     
         if (emailreport==true)
         {
              jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
+ 
             jCheckBoxShowReport.setSelected(false);
-            this.ShowReport = false;
+        
                     jCheckBoxIncludeScreenshots.setSelected(false);
       jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
+   
             jCheckBoxEmailReportFail.setSelected(false);
         }
      
     }
     
-        public void setEmailReportFail (Boolean emailreportfail)
+        public void setEmailReportFailView (Boolean emailreportfail)
     {
-        this.EmailReportFail = emailreportfail;
+      
         jCheckBoxEmailReportFail.setSelected(emailreportfail);
          if (emailreportfail==true)
         {
              jCheckBoxIncludeScreenshots.setEnabled(false);
-      this.IncludeScreenshots=false;   
+   
               jCheckBoxShowReport.setSelected(false);
-            this.ShowReport = false;
+        
             jCheckBoxEmailReport.setSelected(false);
-            this.EmailReport = false;
+       
         }
          else
          {
       
-         this.EmailReportFail = false;
+      
          
          }
     }
-        public void setTargetBrowser (String targetbrowser)
+        public void setTargetBrowserView (String targetbrowser)
         {   
             //legacy stuff
             if ("Firefox-Marionette".equals(targetbrowser))
@@ -2640,7 +1503,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
             
             jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
-            this.TargetBrowser = jComboBoxTargetBrowser.getSelectedItem().toString();
+       
             
             switch (targetbrowser)
             {
@@ -2703,13 +1566,13 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
            return "Windows32";
         }
-        public void setOSType(String OSType)
+        public void setOSTypeView(String OSType)
         {
             if ("Windows".equals(OSType))
             {
                 OSType = "Windows32";
             }
-            this.OSType = OSType;
+          
             switch (OSType)
             {
                 case "Windows":
@@ -2735,35 +1598,14 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
             }
                 
         }
-  public java.util.List<String[]> RandomizeAndLimitFileList(java.util.List<String[]> data_in, int limit, Boolean randval)
-  {
-    // first row is column names, remove it
-   java.util.List<String[]> ret_val = null;
-             if (randval)
-                {
-             long seed = System.nanoTime();
-Collections.shuffle(data_in, new Random(seed));
-                }
-                if (limit>0)
-                {
-                    
-                    int sizeofvarlist = data_in.size();
 
- 
-   data_in.subList(limit, sizeofvarlist).clear();
-                }
-            
-     ret_val = data_in;
-     return ret_val;
-             
-  }
- public void setUniqueList(boolean unique)
+ public void setUniqueListView(boolean unique)
  {
-     this.UniqueList = unique;
+  
     jCheckBoxUniqueURLs.setSelected(unique);
     jRadioButtonUniquePerFile.setEnabled(unique);
     jRadioButtonUniqueGlobal.setEnabled(unique);
-     setUniqueFileOption(UniqueOption);
+ 
  }
  
  public boolean getUniqueList()
@@ -2773,335 +1615,8 @@ Collections.shuffle(data_in, new Random(seed));
    
     return checked;  
  }
-  public void RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
-  {
-   if (VarLists.containsKey(URLListName))
-            {
-                      if (this.UniqueList)
-{
-   String userdir = System.getProperty("user.home");
-   String file_name_to_check = "global";
-       if (UniqueOption.equals("file"))
-       {
-           file_name_to_check = this.short_filename;
-       }
-        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_check + "_visited_url_log.xml";
-        
-         File file = new File(visited_list_file_path);
-         if (file.exists())
-         {
-                   Document doc=null;
-try
-{
 
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-DocumentBuilder builder = factory.newDocumentBuilder();
-String file_path = file.getAbsolutePath();
 
-doc = builder.parse(file_path);
-   String[] currentlist = VarLists.get(URLListName);
-   
-
- ArrayList<String> removeList = new ArrayList<String>();
-  
-for (String grabbedURL: currentlist)
-{   
-     
-    
-    
-    NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
-   NodeList SettingsNodes = theseElements.item(0).getChildNodes();
-String URL_FROM_FILE="";
-Boolean hasValue = false;
-int node_match_index = 0;
-    for (int k = 0; k<SettingsNodes.getLength(); k++)
-    {
-          URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
-  // NamedNodeMap Times = doc.getElementsByTagName("URL").item(0).getAttributes(); 
-     if (URL_FROM_FILE.equals(grabbedURL))
-     {
-      removeList.add(grabbedURL);
-     }
-     else
-     {
-     
-     }
-    }
-
-    }
- 
-  
-for (int x = 0; x<VarLists.get(URLListName).length; x++)
-{ 
-  ArrayList<String> convert_list = new ArrayList(Arrays.asList(currentlist));
-
-    for (int y = 0; y<removeList.size(); y++)
-    {
-   if (VarLists.get(URLListName)[x].equals(removeList.get(y)))
-   {
-       convert_list.remove(x);
-       
-   }
-    }
-    currentlist = convert_list.toArray(new String[convert_list.size()]);
-
-}
-// VarLists.get(URLListName).clear();
-VarLists.replace(URLListName, currentlist);
-
-}
-catch (Exception ex)
-{
-    
-}
-         }
-}
-      
-                       ArrayList<String> convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
-                   
-                if (randval)
-                {
-             long seed = System.nanoTime();
-             
- 
-             
-Collections.shuffle(convert_list, new Random(seed));
-   String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
-
- VarLists.replace(URLListName, currentlist);
-                }
-                if (limit>0)
-                {
-                    int sizeofvarlist = VarLists.get(URLListName).length;
-
- if (limit<sizeofvarlist)
- {
-     convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
-   convert_list.subList(limit, sizeofvarlist).clear();
-     String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
-    VarLists.replace(URLListName, currentlist);
- }
-else
- {
-   
- }
- }
-            
-            }         
-  }
- public void AddURLToUniqueFileList(String thisURL)
- {
-     Visitted_URL_List.add(thisURL);
-   
- }
- public void ClearVisittedURLList()
- {
-     Visitted_URL_List.clear();
- }
- public void AddURLListToUniqueFile(String fileOption)
- {
-      
-     String file_name_to_write = "global";
-        String userdir = System.getProperty("user.home");
-        if (fileOption.equals("file"))
-        {
-        file_name_to_write = this.short_filename;
-        }
-        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
-         File file = new File(visited_list_file_path);
-         if (file.exists())
-         {
-                   Document doc=null;
-try
-{
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-DocumentBuilder builder = factory.newDocumentBuilder();
-String file_path = file.getAbsolutePath();
-
-doc = builder.parse(file_path);
-for (int x=0; x<Visitted_URL_List.size(); x++)
- {
-     String URL_To_Store = Visitted_URL_List.get(x);
-     
-NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
-   NodeList SettingsNodes = theseElements.item(0).getChildNodes();
-
-String URL_FROM_FILE="";
-Boolean hasValue = false;
-int node_match_index = 0;
-    for (int k = 0; k<SettingsNodes.getLength(); k++)
-    {
-  
-   URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
- 
-      NamedNodeMap Times = doc.getElementsByTagName("URL").item(0).getAttributes(); 
-   
-   if (URL_To_Store.equals(URL_FROM_FILE))
-   {
-    hasValue = true; 
-    node_match_index = k;
-   }
-}
-    if (hasValue)
-    {
-                 
-     String visits = SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").getNodeValue();
-     int visit_int = Integer.parseInt(visits);
-     visit_int++;
-     String visits_to_write = String.valueOf(visit_int);
-     SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").setNodeValue(visits_to_write);
-     
-    }
-    else
-    {
-      if (URL_To_Store!="")
-      {
-  Node root = doc.getFirstChild();
-
-Element new_url = doc.createElement("URL");
-new_url.setTextContent(URL_To_Store);
-root.appendChild(new_url);
-
-      }
-    }
-    
- }
-            try
-             {
-   XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
-                        new FileOutputStream(file)));
-     
-             try {
-xmlfile.writeStartElement("URLsVisitted");
-xmlfile.writeAttribute("Filename",file.getName());
-NodeList urls_to_write = doc.getElementsByTagName("URL");
-
-    for (int k = 0; k<urls_to_write.getLength(); k++)
-    {
-
-  
-     String visits_to_write = "1";
-       LocalDateTime stringtime =  LocalDateTime.now();
- 
-   String thisSettingsNodeValue = urls_to_write.item(k).getTextContent();
-   if (urls_to_write.item(k).getAttributes().getLength()>0)
-   {
-      visits_to_write = urls_to_write.item(k).getAttributes().getNamedItem("Visits").getTextContent();
-       
-   }
-          xmlfile.writeStartElement("URL");
-      xmlfile.writeAttribute("Visits", visits_to_write);
-      xmlfile.writeAttribute("Time", stringtime.toString());
-
-    xmlfile.writeCharacters(thisSettingsNodeValue);
-  
-    xmlfile.writeEndElement();
- }
-    xmlfile.writeEndElement();    
-     } catch (Exception e) {
-           System.out.println("Write error:" + e.toString());
- 
-        } finally {
-            xmlfile.flush();
-            xmlfile.close();
-} 
-             }
-             catch (Exception e) {
-           System.out.println("Write error:" + e.toString());
- 
-        }
-
-}
-catch (Exception e)
-{
-    System.out.println("DocumentBuilder error(seleniumtesttoolline2990):" + e.toString());
-   
-}
-         }
-         else
-         {
-             try
-             {
-   XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
-                        new FileOutputStream(file)));
-     
-             try {
-xmlfile.writeStartElement("URLsVisitted");
-xmlfile.writeAttribute("Filename",file.getName());
- for (String URL_To_Store: Visitted_URL_List)
- {
-        xmlfile.writeStartElement("URL");
-      xmlfile.writeAttribute("Visits", "1");
-         LocalDateTime stringtime =  LocalDateTime.now();
-        xmlfile.writeAttribute("Time", stringtime.toString());  
-    xmlfile.writeCharacters(URL_To_Store);
-  
-    xmlfile.writeEndElement();
- }
-    xmlfile.writeEndElement();    
-     } catch (Exception e) {
-           System.out.println("Write error:" + e.toString());
- 
-        } finally {
-            xmlfile.flush();
-            xmlfile.close();
-} 
-             }
-             catch (Exception e) {
-           System.out.println("Write error:" + e.toString());
- 
-        }
-         }
-
-         
- }
- public int FillTables(Procedure thisproc, ProcedureView thisprocview)
-  {
-      int number_of_rows = 0;
-     for (Action ThisAction: thisproc.ActionsList)
-     {
-      String concat_variable;
- 
-              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
-    if (var1Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable1;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-            if (parts[2].contains(":"))
-            {   
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-               if (this.VarLists.containsKey(URLListName))
-            {
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
-            number_of_rows = this.VarLists.get(URLListName).length;
-            }
-            }
-        } 
-    if (var2Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable2;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-             if (parts[2].contains(":"))
-            {  
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-            if (this.VarLists.containsKey(URLListName))
-            {
-              
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
-            number_of_rows = this.VarLists.get(URLListName).length;
-            }
-            }
-        } 
-    
-    }
-     return number_of_rows;
-     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField JTextFieldProgress;

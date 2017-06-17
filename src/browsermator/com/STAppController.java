@@ -24,8 +24,11 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.SAVE_DIALOG;
@@ -42,6 +45,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -51,48 +58,32 @@ import javax.xml.stream.XMLStreamWriter;
 
 
 
-public final class STAppController extends JFrame {
+public final class STAppController  {
  
 public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
-private UIManager.LookAndFeelInfo LAFOptions[];
-private JRadioButtonMenuItem LookAndFeelOptions[];
-private ButtonGroup LookAndFeelGroup;
-     private JMenuBar menuBar;
-     private JMenu fileMenu;
-     private JMenuItem openMenuItem;
-     private JMenuItem saveMenuItem;
-     private JMenuItem exitMenuItem;
-     private JMenuItem closeMenuItem;
-     private JMenu jMenuView;
-     private JMenu jMenuThemes;
-     private JMenu helpMenu;
-     private JMenuItem contentsMenuItem;
-     private JMenuItem aboutMenuItem;
-     private JMenuItem newFileItem;
-     private JMenuItem saveAsMenuItem;
-     private JMenuItem uploadFileToCloudMenuItem;
-      private JMenuItem browseCloudMenuItem;
-      String filename;
-      private JMenuItem importMenuItem;
+
+
+
+  
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.0.86b";
+   public final String ProgramVersion = "1.1.00branched";
    public String loginName;
    public String loginPassword;
-   public String old_filename;
+
   public int user_id;
 //  String rootURL = "http://localhost";
  String rootURL = "https://www.browsermator.com";
      ArrayList<SeleniumTestTool> MDIClasses = new ArrayList();
-
+ MainAppFrame mainAppFrame;
 
   public STAppController(String[] args) throws PropertyVetoException {
   
-     super ("Browsermator");
-                 Properties newProps = new Properties();
+    
+       this.mainAppFrame = new MainAppFrame();        
                   this.loginName = "";
     this.loginPassword = "";
-    this.old_filename="";
+
          Boolean file_exists = false;
               String userdir = System.getProperty("user.home");
     try
@@ -106,28 +97,9 @@ if (file_exists == false)
     CreateConfigFile();
 }
      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
-   newProps.load(input);
+  mainAppFrame.setWindowProps(input);
  
-   int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
-   int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
-   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1025"));
-   int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "802"));
-      Point startPosition = new Point(winLocX, winLocY);
-            if (isLocationInScreenBounds(startPosition) )
-        {
-
-        super.setLocation(startPosition);
-        super.setSize(winWidth, winHeight);
-        }
-       
-      else
-      {
-  int Width = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-int Height = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-super.setSize(Width-300,Height-300);
-      super.setLocation(0,0);
-    super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-      }
+ 
     input.close();
 
     
@@ -145,9 +117,9 @@ super.setSize(Width-300,Height-300);
  //   MouseListener[] RecentFilesListeners = null;
    
   
-   super.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+ mainAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
    
-    super.addWindowListener(new WindowAdapter() {
+     mainAppFrame.addWindowListener(new WindowAdapter() {
     @Override
     public void windowClosing(WindowEvent windowEvent) {
      int closure = 0;
@@ -287,9 +259,7 @@ super.setSize(Width-300,Height-300);
 Navigator.setVisible(true);
 
 
- initComponents();
-
- add(SeleniumToolDesktop);
+  mainAppFrame.add(SeleniumToolDesktop);
 
 SeleniumToolDesktop.add(Navigator);
 
@@ -306,10 +276,10 @@ SeleniumToolDesktop.add(Navigator);
   CurrentMDIWindowIndex = GetCurrentWindow();  
   if (CurrentMDIWindowIndex == -1)
   {
-  saveMenuItem.setEnabled(false);
+  mainAppFrame.setSaveMenuEnabled(false);
   }
   
-  addFileMenuImportActionListener(
+  mainAppFrame.addFileMenuImportActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
             
@@ -335,7 +305,7 @@ SeleniumToolDesktop.add(Navigator);
       }           
            });
   
-  addFileMenuSaveActionListener(
+  mainAppFrame.addFileMenuSaveActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
                  
@@ -357,7 +327,7 @@ SeleniumToolDesktop.add(Navigator);
            } 
        });
   
-  addFileMenuCloseActionListener( new ActionListener() {
+  mainAppFrame.addFileMenuCloseActionListener( new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
                   
          
@@ -394,7 +364,7 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
-  addFileMenuBrowseCloudMenuItemActionListener(
+  mainAppFrame.addFileMenuBrowseCloudMenuItemActionListener(
  new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
                   
@@ -405,7 +375,7 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
-  addFileMenuuploadFileToCloudMenuItemActionListener(
+  mainAppFrame.addFileMenuuploadFileToCloudMenuItemActionListener(
  new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
                   
@@ -427,7 +397,7 @@ SeleniumToolDesktop.add(Navigator);
             
            } 
        });
-  addFileMenuSaveAsActionListener(
+  mainAppFrame.addFileMenuSaveAsActionListener(
       new ActionListener() {
            public void actionPerformed (ActionEvent evt) {
                   
@@ -450,12 +420,13 @@ SeleniumToolDesktop.add(Navigator);
            } 
        });
   
- addFileMenuNewActionListener(
+ mainAppFrame.addFileMenuNewActionListener(
   
          new ActionListener()
   {
   public void actionPerformed (ActionEvent evt)
   {
+      String filename = "";
      if (MDIClasses.size() == 0) 
            {
           filename = "untitled";
@@ -466,23 +437,24 @@ SeleniumToolDesktop.add(Navigator);
            }
   
  
- 
-  SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
- STAppFrame.setProperties(filename);
+  ArrayList<ProcedureView> blankprocviews = new ArrayList<ProcedureView>();
+  ArrayList<Procedure> blankprocs = new ArrayList<Procedure>();
+  SeleniumTestTool STAppFrame = new SeleniumTestTool(blankprocviews);
+  SeleniumTestToolData STAppData = new SeleniumTestToolData(blankprocs);
+ STAppData.setFilename(filename);
+ STAppFrame.setFilename(filename);
  STAppFrame.ShowStoredVarControls(false);
+ STAppData.setTargetBrowser("Chrome");
   STAppFrame.setTargetBrowser("Chrome");
+    STAppData.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows32");
+  STAppData.setOSType("Windows32");
      STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
 
   STAppFrame.setResizable(true);
 
-  
-
-
-
-// SeleniumToolDesktop.repaint();
   MDIClasses.add(STAppFrame);
     DisplayWindow (MDIClasses.size()-1);
 
@@ -514,7 +486,7 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
  
- STAppFrame.RunActions(); 
+ STAppData.RunActions(); 
  
   
         }
@@ -526,7 +498,7 @@ SeleniumToolDesktop.add(Navigator);
         { 
  
  STAppFrame.ClearEmailSettings(); 
- 
+  STAppData.ClearEmailSettings();
   
         }
       }
@@ -537,7 +509,8 @@ SeleniumToolDesktop.add(Navigator);
         { 
  try
  {
- STAppFrame.LoadGlobalEmailSettings();
+  STAppData.loadGlobalEmailSettings();
+  STAppFrame.setEmailSettings(STAppData);
  }
  catch (Exception ex)
  {
@@ -555,7 +528,7 @@ SeleniumToolDesktop.add(Navigator);
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
            STAppFrame.setTargetBrowser(TargetBrowser);
-           STAppFrame.changes = true;
+           STAppData.changes = true;
           
          }
         }
@@ -577,7 +550,8 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
     
-   STAppFrame.AddNewBug();  
+   STAppFrame.AddNewBugView();  
+   STAppData.AddNewBug();
   STAppFrame.UpdateDisplay();
      
            JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
@@ -591,13 +565,11 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
     
-//   File chosenCSVFile = BrowseForCSVFile();
-//   if (chosenCSVFile!=null)
-//   {
             File blankfile = new File("placeholder");
-   STAppFrame.AddNewDataLoop(); 
-  
-//   }
+   STAppData.AddNewDataLoop(); 
+   STAppFrame.AddNewDataLoop();
+    STAppFrame.UpdateDisplay();
+
  
   }
                                           
@@ -609,7 +581,7 @@ SeleniumToolDesktop.add(Navigator);
   }
     ); 
    
-  addFileMenuOpenActionListener(
+  mainAppFrame.addFileMenuOpenActionListener(
   new ActionListener()
           {
           public void actionPerformed (ActionEvent evt)
@@ -862,6 +834,7 @@ SeleniumToolDesktop.add(Navigator);
   {
   public void actionPerformed (ActionEvent evt)
   {
+      String filename = "";
       if (MDIClasses.size() == 0) 
            {
           filename = "untitled";
@@ -871,10 +844,13 @@ SeleniumToolDesktop.add(Navigator);
           filename = "untitled" + MDIClasses.size();
            }
   
- 
- 
-  SeleniumTestTool STAppFrame = new SeleniumTestTool(filename);
- STAppFrame.setProperties(filename);
+ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
+  ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
+  
+  SeleniumTestTool STAppFrame = new SeleniumTestTool(BugViewArray);
+  SeleniumTestToolData STAppData = new SeleniumTestToolData(BugArray);
+ STAppFrame.setFilename(filename);
+ STAppData.setFilename(filename);
  STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
   STAppFrame.setOSType("Windows32");
@@ -920,7 +896,7 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
  
- STAppFrame.RunActions(); 
+ STAppData.RunActions(); 
  
   
         }
@@ -931,8 +907,8 @@ SeleniumToolDesktop.add(Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
  
- STAppFrame.ClearEmailSettings(); 
- 
+ STAppFrame.clearEmailSettings();
+ STAppData.clearEmailSettings();
   
         }
       }
@@ -943,7 +919,10 @@ SeleniumToolDesktop.add(Navigator);
         { 
  try
  {
- STAppFrame.LoadGlobalEmailSettings();
+
+ STAppData.loadGlobalEmailSettings();
+  STAppFrame.setEmailSettings(STAppData);
+  
  }
  catch (Exception ex)
  {
@@ -961,7 +940,7 @@ SeleniumToolDesktop.add(Navigator);
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
            STAppFrame.setTargetBrowser(TargetBrowser);
-           STAppFrame.changes = true;
+           STAppData.changes = true;
           
          }
         }
@@ -1018,37 +997,7 @@ SeleniumToolDesktop.add(Navigator);
   
   
   }
-   public static boolean isLocationInScreenBounds(Point location) 
-    {
-      
-      // Check if the location is in the bounds of one of the graphics devices.
-    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-    Rectangle graphicsConfigurationBounds = new Rectangle();
-    
-    // Iterate over the graphics devices.
-    for (int j = 0; j < graphicsDevices.length; j++) {
-      
-      // Get the bounds of the device.
-      GraphicsDevice graphicsDevice = graphicsDevices[j];
-      graphicsConfigurationBounds.setRect(graphicsDevice.getDefaultConfiguration().getBounds());
-      
-        // Is the location in this bounds?
-      graphicsConfigurationBounds.setRect(graphicsConfigurationBounds.x, graphicsConfigurationBounds.y,
-          graphicsConfigurationBounds.width, graphicsConfigurationBounds.height);
-      if (graphicsConfigurationBounds.contains(location.x, location.y)) {
-        
-        // The location is in this screengraphics.
-        return true;
-        
-      }
-      
-    }
-    
-    // We could not find a device that contains the given point.
-    return false;
-    
-    }
+ 
    public final void CreateConfigFile()
   {
     String userdir = System.getProperty("user.home");
@@ -1081,9 +1030,9 @@ SeleniumToolDesktop.add(Navigator);
 		}    
       
   }
-  public int CheckToSaveChanges(SeleniumTestTool STAppFrame, Boolean savenow) 
+  public int CheckToSaveChanges(SelenliumTestTool STAppFrame, SeleniumTestToolData STAppData, Boolean savenow) 
   {
-if (STAppFrame.testRunning)
+if (STAppData.testRunning)
 {
     Prompter cantClose = new Prompter("Procedures Running!" , "You can't close the window while procedures are running.", false, 0,0);
    
@@ -1091,28 +1040,28 @@ if (STAppFrame.testRunning)
    
 }
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
-AllFieldValuesCheck.add(STAppFrame.OSType);
-AllFieldValuesCheck.add(STAppFrame.TargetBrowser);
-String stringWaitTime = String.valueOf(STAppFrame.GetWaitTime());
+AllFieldValuesCheck.add(STAppData.OSType);
+AllFieldValuesCheck.add(STAppData.TargetBrowser);
+String stringWaitTime = String.valueOf(STAppData.WaitTime);
 AllFieldValuesCheck.add(stringWaitTime);
-String stringTimeout = String.valueOf(STAppFrame.getTimeout());
+String stringTimeout = String.valueOf(STAppData.Timeout);
 AllFieldValuesCheck.add(stringTimeout);
-String stringSessions = String.valueOf(STAppFrame.getSessions());
+String stringSessions = String.valueOf(STAppData.Sessions);
 AllFieldValuesCheck.add(stringSessions);
-AllFieldValuesCheck.add(STAppFrame.getSMTPHostname());
-AllFieldValuesCheck.add(STAppFrame.getEmailFrom());
-AllFieldValuesCheck.add(STAppFrame.getEmailLoginName());
-AllFieldValuesCheck.add(STAppFrame.getEmailPassword());
-AllFieldValuesCheck.add(STAppFrame.getEmailTo());
-AllFieldValuesCheck.add(STAppFrame.getSubject());
+AllFieldValuesCheck.add(STAppData.SMTPHostName);
+AllFieldValuesCheck.add(STAppData.EmailFrom);
+AllFieldValuesCheck.add(STAppData.EmailLoginName);
+AllFieldValuesCheck.add(STAppData.EmailPassword);
+AllFieldValuesCheck.add(STAppData.EmailTo);
+AllFieldValuesCheck.add(STAppData.EmailSubject);
 String sthisbool = "false";
-if (STAppFrame.getEmailReport())
+if (STAppData.EmailReport)
 {
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
-if (STAppFrame.getEmailReportFail())
+if (STAppData.EmailReportFail)
 {
     sthisbool = "true";
 }
@@ -1121,39 +1070,39 @@ AllFieldValuesCheck.add(sthisbool);
 
 
 sthisbool = "false";
-if (STAppFrame.getExitAfter())
+if (STAppData.ExitAfter)
 {
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
-if (STAppFrame.getPromptToClose())
+if (STAppData.PromptToClose)
 {
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
-if (STAppFrame.getShowReport())
+if (STAppData.ShowReport)
 {
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
-if (STAppFrame.getIncludeScreenshots())
+if (STAppData.IncludeScreenshots)
 {
     sthisbool = "true";
 }
 AllFieldValuesCheck.add(sthisbool);
 sthisbool = "false";
-if (STAppFrame.getUniqueList())
+if (STAppData.UniqueList)
 {
     sthisbool = "true";
 }
 
 AllFieldValuesCheck.add(sthisbool);
 
-AllFieldValuesCheck.add(STAppFrame.getUniqueFileOption());
-for (Procedure thisproc: STAppFrame.BugArray)
+AllFieldValuesCheck.add(STAppData.getUniqueFileOption());
+for (Procedure thisproc: STAppData.BugArray)
 {
     AllFieldValuesCheck.add(thisproc.BugTitle);
     AllFieldValuesCheck.add(thisproc.DataFile);
@@ -1193,13 +1142,13 @@ for (Procedure thisproc: STAppFrame.BugArray)
         AllFieldValuesCheck.add(checkingboolval3);
     }
 }
-if (!STAppFrame.AllFieldValues.equals(AllFieldValuesCheck))
+if (!STAppData.AllFieldValues.equals(AllFieldValuesCheck))
 {
-   STAppFrame.changes = true;
+   STAppData.changes = true;
    
 }
 
-if (STAppFrame.changes==false)
+if (STAppData.changes==false)
 {
   return 0;
 }
@@ -1275,7 +1224,7 @@ return 1;
      int last_window_index = MDIClasses.size()-1;
      for (int x = last_window_index; x>-1; x--)
      {
-        closure  =  CheckToSaveChanges(MDIClasses.get(x), true);
+        closure  =  CheckToSaveChanges(mainApp.MDIClasses.get(x),  true);
       
       if (closure==1)
       {
@@ -1335,186 +1284,35 @@ return 1;
     
 } 
 
-      
-        @SuppressWarnings("unchecked")
-    private void initComponents() {
-   
-      menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        newFileItem = new javax.swing.JMenuItem();
-        jMenuView = new javax.swing.JMenu();
-        jMenuThemes = new javax.swing.JMenu();
-        helpMenu = new javax.swing.JMenu();
-        contentsMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
-        browseCloudMenuItem = new javax.swing.JMenuItem();
-        uploadFileToCloudMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        closeMenuItem = new javax.swing.JMenuItem();
-        importMenuItem = new javax.swing.JMenuItem();
-        newFileItem.setMnemonic('n');
-        newFileItem.setText("New");
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        closeMenuItem.setText("Close");
-        importMenuItem.setMnemonic('i');
-        importMenuItem.setText("Import");
-        fileMenu.add(newFileItem);
-        fileMenu.add(openMenuItem);
-        fileMenu.add(importMenuItem);
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
-        saveAsMenuItem.setText("Save As");
-        saveAsMenuItem.setMnemonic('a');
-        browseCloudMenuItem.setText("BrowserMator File Cloud");
-        uploadFileToCloudMenuItem.setText("Upload to BrowserMator Cloud");
-           saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));  
-           openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); 
-           closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));  
-                  LAFOptions = UIManager.getInstalledLookAndFeels();
-   LookAndFeelOptions = new JRadioButtonMenuItem[LAFOptions.length];
-   LookAndFeelGroup = new ButtonGroup();
- 
-  for (int count = 0; count<LAFOptions.length; count++)
-  {    
-     LookAndFeelOptions[count] = new JRadioButtonMenuItem(LAFOptions[count].getName());
-     jMenuThemes.add(LookAndFeelOptions[count]);
-     LookAndFeelGroup.add(LookAndFeelOptions[count]);
-     LookAndFeelOptions[count].addItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-            for (int count = 0; count < LAFOptions.length; count++ )
-            {
-                if (LookAndFeelOptions[count].isSelected())
-                try
-                {
-                  
-                    UIManager.setLookAndFeel(LAFOptions[count].getClassName());
-                    SwingUtilities.updateComponentTreeUI( getContentPane()  );
-                }
-                catch (Exception exception)
-                {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    });
-     
-   
-  
-  }
-  
-  LookAndFeelOptions[0].setSelected( true );
-        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+      public void AddMainAppListeners()
+      {
+    mainAppFrame.fileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileMenuActionPerformed(evt);
             }
         });
-
-      
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
-        fileMenu.add(closeMenuItem);
-        
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-      
-        fileMenu.add(exitMenuItem);
-        
-        
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
- fileMenu.add(saveAsMenuItem);
- fileMenu.add(browseCloudMenuItem);
- fileMenu.add(uploadFileToCloudMenuItem);
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        mainAppFrame.exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
         
-        fileMenu.add(exitMenuItem);
-
-        menuBar.add(fileMenu);
-        
-            fileMenu.add(exitMenuItem);
-
-        menuBar.add(fileMenu);
-
- 
-
-      
-        jMenuThemes.setText("Themes");
-        
-        
-        jMenuView.setText("View");
-       
-        menuBar.add(jMenuView);
-        jMenuView.add(jMenuThemes);
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
-        helpMenu.add(contentsMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
-
-        setJMenuBar(menuBar);
-   
-  
+    
 
 
     //    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
     }  
-   public void addFileMenuCloseActionListener (ActionListener listener)
+         public void ShowGuts(SeleniumTestTool in_sitetestview, SeleniumTestToolData in_sitetestdata)
    {
-       closeMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuNewActionListener (ActionListener listener)
-   {
-       newFileItem.addActionListener(listener);
-   }
-    public void addFileMenuSaveActionListener (ActionListener listener) {
-       saveMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuSaveAsActionListener (ActionListener listener) {
-    saveAsMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuBrowseCloudMenuItemActionListener(ActionListener listener)
-   {
-       browseCloudMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuuploadFileToCloudMenuItemActionListener (ActionListener listener)
-   {
-       uploadFileToCloudMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuImportActionListener (ActionListener listener)
-   {
-       importMenuItem.addActionListener(listener);
-   }
-   public void addFileMenuOpenActionListener (ActionListener listener) {
-       openMenuItem.addActionListener(listener);
-      
-   }
+     
+        ViewGuts GUTSREF = new ViewGuts(in_sitetestview, in_sitetestdata);
+  GUTSREF.execute();
+     
+       
+       
+   } 
+  
    
 
  
@@ -2920,4 +2718,672 @@ input.close();
 return "Unable to connect browsermator.com.";
   
  }
+ 
+ // to update below::::
+ 
+   public File BrowseForJSFileAction ()
+   {
+           final JFileChooser CSVFileChooser = new JFileChooser();
+   BrowserMatorConfig theseProps = new BrowserMatorConfig();
+
+      String lastJSOpenDir = theseProps.getKeyValue("lastused_js_open_dir");
+       if (lastJSOpenDir!=null)
+        {
+        CSVFileChooser.setCurrentDirectory(new File(lastJSOpenDir));
+        } 
+ FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Javascript file (*.js)","js");
+
+    CSVFileChooser.setFileFilter(filefilter);
+CSVFileChooser.setPreferredSize(new Dimension(800,600));
+int returnVal = CSVFileChooser.showOpenDialog(this);
+        File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+    if (file.getAbsoluteFile().getName().contains(".js"))
+{
+ 
+}
+else
+{
+   String path = file.getAbsolutePath();
+    
+File newfile = new File(path + ".js");
+ file = newfile;
+ 
+}  
+    return file;
+            }
+            else
+            {
+            return null;
+            }   
+   }
+   public void MoveProcedure (int toMoveIndex, int Direction)
+   {
+     int SwapIndex = toMoveIndex + Direction;
+    if (Direction == 1)
+       {
+      if (SwapIndex<BugArray.size())
+      {
+    Collections.swap(BugArray, toMoveIndex, SwapIndex);
+  Collections.swap(BugViewArray, toMoveIndex, SwapIndex);
+  BugArray.get(toMoveIndex).index = toMoveIndex;
+  BugViewArray.get(SwapIndex).index = SwapIndex;
+    
+      }
+       }  
+    if (Direction == -1)
+    {
+        if (SwapIndex >= 0)
+        {
+    Collections.swap(BugArray, toMoveIndex, SwapIndex);
+  Collections.swap(BugViewArray, toMoveIndex, SwapIndex);
+  BugArray.get(toMoveIndex).index = toMoveIndex;
+  BugViewArray.get(SwapIndex).index = SwapIndex;
+ 
+        }
+    }
+   
+      UpdateDisplay();
+         JComponent component = (JComponent) this.MainScrollPane.getViewport().getView();
+
+        Rectangle bounds =  BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
+     bounds.height = 50;
+      component.scrollRectToVisible(bounds);
+     
+    
+   }
+   public void MoveAction (Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
+   {
+
+    int SwapIndex = toMoveIndex + Direction;
+    if (Direction == 1)
+       {
+                if (toMoveIndex<thisBug.ActionsList.size()-1)
+     {
+
+
+  Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
+  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
+  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
+    
+
+
+      
+  
+    }
+
+       }
+       if (Direction == -1)
+       {
+     if (toMoveIndex!=0)
+    {
+    Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
+  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
+thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
+
+
+       }
+   }
+  UpdateDisplay();
+
+       this.changes=true;
+   }
+  
+   public void DeleteAction (Procedure thisBug, ProcedureView thisBugView, int atIndex)
+   {
+     String stringactionindex = Integer.toString(atIndex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        if (VarHashMap.containsKey(bugdashactionindex))
+        {
+            VarHashMap.remove(bugdashactionindex);
+            UpdateStoredVarPulldown();
+        }
+        if (VarLists.containsKey(bugdashactionindex))
+        {
+            VarLists.remove(bugdashactionindex);
+            UpdateStoredListsPulldown("Select a stored URL List");
+        }
+    thisBug.ActionsList.remove(atIndex);
+    thisBugView.ActionsViewList.remove(atIndex);
+
+  for(int BugIndex=0; BugIndex<thisBug.ActionsList.size(); BugIndex++)
+     {
+     if (BugIndex>=atIndex)
+     {
+     thisBug.ActionsList.get(BugIndex).index--;
+     thisBugView.ActionsViewList.get(BugIndex).index--;
+     }
+     }
+ 
+  UpdateDisplay();
+  this.changes=true;
+   }
+   public void DeleteBug (int BugIndex)
+   {
+   for (Action A: this.BugArray.get(BugIndex).ActionsList)
+   {
+       if ("Store Link as Variable by XPATH".equals(A.Type))
+       {
+           VarHashMap.remove(A.Variable2);
+       }
+       if ("Store Links as URL List by XPATH".equals(A.Type))
+       {
+           VarLists.remove(A.Variable2);
+       }
+   }
+   UpdateStoredVarPulldown();
+   this.BugArray.remove(BugIndex);
+   this.BugViewArray.remove(BugIndex);
+this.changes=true;
+   }
+       public void AddNewHandlers (SeleniumTestTool Window, ProcedureView newbugview, Procedure newbug)
+      {
+         newbugview.addJSpinnerLimitListener(new ChangeListener() {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+        newbug.limit = (Integer) newbugview.JSpinnerLimit.getValue();
+        }
+    });
+         newbugview.addJCheckBoxRandomActionListener((ActionEvent evt) -> {
+          newbug.random = newbugview.JCheckBoxRandom.isSelected();
+         });
+         
+             
+         
+          newbugview.addJButtonOKActionListener((ActionEvent evt) -> {
+           
+               String ACommand = evt.getActionCommand();
+               if (ACommand.equals("Update"))
+         {
+             
+          DisableProcedure(newbugview, newbug);
+            newbugview.Locked= true;
+            newbug.Locked = true;
+         }
+         if (ACommand.equals("Edit"))
+         {
+             EnableProcedure(newbugview, newbug);
+             newbugview.Locked = false;
+             newbug.Locked = false;
+         } 
+          
+           });
+         newbugview.addRightClickPanelListener(newbug, newbugview, Window);
+         newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
+               MoveProcedure(newbugview.index, -1);
+           });
+         newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
+               MoveProcedure(newbugview.index, 1);
+           });  
+           newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
+               
+               RunSingleTest(newbug, newbugview);
+           });
+           
+           newbugview.addJTextFieldBugTitleDocListener(
+
+           new DocumentListener()
+           {
+       @Override
+       public void changedUpdate(DocumentEvent documentEvent) {
+       newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
+ //      Window.changes = true;
+      }
+       @Override
+      public void insertUpdate(DocumentEvent documentEvent) {
+      newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
+//    Window.changes = true;
+      }
+      @Override
+      public void removeUpdate(DocumentEvent documentEvent) {
+      newbug.setProcedureTitle(newbugview.JTextFieldBugTitle.getText());
+//      Window.changes = true;
+      }
+      }
+           );
+           
+ newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
+               DeleteBug(newbugview.index);
+           
+               UpdateDisplay();
+
+           });
+
+ 
+ 
+           newbugview.addJButtonGoActionActionListener((ActionEvent evt) -> {
+              GoAction thisActionToAdd = new GoAction("");
+               GoActionView thisActionViewToAdd = new GoActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+          ScrollActionPaneDown(newbugview);
+           
+            this.changes=true;  
+           });
+            newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
+              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
+              ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+             
+                     thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+       ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
+              TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
+              TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+                  thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+       ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
+             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
+             FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+        ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
+             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
+             NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+        ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+               newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
+             YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
+             YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
+              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);         
+            UpdateDisplay();
+        ScrollActionPaneDown(newbugview);
+            this.changes=true;  
+           });
+           
+    newbugview.addDoActionItemListener((ItemEvent e) -> {
+        if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String ActionToAdd = ActionType.toString();
+            ActionsMaster newActionsMaster = new ActionsMaster();
+            HashMap<String, Action> ActionHashMap = newActionsMaster.ActionHashMap;
+            HashMap<String, ActionView> ActionViewHashMap = newActionsMaster.ActionViewHashMap;
+            
+            newbugview.JComboBoxDoActions.setSelectedIndex(0);
+           if (ActionHashMap.containsKey(ActionToAdd))
+           {
+               Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
+               ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview);
+                   UpdateDisplay();
+       ScrollActionPaneDown(newbugview);
+            this.changes=true; 
+           }      
+         
+            
+       
+        }
+           });
+     newbugview.addPassFailActionsItemListener((ItemEvent e) -> {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+             Object PassFailActionType = e.getItem();
+             String PassFailActionToAdd = PassFailActionType.toString();
+             ActionsMaster newActionsMaster = new ActionsMaster();
+             HashMap<String, Action> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
+             HashMap<String, ActionView> PassFailActionViewHashMap = newActionsMaster.PassFailActionViewHashMap;
+             
+             newbugview.JComboBoxPassFailActions.setSelectedIndex(0);
+             if (PassFailActionHashMap.containsKey(PassFailActionToAdd))
+             {
+                 Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
+               ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
+               AddActionToArray(thisActionToAdd, thisActionViewToAdd, newbug, newbugview); 
+                UpdateDisplay();
+        ScrollActionPaneDown(newbugview);
+             this.changes=true;
+             }
+          
+             
+        
+         }
+           });
+     
+      }
+         public void AddLoopHandlers (Procedure newbug, ProcedureView newbugview) 
+      {
+          String[] blanklist = new String[0];
+           newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
+        if ((e.getStateChange() == ItemEvent.SELECTED)) {
+         if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
+               {
+             newbugview.setDataLoopSource("urllist");
+          
+          String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
+      newbugview.setJTableSourceToURLList(blanklist, selectedarraylist);
+     
+
+               }
+            
+        }
+         
+            
+         
+        });
+       
+            newbugview.addJButtonBrowseForDataFileActionListener((ActionEvent evt) -> {
+             File chosenCSVFile = ChangeCSVFile();
+   if (chosenCSVFile!=null)
+   {
+ 
+   newbugview.SetJComboBoxStoredArraylists("Select a stored URL List");
+   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
+   newbugview.setDataLoopSource("file");
+   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
+   newbug.setDataLoopSource("file");
+   UpdateDisplay();
+   }
+          });
+      
+      }
+          private void jCheckBoxPromptToCloseActionPerformed(ActionEvent evt)
+  {
+  this.PromptToClose = jCheckBoxPromptToClose.isSelected();
+  // this.changes=true;
+  }
+  private void jCheckBoxShowReportActionPerformed(ActionEvent evt)
+  {
+  this.ShowReport = jCheckBoxShowReport.isSelected();
+  if (this.ShowReport==false)
+  {
+      jCheckBoxIncludeScreenshots.setEnabled(false);
+    
+  }
+  else
+  {
+      jCheckBoxEmailReportFail.setSelected(false);
+      this.EmailReportFail = false;
+      jCheckBoxEmailReport.setSelected(false);
+        this.EmailReport = false;
+    jCheckBoxIncludeScreenshots.setEnabled(true);  
+      jCheckBoxExitAfter.setSelected(false);
+        this.ExitAfter = false;
+  }
+  }
+  
+   private void jCheckBoxExitAfterActionPerformed(ActionEvent evt)
+  {
+  this.ExitAfter = jCheckBoxExitAfter.isSelected();
+  if (this.ExitAfter)
+  {
+      jCheckBoxShowReport.setSelected(false);
+      this.ShowReport = false;
+      
+      
+  }
+ 
+  }
+    private void jRadioButtonUniquePerFileActionPerformed(ActionEvent evt)
+  {
+      if (jRadioButtonUniquePerFile.isSelected())
+      {
+          jRadioButtonUniqueGlobal.setSelected(false);
+           UniqueOption = "file";
+      }
+      else
+      {
+          jRadioButtonUniqueGlobal.setSelected(true);
+           UniqueOption = "global";
+      }
+  }
+    private void jRadioButtonUniqueGlobalActionPerformed(ActionEvent evt)
+  {
+       if (jRadioButtonUniqueGlobal.isSelected())
+      {
+          jRadioButtonUniquePerFile.setSelected(false);
+          UniqueOption = "global";
+      }
+      else
+      {
+          jRadioButtonUniquePerFile.setSelected(true);
+          UniqueOption = "file";
+      }  
+  }
+  private void jCheckBoxUniqueURLsActionPerformed(ActionEvent evt)
+  {
+     UniqueList = jCheckBoxUniqueURLs.isSelected();
+    
+        jRadioButtonUniquePerFile.setEnabled(UniqueList);
+        jRadioButtonUniqueGlobal.setEnabled(UniqueList);
+        if (!jRadioButtonUniquePerFile.isSelected() && !jRadioButtonUniqueGlobal.isSelected() )
+        {
+           setUniqueFileOption("file");
+        }
+    
+  
+  }
+  private void jCheckBoxEmailReportActionPerformed(ActionEvent evt)
+  {
+   this.EmailReport = jCheckBoxEmailReport.isSelected();
+  if (this.EmailReport==true)
+  {
+       jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+      jCheckBoxShowReport.setSelected(false);
+      this.ShowReport = false;
+      jCheckBoxEmailReportFail.setSelected(false);
+
+      this.EmailReportFail = false;
+  }
+ 
+  // this.changes=true;
+  }
+  private void jCheckBoxEnableMultiSessionActionPerformed(ActionEvent evt)
+  {
+    if (jCheckBoxEnableMultiSession.isSelected())
+    {
+     jSpinnerSessions.setEnabled(true);
+     this.MultiSession = true;
+     
+    } 
+    else
+    {
+        jSpinnerSessions.setEnabled(false);
+        this.MultiSession = false;
+    }
+  }
+
+  private void jCheckBoxEmailReportFailActionPerformed(ActionEvent evt)
+  {
+     this.EmailReportFail = jCheckBoxEmailReportFail.isSelected();
+  if (this.EmailReportFail==true)
+  {
+       jCheckBoxIncludeScreenshots.setEnabled(false);
+      this.IncludeScreenshots=false;   
+  jCheckBoxShowReport.setSelected(false);
+            this.ShowReport = false;
+     jCheckBoxEmailReport.setSelected(false);
+     this.EmailReport = false;
+  }
+
+
+  }
+ private void jCheckBoxOSTypeWindows32ActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeWindows32.isSelected())
+     {
+         this.OSType = "Windows32";
+         jCheckBoxOSTypeWindows64.setSelected(false);
+     jCheckBoxOSTypeMac.setSelected(false);
+     jCheckBoxOSTypeLinux32.setSelected(false);
+     jCheckBoxOSTypeLinux64.setSelected(false);
+     }
+   
+ }
+  private void jCheckBoxOSTypeWindows64ActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeWindows64.isSelected())
+     {
+         this.OSType = "Windows64";
+         jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeMac.setSelected(false);
+     jCheckBoxOSTypeLinux32.setSelected(false);
+     jCheckBoxOSTypeLinux64.setSelected(false);
+     }
+   
+ }
+
+
+   private void jCheckBoxOSTypeMacActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeMac.isSelected())
+     {
+         this.OSType = "Mac";
+     jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeLinux32.setSelected(false);
+     jCheckBoxOSTypeLinux64.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
+     }
+ }
+    private void jCheckBoxOSTypeLinux32ActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeLinux32.isSelected())
+     {
+         this.OSType = "Linux32";
+     jCheckBoxOSTypeMac.setSelected(false);
+     jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeLinux64.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
+     }
+ }
+     private void jCheckBoxOSTypeLinux64ActionPerformed(ActionEvent evt)
+ {
+     
+     if (jCheckBoxOSTypeLinux64.isSelected())
+     {
+         this.OSType = "Linux64";
+     jCheckBoxOSTypeMac.setSelected(false);
+     jCheckBoxOSTypeLinux32.setSelected(false);
+     jCheckBoxOSTypeWindows32.setSelected(false);
+     jCheckBoxOSTypeWindows64.setSelected(false);
+     }
+
+ }
+           jCheckBoxEmailReport.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxEmailReportActionPerformed(evt);
+            }
+        });
+         jRadioButtonUniquePerFile.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jRadioButtonUniquePerFileActionPerformed(evt);
+            }
+        });
+           jRadioButtonUniqueGlobal.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jRadioButtonUniqueGlobalActionPerformed(evt);
+            }
+        });
+       jCheckBoxUniqueURLs.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxUniqueURLsActionPerformed(evt);
+            }
+        });
+       
+       jCheckBoxExitAfter.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxExitAfterActionPerformed(evt);
+            }
+        });
+       jCheckBoxEnableMultiSession.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxEnableMultiSessionActionPerformed(evt);
+            }  
+       });
+        jCheckBoxEmailReportFail.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxEmailReportFailActionPerformed(evt);
+            }
+        });
+         jCheckBoxPromptToClose.addActionListener(new java.awt.event.ActionListener() {
+          @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxPromptToCloseActionPerformed(evt);
+            }
+        });
+                  jCheckBoxShowReport.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+                      public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxShowReportActionPerformed(evt);
+            }
+        });
+         jCheckBoxOSTypeWindows32.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeWindows32ActionPerformed(evt);
+            }
+        });
+             jCheckBoxOSTypeWindows64.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+             public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeWindows64ActionPerformed(evt);
+            }
+        });
+          jCheckBoxOSTypeMac.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+              public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeMacActionPerformed(evt);
+            }
+        });
+           jCheckBoxOSTypeLinux32.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeLinux32ActionPerformed(evt);
+            }
+        });
+            jCheckBoxOSTypeLinux64.addActionListener(new java.awt.event.ActionListener() {
+           @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+              jCheckBoxOSTypeLinux64ActionPerformed(evt);
+            }
+        });
+      
 }

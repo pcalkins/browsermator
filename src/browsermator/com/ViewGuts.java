@@ -17,7 +17,8 @@ import org.openqa.selenium.WebDriver;
 
 public class ViewGuts extends SwingWorker<String, Integer>
 {
-SeleniumTestTool SiteTest;
+SeleniumTestToolData SiteTestData;
+SeleniumTestTool SiteTestView;
 String targetbrowser;
 String OSType;
 WebDriver driver;
@@ -25,13 +26,14 @@ String GutsHeader;
 String GutsFooter;
 String Guts;
 
- ViewGuts (SeleniumTestTool in_SiteTest)
+ ViewGuts (SeleniumTestTool in_SiteTestView, SeleniumTestToolData in_SiteTest)
  {
 
   this.GutsHeader = "";
   this.GutsFooter = "";
   this.Guts = "";
-   this.SiteTest = in_SiteTest;
+   this.SiteTestView = in_SiteTestView;
+   this.SiteTestData = in_SiteTest;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
  }
@@ -39,9 +41,9 @@ String Guts;
 @Override 
 public String doInBackground()
  {
-    SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    SiteTest.setGutsViewButtonName("Viewing...");
-    DisplayAllActions(SiteTest, targetbrowser, OSType);
+    SiteTestView.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    SiteTestView.setGutsViewButtonName("Viewing...");
+    DisplayAllActions(SiteTestView, targetbrowser, OSType);
     String donetext = "View Guts";
      return donetext;
      
@@ -148,8 +150,8 @@ this.Guts+="\ndriver.close();\n}" +
 "  \n" +
 "  }\n}";
 
-        SiteTest.setCursor(Cursor.getDefaultCursor());   
-     SiteTest.setGutsViewButtonName(donetext);
+        SiteTestView.setCursor(Cursor.getDefaultCursor());   
+     SiteTestView.setGutsViewButtonName(donetext);
    
 
     JPanel GutsPanel = new JPanel();
@@ -270,7 +272,7 @@ int totalpause = WaitTime * 1000;
   int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
   
-     for (Procedure thisbug : SiteTest.BugArray)
+     for (Procedure thisbug : SiteTestData.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
         ArrayList<Action> Actions = thisbug.ActionsList;
@@ -314,11 +316,11 @@ else
         
       if (thisbugview.getLimit()>0 || thisbugview.getRandom())
       {
-      SiteTest.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
+      SiteTestData.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
       }
-      thisbug.setURLListData(SiteTest.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbug.setURLListData(SiteTestData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-      number_of_rows = SiteTest.VarLists.get(thisbug.URLListName).length;
+      number_of_rows = SiteTestData.VarLists.get(thisbug.URLListName).length;
     }
     else
     {
@@ -326,7 +328,7 @@ else
     {
         if (thisbugview.getLimit()>0 || thisbugview.getRandom())
         {
-         thisbug.setRunTimeFileSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+         thisbug.setRunTimeFileSet(SiteTestData.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
         }
          number_of_rows = thisbug.RunTimeFileSet.size();
     }     
