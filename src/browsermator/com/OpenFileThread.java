@@ -88,7 +88,7 @@ public String doInBackground()
  protected void done()
  {
   mainApp.Navigator.setCursor(Cursor.getDefaultCursor()); 
-  int last_index = MDIClasses.size()-1;
+  int last_index = mainApp.MDIClasses.size()-1;
      MDIClasses.get(last_index).UpdateDisplay();
   JScrollBar vertical =  MDIClasses.get(last_index).MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );

@@ -62,7 +62,7 @@ class SortedComboBoxModel<E> extends DefaultComboBoxModel<E>
 	/*
 	 *  Create a model with data and use the specified Comparator
 	 */
-
+         
 	public SortedComboBoxModel(Vector<E> items, Comparator comparator)
 	{
 		this.comparator = comparator;
@@ -72,11 +72,15 @@ class SortedComboBoxModel<E> extends DefaultComboBoxModel<E>
             addElement( item );
         }
 	}
-
+        
+      
 	@Override
 	public void addElement(E element)
 	{
+            
+             
 		insertElementAt(element, 0);
+                
 	}
 
 	@SuppressWarnings("unchecked")

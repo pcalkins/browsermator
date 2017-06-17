@@ -138,7 +138,11 @@ public class DataLoopVarParser {
            if (in_dataset.size()>0)
           
            {
-            concat_variable+= in_dataset.get(theseDataLoopVars.field_column_index)[row_number];
+               String[] thisrow = in_dataset.get(row_number);
+               if (thisrow.length>theseDataLoopVars.field_column_index)
+               {
+            concat_variable+= thisrow[theseDataLoopVars.field_column_index];
+               }
             
            }
        }

@@ -144,7 +144,7 @@ SortedComboBoxModel <String> sortmodel;
    
     ProcedureView()
      {
-URLListName = "placeholder";
+URLListName = "";
  DataLoopSource = "urllist";
          limit = 0;
 JButtonOK.setActionCommand("Update");
@@ -329,6 +329,10 @@ ActionScrollPane.setVisible(true);
      JButtonOK.setActionCommand("Edit");
      }
    }
+   public void setURLListName (String in_listname)
+   {
+       this.URLListName = in_listname;
+   }
    public Boolean getLocked()
    {
        return Locked;
@@ -447,14 +451,10 @@ ActionScrollPane.setVisible(true);
             if ("urllist".equals(this_bug_in.DataLoopSource))
             {
                 String[] blanklist = new String[0];
-              if ("".equals(this_bug_in.URLListName))  
-              {
-               window.AddNewDataLoop();     
-              }
-              else
-              {
+        
+           
                window.AddNewDataLoopURLList(this_bug_in.URLListName);  
-              }
+            
             }
             else
             {
@@ -636,15 +636,11 @@ ActionScrollPane.setVisible(true);
         }
    }
    
-   public void EnableArrayListsPulldown(boolean enableit)
+   public void EnableArrayListsPulldown()
    {
-    this.JComboBoxStoredArrayLists.setEnabled(enableit);
+    this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-   public void EnableJComboBoxStoredArrayLists(Boolean enableit)
-   {
-       JComboBoxStoredArrayLists.setEnabled(enableit);
-       
-   }
+
    public void SetJComboBoxStoredArraylists(String itemname)
    {
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
@@ -701,7 +697,7 @@ ActionScrollPane.setVisible(true);
             
               AV.JTextFieldVariable2.setText("");
              }  
-             //    JComboBoxStoredArrayLists.setSelectedIndex(0);
+          
              }
          }
     
@@ -797,8 +793,9 @@ ActionScrollPane.setVisible(true);
    
     URLListName = list_name;
     JTextFieldDataFile.setText("Will use stored URL List " + list_name);
-    JComboBoxStoredArrayLists.addItem(list_name);
-    SetJComboBoxStoredArraylists(list_name);
+ // this should not be done? 
+//   JComboBoxStoredArrayLists.addItem(list_name);
+ //   SetJComboBoxStoredArraylists(list_name);
     }
      }
      

@@ -308,7 +308,7 @@ this.URLListRunTimeEntries = in_entries;
      }
      catch(Exception ex)
      {
-         System.out.println("Exception reading csv file: " + ex.toString());
+         System.out.println("Exception reading csv file: 311 mytable" + ex.toString());
      }
      }
  }

@@ -46,7 +46,7 @@ this.RunTimeFileSet = new ArrayList();
 this.DataFile="";
 this.Type = "";
 this.DataLoopSource = "urllist";
-this.URLListName = "placeholder";
+this.URLListName = "";
 this.URLListData = new String[0];
 
    }
@@ -99,7 +99,7 @@ this.URLListData = new String[0];
      }
      catch(Exception ex)
      {
-         System.out.println("Exception reading csv file: " + ex.toString());
+         System.out.println("Exception reading csv file: 102 procedure" + ex.toString());
      }
        return return_array;
     }

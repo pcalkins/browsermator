@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.List;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -297,9 +296,9 @@ public void initVarLists()
  int bugindex = Integer.parseInt(leftpart);
  if (bugindex<BV.index+1)
  {
-                       BV.JComboBoxStoredArrayLists.addItem(varname);
+   
  VarLists.put(varname, new String[0]);
- 
+ UpdateStoredListsPulldown(varname);
   //      BV.JComboBoxStoredArrayLists.setSelectedIndex(newitemindex); 
  }
  
@@ -308,7 +307,7 @@ public void initVarLists()
  int newitemindex = itemcount-1;
                    if (itemcount>1)
                    {
-                       BV.EnableArrayListsPulldown(true);
+                       BV.EnableArrayListsPulldown();
                      
                    }
                    }
@@ -360,7 +359,7 @@ public void initVarLists()
 
     public void updateSelectedArrayName(String oldname, String newname)
     {
-
+// fix this... only update varlist... then have display recreate jcombobox according to varlist names
           
         if (VarLists.containsKey(newname))
         {       
@@ -369,15 +368,32 @@ public void initVarLists()
        int bugindex = 0;  
             for (Procedure PROC: BugArray)
       {
-          if (oldname.equals(PROC.DataFile))
+          if (oldname.equals(PROC.URLListName))
           {
-      PROC.setDataFile(newname);
+      PROC.setURLListName(newname);
       BugArray.get(bugindex).setURLListName(newname);
   //    BugViewArray.get(bugindex).setJTableSource(newname);
         BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
-
-      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
-  BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
+       //check for dupes
+       String thisitem = "";
+       Boolean alreadyhas = false;
+      for (int x = 0; x<BugViewArray.get(bugindex).JComboBoxStoredArrayLists.getItemCount(); x++)
+              {
+      thisitem = BugViewArray.get(bugindex).JComboBoxStoredArrayLists.getItemAt(x).toString();
+      if (newname.equals(thisitem))
+      {
+          alreadyhas = true;
+      }
+              }
+      if (alreadyhas)
+      {
+  
+      }
+      else
+      {
+     BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname);    
+   
+      }
          BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
    //   UpdateDisplay();
           }
@@ -393,21 +409,15 @@ public void initVarLists()
              int bugindex = 0;  
             for (Procedure PROC: BugArray)
       {
-          if (oldname.equals(PROC.DataFile))
+          if (oldname.equals(PROC.URLListName))
           {
      
       
-      PROC.setDataFile(newname);
+      PROC.setURLListName(newname);
      
-    //  BugViewArray.get(bugindex).setJTableSource(newname);
-     BugArray.get(bugindex).setURLListName(newname);
-        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(false);
-      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
-      BugViewArray.get(bugindex).JComboBoxStoredArrayLists.addItem(newname);
-          BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setSelectedItem(newname); 
-        BugViewArray.get(bugindex).JComboBoxStoredArrayLists.setEnabled(true);
   
-   // UpdateStoredListsPulldown(newname);
+  
+    UpdateStoredListsPulldown(newname);
           }
           bugindex++;
       }
@@ -455,7 +465,7 @@ public void initVarLists()
               BV.JComboBoxStoredArrayLists.setEnabled(false); 
                  BV.JComboBoxStoredArrayLists.removeAllItems();
                
-        BV.JComboBoxStoredArrayLists.addItem("Select a stored URL list");
+        BV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
         for (String keyname: VarLists.keySet())
         {
      String[] parts = keyname.split("-");
@@ -469,8 +479,11 @@ public void initVarLists()
  }
         }
           }
-       
-   //    BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+     if ("".equals(selecteditem))
+     {
+         selecteditem = "Select a stored URL List";
+     }
+    BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
         BV.JComboBoxStoredArrayLists.setEnabled(true);
       }
           
@@ -511,7 +524,7 @@ public void ShowStoredVarListControls(Boolean showhideval)
  {
      if ("Dataloop".equals(DLV.Type))
      {
-    DLV.EnableArrayListsPulldown(showhideval);
+    DLV.EnableArrayListsPulldown();
      }
  }
 }
@@ -960,8 +973,8 @@ int bugindex = 0;
          if (oldname.equals(newname))
          {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
-         
-         addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+        VarLists.put(newname, new String[0]);
+       //  addSelectedArrayName(bugdashactionindex);
           }
           else
          {
@@ -1088,13 +1101,14 @@ else
         {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
          
-       addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+     //wrong:  addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());
+     //   addSelectedArrayName(bugdashactionindex); 
          }
        else
         {
               if ("".equals(oldname))
               {
-              addSelectedArrayName(AV.JTextFieldVariableVARINDEX.getText());    
+              addSelectedArrayName(bugdashactionindex);    
               }
               else
               {
@@ -1236,7 +1250,7 @@ else
         }
         public void AddDataLoopProcs(Procedure newdataloop, ProcedureView newdataloopview)
         {
-              BugArray.add(newdataloop);
+              BugArray.add(newdataloop);   
          BugViewArray.add(newdataloopview);
          newdataloop.index = BugArray.size();
          newdataloopview.index = BugViewArray.size();
@@ -1244,7 +1258,7 @@ else
         AddLoopHandlers(this, newdataloopview, newdataloop);
        UpdateDisplay();
       
-      
+       UpdateStoredListsPulldown(newdataloop.URLListName);
        
         
  JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
@@ -1262,6 +1276,7 @@ else
               String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, "");
          AddDataLoopProcs(newdataloop, newdataloopview);
+    
         }
         public void AddNewDataLoopURLList(String in_listname)
         {
@@ -1275,13 +1290,15 @@ else
       
         newdataloop.setDataLoopSource("urllist");
      
+        newdataloopview.setURLListName(in_listname);
         String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
- 
+  
        
         newdataloop.setURLListData(blanklist, in_listname);
        
        newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
+     
    AddDataLoopProcs(newdataloop, newdataloopview);
         }
            public void AddNewDataLoopFile(File CSVFile)
@@ -1723,6 +1740,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
        }
    }
   UpdateDisplay();
+
        this.changes=true;
    }
   

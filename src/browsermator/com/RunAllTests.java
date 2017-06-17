@@ -759,7 +759,8 @@ else
         }
         else
         {
-            number_of_rows = thisbug.DataSet.size();
+            thisbug.setRunTimeFileSet(thisbug.DataSet);
+            number_of_rows = thisbug.RunTimeFileSet.size();
         }
         
     }     
