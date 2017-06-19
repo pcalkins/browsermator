@@ -26,7 +26,7 @@ import javax.swing.JFileChooser;
 
 public class SeleniumTestTool extends JInternalFrame {
 
-
+String filename;
 
   JPanel BugPanel;
 ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
@@ -35,7 +35,7 @@ ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
   {
   this.BugViewArray = BugViewArray;
   this.BugPanel = new JPanel();
-  
+  this.filename = "";
  this.setIconifiable(true);
       initComponents();
       JTextFieldProgress.setVisible(false);
@@ -122,8 +122,16 @@ jComboBoxStoredVariables.setFocusable(false);
                     
             }
         }
+  public String getFilename()
+  {
+
+      return this.filename;
+      
+  }
   public void setFilename(String in_filename)
   {
+      this.filename = in_filename;
+      
      this.title = in_filename;
   }
        public File ChangeCSVFile()
@@ -826,6 +834,16 @@ bugindex++;
             
 
 }
+             public void ClearEmailSettings ()
+ {
+     setSMTPHostname("");
+     setEmailLoginName("");
+     setEmailPassword("");
+     setEmailTo("");
+     setEmailFrom("");
+     setSubject("");
+     
+ }
   
 
  
@@ -1278,7 +1296,196 @@ public void setOSTypeActive (Boolean Active)
     jCheckBoxOSTypeLinux64.setEnabled(false);    
     }
     }
+public void setjRadioButtonUniqueGlobalSelected(boolean selected)
+{
+    jRadioButtonUniqueGlobal.setSelected(selected);
+}
+public boolean getjRadioButtonUniquePerFile()
+{
+    return jRadioButtonUniquePerFile.isSelected();
+}
+public boolean getjCheckBoxEmailReportSelected()
+{
+    return jCheckBoxEmailReport.isSelected();
+}
+public void addjCheckBoxEmailReportActionListener(ActionListener listener)
+{
+    jCheckBoxEmailReport.addActionListener(listener);
+}
+public void setjCheckBoxEmailReportSelected(boolean selected)
+{
+    jCheckBoxEmailReport.setSelected(selected);
+}
+public boolean getjCheckBoxOSTypeLinux64Selected()
+{
+    return jCheckBoxOSTypeLinux64.isSelected();
+}
+public void addjCheckBoxOSTypeLinux64ActionListener(ActionListener listener)
+{
+    jCheckBoxOSTypeLinux64.addActionListener(listener);
+}
 
+public boolean getjCheckBoxOSTypeLinux32Selected()
+{
+    return jCheckBoxOSTypeLinux32.isSelected();
+}
+public void addjCheckBoxOSTypeLinux32ActionListener(ActionListener listener)
+{
+    jCheckBoxOSTypeLinux32.addActionListener(listener);
+}
+public boolean getjCheckBoxOSTypeMacSelected()
+{
+    return jCheckBoxOSTypeMac.isSelected();
+}
+public void addjCheckBoxOSTypeMacActionListener(ActionListener listener)
+{
+    jCheckBoxOSTypeMac.addActionListener(listener);
+}
+public void setjCheckBoxOSTypeWindows32Selected(boolean selected)
+{
+    jCheckBoxOSTypeWindows32.setSelected(selected);
+}
+public boolean getjCheckBoxOSTypeWindows64Selected()
+{
+    return jCheckBoxOSTypeWindows64.isSelected();
+}
+public boolean getjCheckBoxOSTypeWindows32Selected()
+{
+    return jCheckBoxOSTypeWindows32.isSelected();
+}
+ public void addjCheckBoxOSTypeWindows64ActionListener(ActionListener listener)
+ {
+     jCheckBoxOSTypeWindows64.addActionListener(listener);
+     
+ }
+   public void setjCheckBoxOSTypeLinux64Selected (boolean selected)
+{
+    jCheckBoxOSTypeLinux64.setSelected(selected);
+}   
+ public void setjCheckBoxOSTypeLinux32Selected (boolean selected)
+{
+    jCheckBoxOSTypeLinux32.setSelected(selected);
+}   
+ public void setjCheckBoxOSTypeMacSelected (boolean selected)
+{
+    jCheckBoxOSTypeMac.setSelected(selected);
+}    
+public void setjCheckBoxOSTypeWindows64Selected (boolean selected)
+{
+    jCheckBoxOSTypeWindows64.setSelected(selected);
+}
+public void setjCheckBoxShowReportSelected(boolean selected)
+{
+    jCheckBoxShowReport.setSelected(selected);
+}
+public void addjCheckBoxOSTypeWindows32ActionListener(ActionListener listener)
+{
+    jCheckBoxOSTypeWindows32.addActionListener(listener);
+    
+}
+public boolean getjCheckBoxEmailReportFailSelected()
+{
+    return jCheckBoxEmailReportFail.isSelected();
+    
+}
+public void addjCheckBoxEmailReportFailActionListener(ActionListener listener)
+{
+    jCheckBoxEmailReportFail.addActionListener(listener);
+}
+public void setjSpinnerSessionsEnabled(boolean enabled)
+{
+    jSpinnerSessions.setEnabled(enabled);
+}
+public boolean getjCheckBoxEnableMultiSessionSelected()
+{
+    return jCheckBoxEnableMultiSession.isSelected();
+}
+public boolean getjRadioButtonUniquePerFileSelected()
+{
+    return jRadioButtonUniquePerFile.isSelected();
+}
+public void addjCheckBoxEnableMultiSessionActionListener(ActionListener listener)
+{
+    jCheckBoxEnableMultiSession.addActionListener(listener);
+}
+public void setjCheckBoxEmailReportFailSelected(boolean selected)
+{
+    jCheckBoxEmailReportFail.setSelected(selected);
+}
+
+ 
+ public void setjRadioButtonUniquePerFileEnabled(boolean enabled)
+{
+    jRadioButtonUniquePerFile.setEnabled(enabled);
+}   
+public void setjRadioButtonUniqueGlobalEnabled(boolean enabled)
+{
+    jRadioButtonUniqueGlobal.setEnabled(enabled);
+}
+public boolean getjCheckBoxUniqueURLsSelected()
+{
+    return jCheckBoxUniqueURLs.isSelected();
+}
+public void addjCheckBoxUniqueURLsActionListener(ActionListener listener)
+{
+    jCheckBoxUniqueURLs.addActionListener(listener);
+}
+public boolean getjRadioButtonUniqueGlobalSelected()
+{
+    return jRadioButtonUniqueGlobal.isSelected();
+}
+public void setjRadioButtonUniquePerFileSelected(boolean selected)
+{
+    jRadioButtonUniquePerFile.setSelected(selected);
+}
+public void addjRadioButtonUniqueGlobalActionListener(ActionListener listener)
+{
+    jRadioButtonUniqueGlobal.addActionListener(listener);
+}
+public void addjRadioButtonUniquePerFileActionListener(ActionListener listener)
+{
+    jRadioButtonUniquePerFile.addActionListener(listener);
+}
+public boolean getjCheckBoxExitAfter()
+{
+    return jCheckBoxExitAfter.isSelected();
+    
+}
+public void addjCheckBoxExitAfterActionListener(ActionListener listener)
+{
+    jCheckBoxExitAfter.addActionListener(listener);
+}
+public boolean getjCheckBoxPromptToClose()
+{
+    return jCheckBoxPromptToClose.isSelected();
+}
+public void setjCheckBoxExitAfterEnabled(boolean enabled)
+{
+    jCheckBoxExitAfter.setEnabled(enabled);
+}
+public void setjCheckBoxEmailReportEnabled(boolean enabled)    
+{
+    jCheckBoxEmailReport.setEnabled(enabled);
+}
+
+public void setjCheckBoxIncludeScreenshotsEnabled(boolean enabled)
+{
+    jCheckBoxIncludeScreenshots.setEnabled(enabled);
+}
+ public Boolean getjCheckBoxShowReport()
+ {
+     return jCheckBoxShowReport.isSelected();
+     
+ }
+            public void addjCheckBoxShowReportActionListener(ActionListener listener)
+    {
+        jCheckBoxShowReport.addActionListener(listener);
+    }
+    public void addjCheckBoxPromptToCloseActionListener(ActionListener listener)
+    {
+        jCheckBoxPromptToClose.addActionListener(listener);
+    }
+    
 public void addTargetBrowserItemListener (ItemListener listener)
 {
   jComboBoxTargetBrowser.addItemListener(listener);
@@ -1449,6 +1656,14 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         jCheckBoxExitAfter.setSelected(false);
       
         }
+    }
+    public void setjSpinnerWaitTime(int WaitTime)
+    {
+          this.jSpinnerWaitTime.setValue(WaitTime);
+    }
+    public void setjSpinnerSessions(int Sessions)
+    {
+         jSpinnerSessions.setValue(Sessions);
     }
     public void setIncludeScreenshotsView(Boolean includescreenshots)
     {

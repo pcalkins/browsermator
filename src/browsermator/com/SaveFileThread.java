@@ -17,15 +17,17 @@ import javax.swing.SwingWorker;
  * @author pcalkins
  */
 public class SaveFileThread extends SwingWorker<String, Integer>{
- STAppController mainApp;
+ MainAppFrame mainApp;
  SeleniumTestTool STAppFrame;
+ SeleniumTestToolData STAppData;
  boolean isSaveAs;
  boolean isFlatten;
  int calling_MDI_Index;
-    public SaveFileThread(STAppController mainApp, SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
+    public SaveFileThread(MainAppFrame mainApp, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
  {
    this.mainApp = mainApp;  
    this.STAppFrame = STAppFrame;
+   this.STAppData = STAppData;
    this.isSaveAs = isSaveAs;
    this.isFlatten = isFlatten;
    this.calling_MDI_Index = calling_MDI_Index;

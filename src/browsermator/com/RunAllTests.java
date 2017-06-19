@@ -22,7 +22,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class RunAllTests extends SwingWorker<String, Integer>
 {
-SeleniumTestTool SiteTest;
+SeleniumTestToolData SiteTest;
 String targetbrowser;
 String OSType;
 WebDriver driver;
@@ -31,7 +31,7 @@ String chrome_path;
 FireFoxProperties FFprops;
 BrowserMatorReport BrowserMatorReport;
 
- public RunAllTests (SeleniumTestTool in_SiteTest)
+ public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
  
   FFprops = new FireFoxProperties(targetbrowser);

@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -37,6 +38,8 @@ public class MainAppFrame extends JFrame {
       String filename;
       String short_filename;
       private JRadioButtonMenuItem LookAndFeelOptions[];
+      public final SiteTestView Navigator;
+public JDesktopPane SeleniumToolDesktop;
 private ButtonGroup LookAndFeelGroup;
      private JMenuBar menuBar;
      private JMenu fileMenu;
@@ -61,10 +64,44 @@ private ButtonGroup LookAndFeelGroup;
       initComponents();
       this.filename = "";
       this.short_filename = "";
-    
+       Navigator = new SiteTestView();
     
   }
-
+ public void addjMenuViewItem(JMenuItem newfileitem)
+ {
+     jMenuView.add(newfileitem);
+ }
+ public void removejMenuViewItem(int index)
+ {
+     jMenuView.remove(index);
+ }
+ public int getjMenuViewItemCount()
+ {
+     int ret_val = 0;
+     ret_val = jMenuView.getItemCount();
+     return ret_val;
+ }
+ public void setjMenuViewItemText(int index, String update_name)
+ {
+     jMenuView.getItem(index).setText(update_name);
+ }
+     
+ public String getjMenuViewItem(int index)
+ {
+     String ret_val;
+     ret_val = jMenuView.getItem(index).getText();
+     return ret_val;
+ }
+ public int getjMenuViewItemCount()
+ {
+     int ret_val = 0;
+     ret_val = jMenuView.getItemCount();
+     return ret_val;
+ }
+ public void addExitMenuActionListener(ActionListener listener)
+ {
+    exitMenuItem.addActionListener(listener);
+ }
   public void setWindowProps(FileInputStream input)
           {
                 int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
@@ -133,8 +170,6 @@ super.setSize(Width-300,Height-300);
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         browseCloudMenuItem = new javax.swing.JMenuItem();
         uploadFileToCloudMenuItem = new javax.swing.JMenuItem();
@@ -253,7 +288,7 @@ super.setSize(Width-300,Height-300);
         setJMenuBar(menuBar);
    
     }
-    public void setSaveMenuEnabled(Boolean enable_it)
+    public void setSaveMenuItemEnabled(Boolean enable_it)
     {
       saveMenuItem.setEnabled(enable_it);
     }

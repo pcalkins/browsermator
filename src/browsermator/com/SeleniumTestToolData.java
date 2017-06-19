@@ -329,7 +329,43 @@ catch (Exception e) {
     {
         this.EmailLoginName = login_name;
     }
-      public void setFilename (String filename)
+    public int getWaitTime()
+    {
+        return WaitTime;
+    }
+    public int getTimeout()
+    {
+        return Timeout;
+    }
+    public int getSessions()
+    {
+        return Sessions;
+    }
+    public String getSMTPHostname()
+    {
+        return SMTPHostName;
+    }
+    public String getEmailFrom()
+    {
+        return EmailFrom;
+    }
+    public String getEmailLoginName()
+    {
+        return EmailLoginName;
+    }
+    public String getEmailPassword()
+    {
+        return EmailPassword;
+    }
+    public String getEmailTo()
+    {
+        return EmailTo;
+    }
+    public String getEmailSubject()
+    {
+        return EmailSubject;
+    }
+      public void setFilenames (String filename)
     {
     Path thisP = Paths.get(filename);
     
@@ -357,7 +393,34 @@ else
     this.filename = filename;
     
     }
-   
+  public boolean getEmailReportFail()
+  {
+      return EmailReportFail;
+  }
+  public boolean getExitAfter()
+  {
+      return ExitAfter;
+  }
+  public boolean getPromptToClose()
+  {
+      return PromptToClose;
+  }
+  public boolean getShowReport()
+  {
+      return ShowReport;
+  }
+  public boolean getIncludeScreenshots()
+  {
+  return IncludeScreenshots;
+  }
+  public boolean getUniqueList()
+  {
+      return UniqueList;
+  }
+  public boolean getEmailReport()
+  {
+      return EmailReport;
+  }
   
            public void setShowReport (Boolean showreport)
     {
@@ -416,23 +479,22 @@ else
            public void setIncludeScreenshots(Boolean includescreenshots)
     {
         this.IncludeScreenshots = includescreenshots;
-        jCheckBoxIncludeScreenshots.setSelected(includescreenshots);
+      
     }
  
     public void setEmailReport (Boolean emailreport)
     {
-        jCheckBoxEmailReport.setSelected(emailreport);
+     
         this.EmailReport = emailreport;
         if (emailreport==true)
         {
-             jCheckBoxIncludeScreenshots.setEnabled(false);
+     
       this.IncludeScreenshots=false;   
-            jCheckBoxShowReport.setSelected(false);
+       
             this.ShowReport = false;
-                    jCheckBoxIncludeScreenshots.setSelected(false);
-      jCheckBoxIncludeScreenshots.setEnabled(false);
+               
       this.IncludeScreenshots=false;   
-            jCheckBoxEmailReportFail.setSelected(false);
+       
         }
      
     }
@@ -440,14 +502,14 @@ else
         public void setEmailReportFail (Boolean emailreportfail)
     {
         this.EmailReportFail = emailreportfail;
-        jCheckBoxEmailReportFail.setSelected(emailreportfail);
+   
          if (emailreportfail==true)
         {
-             jCheckBoxIncludeScreenshots.setEnabled(false);
+       
       this.IncludeScreenshots=false;   
-              jCheckBoxShowReport.setSelected(false);
+   
             this.ShowReport = false;
-            jCheckBoxEmailReport.setSelected(false);
+       
             this.EmailReport = false;
         }
          else
@@ -484,7 +546,7 @@ else
    {
        this.Sessions = number_of_sessions;
     
-       jSpinnerSessions.setValue(Sessions);
+      
       
      
    }
@@ -493,45 +555,16 @@ else
     
         this.WaitTime = timeout_seconds;
 
-        this.jSpinnerWaitTime.setValue(WaitTime);
+      
     }
    public void addSelectedArrayName(String varname)
       {
-          int itemcount = 0;
-       for (ProcedureView BV : BugViewArray)
-      {
-         
-          if ("Dataloop".equals(BV.Type))
-          {
-                   if(((DefaultComboBoxModel)BV.JComboBoxStoredArrayLists.getModel()).getIndexOf(varname) == -1) {
- String[] parts = varname.split("-");
- if (parts.length>1)
- {
- String leftpart = parts[0];
-
- int bugindex = Integer.parseInt(leftpart);
- if (bugindex<BV.index+1)
- {
-   
+ 
  VarLists.put(varname, new String[0]);
- UpdateStoredListsPulldown(varname);
-  //      BV.JComboBoxStoredArrayLists.setSelectedIndex(newitemindex); 
- }
  
-          }
-  itemcount = BV.JComboBoxStoredArrayLists.getItemCount();
- int newitemindex = itemcount-1;
-                   if (itemcount>1)
-                   {
-                       BV.EnableArrayListsPulldown();
-                     
-                   }
-                   }
-      }   
- 
-}
-      
       }
+ 
+ 
          public void setOSType(String OSType)
         {
             if ("Windows".equals(OSType))
@@ -853,7 +886,7 @@ xmlfile.writeAttribute("Filename",file.getName());
 
          
  }
- public int FillTables(Procedure thisproc, ProcedureView thisprocview)
+ public int FillTables(Procedure thisproc)
   {
       int number_of_rows = 0;
      for (Action ThisAction: thisproc.ActionsList)
@@ -873,7 +906,7 @@ xmlfile.writeAttribute("Filename",file.getName());
             String URLListName = parts2[1];
                if (this.VarLists.containsKey(URLListName))
             {
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
+            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc);
             number_of_rows = this.VarLists.get(URLListName).length;
             }
             }
@@ -890,7 +923,7 @@ xmlfile.writeAttribute("Filename",file.getName());
             if (this.VarLists.containsKey(URLListName))
             {
               
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc, thisprocview);
+            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc);
             number_of_rows = this.VarLists.get(URLListName).length;
             }
             }
@@ -899,144 +932,6 @@ xmlfile.writeAttribute("Filename",file.getName());
     }
      return number_of_rows;
      }
-  public void RunActions()
- {
-     if ("Run All Procedures".equals(this.getRunActionsButtonName()))
-     {
-         
-          int sessions = 1;
-         if (this.MultiSession)
-         {
-          sessions = getSessions();
-         }
-         
-          String tbrowser = this.getTargetBrowser();
-      if ("Firefox/IE/Chrome".equals(tbrowser))
-      {
- for (int x=0; x<sessions; x++)
- {
-    
-      this.setTargetBrowser("Firefox");
-       RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();   
-    this.setTargetBrowser("Chrome");
-       RunAllTests REFSYNCH2 = new RunAllTests(this);
-    REFSYNCH2.execute();  
-    this.setTargetBrowser("Internet Explorer-32");
-      RunAllTests REFSYNCH3 = new RunAllTests(this);
-    REFSYNCH3.execute();  
-    this.setTargetBrowser("Firefox/IE/Chrome");
- }
-      }
-      else
-      {
-     for (int x=0; x<sessions; x++)
- {
-    RunAllTests REFSYNCH = new RunAllTests(this);
-    REFSYNCH.execute();      
- }     
-      }
-     }
-     else
-     {
-         this.cancelled = true;
-     }
- 
- }
 
- public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview)
- {
-      RunASingleTest REFSYNCH = new RunASingleTest(this, bugtorun, thisbugview, this.TargetBrowser, this.OSType);
-    REFSYNCH.execute();
- }
-       public void AddNewBug()
-        {
-         Procedure newbug = new Procedure();
-         ProcedureView newbugview = new ProcedureView();
-         newbug.setType("Procedure");
-         newbugview.setType("Procedure");
-         BugArray.add(newbug);
-         BugViewArray.add(newbugview);
-         newbug.index = BugArray.size();
-         newbugview.index = BugViewArray.size();
-        AddNewHandlers(this, newbugview, newbug);
-
-        }
-        public void AddDataLoopProcs(Procedure newdataloop, ProcedureView newdataloopview)
-        {
-              BugArray.add(newdataloop);   
-         BugViewArray.add(newdataloopview);
-         newdataloop.index = BugArray.size();
-         newdataloopview.index = BugViewArray.size();
-        AddNewHandlers(this, newdataloopview, newdataloop);
-        AddLoopHandlers(this, newdataloopview, newdataloop);
-       UpdateDisplay();
-      
-       UpdateStoredListsPulldown(newdataloop.URLListName);
-       
-        
- JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-   jButtonFlattenFile.setEnabled(true);
-        }
-        public void AddNewDataLoop()
-        {
-             Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-     
-              String[] blanklist = new String[0];
- 
-     //    AddDataLoopProcs(newdataloop, newdataloopview);
-    
-        }
-        public void AddNewDataLoopURLList(String in_listname)
-        {
-            Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-        ProcedureView newdataloopview = new ProcedureView();
-        newdataloopview.setType("Dataloop");
-        newdataloopview.setDataLoopSource("urllist");
-      
-        newdataloop.setDataLoopSource("urllist");
-     
-        newdataloopview.setURLListName(in_listname);
-        String[] blanklist = new String[0];
-  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
-       
-        newdataloop.setURLListData(blanklist, in_listname);
-       
-       newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
-     
-   AddDataLoopProcs(newdataloop, newdataloopview);
-        }
-           public void AddNewDataLoopFile(File CSVFile)
-        {
-        Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         newdataloop.setDataLoopSource("file");
-      
-   
-     
-        if (CSVFile.exists())
-         {
-        
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
-         
-         }
-         else
-         {
-       
-         newdataloop.setDataFile("");  
-        
-         
-         }
-   AddDataLoopProcs(newdataloop);
-        }
- 
 }

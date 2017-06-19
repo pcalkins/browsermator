@@ -39,42 +39,45 @@ import org.xml.sax.SAXException;
  */
 public class OpenFileThread extends SwingWorker<String, Integer>{
 File file;
-ArrayList<SeleniumTestTool> MDIClasses;
-STAppController mainApp;
+ArrayList<SeleniumTestTool> MDIViewClasses;
+ArrayList<SeleniumTestToolData> MDIDataClasses;
+MainAppFrame mainAppWindow;
 int calling_MDI_Index;
 boolean isFlatten;
 boolean RunIt;
 boolean fromCloud=false;
 
-    public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
+    public OpenFileThread(MainAppFrame mainApp, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
 {
   this.isFlatten = isFlatten;
-  this.mainApp = mainApp;
+  this.mainAppWindow = mainApp;
   this.file = file;
-  this.MDIClasses = MDIClasses;
+  this.MDIViewClasses = MDIViewClasses;
+  this.MDIDataClasses = MDIDataClasses;
   this.calling_MDI_Index = calling_MDI_Index;
   this.RunIt = RunIt;
 }
-      public OpenFileThread(STAppController mainApp, File file, ArrayList<SeleniumTestTool> MDIClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, boolean fromCloud)
+      public OpenFileThread(MainAppFrame mainApp, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, boolean fromCloud)
 {
     this.fromCloud = fromCloud;
   this.isFlatten = isFlatten;
-  this.mainApp = mainApp;
+  this.mainAppWindow = mainApp;
   this.file = file;
-  this.MDIClasses = MDIClasses;
+  this.MDIViewClasses = MDIViewClasses;
+  this.MDIDataClasses = MDIDataClasses;
   this.calling_MDI_Index = calling_MDI_Index;
   this.RunIt = RunIt;
 }
 @Override 
 public String doInBackground()
  {
-     mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+     mainAppWindow.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     try {
         int MDI_CLASS_INDEX;
-           MDI_CLASS_INDEX = OpenFile(file, MDIClasses);
+           MDI_CLASS_INDEX = OpenFile(file, MDIViewClasses);
          if (MDI_CLASS_INDEX>=0)
      {
-           mainApp.DisplayWindow(MDI_CLASS_INDEX);
+           mainAppWindow.DisplayWindow(MDI_CLASS_INDEX);
            
      }
        }
