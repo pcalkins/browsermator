@@ -50,7 +50,8 @@ Stage webStage;
  JPanel mainPanel;
  JFrame cloudFrame;
  String HTML_TO_SEND="";
- STAppController mainApp;
+ STAppController mainAppController;
+ MainAppFrame mainAppFrame;
 JLabel loggedinLabelText; 
 JLabel loginLabelText;
 //JLabel loginLabelName;
@@ -63,26 +64,27 @@ JLabel loginLabelText;
 JLabel LoadingLabel;
 
 JButton loginButton = new JButton("Login"); 
-      public BrowserMatorFileCloud(STAppController mainApp)
+      public BrowserMatorFileCloud(MainAppFrame in_mainAppFrame, STAppController in_mainAppController)
  {
     bottomPanel = new JPanel();
  LoadingLabel = new JLabel("Loading.  Please wait...");
 bottomPanel.add(LoadingLabel);
      Platform.setImplicitExit(false);
-     mainApp.LoadNameAndPassword();
-     this.mainApp = mainApp;
+     in_mainAppController.LoadNameAndPassword();
+     this.mainAppController = in_mainAppController;
+     this.mainAppFrame = in_mainAppFrame;
 
   
  }
   public void ShowFileCloudWindow()
   {
-         if ("".equals(mainApp.loginName))
+         if ("".equals(mainAppController.loginName))
      {
  ShowHTMLWindow(rootURL + "/browse_files.php");
      }
      else
      {
-         String URLwithLogin = rootURL + "/browse_files.php?loginName=" + mainApp.loginName + "&loginPassword=" + mainApp.loginPassword;
+         String URLwithLogin = rootURL + "/browse_files.php?loginName=" + mainAppController.loginName + "&loginPassword=" + mainAppController.loginPassword;
          
          ShowHTMLWindow(URLwithLogin);
           
@@ -229,7 +231,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
     org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+extension));
   
     
-    mainApp.OpenFile(thisFile, mainApp.MDIClasses, false, true);
+    mainAppController.OpenFile(thisFile, false, true);
   UpdateCloudConfig(file_id, file_date);
      cloudFrame.dispose();
 } catch (Exception x) { System.out.println ("Exception downloading file" + x.toString()); }
@@ -237,7 +239,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
              }
              else
              {
-                   mainApp.OpenFile(thisFile, mainApp.MDIClasses, false, true);
+                   mainAppController.OpenFile(thisFile, false, true);
    //      Platform.exit();
           cloudFrame.dispose();
              }
@@ -250,7 +252,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
     org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+extension));
     UpdateCloudConfig(file_id, file_date);
     
-    mainApp.OpenFile(thisFile, mainApp.MDIClasses, false, true);
+    mainAppController.OpenFile(thisFile,false, true);
  //  Platform.exit();
      cloudFrame.dispose();
 } catch (Exception x) { System.out.println ("Exception downloading file" + x.toString()); }
@@ -265,11 +267,11 @@ JPanel topPanel = new JPanel();
 FlowLayout newFlow = new FlowLayout();
 topPanel.setLayout(newFlow);
 // mainApp.LoadNameAndPassword();
-mainApp.LookUpUser(mainApp.loginName, mainApp.loginPassword);
+mainAppController.LookUpUser(mainAppController.loginName, mainAppController.loginPassword);
  
-if (mainApp.user_id>0)
+if (mainAppController.user_id>0)
 {
- loginLabelText = new JLabel("Welcome " + mainApp.loginName + " you are currently logged in. ");   
+ loginLabelText = new JLabel("Welcome " + mainAppController.loginName + " you are currently logged in. ");   
  loginButton = new JButton("Switch user"); 
 addloginButtonActionListener( new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -442,14 +444,14 @@ input.close();
         }
         public String upload(String file_id) {
  
-  File[] newfiles = mainApp.BrowseForFile();
+  File[] newfiles = mainAppController.BrowseForFile();
     
  if (newfiles!=null)
  {
  
  File newfile = newfiles[0];
 
-SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, mainApp.loginName, mainApp.loginPassword, file_id);
+SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, mainAppController.loginName, mainAppController.loginPassword, file_id);
  UpdateSendFileREF.execute();
 
  
@@ -475,8 +477,8 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
        {
            cloudFrame.dispose();
             Login_Register_Dialog loginDialog = new Login_Register_Dialog();
-     loginDialog.setLoginName(mainApp.loginName);
-  loginDialog.setPassword(mainApp.loginPassword);
+     loginDialog.setLoginName(mainAppController.loginName);
+  loginDialog.setPassword(mainAppController.loginPassword);
      loginDialog.addjTextFieldConfirmPasswordDocListener(
              new DocumentListener()
            {
@@ -602,12 +604,12 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
         public void actionPerformed(ActionEvent evt)
         { 
  loginDialog.setStatus("");
-       mainApp.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
-  if (mainApp.user_id >0 )
+       mainAppController.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
+  if (mainAppController.user_id >0 )
    {
        
 
-                           mainApp.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
+                           mainAppController.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
                   //   UploadFile(STAppFrame);
              
                      loginDialog.dispose();
@@ -631,14 +633,14 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
        if ("login".equals(loginDialog.mode) && loginDialog.isActive )
        {
       loginDialog.setStatus("");
-      mainApp.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
-       if (mainApp.user_id >0 )
+      mainAppController.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
+       if (mainAppController.user_id >0 )
    {
        
    
      try
                       {
-                          mainApp.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
+                          mainAppController.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
              //        UploadFile(STAppFrame);
            
                      loginDialog.dispose();
@@ -667,14 +669,14 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
        if ("recover".equals(loginDialog.mode)&& loginDialog.isActive)
        {
            loginDialog.setStatus("");
-     String statustext =  mainApp.RecoverPassword(loginDialog.getEmail());
+     String statustext =  mainAppController.RecoverPassword(loginDialog.getEmail());
      loginDialog.setStatus (statustext);
      
        }
        if ("register".equals(loginDialog.mode)&& loginDialog.isActive)
        {
            loginDialog.setStatus("");
-      String statustext =  mainApp.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
+      String statustext =  mainAppController.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
       loginDialog.setStatus(statustext);
        }
   
@@ -687,7 +689,7 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
         public void actionPerformed(ActionEvent evt)
         { 
  loginDialog.setStatus("");
-       String statustext =  mainApp.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
+       String statustext =  mainAppController.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
         loginDialog.setStatus(statustext);
   
         }
@@ -698,7 +700,7 @@ SendFileThread UpdateSendFileREF = new SendFileThread(CloudEngine, newfile, main
         public void actionPerformed(ActionEvent evt)
         { 
  
-       String status =   mainApp.RecoverPassword(loginDialog.getEmail());
+       String status =   mainAppController.RecoverPassword(loginDialog.getEmail());
          loginDialog.setStatus(status);
   
         }

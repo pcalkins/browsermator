@@ -5,7 +5,6 @@
  */
 package browsermator.com;
 
-import java.awt.Dimension;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
-import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -37,7 +35,6 @@ import org.w3c.dom.NodeList;
  */
 public class SeleniumTestToolData {
 ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
-
     ArrayList<String> AllFieldValues;
     ArrayList<String> Visitted_URL_List;
       Thread ActionThread;
@@ -73,9 +70,11 @@ String EmailFrom;
 String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
+
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
+           
             this.BugArray = BugArray;
                 this.UniqueOption = "file";
       this.UniqueList = false;
@@ -137,6 +136,55 @@ public void initVarLists()
 
    
 }
+ public void DeleteBug (int BugIndex)
+   {
+   for (Action A: BugArray.get(BugIndex).ActionsList)
+   {
+       if ("Store Link as Variable by XPATH".equals(A.Type))
+       {
+          VarHashMap.remove(A.Variable2);
+       }
+       if ("Store Links as URL List by XPATH".equals(A.Type))
+       {
+           VarLists.remove(A.Variable2);
+       }
+   }
+ 
+  BugArray.remove(BugIndex);
+ 
+changes=true;
+   }
+ 
+   public void DeleteAction (Procedure thisBug, int atIndex)
+   {
+     String stringactionindex = Integer.toString(atIndex+1);
+        String stringbugindex = Integer.toString(thisBug.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        if (VarHashMap.containsKey(bugdashactionindex))
+        {
+            VarHashMap.remove(bugdashactionindex);
+          
+        }
+        if (VarLists.containsKey(bugdashactionindex))
+        {
+           VarLists.remove(bugdashactionindex);
+           
+        }
+    thisBug.ActionsList.remove(atIndex);
+   
+
+  for(int BugIndex=0; BugIndex<thisBug.ActionsList.size(); BugIndex++)
+     {
+     if (BugIndex>=atIndex)
+     {
+     thisBug.ActionsList.get(BugIndex).index--;
+   
+     }
+     }
+ 
+
+ changes=true;
+   }
  public void clearEmailSettings ()
  {
      setSMTPHostname("");
@@ -147,6 +195,41 @@ public void initVarLists()
      setSubject("");
      
  }
+   public void MoveAction (Procedure thisBug, int toMoveIndex, int Direction)
+   {
+
+    int SwapIndex = toMoveIndex + Direction;
+    if (Direction == 1)
+       {
+                if (toMoveIndex<thisBug.ActionsList.size()-1)
+     {
+
+
+  Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
+   thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
+    
+
+
+      
+  
+    }
+
+       }
+       if (Direction == -1)
+       {
+     if (toMoveIndex!=0)
+    {
+    Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
+  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
+  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
+
+
+       }
+   }
+
+       this.changes=true;
+   }
  public void UpdateDataLoopURLListTable(String ListName, String[] storedURLlist, Procedure thisproc)
   {
 
@@ -313,6 +396,27 @@ catch (Exception e) {
     {
         this.EmailTo = to;
     }
+     public void RefreshData()
+ {
+     for (Procedure proc: this.BugArray)
+     {
+         if ("Dataloop".equals(proc.Type))
+         {
+             if ("file".equals(proc.DataLoopSource))
+             {
+         proc.RefreshFileData();
+             }
+             else
+             {
+           proc.RefreshURLListData();
+             }
+         }
+     }
+ }
+    public String getTargetBrowser()
+    {
+        return TargetBrowser;
+    }
     public void setEmailFrom(String from)
     {
         this.EmailFrom = from;
@@ -333,6 +437,7 @@ catch (Exception e) {
     {
         return WaitTime;
     }
+    
     public int getTimeout()
     {
         return Timeout;
@@ -400,6 +505,10 @@ else
   public boolean getExitAfter()
   {
       return ExitAfter;
+  }
+  public void setPromptToClose(boolean closeit)      
+  {
+     PromptToClose = closeit; 
   }
   public boolean getPromptToClose()
   {
@@ -533,7 +642,82 @@ else
           
          
         }
-             public void AddActionToArray (Action action, ActionView actionview, Procedure newbug, ProcedureView newbugview)
+   
+                  public void AddDataLoopProc(Procedure newdataloop)
+        {
+              BugArray.add(newdataloop);   
+       
+         newdataloop.index = BugArray.size();
+        
+      
+        } 
+       
+         public void AddNewBug()
+        {
+         Procedure newbug = new Procedure();
+         newbug.setType("Procedure");
+   
+         BugArray.add(newbug);
+      
+         newbug.index = BugArray.size(); 
+
+        }
+              public void AddNewDataLoopURLList(String in_listname)
+        {
+            Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         
+     
+      
+        newdataloop.setDataLoopSource("urllist");
+  
+        String[] blanklist = new String[0];
+  
+  
+       
+        newdataloop.setURLListData(blanklist, in_listname);
+       
+   
+     
+   AddDataLoopProc(newdataloop);
+        }
+           public void AddNewDataLoopFile(File CSVFile)
+        {
+        Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         newdataloop.setDataLoopSource("file");
+     
+        if (CSVFile.exists())
+         {
+       
+         newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         
+         }
+         else
+         {
+       
+         newdataloop.setDataFile("");  
+        
+         
+         }
+   AddDataLoopProc(newdataloop);
+        }
+        public String getOSType()
+        {
+            return OSType;
+        }
+        public void AddNewDataLoop()
+        {
+       Procedure newdataloop = new Procedure();
+        newdataloop.setType("Dataloop");
+        newdataloop.setDataLoopSource("none");
+           
+            AddDataLoopProc(newdataloop); 
+
+        }
+             public void AddActionToArray (Action action, Procedure newbug)
 {
            
             newbug.ActionsList.add(action);

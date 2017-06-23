@@ -1,15 +1,11 @@
 package browsermator.com;
 
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -27,22 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
-import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.SAVE_DIALOG;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollBar;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.event.ChangeEvent;
@@ -62,10 +50,10 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.01branched";
+   public final String ProgramVersion = "1.1.03branched";
    public String loginName;
    public String loginPassword;
-
+  Boolean SHOWGUI = true;
   public int user_id;
 //  String rootURL = "http://localhost";
  String rootURL = "https://www.browsermator.com";
@@ -484,9 +472,14 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
- 
- RunActions(); 
- 
+ if (SHOWGUI)
+ {
+ RunActions(STAppFrame, STAppData); 
+ }
+ else
+ {
+     RunActions(STAppData);
+ }
   
         }
       }
@@ -547,7 +540,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-    
+  
    STAppFrame.AddNewBugView();  
    STAppData.AddNewBug();
   STAppFrame.UpdateDisplay();
@@ -562,12 +555,19 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-
+  
    STAppData.AddNewDataLoop(); 
-   STAppFrame.AddNewDataLoop();
+   STAppFrame.AddNewDataLoopView();
     STAppFrame.UpdateDisplay();
+    int last_added_bug_index = STAppData.BugArray.size();
+      ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+        AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
 
- 
+ JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+  vertical.setValue( vertical.getMaximum() );
+  
   }
                                           
       }
@@ -590,7 +590,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-    OpenFile(newfiles[fileindex], MDIViewClasses, MDIDataClasses, false);
+    OpenFile(newfiles[fileindex], false);
      
     
    }    
@@ -629,7 +629,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
      
      
 
-      OpenFile(RecentFile, MDIViewClasses, MDIDataClasses, false);
+      OpenFile(RecentFile, false);
        
           
        }
@@ -667,7 +667,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
      
      
 
-       OpenFile(RecentFile, MDIViewClasses, MDIDataClasses, false);
+       OpenFile(RecentFile, false);
  
             }
      
@@ -703,7 +703,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
      
      
 
-    OpenFile(RecentFile, MDIViewClasses, MDIDataClasses, false);
+    OpenFile(RecentFile, false);
      
             }
      
@@ -740,7 +740,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
      
      
 
-     OpenFile(RecentFile, MDIViewClasses, MDIDataClasses, false);
+     OpenFile(RecentFile, false);
   
        
             }
@@ -778,7 +778,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
      
      
 
-     OpenFile(RecentFile, MDIViewClasses, MDIDataClasses, false);
+     OpenFile(RecentFile, false);
     
             }
      
@@ -813,7 +813,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
  {
      for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
      {
-  OpenFile(newfiles[fileindex], MDIViewClasses, MDIDataClasses, false);
+  OpenFile(newfiles[fileindex], false);
     
     
    }    
@@ -847,7 +847,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
   SeleniumTestTool STAppFrame = new SeleniumTestTool(BugViewArray);
   SeleniumTestToolData STAppData = new SeleniumTestToolData(BugArray);
  STAppFrame.setFilename(filename);
- STAppData.setFilename(filename);
+ STAppData.setFilenames(filename);
  STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setTargetBrowser("Chrome");
    STAppData.setTargetBrowser("Chrome");
@@ -896,7 +896,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
         public void actionPerformed(ActionEvent evt)
         { 
  
- STAppData.RunActions(); 
+ RunActions(STAppFrame, STAppData); 
  
   
         }
@@ -981,7 +981,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
         { 
 
      
-   STAppFrame.AddNewDataLoop();  
+   STAppFrame.AddNewDataLoopView();
    STAppData.AddNewDataLoop();
  
   }
@@ -1363,14 +1363,14 @@ File newfile = new File(path + ".browsermation");
   }
 public void OpenBrowserMatorCloud()
 {
-    BrowserMatorFileCloud thisCloud = new BrowserMatorFileCloud(this);
+    BrowserMatorFileCloud thisCloud = new BrowserMatorFileCloud(mainAppFrame, this);
     thisCloud.ShowFileCloudWindow();
 }
  public void UploadFile(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten)
   {
       int current_MDI_Index = GetCurrentWindow();
       
-     UploadFileThread UPLOADREF = new UploadFileThread(this, STAppFrame, current_MDI_Index);
+     UploadFileThread UPLOADREF = new UploadFileThread(this, mainAppFrame, STAppFrame, STAppData, current_MDI_Index);
   UPLOADREF.execute();  
    
   }
@@ -1654,8 +1654,8 @@ xmlfile.writeAttribute("Random", randstring);
     {
    if ("file".equals(thisbug.DataLoopSource))
     {
-        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
-        {
+       if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+       {
          thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
         }
          number_of_rows = thisbug.RunTimeFileSet.size();
@@ -1950,7 +1950,7 @@ xmlfile.writeEndElement();
             if (isFlatten)
             {
 
-     OpenFileThread OPENREF = new OpenFileThread(mainAppFrame, file, MDIViewClasses, MDIDataClasses, calling_MDI_Index, true, false);
+     OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, calling_MDI_Index, true, false);
   OPENREF.execute();
             }
 
@@ -2107,25 +2107,25 @@ STAppData.changes = false;
   {
       int current_MDI_Index = GetCurrentWindow();
       
-     SaveFileThread SAVEREF = new SaveFileThread(mainAppFrame, STAppFrame, STAppData, isSaveAs, isFlatten, current_MDI_Index);
+     SaveFileThread SAVEREF = new SaveFileThread(this, mainAppFrame, STAppFrame, STAppData, isSaveAs, isFlatten, current_MDI_Index);
   SAVEREF.execute();  
   }
   
-     public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, boolean RunIt) 
+     public void OpenFile (File file, boolean RunIt) 
     {
         
     int current_MDI_Index = GetCurrentWindow();
-  OpenFileThread OPENREF = new OpenFileThread(mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt);
+  OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt);
   OPENREF.execute();
   
  
 
     }
-      public void OpenFile (File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, boolean RunIt, boolean fromCloud) 
+      public void OpenFile (File file, boolean RunIt, boolean fromCloud) 
     {
         
     int current_MDI_Index = GetCurrentWindow();
-  OpenFileThread OPENREF = new OpenFileThread(mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt, fromCloud);
+  OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt, fromCloud);
   OPENREF.execute();
  
 
@@ -2133,7 +2133,7 @@ STAppData.changes = false;
      
      public void ImportFileFunct (File[] files, int CurrentMDIWindowIndex)
      {
-            ImportFileThread IMPORTREF = new ImportFileThread(this, files, CurrentMDIWindowIndex);
+            ImportFileThread IMPORTREF = new ImportFileThread(mainAppFrame, this, files, CurrentMDIWindowIndex);
    IMPORTREF.execute();
    
      }
@@ -2163,14 +2163,14 @@ STAppData.changes = false;
      {
      File file_to_open = new File(args[1]);
    
-     OpenFile(file_to_open, MDIViewClasses, MDIDataClasses, false);
+     OpenFile(file_to_open, false);
    
      }
   
     if (args[0].equals("run"))
     {
    File file_to_open = new File(args[1]);
-    OpenFile(file_to_open, MDIViewClasses, MDIDataClasses, true);
+    OpenFile(file_to_open, true);
   
    
     }
@@ -2217,6 +2217,7 @@ STAppData.changes = false;
        if (MDI_CLASS_INDEX>=0)
        {
   MDIViewClasses.get(MDI_CLASS_INDEX).setFilename(MDIViewClasses.get(MDI_CLASS_INDEX).filename);
+  MDIDataClasses.get(MDI_CLASS_INDEX).setFilenames(MDIViewClasses.get(MDI_CLASS_INDEX).filename);
 // MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
  // MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
 //  MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
@@ -2792,81 +2793,11 @@ File newfile = new File(path + ".js");
      
     
    }
-   public void MoveAction (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure thisBug, ProcedureView thisBugView, int toMoveIndex, int Direction)
-   {
-
-    int SwapIndex = toMoveIndex + Direction;
-    if (Direction == 1)
-       {
-                if (toMoveIndex<thisBug.ActionsList.size()-1)
-     {
-
-
-  Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
-    
-
-
-      
-  
-    }
-
-       }
-       if (Direction == -1)
-       {
-     if (toMoveIndex!=0)
-    {
-    Collections.swap(thisBug.ActionsList, toMoveIndex, SwapIndex);
-  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
-  thisBug.ActionsList.get(toMoveIndex).setActionIndex(toMoveIndex);
-  thisBug.ActionsList.get(SwapIndex).setActionIndex(SwapIndex);
-
-
-       }
-   }
-  STAppFrame.UpdateDisplay();
-
-       STAppData.changes=true;
-   }
-  
-   public void DeleteAction (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure thisBug, ProcedureView thisBugView, int atIndex)
-   {
-     String stringactionindex = Integer.toString(atIndex+1);
-        String stringbugindex = Integer.toString(thisBugView.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        if (STAppData.VarHashMap.containsKey(bugdashactionindex))
-        {
-            STAppData.VarHashMap.remove(bugdashactionindex);
-           thisBugView.UpdateStoredVarPulldown();
-        }
-        if (STAppData.VarLists.containsKey(bugdashactionindex))
-        {
-            STAppData.VarLists.remove(bugdashactionindex);
-            thisBugView.UpdateStoredListsPulldown("Select a stored URL List");
-        }
-    thisBug.ActionsList.remove(atIndex);
-    thisBugView.ActionsViewList.remove(atIndex);
-
-  for(int BugIndex=0; BugIndex<thisBug.ActionsList.size(); BugIndex++)
-     {
-     if (BugIndex>=atIndex)
-     {
-     thisBug.ActionsList.get(BugIndex).index--;
-     thisBugView.ActionsViewList.get(BugIndex).index--;
-     }
-     }
  
- STAppFrame.UpdateDisplay();
- STAppData.changes=true;
-   }
+  
+
    
-   public void DeleteBug (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, int BugIndex)
+   public void UpdateStoredVarPulldowns (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, int BugIndex)
    {
    for (Action A: STAppData.BugArray.get(BugIndex).ActionsList)
    {
@@ -2879,12 +2810,9 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
            STAppData.VarLists.remove(A.Variable2);
        }
    }
-   STAppFrame.UpdateStoredVarPulldown();
-   STAppData.BugArray.remove(BugIndex);
-  STAppFrame.BugViewArray.remove(BugIndex);
-STAppData.changes=true;
+   STAppFrame.UpdateStoredVarPulldownView(STAppData.VarHashMap);
    }
-       public void AddLoopHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview) 
+       public void AddLoopHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, ProcedureView newbugview, Procedure newbug) 
       {
           String[] blanklist = new String[0];
            newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
@@ -2942,21 +2870,21 @@ STAppData.changes=true;
                if (ACommand.equals("Update"))
          {
              
-          STAppFrame.DisableProcedure(newbugview);
-          STAppData.DisableProcedure(newbug);
+          newbugview.Disable();
+          newbug.Disable();
             newbugview.Locked= true;
             newbug.Locked = true;
          }
          if (ACommand.equals("Edit"))
          {
-             STAppFrame.EnableProcedure(newbugview);
-             STAppData.EnableProcedure(newbug);
+             newbugview.Enable();
+             newbug.Enable();
              newbugview.Locked = false;
              newbug.Locked = false;
          } 
           
            });
-         newbugview.addRightClickPanelListener(newbug, newbugview, Window);
+         newbugview.addRightClickPanelListener(newbug, newbugview, STAppFrame, STAppData);
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
                MoveProcedure(STAppFrame, STAppData, newbugview.index, -1);
            });
@@ -2965,7 +2893,7 @@ STAppData.changes=true;
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                
-               STAppData.RunSingleTest(newbug, newbugview);
+            RunSingleTest(newbug, newbugview, STAppFrame, STAppData);
            });
            
            newbugview.addJTextFieldBugTitleDocListener(
@@ -2991,8 +2919,9 @@ STAppData.changes=true;
            );
            
  newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
-               STAppFrame.DeleteBug(newbugview.index);
+               STAppFrame.DeleteBugView(newbugview.index);
                STAppData.DeleteBug(newbugview.index);
+               UpdateStoredVarPulldowns(STAppFrame, STAppData, newbugview.index);
                STAppFrame.UpdateDisplay();
 
            });
@@ -3002,9 +2931,9 @@ STAppData.changes=true;
            newbugview.addJButtonGoActionActionListener((ActionEvent evt) -> {
               GoAction thisActionToAdd = new GoAction("");
                GoActionView thisActionViewToAdd = new GoActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
-               STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
                STAppFrame.UpdateDisplay();
           STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3014,10 +2943,10 @@ STAppData.changes=true;
             newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
               ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
               ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
              
-                     thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
-             STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3026,9 +2955,9 @@ STAppData.changes=true;
            newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
               TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
               TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-                  thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-          STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3037,9 +2966,9 @@ STAppData.changes=true;
            newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
              FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
              FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-             STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+           thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3048,9 +2977,9 @@ STAppData.changes=true;
            newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
              FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
              NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-               STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3059,9 +2988,9 @@ STAppData.changes=true;
                newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
              YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
              YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
-              thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-              thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-            STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3081,9 +3010,9 @@ STAppData.changes=true;
            {
                Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, Window, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, Window, newbug, newbugview);
-              STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3107,9 +3036,9 @@ STAppData.changes=true;
              {
                  Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
                ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, newbug, newbugview);
-                STAppFrame.AddActionToArray(thisActionViewToAdd, newbugview);         
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug);
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3301,119 +3230,76 @@ STAppData.changes=true;
       }
        
          
-         // these need updating... pasted from seleniumtesttooldata
-
-             public void AddDataLoopProcs(Procedure newdataloop, ProcedureView newdataloopview)
-        {
-              BugArray.add(newdataloop);   
-         BugViewArray.add(newdataloopview);
-         newdataloop.index = BugArray.size();
-         newdataloopview.index = BugViewArray.size();
-        AddNewHandlers(this, newdataloopview, newdataloop);
-        AddLoopHandlers(this, newdataloopview, newdataloop);
-       UpdateDisplay();
-      
-       UpdateStoredListsPulldown(newdataloop.URLListName);
-       
-        
- JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-   jButtonFlattenFile.setEnabled(true);
-        }
-        public void AddNewDataLoop()
-        {
-             Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-     
-              String[] blanklist = new String[0];
- 
-     //    AddDataLoopProcs(newdataloop, newdataloopview);
-    
-        }
-        public void AddNewDataLoopURLList(String in_listname)
-        {
-            Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-        ProcedureView newdataloopview = new ProcedureView();
-        newdataloopview.setType("Dataloop");
-        newdataloopview.setDataLoopSource("urllist");
-      
-        newdataloop.setDataLoopSource("urllist");
-     
-        newdataloopview.setURLListName(in_listname);
-        String[] blanklist = new String[0];
-  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
-  
-       
-        newdataloop.setURLListData(blanklist, in_listname);
-       
-       newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
-     
-   AddDataLoopProcs(newdataloop, newdataloopview);
-        }
-           public void AddNewDataLoopFile(File CSVFile)
-        {
-        Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         newdataloop.setDataLoopSource("file");
-      
    
-     
-        if (CSVFile.exists())
+  public void RunActions (SeleniumTestToolData STAppData)
+  {
+           int sessions = 1;
+         if (STAppData.MultiSession)
          {
-        
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
-         
-         }
-         else
-         {
-       
-         newdataloop.setDataFile("");  
-        
-         
-         }
-   AddDataLoopProcs(newdataloop);
-        }
- 
-    public void RunActions()
- {
-//     if ("Run All Procedures".equals(this.getRunActionsButtonName()))
-//     {
-         
-          int sessions = 1;
-         if (this.MultiSession)
-         {
-          sessions = this.Sessions;
+          sessions = STAppData.getSessions();
          }
          
-          String tbrowser = this.TargetBrowser;
+          String tbrowser = STAppData.getTargetBrowser();
       if ("Firefox/IE/Chrome".equals(tbrowser))
       {
  for (int x=0; x<sessions; x++)
  {
     
-      this.setTargetBrowser("Firefox");
-       RunAllTests REFSYNCH = new RunAllTests(this);
+     STAppData.setTargetBrowser("Firefox");
+       RunAllTests REFSYNCH = new RunAllTests(STAppData);
     REFSYNCH.execute();   
-    this.setTargetBrowser("Chrome");
-       RunAllTests REFSYNCH2 = new RunAllTests(this);
+    STAppData.setTargetBrowser("Chrome");
+       RunAllTests REFSYNCH2 = new RunAllTests(STAppData);
     REFSYNCH2.execute();  
-    this.setTargetBrowser("Internet Explorer-32");
-      RunAllTests REFSYNCH3 = new RunAllTests(this);
+    STAppData.setTargetBrowser("Internet Explorer-32");
+      RunAllTests REFSYNCH3 = new RunAllTests(STAppData);
     REFSYNCH3.execute();  
-    this.setTargetBrowser("Firefox/IE/Chrome");
+    STAppData.setTargetBrowser("Firefox/IE/Chrome");
  }
       }
       else
       {
      for (int x=0; x<sessions; x++)
  {
-    RunAllTests REFSYNCH = new RunAllTests(this);
+    RunAllTests REFSYNCH = new RunAllTests(STAppData);
+    REFSYNCH.execute();      
+ }       
+  }
+  }
+    public void RunActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+ {
+   if ("Run All Procedures".equals(STAppFrame.getRunActionsButtonName()))
+     {
+         
+          int sessions = 1;
+         if (STAppData.MultiSession)
+         {
+          sessions = STAppData.getSessions();
+         }
+         
+          String tbrowser = STAppData.getTargetBrowser();
+      if ("Firefox/IE/Chrome".equals(tbrowser))
+      {
+ for (int x=0; x<sessions; x++)
+ {
+    
+     STAppData.setTargetBrowser("Firefox");
+       RunAllTests REFSYNCH = new RunAllTests(STAppFrame, STAppData);
+    REFSYNCH.execute();   
+    STAppData.setTargetBrowser("Chrome");
+       RunAllTests REFSYNCH2 = new RunAllTests(STAppFrame, STAppData);
+    REFSYNCH2.execute();  
+    STAppData.setTargetBrowser("Internet Explorer-32");
+      RunAllTests REFSYNCH3 = new RunAllTests(STAppFrame, STAppData);
+    REFSYNCH3.execute();  
+    STAppData.setTargetBrowser("Firefox/IE/Chrome");
+ }
+      }
+      else
+      {
+     for (int x=0; x<sessions; x++)
+ {
+    RunAllTests REFSYNCH = new RunAllTests(STAppFrame, STAppData);
     REFSYNCH.execute();      
  }     
       }
@@ -3425,25 +3311,13 @@ STAppData.changes=true;
  
  }
 
- public void RunSingleTest(Procedure bugtorun)
+ public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
-      RunASingleTest REFSYNCH = new RunASingleTest(this, bugtorun, thisbugview, this.TargetBrowser, this.OSType);
+      RunASingleTest REFSYNCH = new RunASingleTest(STAppFrame, STAppData, bugtorun, thisbugview, STAppData.getTargetBrowser(), STAppData.getOSType());
     REFSYNCH.execute();
  }
 
-       public void AddNewBug()
-        {
-         Procedure newbug = new Procedure();
-      
-         newbug.setType("Procedure");
-      
-         BugArray.add(newbug);
-     
-         newbug.index = BugArray.size();
-      
-     
 
-        }
 
       
 }

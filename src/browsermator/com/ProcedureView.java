@@ -347,7 +347,7 @@ ActionScrollPane.setVisible(true);
      {
          this.Type = type;
      }
-     public void setTitle(String title)
+     public void setBugTitle(String title)
      {
         JLabelBugTitle.setText(title);
     
@@ -423,7 +423,7 @@ ActionScrollPane.setVisible(true);
     Procedure this_bug;
     ProcedureView this_bugview;
     SeleniumTestTool window;
-    public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window){
+    public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData){
         anItem = new JMenuItem("Clone Procedure");
         add(anItem);
      
@@ -432,19 +432,19 @@ ActionScrollPane.setVisible(true);
         this.window = window;
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-      cloneProcedure(this_bug, this_bugview, window);
+      cloneProcedure(this_bug, this_bugview, STAppFrame, STAppData);
       }
     });      
     }
              }
-              public void ShowContextMenu(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window, MouseEvent evt)
+              public void ShowContextMenu(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
  {
-   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(this_bug, this_bugview, window);
+   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(this_bug, this_bugview, STAppFrame, STAppData);
         menu.show(evt.getComponent(), evt.getX(), evt.getY());
   
         
  }
-          public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool window)
+          public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
           if ("Dataloop".equals(this_bug_in.Type))
           {
@@ -452,31 +452,34 @@ ActionScrollPane.setVisible(true);
             {
                 String[] blanklist = new String[0];
         
-           
-               window.AddNewDataLoopURLList(this_bug_in.URLListName);  
+               STAppFrame.AddNewDataLoopURLListView(this_bugview_in.URLListName);
+               STAppData.AddNewDataLoopURLList(this_bug_in.URLListName);  
             
             }
             else
             {
               File this_data_file = new File(this_bug_in.DataFile);
-               window.AddNewDataLoopFile(this_data_file);    
+              STAppFrame.AddNewDataLoopFileView(this_data_file);  
+              STAppData.AddNewDataLoopFile(this_data_file);
             } 
          
           }
           else
           {
-          window.AddNewBug();
-    
+         STAppFrame.AddNewBugView();
+          STAppData.AddNewBug();
           }
           
           
-          window.BugViewArray.get(window.BugViewArray.size()-1).setTitle(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE" );
-          window.BugViewArray.get(window.BugViewArray.size()-1).JTextFieldBugTitle.setText(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE");
-          window.BugViewArray.get(window.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
-          window.BugViewArray.get(window.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
-          Procedure this_bug = window.BugArray.get(window.BugArray.size()-1);
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+        STAppData.BugArray.get(STAppData.BugArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
+            STAppData.BugArray.get(STAppData.BugArray.size()-1).setLimit(this_bug_in.getLimit());
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
+          STAppData.BugArray.get(STAppData.BugArray.size()-1).setRandom(this_bug_in.getRandom());
+          Procedure this_bug = STAppData.BugArray.get(STAppData.BugArray.size()-1);
           
-          ProcedureView this_bugview = window.BugViewArray.get(window.BugViewArray.size()-1);
+          ProcedureView this_bugview = STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1);
           for (Action ACT: this_bug_in.ActionsList)
           {
       String ActionType = ACT.Type;
@@ -494,9 +497,10 @@ ActionScrollPane.setVisible(true);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               STAppData.AddActionToArray (thisActionToAdd, this_bug);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
           //    window.UpdateDisplay();
            }      
  
@@ -506,14 +510,15 @@ ActionScrollPane.setVisible(true);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-              window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+             STAppData.AddActionToArray (thisActionToAdd, this_bug);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
           //    window.UpdateDisplay();
              }
       }
-                window.UpdateDisplay();
-           JScrollBar vertical = window.MainScrollPane.getVerticalScrollBar();
+                STAppFrame.UpdateDisplay();
+           JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
       }
 
@@ -522,7 +527,7 @@ ActionScrollPane.setVisible(true);
        JButtonOK.addActionListener(listener);
            
        }
-       public void addRightClickPanelListener(Procedure newbug, ProcedureView newbugview, SeleniumTestTool Window)
+       public void addRightClickPanelListener(Procedure newbug, ProcedureView newbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
        {
              JPanelBug.addMouseListener(new MouseAdapter(){
     @Override
@@ -530,7 +535,7 @@ ActionScrollPane.setVisible(true);
                  
                     if (evt.getButton()==3)
                     {
-                        ShowContextMenu(newbug, newbugview, Window, evt);
+                        ShowContextMenu(newbug, newbugview, STAppFrame, STAppData, evt);
                     }
                 }
              });
@@ -622,7 +627,7 @@ ActionScrollPane.setVisible(true);
   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
  BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-         setTitle("Procedure ");
+         setBugTitle("Procedure ");
          
         }
         else
@@ -632,7 +637,7 @@ ActionScrollPane.setVisible(true);
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
      BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-          setTitle("Data Loop ");
+          setBugTitle("Data Loop ");
         }
    }
    

@@ -17,15 +17,17 @@ import javax.swing.SwingWorker;
  * @author pcalkins
  */
 public class SaveFileThread extends SwingWorker<String, Integer>{
- MainAppFrame mainApp;
+ MainAppFrame mainAppFrame;
+ STAppController mainAppController;
  SeleniumTestTool STAppFrame;
  SeleniumTestToolData STAppData;
  boolean isSaveAs;
  boolean isFlatten;
  int calling_MDI_Index;
-    public SaveFileThread(MainAppFrame mainApp, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
+    public SaveFileThread(STAppController in_mainAppData, MainAppFrame in_mainAppFrame, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
  {
-   this.mainApp = mainApp;  
+   this.mainAppFrame = in_mainAppFrame;
+   this.mainAppController = in_mainAppData;
    this.STAppFrame = STAppFrame;
    this.STAppData = STAppData;
    this.isSaveAs = isSaveAs;
@@ -37,7 +39,7 @@ public String doInBackground()
  {
    if (calling_MDI_Index == -1)
    {
-       mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+       mainAppFrame.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
    else
    {
@@ -49,7 +51,7 @@ public String doInBackground()
      }
      try
                       {
-                     mainApp.SaveFile(STAppFrame, isSaveAs, isFlatten, calling_MDI_Index);
+                     mainAppController.SaveFile(STAppFrame, STAppData, isSaveAs, isFlatten, calling_MDI_Index);
             
                       }
                       catch (Exception e)
@@ -64,7 +66,7 @@ public String doInBackground()
  {
      if (calling_MDI_Index == -1)
    { 
-  mainApp.Navigator.setCursor(Cursor.getDefaultCursor());   
+  mainAppFrame.Navigator.setCursor(Cursor.getDefaultCursor());   
    }
       else
    {
@@ -77,7 +79,7 @@ public String doInBackground()
      }
      else
      {
-         mainApp.RefreshCleanState(STAppFrame);
+         mainAppController.RefreshCleanState(STAppData);
      }
      
  }

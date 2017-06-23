@@ -281,7 +281,7 @@ String stringactionindex = Integer.toString(this.index+1);
            
            
        }
-       public void AddSetVarFocusListeners(SeleniumTestTool Window, Procedure newbug, Action action)
+       public void AddSetVarFocusListeners(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, Action action)
        {
           
        addJTextFieldFocusListener(new FocusListener() {
@@ -291,13 +291,13 @@ String stringactionindex = Integer.toString(this.index+1);
             
             
            
-             Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 1 );
+             STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 1 );
             }
 
             @Override
             public void focusLost(FocusEvent e) {
           
-               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 1);
+              STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 1);
             }
         });
       addJTextField2FocusListener(new FocusListener() {
@@ -307,19 +307,19 @@ String stringactionindex = Integer.toString(this.index+1);
             
          
           
-               Window.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 2 );
+               STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 2 );
                 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
           
-               Window.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 2);
+               STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 2);
             }
         });    
        }
    
-       public void AddDraggers(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+       public void AddDraggers(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
        {
          addActionPanelMouseListener(new MouseAdapter(){
     @Override
@@ -327,7 +327,7 @@ String stringactionindex = Integer.toString(this.index+1);
                  
                     if (evt.getButton()==3)
                     {
-                        ShowContextMenu(action, newbug, newbugview, Window, evt);
+                        ShowContextMenu(action, newbug, newbugview, STAppFrame, STAppData, evt);
                     }
                 }
        @Override
@@ -489,12 +489,12 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                 if (places_moved==1)
                 {
 
-                     Window.MoveAction(newbug, newbugview, action.index, -1);
-                    
+                     STAppFrame.MoveActionView(newbugview, action.index, -1);
+                     STAppData.MoveAction(newbug, action.index, -1);
                      
                      original_locationY = snapped_locationY;
                      
-  Window.UpdateScrollPane(newbugview);
+  STAppFrame.UpdateScrollPane(newbugview);
  // UpdateScrollPane();
   scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
@@ -504,11 +504,11 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                 if (places_moved==-1)
                 {
                          
-                   Window.MoveAction(newbug, newbugview, action.index, 1); 
-                 
+                   STAppFrame.MoveActionView(newbugview, action.index, 1); 
+                    STAppData.MoveAction(newbug, action.index, 1); 
           original_locationY = snapped_locationY;
   
-  Window.UpdateScrollPane(newbugview);
+  STAppFrame.UpdateScrollPane(newbugview);
  // UpdateScrollPane(); 
  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
  
@@ -606,22 +606,24 @@ if (!potentialDrag) return;
     Action thisAct;
     Procedure this_bug;
     ProcedureView this_bugview;
-    SeleniumTestTool window;
-    public PopUpDemo(Action Act, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window){
+    SeleniumTestTool STAppFrame;
+    SeleniumTestToolData STAppData;
+    public PopUpDemo(Action Act, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData){
         anItem = new JMenuItem("Clone Action");
         add(anItem);
         this.thisAct = Act;
         this.this_bug = this_bug;
         this.this_bugview = this_bugview;
-        this.window = window;
+        this.STAppFrame = in_STAppFrame;
+        this.STAppData = in_STAppData;
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-      cloneAction(thisAct, this_bug, this_bugview, window);
+      cloneAction(thisAct, this_bug, this_bugview, STAppFrame, STAppData);
       }
     });      
     }
   
-      public void cloneAction(Action ACT, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window)
+      public void cloneAction(Action ACT, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
       String ActionType = ACT.Type;
 
@@ -638,10 +640,11 @@ if (!potentialDrag) return;
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
-              window.UpdateDisplay();
+                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+             STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
+              STAppData.AddActionToArray(thisActionToAdd, this_bug);
+              STAppFrame.UpdateDisplay();
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -650,31 +653,34 @@ if (!potentialDrag) return;
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-              window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
-              window.UpdateDisplay();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+              STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
+              STAppData.AddActionToArray(thisActionToAdd, this_bug);
+              STAppFrame.UpdateDisplay();
              }
       }
 }
 
 
- public void ShowContextMenu(Action ACT,Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window, MouseEvent evt)
+ public void ShowContextMenu(Action ACT,Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
  {
-   PopUpDemo menu = new PopUpDemo(ACT, this_bug, this_bugview, window);
+   PopUpDemo menu = new PopUpDemo(ACT, this_bug, this_bugview, STAppFrame, STAppData);
         menu.show(evt.getComponent(), evt.getX(), evt.getY());
   
         
  }
+ 
  @Override
-   public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+   public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
   
     
-    AddDraggers(action, Window, newbug, newbugview);
+    AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          Window.DeleteAction(newbug, newbugview, action.index);
-                            Window.UpdateDisplay();
+                          STAppFrame.DeleteActionView(newbugview, action.index);
+                           STAppData.DeleteAction(newbug, action.index);
+                           STAppFrame.UpdateDisplay();
                      
    
    });
@@ -703,11 +709,11 @@ if (!potentialDrag) return;
    } 
 
 
-  public void AddLoopListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+  public void AddLoopListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
-   if (Window.hasStoredVar)
+   if (STAppData.hasStoredVar)
    {
-   AddSetVarFocusListeners(Window, newbug, action);
+   AddSetVarFocusListeners(STAppFrame, STAppData, newbug, action);
    }
 if (newbugview.myTable!=null)
 {

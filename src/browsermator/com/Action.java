@@ -80,7 +80,7 @@ LocalDateTime[] loop_time_of_test;
        
    }
 
-     public int RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest, int currentrecord, int number_of_records)
+     public int RunAction (WebDriver driver, String message, SeleniumTestToolData in_sitetest, int currentrecord, int number_of_records)
     {
         return number_of_records;
     }

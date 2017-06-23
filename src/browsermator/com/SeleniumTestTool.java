@@ -16,10 +16,12 @@ import javax.swing.JScrollBar;
 import javax.swing.JSpinner.DefaultEditor;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -30,7 +32,10 @@ String filename;
 
   JPanel BugPanel;
 ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
-
+  public SeleniumTestTool()
+  {
+     initComponents();
+  }
   public SeleniumTestTool(ArrayList<ProcedureView> BugViewArray)
   {
   this.BugViewArray = BugViewArray;
@@ -234,7 +239,43 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
       } 
     }
     }
+      public void MoveActionView (ProcedureView thisBugView, int toMoveIndex, int Direction)
+   {
+
+    int SwapIndex = toMoveIndex + Direction;
+    if (Direction == 1)
+       {
+                if (toMoveIndex<thisBugView.ActionsViewList.size()-1)
+     {
+
+
+  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
+  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+
     
+
+
+      
+  
+    }
+
+       }
+       if (Direction == -1)
+       {
+     if (toMoveIndex!=0)
+    {
+  
+  Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
+thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+ 
+
+       }
+   }
+  UpdateDisplay();
+
+   }
       public void addSelectedVariableName(String varname)
       {
          
@@ -473,6 +514,26 @@ public int GetWaitTime()
    }
    
  }
+    public void DeleteActionView (ProcedureView thisBugView, int atIndex)
+   {
+    
+    thisBugView.ActionsViewList.remove(atIndex);
+
+  for(int BugViewIndex=0; BugViewIndex<thisBugView.ActionsViewList.size(); BugViewIndex++)
+     {
+     if (BugViewIndex>=atIndex)
+     {
+     thisBugView.ActionsViewList.get(BugViewIndex).index--;
+     }
+     }
+
+   }
+     public void DeleteBugView (int BugIndex)
+   {
+
+   BugViewArray.remove(BugIndex);
+
+   }
  public void disableRemoves()
  {
     for (ProcedureView PV: BugViewArray)
@@ -545,7 +606,7 @@ public int GetWaitTime()
      jButtonFlattenFile.setText(newtext);
  }
 
- public void RefreshData()
+ public void RefreshViewData()
  {
      for (ProcedureView procview: this.BugViewArray)
      {
@@ -562,16 +623,68 @@ public int GetWaitTime()
          }
      }
  }
-      public void AddNewDataLoop()
-        {
+   public File BrowseForJSFileAction ()
+   {
+           final JFileChooser CSVFileChooser = new JFileChooser();
+   BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
+      String lastJSOpenDir = theseProps.getKeyValue("lastused_js_open_dir");
+       if (lastJSOpenDir!=null)
+        {
+        CSVFileChooser.setCurrentDirectory(new File(lastJSOpenDir));
+        } 
+ FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Javascript file (*.js)","js");
+
+    CSVFileChooser.setFileFilter(filefilter);
+CSVFileChooser.setPreferredSize(new Dimension(800,600));
+int returnVal = CSVFileChooser.showOpenDialog(this);
+        File chosenDir = CSVFileChooser.getCurrentDirectory();
+ theseProps.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = CSVFileChooser.getSelectedFile();   
+
+    if (file.getAbsoluteFile().getName().contains(".js"))
+{
+ 
+}
+else
+{
+   String path = file.getAbsolutePath();
+    
+File newfile = new File(path + ".js");
+ file = newfile;
+ 
+}  
+    return file;
+            }
+            else
+            {
+            return null;
+            }   
+   }
+      public void AddNewDataLoopView()
+        {
         ProcedureView newdataloopview = new ProcedureView();
+      
         newdataloopview.setType("Dataloop");
-              String[] blanklist = new String[0];
-  newdataloopview.setJTableSourceToURLList(blanklist, "");
-   //      AddDataLoopProcs(newdataloop, newdataloopview);
+        newdataloopview.setDataLoopSource("none");
+     
+       AddDataLoopProcView(newdataloopview);
     
         }
+               public void AddDataLoopProcView(ProcedureView newdataloopview)
+        {
+           
+         BugViewArray.add(newdataloopview);
+     
+         newdataloopview.index = BugViewArray.size();
+     
+        }
+               public void setJButtonFlattenFileEnabled(boolean enable)
+               {
+     
+   jButtonFlattenFile.setEnabled(enable);
+               }
  public void UpdateDisplay()
  {
  this.MainScrollPane.setVisible(false);
@@ -716,7 +829,7 @@ bugindex++;
         public void AddNewBugView()
         {
        
-         ProcedureView newbugview = new ProcedureView();
+        ProcedureView newbugview = new ProcedureView();
        
          newbugview.setType("Procedure");
       
@@ -726,35 +839,8 @@ bugindex++;
     
 
         }
-        public void AddDataLoopProcView(ProcedureView newdataloopview)
-        {
-         
-         BugViewArray.add(newdataloopview);
-      
-         newdataloopview.index = BugViewArray.size();
+
     
-     
-      
-    
-       
-        
- JScrollBar vertical = this.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-   jButtonFlattenFile.setEnabled(true);
-        }
-        public void AddNewDataLoopView()
-        {
-             Procedure newdataloop = new Procedure();
-      
-         newdataloop.setType("Dataloop");
-         
-        ProcedureView newdataloopview = new ProcedureView();
-        newdataloopview.setType("Dataloop");
-              String[] blanklist = new String[0];
-  newdataloopview.setJTableSourceToURLList(blanklist, "");
-         AddDataLoopProcView(newdataloopview);
-    
-        }
          public void UpdateDataLoopURLListTableView(String ListName, String[] storedURLlist, ProcedureView thisprocview)
   {
 
@@ -825,7 +911,7 @@ bugindex++;
         JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
  action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
  }       
-      public void AddActionToViewArray (Action action, ActionView actionview, Procedure newbug, ProcedureView newbugview)
+      public void AddActionViewToArray (ActionView actionview, ProcedureView newbugview)
 {
             newbugview.ActionsViewList.add(actionview);
           
@@ -1472,6 +1558,7 @@ public void setjCheckBoxIncludeScreenshotsEnabled(boolean enabled)
 {
     jCheckBoxIncludeScreenshots.setEnabled(enabled);
 }
+
  public Boolean getjCheckBoxShowReport()
  {
      return jCheckBoxShowReport.isSelected();

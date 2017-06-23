@@ -15,8 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
@@ -92,12 +90,7 @@ private ButtonGroup LookAndFeelGroup;
      ret_val = jMenuView.getItem(index).getText();
      return ret_val;
  }
- public int getjMenuViewItemCount()
- {
-     int ret_val = 0;
-     ret_val = jMenuView.getItemCount();
-     return ret_val;
- }
+
  public void addExitMenuActionListener(ActionListener listener)
  {
     exitMenuItem.addActionListener(listener);

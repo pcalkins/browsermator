@@ -22,7 +22,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class RunAllTests extends SwingWorker<String, Integer>
 {
-SeleniumTestToolData SiteTest;
+SeleniumTestToolData STAppData;
+SeleniumTestTool STAppFrame;
 String targetbrowser;
 String OSType;
 WebDriver driver;
@@ -30,74 +31,109 @@ String firefox_path;
 String chrome_path;
 FireFoxProperties FFprops;
 BrowserMatorReport BrowserMatorReport;
-
- public RunAllTests (SeleniumTestToolData in_SiteTest)
+Boolean RUNWITHGUI;
+ public RunAllTests (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
- 
+  RUNWITHGUI = true;
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
-   this.SiteTest = in_SiteTest;
-    this.SiteTest.cancelled = false;
-  this.targetbrowser = in_SiteTest.TargetBrowser;
-  this.OSType = in_SiteTest.OSType;
-  SiteTest.showTaskGUI();
+   this.STAppFrame = STAppFrame;
+   this.STAppData = STAppData;
+    this.STAppData.cancelled = false;
+  this.targetbrowser = STAppData.TargetBrowser;
+  this.OSType = STAppData.OSType;
+  STAppFrame.showTaskGUI();
     
-  SiteTest.VarHashMap.clear();
-  SiteTest.VarLists.clear();
+  STAppData.VarHashMap.clear();
+  STAppData.VarLists.clear();
 
   
  
     
+ }
+ public RunAllTests (SeleniumTestToolData in_SiteTest)
+ {
+ //we're in no GUI Mode
+     RUNWITHGUI = false;
+  FFprops = new FireFoxProperties(targetbrowser);
+  this.firefox_path = FFprops.LoadFirefoxPath();
+  this.chrome_path = FFprops.LoadChromePath();
+   this.STAppData = in_SiteTest;
+    this.STAppData.cancelled = false;
+  this.targetbrowser = in_SiteTest.TargetBrowser;
+  this.OSType = in_SiteTest.OSType;
+  // SiteTest.showTaskGUI();
+   this.STAppFrame = new SeleniumTestTool();
+  STAppData.VarHashMap.clear();
+  STAppData.VarLists.clear();
+
+      
  }
  
 @Override 
 public String doInBackground()
  {
-    
-     SiteTest.clearPassFailColors();
-     SiteTest.disableAdds();
-     SiteTest.disableRemoves();
-     SiteTest.testRunning = true;
+     String ret_val = "";
+    if (RUNWITHGUI)
+    {
+     STAppFrame.clearPassFailColors();
+     STAppFrame.disableAdds();
+     STAppFrame.disableRemoves();
+     STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    STAppFrame.setRunActionsButtonName("Running...(Click to Cancel)");
+    }
+     STAppData.testRunning = true;
      
-    SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    SiteTest.setRunActionsButtonName("Running...(Click to Cancel)");
-        for (ProcedureView thisbugview : SiteTest.BugViewArray)
+     if (RUNWITHGUI)
+     {
+        for (ProcedureView thisbugview : STAppFrame.BugViewArray)
       {
           thisbugview.JLabelPass.setVisible(false);
       }
-    RunAllActions(SiteTest, targetbrowser, OSType);
-    
-    String donetext = "Run All Procedures";
-     return donetext;
+     }
+ 
+    RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
      
+    ret_val = "Run All Procedures";
+    
+    
+      return ret_val;
  }
 @Override
  protected void done()
  {
-     SiteTest.enableAdds();
-     SiteTest.enableRemoves();
-    SiteTest.hideTaskGUI();
-     SiteTest.RefreshData();
-       SiteTest.setJTextFieldProgress("");
-    SiteTest.testRunning = false; 
-    try
+      if (RUNWITHGUI)
+     {
+    STAppFrame.enableAdds();
+    STAppFrame.enableRemoves();
+    STAppFrame.hideTaskGUI();
+    STAppFrame.RefreshViewData();
+    STAppData.RefreshData();
+    STAppFrame.setJTextFieldProgress("");
+     }
+      else
+      {
+      STAppData.RefreshData();
+      }
+   STAppData.testRunning = false; 
+   
+    if (RUNWITHGUI)
+     {
+   try
     {
         String donetext = get();
-        SiteTest.setCursor(Cursor.getDefaultCursor());   
-     SiteTest.setRunActionsButtonName(donetext);
+       STAppFrame.setCursor(Cursor.getDefaultCursor());   
+    STAppFrame.setRunActionsButtonName(donetext);
 
   
     }
     catch (Exception ex)
     {
-        if (ex.toString().contains("Cannot find firefox"))
-        {
-        FFprops.BrowseforFFPath();
-        
- 
-        }
-        SiteTest.setRunActionsButtonName("Run All Procedures");
+   
+        STAppFrame.setRunActionsButtonName("Run All Procedures");
+    }
+     }
  try
  {
      driver.close();
@@ -115,15 +151,13 @@ public String doInBackground()
  }
    driver.quit();
   
-   SiteTest.setCursor(Cursor.getDefaultCursor()); 
-    if (SiteTest.getExitAfter())
+    
+    if (STAppData.getExitAfter())
     {
     System.exit(0);
     }
-       System.out.println(ex.getLocalizedMessage());
-           
-    }
-        if (SiteTest.getPromptToClose())
+ 
+        if (STAppData.getPromptToClose())
      {
   
    
@@ -155,13 +189,13 @@ public String doInBackground()
  }
      }
              FillReport();
-    SiteTest.UpdateDisplay(); 
-     BrowserMatorReport = new BrowserMatorReport(SiteTest);
-      if (SiteTest.getShowReport())
+    STAppFrame.UpdateDisplay(); 
+     BrowserMatorReport = new BrowserMatorReport(STAppData);
+      if (STAppData.getShowReport())
        {
      
 
-        if (SiteTest.getIncludeScreenshots())
+        if (STAppData.getIncludeScreenshots())
        {
        BrowserMatorReport.ShowHTMLReport();
        }
@@ -173,9 +207,9 @@ public String doInBackground()
      
        }
           
-                if (SiteTest.getEmailReportFail())
+                if (STAppData.getEmailReportFail())
     {
-        if (SiteTest.AllTestsPassed)
+        if (STAppData.AllTestsPassed)
         {
             
         }
@@ -184,13 +218,13 @@ public String doInBackground()
             BrowserMatorReport.EmailReport();
         }
     }
-    if (SiteTest.getEmailReport())
+    if (STAppData.getEmailReport())
     {
  
         BrowserMatorReport.EmailReport();
   
     }
-    if (SiteTest.getExitAfter())
+    if (STAppData.getExitAfter())
     {
     
           
@@ -203,18 +237,19 @@ public String doInBackground()
 @Override
  protected void process ( List <Integer> bugindex)
  {
- //  int only... how to update actions individually... remapping of ints?
-    
-    SiteTest.BugViewArray.get(bugindex.get(0)).JButtonRunTest.setText("Run");
-      if (SiteTest.BugArray.get(bugindex.get(0)).Pass)
+
+    if (RUNWITHGUI)
+    {
+    STAppFrame.BugViewArray.get(bugindex.get(0)).JButtonRunTest.setText("Run");
+      if (STAppData.BugArray.get(bugindex.get(0)).Pass)
     {
       
      
-      SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.GREEN);
-        SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Passed");
+      STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.GREEN);
+      STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Passed");
       
-       SiteTest.BugArray.get(bugindex.get(0)).Pass = true;
-       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
+   
+       STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
     
     }
      else
@@ -222,18 +257,18 @@ public String doInBackground()
      
      
       
-       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.RED);
-       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Failed");
+       STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setBackground(Color.RED);
+       STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setText("Failed");
       
        
-       SiteTest.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
-       SiteTest.BugArray.get(bugindex.get(0)).Pass = true;
-     }
+       STAppFrame.BugViewArray.get(bugindex.get(0)).JLabelPass.setVisible(true);
     
+     }
+    }
  }
-  public void RunAllActions(SeleniumTestTool SiteTest, String TargetBrowser, String OSType)
+  public void RunAllActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
  {
- SiteTest.TimeOfRun = LocalDateTime.now();
+ STAppData.TimeOfRun = LocalDateTime.now();
     LocalDate today = LocalDate.now();
     switch (TargetBrowser)
    {
@@ -528,7 +563,7 @@ options.setBinary(chrome_path);
    }
     }
   
-  int WaitTime = SiteTest.GetWaitTime();
+  int WaitTime = STAppData.getWaitTime();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
  // int Timeout = 20;
@@ -544,9 +579,9 @@ options.setBinary(chrome_path);
   
 
   
-     for (Procedure thisbug : SiteTest.BugArray)
+     for (Procedure thisbug : STAppData.BugArray)
       {
-          String bugtitle = SiteTest.BugViewArray.get(thisbugindex).JTextFieldBugTitle.getText();
+          String bugtitle = STAppData.BugArray.get(thisbugindex).getBugTitle();
       LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
@@ -555,28 +590,30 @@ options.setBinary(chrome_path);
                     return null;
                       }
         };
+       if (RUNWITHGUI)
+       {
           (new ListenerTask<Void, String>(procMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();
 
                     
-          SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
+          STAppFrame.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
+       }
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
 
 
 int action_INT = 0;
 String action_ID = "";
-ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
 
-if (!"Dataloop".equals(thisbugview.Type))
+if (!"Dataloop".equals(thisbug.Type))
 {
     action_INT=0;
    for( Action ThisAction : thisbug.ActionsList ) {
-         if (SiteTest.cancelled)
+         if (STAppData.cancelled)
           {
           
              publish(thisbugindex);
@@ -591,6 +628,8 @@ if (!"Dataloop".equals(thisbugview.Type))
 
            if (!ThisAction.Locked)
    {
+       if (RUNWITHGUI)
+       {
           String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
                LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
             @Override
@@ -603,9 +642,10 @@ if (!"Dataloop".equals(thisbugview.Type))
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();
+       }
    try
    {
        if (totalpause>0)
@@ -618,8 +658,12 @@ if (!"Dataloop".equals(thisbugview.Type))
   {
       System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
+       if (RUNWITHGUI)
+       {
+           ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
         thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
             publish(thisbugindex);
+       }
           break;
         
   }
@@ -637,7 +681,7 @@ if (!"Dataloop".equals(thisbugview.Type))
        
          String fieldname = split_testfield_end[0].substring(22);
       
-         ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
 
          ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
@@ -654,7 +698,7 @@ if (!"Dataloop".equals(thisbugview.Type))
        
          String fieldname = split_testfield_end[0].substring(22);
       
-         ThisAction.Variable1 = SiteTest.GetStoredVariableValue(fieldname);
+         ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -666,26 +710,29 @@ if (!"Dataloop".equals(thisbugview.Type))
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
          
-        int nothing =  ThisAction.RunAction(driver, "Actions Paused...", this.SiteTest, 0, 0);
+        int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
                  {
          ThisAction.RunAction(driver);    
                  }
-                 
+                 if (RUNWITHGUI)
+                 {
+                     ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
                   thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
+                 }
        }
        
   
        if (!"".equals(ThisAction.tostore_varvalue))
        {
         
-           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
     if (ThisAction.tostore_varlist.length>0)
        {
       
-           SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+           STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
 
        }
     
@@ -697,14 +744,18 @@ if (!"Dataloop".equals(thisbugview.Type))
      {
   System.out.println(ex.toString());
       ThisAction.Pass = false;
+      if (RUNWITHGUI)
+      {
+            ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
         thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
  
               publish(thisbugindex);
+      }
           break;
       
        
      }
-         if (SiteTest.getIncludeScreenshots())
+         if (STAppData.getIncludeScreenshots())
     { 
       try
        {
@@ -730,7 +781,11 @@ if (!"Dataloop".equals(thisbugview.Type))
              ThisAction.Pass = true; 
            
            }
+           if (RUNWITHGUI)
+           {
+                 ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
+           }
    }  
 
 }
@@ -740,21 +795,26 @@ else
     if ("urllist".equals(thisbug.DataLoopSource))
     {
         
-      if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+      if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      SiteTest.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
+      STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
       }
-      thisbug.setURLListData(SiteTest.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      if (RUNWITHGUI)
+      {
+            ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-      number_of_rows = SiteTest.VarLists.get(thisbug.URLListName).length;
+      }
+      number_of_rows = STAppData.VarLists.get(thisbug.URLListName).length;
     }
     else
     {
    if ("file".equals(thisbug.DataLoopSource))
     {
-        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
+        if (thisbug.getLimit()>0 || thisbug.getRandom())
         {
-         thisbug.setRunTimeFileSet(SiteTest.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+            
+         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom())); 
      number_of_rows = thisbug.RunTimeFileSet.size();
         }
         else
@@ -766,25 +826,25 @@ else
     }     
     }
  
-   
-     
-
-
- if (number_of_rows==0)
- {
-  number_of_rows = FillTables(thisbug, thisbugview);
- }
+// if (number_of_rows==0)
+// {
+//  number_of_rows = FillTables(thisbug, thisbugview);
+// }
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
 
  for (int x = 0; x<number_of_rows; x++)
     {
-   SiteTest.clearProcedurePassFailColors(thisbugview);
+        if (RUNWITHGUI)
+        {
+       ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);       
+   STAppFrame.clearProcedurePassFailColors(thisbugview);
+        }
    int changex = -1;
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
-       if (SiteTest.cancelled)
+       if (STAppData.cancelled)
           {
        
              publish(thisbugindex);
@@ -808,11 +868,11 @@ else
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-        changex =  ThisAction.RunAction(driver, pause_message, this.SiteTest, x, number_of_rows);
+        changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-           if (SiteTest.getIncludeScreenshots())
+           if (STAppData.getIncludeScreenshots())
     { 
 
        ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>";
@@ -838,7 +898,11 @@ else
          System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
             publish(thisbugindex);
+            if (RUNWITHGUI)
+            {
+                  ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
              thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
+            }
           break;
   }
        }
@@ -858,9 +922,12 @@ else
        
          String fieldname = split_testfield_end[0].substring(22);
       
-         ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
         String action_title3 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2; 
-                    LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+                  
+        if (RUNWITHGUI)
+        {
+        LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
             shoutOut(action_title3);
@@ -871,9 +938,10 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();
+        }
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -889,9 +957,12 @@ else
        
          String fieldname = split_testfield_end[0].substring(22);
       
-         ThisAction.Variable1 = SiteTest.GetStoredVariableValue(fieldname);
-        String action_title2 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
-             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+         ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
+       
+         if (RUNWITHGUI)
+         {
+              String action_title2 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+        LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
             shoutOut(action_title2);
@@ -902,9 +973,10 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();
+         }
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -914,8 +986,11 @@ else
        
        else
        {
+           if (RUNWITHGUI)
+           {
               String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
-             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            
+              LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
             shoutOut(action_title);
@@ -926,16 +1001,17 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();   
+           }
          ThisAction.RunAction(driver);    
        }   
          
           if (!"".equals(ThisAction.tostore_varvalue))
        {
         
-           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
        
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
@@ -947,13 +1023,16 @@ else
           ThisAction.loop_pass_values[x] = false;
           ThisAction.loop_time_of_test[x] = LocalDateTime.now();
         
- 
+             if (RUNWITHGUI)
+             {
                publish(thisbugindex);
+                 ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
                 thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+             }
           break;
        
      }
-                  if (SiteTest.getIncludeScreenshots())
+                  if (STAppData.getIncludeScreenshots())
     { 
               try
         {
@@ -1029,12 +1108,17 @@ else
     
          System.out.println ("Exception when sleeping: " + ex.toString());
        ThisAction.Pass = false;
+       if (RUNWITHGUI)
+       {
             publish(thisbugindex);
+              ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
              thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
-         
+       }
           break;
   }
                  }
+                 if (RUNWITHGUI)
+                 {
                       String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
              LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
             @Override
@@ -1047,16 +1131,17 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
-             SiteTest.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
             }
         }).execute();   
+                 }
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
    ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-             if (SiteTest.getIncludeScreenshots())
+             if (STAppData.getIncludeScreenshots())
     { 
         try
         {
@@ -1083,9 +1168,13 @@ else
        ThisAction.Variable2 = original_value2;
        ThisAction.loop_pass_values[x] = false;
         ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+        if (RUNWITHGUI)
+        {
+              ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
          thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
   
                publish(thisbugindex);
+        }
           break;
        
      }
@@ -1099,7 +1188,11 @@ else
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
             
       }
+       if (RUNWITHGUI)
+        {
+              ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
       thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+        }
      }
  
              if (changex!=x)
@@ -1164,9 +1257,9 @@ else
     thisbugindex++;
       }
  
-         if (SiteTest.getPromptToClose())
+         if (STAppData.getPromptToClose())
      {
-          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
+          Prompter thisContinuePrompt = new Prompter(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
   
     
 
@@ -1212,11 +1305,10 @@ while(thisContinuePrompt.isVisible() == true){
       int BugIndex = 0;
   
     Boolean BugPass = false;
-     for (Procedure thisbug : SiteTest.BugArray)
+     for (Procedure thisbug : STAppData.BugArray)
       {
         ArrayList<Action> ActionsToLoop = thisbug.ActionsList;
-        ArrayList<ActionView> ActionViewsToLoop = SiteTest.BugViewArray.get(BugIndex).ActionsViewList;
-
+  
  int NumberOfActionsPassed = 0;
   if (!"Dataloop".equals(thisbug.Type))
   {
@@ -1229,19 +1321,19 @@ while(thisContinuePrompt.isVisible() == true){
        boolean TestState = TheseActions.Pass;
        if (TestState==true)
        {
-           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+        
            NumberOfActionsPassed++;
        }
        else
        {
-          ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
+      
            
        }
 
        ActionIndex++;
 
 }
-     if (NumberOfActionsPassed == SiteTest.BugViewArray.get(BugIndex).ActionsViewList.size())
+     if (NumberOfActionsPassed == STAppData.BugArray.get(BugIndex).ActionsList.size())
     {
         BugPass = true;
   
@@ -1259,14 +1351,14 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
            
-      int number_of_rows = SiteTest.BugArray.get(BugIndex).URLListData.length;
+      int number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.length;
 if (number_of_rows==0)
 {
    int ActionIndex = 0;
     for( Action TheseActions : ActionsToLoop ) {
           LocalDateTime stringtime =  LocalDateTime.now();
           TheseActions.Pass = false;
-         ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);  
+        
          ActionIndex++;
     }  
 }
@@ -1282,7 +1374,7 @@ if (number_of_rows==0)
        boolean TestState = TheseActions.loop_pass_values[x];
        if (TestState==true)
        {
-           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Passed at " + stringtime);
+       
           String URL_TO_WRITE = "";
            if ("Go to URL".equals(TheseActions.Type))
            {
@@ -1301,21 +1393,21 @@ if (number_of_rows==0)
 
      URL_TO_WRITE = concat_variable;
        
-             SiteTest.AddURLToUniqueFileList(URL_TO_WRITE);
+             STAppData.AddURLToUniqueFileList(URL_TO_WRITE);
             }
            }
            NumberOfActionsPassed++;
        }
        else
        {
-           ActionViewsToLoop.get(ActionIndex).JLabelPassFail.setText("Fail at " + stringtime);
+       
            
        }
 
        ActionIndex++;   
   }
     }
-     if (NumberOfActionsPassed == SiteTest.BugViewArray.get(BugIndex).ActionsViewList.size()*number_of_rows)
+     if (NumberOfActionsPassed == STAppData.BugArray.get(BugIndex).ActionsList.size()*number_of_rows)
     {
         BugPass = true;
      
@@ -1342,98 +1434,109 @@ if (number_of_rows==0)
        
    
    }
-  
-   SiteTest.BugViewArray.get(BugIndex).JButtonRunTest.setText("Run");
+   if (RUNWITHGUI)
+   {
+       // needed??
+  //  STAppFrame.BugViewArray.get(BugIndex).JButtonRunTest.setText("Run");
+   }
    BugIndex++;
       }
-     if (SiteTest.getUniqueList())
+     if (STAppData.getUniqueList())
      {
-         String file_option = SiteTest.getUniqueFileOption();
- SiteTest.AddURLListToUniqueFile(file_option);
- SiteTest.ClearVisittedURLList();
+         String file_option = STAppData.getUniqueFileOption();
+ STAppData.AddURLListToUniqueFile(file_option);
+ STAppData.ClearVisittedURLList();
      }
-     if (NumberOfTestsPassed==SiteTest.BugArray.size())
+     if (NumberOfTestsPassed==STAppData.BugArray.size())
      {
-     SiteTest.AllTestsPassed = true;
+     STAppData.AllTestsPassed = true;
      }
      else
      {
-         SiteTest.AllTestsPassed = false;
+        STAppData.AllTestsPassed = false;
      }
 
  
   }
  
-  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
-  {
-      int number_of_rows = 0;
-     for (Action ThisAction: thisproc.ActionsList)
-     {
-         if (!ThisAction.Locked)
-         {
-      String concat_variable;
+//  public int FillTables(Procedure thisproc, ProcedureView thisprocview)
+//  {
+//      int number_of_rows = 0;
+//     for (Action ThisAction: thisproc.ActionsList)
+//     {
+//         if (!ThisAction.Locked)
+//         {
+//      String concat_variable;
  
-              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
-    if (var1Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable1;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-             if (parts[2].contains(":"))
-            {  
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-               if ("urllist".equals(thisproc.DataLoopSource))
-            {
+//              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+//    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
+//    if (var1Parser.hasDataLoopVar)
+//    {
+// concat_variable = ThisAction.Variable1;
+ //           String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+ //           String[] parts = middle_part.split(",");
+ //            if (parts[2].contains(":"))
+ //           {  
+  //          String[] parts2 = parts[2].split(":");
+  //          String URLListName = parts2[1];
+   //            if ("urllist".equals(thisproc.DataLoopSource))
+   //         {
       // testing random/limit
         
-            SiteTest.RandomizeAndLimitURLList(thisproc.URLListName, thisprocview.getLimit(), thisprocview.getRandom());
+    //        SiteTest.RandomizeAndLimitURLList(thisproc.URLListName, thisprocview.getLimit(), thisprocview.getRandom());
            
-            SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);   
+    //        SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);   
       
           
-            number_of_rows = SiteTest.VarLists.get(URLListName).length;
+   //         number_of_rows = SiteTest.VarLists.get(URLListName).length;
 
-            }
-            }
+  //          }
+  //          }
       
-        } 
-    if (var2Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable2;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-             if (parts[2].contains(":"))
-            {  
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-                if ("urllist".equals(thisproc.DataLoopSource))
-            {
-        SiteTest.RandomizeAndLimitURLList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
+ //       } 
+ //   if (var2Parser.hasDataLoopVar)
+ //   {
+// concat_variable = ThisAction.Variable2;
+//            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
+ //           String[] parts = middle_part.split(",");
+//             if (parts[2].contains(":"))
+ //           {  
+ //           String[] parts2 = parts[2].split(":");
+ //           String URLListName = parts2[1];
+ //               if ("urllist".equals(thisproc.DataLoopSource))
+ //           {
+ //       SiteTest.RandomizeAndLimitURLList(thisprocview.getStoredArrayListName(), thisprocview.getLimit(), thisprocview.getRandom());
            
-            SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
+ //           SiteTest.UpdateDataLoopURLListTable(URLListName, SiteTest.VarLists.get(URLListName), thisproc, thisprocview);
       
-            number_of_rows = SiteTest.VarLists.get(URLListName).length;
-            }
-            }
-        } 
-         }
-    }
+ //           number_of_rows = SiteTest.VarLists.get(URLListName).length;
+ //           }
+ //           }
+ //       } 
+ //        }
+ //   }
    
-     return number_of_rows;
+ //    return number_of_rows;
      
-     }
+ //    }
   public void FallbackDriver(String fallbackdriver)
   {
       if ("HTMLUnit".equals(fallbackdriver))
       {
-          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          STAppData.setTargetBrowser("Silent Mode (HTMLUnit)");
+          if (RUNWITHGUI)
+          {
+              STAppFrame.setTargetBrowser("Silent Mode (HTMLUnit)");
+          }
           driver = new HtmlUnitDriver();
       }
       else
       {
-       SiteTest.setTargetBrowser("Chrome 49");
+       STAppData.setTargetBrowser("Chrome 49");
+       if (RUNWITHGUI)
+       {
+       STAppFrame.setTargetBrowser("Chrome 49");     
+       }
             ChromeOptions options = new ChromeOptions();
 options.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");

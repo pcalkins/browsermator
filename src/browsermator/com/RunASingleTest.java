@@ -29,23 +29,25 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     FireFoxProperties FFprops;
     String firefox_path;
     String chrome_path;
-    SeleniumTestTool SiteTest;
+    SeleniumTestTool STAppFrame;
+    SeleniumTestToolData STAppData;
     WebDriver driver;
  
-  public RunASingleTest (SeleniumTestTool in_SiteTest, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
+  public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
-              this.SiteTest = in_SiteTest;
+              this.STAppFrame = in_STAppFrame;
+              this.STAppData = in_STAppData;
               this.bugtorun = in_bugtorun;
               this.thisbugview = in_thisbugview;
               this.targetbrowser = targetbrowser;
               this.OSType = OSType;
             
-              this.SiteTest.cancelled = false;
+              STAppData.cancelled = false;
             
           }
     public String doInBackground()
  {
-     SiteTest.testRunning = true;
+     STAppData.testRunning = true;
       FFprops = new FireFoxProperties(this.targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
@@ -58,7 +60,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  }
  protected void done()
  {
-  SiteTest.testRunning = false;
+  STAppData.testRunning = false;
     try
     {
         String donetext = get();
@@ -82,8 +84,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
         thisbugview.JButtonRunTest.setText("Run"); 
       
     }
-   SiteTest.setCursor(Cursor.getDefaultCursor()); 
-       if (SiteTest.getPromptToClose())
+   STAppFrame.setCursor(Cursor.getDefaultCursor()); 
+       if (STAppData.getPromptToClose())
      {
   
    
@@ -138,7 +140,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, String TargetBrowser, String OSType)
  {
    
-  SiteTest.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+  STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
     switch (TargetBrowser)
    {
@@ -371,7 +373,7 @@ options.setBinary(chrome_path);
                      break;
    }
  
-  int WaitTime = SiteTest.GetWaitTime();
+  int WaitTime = STAppData.getWaitTime();
  
 //timeouts still buggy... removed
 // int Timeout = SiteTest.getTimeout();
@@ -384,7 +386,7 @@ options.setBinary(chrome_path);
  if (!"Dataloop".equals(thisbugview.Type))
   {
    for( Action ThisAction : bugtorun.ActionsList ) {
-        if (SiteTest.cancelled)
+        if (STAppData.cancelled)
           {
           
              publish(bugtorun.index);
@@ -416,7 +418,7 @@ options.setBinary(chrome_path);
             int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
          String fieldname = varfieldname.substring(22, indexof_end_tag);
-         ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
        }
@@ -424,7 +426,7 @@ options.setBinary(chrome_path);
        {
              if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", SiteTest, 0, 0); 
+         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0); 
          
         }
              else
@@ -437,13 +439,13 @@ options.setBinary(chrome_path);
       if (!"".equals(ThisAction.tostore_varvalue))
        {
         
-           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
    
        }
     if (ThisAction.tostore_varlist.length>0)
        {
 
-           SiteTest.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+           STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
            
 
        }
@@ -473,7 +475,7 @@ else
     {
          int changex = -1;
     for( Action ThisAction : bugtorun.ActionsList ) {
-         if (SiteTest.cancelled)
+         if (STAppData.cancelled)
           {
           
              publish(bugtorun.index);
@@ -492,7 +494,7 @@ else
          if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-          changex =  ThisAction.RunAction(driver, pause_message, SiteTest, x, number_of_rows);
+          changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
   
         }
          else
@@ -523,7 +525,7 @@ else
             int indexof_end_tag = varfieldname.indexOf("[stored_varname-end]");
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
          String fieldname = varfieldname.substring(22, indexof_end_tag);
-         ThisAction.Variable2 = SiteTest.GetStoredVariableValue(fieldname);
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
        }
@@ -536,7 +538,7 @@ else
        if (!"".equals(ThisAction.tostore_varvalue))
        {
         
-           SiteTest.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
         
        }
       
@@ -648,9 +650,9 @@ else
     }
     }
    }
-         if (SiteTest.getPromptToClose())
+         if (STAppData.getPromptToClose())
      {
-          Prompter thisContinuePrompt = new Prompter(SiteTest.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
+          Prompter thisContinuePrompt = new Prompter(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
   
     
 
@@ -694,12 +696,12 @@ while(thisContinuePrompt.isVisible() == true){
   {
       if ("HTMLUnit".equals(fallbackdriver))
       {
-          SiteTest.setTargetBrowser("Silent Mode (HTMLUnit)");
+          STAppData.setTargetBrowser("Silent Mode (HTMLUnit)");
           driver = new HtmlUnitDriver();
       }
       else
       {
-       SiteTest.setTargetBrowser("Chrome 49");
+       STAppData.setTargetBrowser("Chrome 49");
             ChromeOptions options = new ChromeOptions();
 options.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
