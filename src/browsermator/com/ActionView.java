@@ -687,6 +687,8 @@ if (!potentialDrag) return;
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           STAppFrame.DeleteActionView(newbugview, action.index);
                            STAppData.DeleteAction(newbug, action.index);
+                         
+                          
                            STAppFrame.UpdateDisplay();
                      
    

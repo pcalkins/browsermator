@@ -704,24 +704,7 @@ File newfile = new File(path + ".js");
             return null;
             }   
    }
-      public void AddNewDataLoopView()
-        {
-        ProcedureView newdataloopview = new ProcedureView();
-      
-        newdataloopview.setType("Dataloop");
-        newdataloopview.setDataLoopSource("none");
-     
-       AddDataLoopProcView(newdataloopview);
-    
-        }
-               public void AddDataLoopProcView(ProcedureView newdataloopview)
-        {
-           
-         BugViewArray.add(newdataloopview);
-     
-         newdataloopview.index = BugViewArray.size();
-     
-        }
+ 
                public void setJButtonFlattenFileEnabled(boolean enable)
                {
      
@@ -883,7 +866,17 @@ bugindex++;
 
  
 
-        public void AddNewBugView()
+    
+
+    
+         public void UpdateDataLoopURLListTableView(String ListName, String[] storedURLlist, ProcedureView thisprocview)
+  {
+
+    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
+
+   
+  }
+             public void AddNewBugView()
         {
        
         ProcedureView newbugview = new ProcedureView();
@@ -896,15 +889,24 @@ bugindex++;
     
 
         }
-
+                  public void AddNewDataLoopView()
+        {
+        ProcedureView newdataloopview = new ProcedureView();
+      
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("none");
+     
+       AddDataLoopProcView(newdataloopview);
     
-         public void UpdateDataLoopURLListTableView(String ListName, String[] storedURLlist, ProcedureView thisprocview)
-  {
-
-    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
-
-   
-  }
+        }
+               public void AddDataLoopProcView(ProcedureView newdataloopview)
+        {
+           
+         BugViewArray.add(newdataloopview);
+     
+         newdataloopview.index = BugViewArray.size();
+     
+        }
         public void AddNewDataLoopURLListView(String in_listname)
         {
           

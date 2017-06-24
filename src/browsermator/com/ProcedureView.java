@@ -145,7 +145,7 @@ SortedComboBoxModel <String> sortmodel;
     ProcedureView()
      {
 URLListName = "";
- DataLoopSource = "urllist";
+ DataLoopSource = "none";
          limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
@@ -350,7 +350,7 @@ ActionScrollPane.setVisible(true);
      }
      public void setBugTitle(String title)
      {
-        JLabelBugTitle.setText(title);
+        JTextFieldBugTitle.setText(title);
     
      }
      public void setLastSelectedField (int variable_number, int procedure_index, int action_index)
@@ -423,14 +423,14 @@ ActionScrollPane.setVisible(true);
     Action thisAct;
     Procedure this_bug;
     ProcedureView this_bugview;
-    SeleniumTestTool window;
+    
     public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData){
         anItem = new JMenuItem("Clone Procedure");
         add(anItem);
      
         this.this_bug = this_bug;
         this.this_bugview = this_bugview;
-        this.window = window;
+      
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
       cloneProcedure(this_bug, this_bugview, STAppFrame, STAppData);
@@ -628,7 +628,7 @@ ActionScrollPane.setVisible(true);
   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
  BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-         setBugTitle("Procedure ");
+         setBugLabelType("Procedure");
          
         }
         else
@@ -638,10 +638,13 @@ ActionScrollPane.setVisible(true);
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
      BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-          setBugTitle("Data Loop ");
+          setBugLabelType("Data Loop");
         }
    }
-   
+   public void setBugLabelType(String labeltype)
+   {
+       JLabelBugTitle.setText(labeltype);
+   }
    public void EnableArrayListsPulldown()
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);

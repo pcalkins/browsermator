@@ -37,8 +37,8 @@ import org.xml.sax.SAXException;
  */
 public class OpenFileThread extends SwingWorker<String, Integer>{
 File file;
-SeleniumTestTool STAppFrameStored;
-SeleniumTestToolData STAppDataStored;
+SeleniumTestTool STAppFrame;
+SeleniumTestToolData STAppData;
 ArrayList<SeleniumTestTool> MDIViewClasses;
 ArrayList<SeleniumTestToolData> MDIDataClasses;
 MainAppFrame mainAppFrame;
@@ -193,9 +193,7 @@ finally
 {
  
    BuildNewWindow(doc, full_filename);
-   SeleniumTestTool STAppFrame = STAppFrameStored;
-   SeleniumTestToolData STAppData = STAppDataStored;
-   
+ 
 
   STAppFrame.setFilename(full_filename);
   STAppData.setFilenames(full_filename);
@@ -359,8 +357,8 @@ for (Procedure thisproc: STAppData.BugArray)
    ArrayList<Procedure> newBugArray = new ArrayList<>();
    ArrayList<ProcedureView> newBugViewArray = new ArrayList<>();
    NamedNodeMap NewAttributes = doc.getElementsByTagName("BrowserMatorWindow").item(0).getAttributes(); 
-     SeleniumTestToolData STAppData= new SeleniumTestToolData(newBugArray);
-     SeleniumTestTool STAppFrame = new SeleniumTestTool(newBugViewArray);
+     STAppData = new SeleniumTestToolData(newBugArray);
+     STAppFrame = new SeleniumTestTool(newBugViewArray);
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
 
    
@@ -620,8 +618,11 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
    
     Element Procedure = (Element) ProcedureList.item(i);
-   
-    String ProcType = Procedure.getAttribute("Type");
+    String ProcType = "Procedure";
+    if (Procedure.hasAttribute("Type"))
+    {
+    ProcType = Procedure.getAttribute("Type");
+    }
     String DataLoopSource = "urllist";
     if (Procedure.hasAttribute("DataLoopSource"))
     {
@@ -635,19 +636,37 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         if (Procedure.hasAttribute("DataLoopFile"))
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
-                   
+            //legacy support...
+                    if (DataFile.contains("\\"))
+                    {
+                        DataLoopSource = "file";
+                    }
                 }
         if ("file".equals(DataLoopSource))
         {
         File DataFile_file = new File(DataFile);
        
-            STAppFrame.AddNewDataLoopFileView(DataFile_file);
-            STAppData.AddNewDataLoopFile(DataFile_file);
+        STAppFrame.AddNewDataLoopView();
+   STAppData.AddNewDataLoop();
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
         }
        if ("urllist".equals(DataLoopSource))
         {
-            STAppFrame.AddNewDataLoopURLListView(DataFile);
-            STAppData.AddNewDataLoopURLList(DataFile);
+                STAppFrame.AddNewDataLoopView();
+   STAppData.AddNewDataLoop();
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
         }
       if (Procedure.hasAttribute("Random"))
   {
@@ -672,12 +691,27 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     {
      STAppData.AddNewBug();   
     STAppFrame.AddNewBugView();  
+       int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
     }
-    
-    STAppData.BugArray.get(i).setBugTitle(Procedure.getAttribute("Title"));
-    STAppFrame.BugViewArray.get(i).setBugTitle(Procedure.getAttribute("Title"));
-  
-    STAppData.BugArray.get(i).setBugURL(Procedure.getAttribute("URL"));
+    String BugTitle = "";
+    if (Procedure.hasAttribute("Title"))
+    {
+        BugTitle = Procedure.getAttribute("Title");
+    }
+    STAppData.BugArray.get(i).setBugTitle(BugTitle);
+    STAppFrame.BugViewArray.get(i).setBugTitle(BugTitle);
+    String BugURL = "";
+    if (Procedure.hasAttribute("URL"))
+    {
+        BugURL = Procedure.getAttribute("URL");
+    }
+    STAppData.BugArray.get(i).setBugURL(BugURL);
     
     // needed?
    // String stPass = Procedure.getAttribute("Pass");
@@ -958,8 +992,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         PV.setLocked(true);
     }
 }
-  STAppFrameStored = STAppFrame;
-  STAppDataStored = STAppData;
+
 
 
   }

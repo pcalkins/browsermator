@@ -122,15 +122,15 @@ public String doInBackground()
      {
    try
     {
-        String donetext = get();
+     
        STAppFrame.setCursor(Cursor.getDefaultCursor());   
-    STAppFrame.setRunActionsButtonName(donetext);
+    STAppFrame.setRunActionsButtonName("Run All Procedures");
 
   
     }
     catch (Exception ex)
     {
-   
+      System.out.println("exception setting cursor: " + ex.toString());
         STAppFrame.setRunActionsButtonName("Run All Procedures");
     }
      }
@@ -230,7 +230,7 @@ public String doInBackground()
           
     System.exit(0);
     }
-
+  
  }
  
   
@@ -1350,8 +1350,15 @@ while(thisContinuePrompt.isVisible() == true){
   }
   else
   {
-           
-      int number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.length;
+      int number_of_rows = 0;
+      if ("urllist".equals(thisbug.DataLoopSource))
+      {
+      number_of_rows = STAppData.BugArray.get(BugIndex).URLListRunTimeEntries.length;
+      }
+      if ("file".equals(thisbug.DataLoopSource))
+      {
+          number_of_rows = STAppData.BugArray.get(BugIndex).RunTimeFileSet.size();
+      }
 if (number_of_rows==0)
 {
    int ActionIndex = 0;

@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.04branched";
+   public final String ProgramVersion = "1.1.05branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -536,16 +536,18 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
                                           
       }
     );
-    STAppFrame.addjButtonNewBugActionListener(
+     STAppFrame.addjButtonNewBugActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-  
+    STAppData.AddNewBug();
    STAppFrame.AddNewBugView();  
-   STAppData.AddNewBug();
+   int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
-     
-           JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
   }
                                           
@@ -555,19 +557,17 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-  
-   STAppData.AddNewDataLoop(); 
-   STAppFrame.AddNewDataLoopView();
-    STAppFrame.UpdateDisplay();
-    int last_added_bug_index = STAppData.BugArray.size();
-      ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-        AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
 
- JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
-  vertical.setValue( vertical.getMaximum() );
-  
+     
+   STAppFrame.AddNewDataLoopView();
+   STAppData.AddNewDataLoop();
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
                                           
       }
@@ -983,7 +983,13 @@ AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
      
    STAppFrame.AddNewDataLoopView();
    STAppData.AddNewDataLoop();
- 
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
                                           
       }
