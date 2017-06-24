@@ -106,6 +106,7 @@ JLabel JLabelUseList;
 JLabel JLabelOR;
 String Type;
 TitledBorder BugPanelBorder;
+String DataFile;
 Boolean Locked;
 JButton JButtonOK = new JButton("Disable");
 JCheckBox JCheckBoxRandom = new JCheckBox("Randomize");
@@ -144,6 +145,7 @@ SortedComboBoxModel <String> sortmodel;
    
     ProcedureView()
      {
+         DataFile = "";
 URLListName = "";
  DataLoopSource = "none";
          limit = 0;
@@ -332,7 +334,7 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
-       this.JComboBoxStoredArrayLists.addItem(in_listname);
+   //    this.JComboBoxStoredArrayLists.addItem(in_listname);
    }
    public Boolean getLocked()
    {
@@ -649,9 +651,26 @@ ActionScrollPane.setVisible(true);
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-  
+   public void populateJComboBoxStoredArrayLists( HashMap<String, String[]> VarLists)
+   {
+              for (String keyname: VarLists.keySet())
+        {
+     String[] parts = keyname.split("-");
+ String leftpart = parts[0];
+ if (!"".equals(leftpart))
+ {
+ int bugindex = Integer.parseInt(leftpart);
+ if (bugindex<index+1)
+ {       
+           JComboBoxStoredArrayLists.addItem(keyname);
+ }
+        }
+          }
+              JComboBoxStoredArrayLists.setSelectedItem(URLListName);
+   }
    public void setJComboBoxStoredArraylists(String itemname)
    {
+       
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
    }
    
@@ -767,6 +786,10 @@ ActionScrollPane.setVisible(true);
     
 });
     }
+     public void setDataFile (String data_file)
+     {
+         DataFile = data_file;
+     }
      public void setJTableSourceToFile (String sourceCSVfile)
      {
      updatePlacedLoopVars(sourceCSVfile);
@@ -774,20 +797,17 @@ ActionScrollPane.setVisible(true);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
     
-     
-     AddTableToGrid();
          JTextFieldDataFile.setText(sourceCSVfile);
-   
+     AddTableToGrid();
+     
+     
          
      }
      public void setDataLoopSource(String in_looptype)
      {
          this.DataLoopSource = in_looptype;
      }
-     public void setJTableSourceToURLList(String list_name)
-     {
-         
-     }
+  
      public void setJTableSourceToURLList(String[] in_list, String list_name)
      {
       updatePlacedLoopVars(list_name);

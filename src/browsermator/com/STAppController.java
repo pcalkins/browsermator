@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.05branched";
+   public final String ProgramVersion = "1.1.06branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -2843,12 +2843,13 @@ File newfile = new File(path + ".js");
              File chosenCSVFile = STAppFrame.ChangeCSVFile();
    if (chosenCSVFile!=null)
    {
- 
+
    newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
    newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
    newbugview.setDataLoopSource("file");
    newbug.setDataFile(chosenCSVFile.getAbsolutePath());
    newbug.setDataLoopSource("file");
+  
    STAppFrame.UpdateDisplay();
    }
           });

@@ -646,11 +646,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         {
         File DataFile_file = new File(DataFile);
        
-        STAppFrame.AddNewDataLoopView();
-   STAppData.AddNewDataLoop();
+        STAppFrame.AddNewDataLoopFileView(DataFile_file);
+        
+   STAppData.AddNewDataLoopFile(DataFile_file);
+
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
@@ -658,11 +661,13 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
        if ("urllist".equals(DataLoopSource))
         {
-                STAppFrame.AddNewDataLoopView();
-   STAppData.AddNewDataLoop();
+         
+                STAppFrame.AddNewDataLoopURLListView(DataFile);
+   STAppData.AddNewDataLoopURLList(DataFile);
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();

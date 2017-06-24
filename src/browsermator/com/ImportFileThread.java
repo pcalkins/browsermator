@@ -125,6 +125,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+ 
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();

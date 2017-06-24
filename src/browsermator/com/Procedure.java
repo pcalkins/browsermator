@@ -79,6 +79,7 @@ this.URLListRunTimeEntries = new String[0];
        
     }
        }
+ 
    public void setLocked(Boolean lockedstate)
    {
      Locked = lockedstate;

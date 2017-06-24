@@ -902,9 +902,29 @@ bugindex++;
                public void AddDataLoopProcView(ProcedureView newdataloopview)
         {
            
-         BugViewArray.add(newdataloopview);
+        String dataLoopSource = newdataloopview.DataLoopSource;
+         
+        switch (dataLoopSource)
+        {
+         
+            case "urllist":
+                String[] blanklist = new String[0];
+              newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
+              break;
+            case "file":
+                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                break;
+            default:
+                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                break;
+                    
+        }
+         
      
-         newdataloopview.index = BugViewArray.size();
+       
+        
+          BugViewArray.add(newdataloopview);
+           BugViewArray.get(BugViewArray.size()-1).index = BugViewArray.size();
      
         }
         public void AddNewDataLoopURLListView(String in_listname)
@@ -913,14 +933,14 @@ bugindex++;
         ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("urllist");
-      
+       
     
         newdataloopview.setURLListName(in_listname);
         String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
      
-       newdataloopview.setJComboBoxStoredArraylists(in_listname); 
+     
      
    AddDataLoopProcView(newdataloopview);
         }
@@ -933,18 +953,11 @@ bugindex++;
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("file");
         if (CSVFile.exists())
-         {
-         newdataloopview.setJTableSourceToFile(CSVFile.getAbsolutePath());
-        
-         
-         }
-         else
-         {
-          newdataloopview.setJTableSourceToFile("");
-   
-        
-         
-         }
+        {
+            
+           newdataloopview.setDataFile(CSVFile.getAbsolutePath());
+        }
+  
    AddDataLoopProcView(newdataloopview);
         }
   
