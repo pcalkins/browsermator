@@ -147,6 +147,10 @@ String stringactionindex = Integer.toString(this.index+1);
      {
          this.index = newindex;
      }
+     public void setJTextFieldVariableVARINDEX(String in_index)
+     {
+         JTextFieldVariableVARINDEX.setText(in_index);
+     }
 
      public void addJTextFieldFocusListener(FocusListener focuslistener)
      {
@@ -277,7 +281,8 @@ String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
            this.JLabelIndex.setText(bugdashactionindex);
-          // this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+          
+         this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
            
            
        }
@@ -493,7 +498,9 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                      STAppData.MoveAction(newbug, action.index, -1);
                      
                      original_locationY = snapped_locationY;
-                     
+     STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
+   
+
   STAppFrame.UpdateScrollPane(newbugview);
  // UpdateScrollPane();
   scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
@@ -507,7 +514,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                    STAppFrame.MoveActionView(newbugview, action.index, 1); 
                     STAppData.MoveAction(newbug, action.index, 1); 
           original_locationY = snapped_locationY;
-  
+  STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
   STAppFrame.UpdateScrollPane(newbugview);
  // UpdateScrollPane(); 
  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  

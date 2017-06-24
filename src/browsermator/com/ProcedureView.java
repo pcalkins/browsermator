@@ -332,6 +332,7 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
+       this.JComboBoxStoredArrayLists.addItem(in_listname);
    }
    public Boolean getLocked()
    {
@@ -645,8 +646,8 @@ ActionScrollPane.setVisible(true);
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-
-   public void SetJComboBoxStoredArraylists(String itemname)
+  
+   public void setJComboBoxStoredArraylists(String itemname)
    {
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
    }
@@ -660,11 +661,11 @@ ActionScrollPane.setVisible(true);
          JTextFieldDataFile.setText(dataFile);
 
      }
-     public void UpdatePlacedLoopVars(String newsource, String dataloopsource)
+     public void updatePlacedLoopVars(String newsource)
      {
          Boolean isStoredList = true;
           
-             if ("file".equals(dataloopsource))
+             if ("file".equals(DataLoopSource))
              {
                 isStoredList = false; 
              }
@@ -765,7 +766,7 @@ ActionScrollPane.setVisible(true);
     }
      public void setJTableSourceToFile (String sourceCSVfile)
      {
-     UpdatePlacedLoopVars(sourceCSVfile, "file");
+     updatePlacedLoopVars(sourceCSVfile);
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
@@ -780,9 +781,13 @@ ActionScrollPane.setVisible(true);
      {
          this.DataLoopSource = in_looptype;
      }
+     public void setJTableSourceToURLList(String list_name)
+     {
+         
+     }
      public void setJTableSourceToURLList(String[] in_list, String list_name)
      {
-      UpdatePlacedLoopVars(list_name, "urllist");
+      updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(in_list, list_name);

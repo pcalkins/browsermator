@@ -54,7 +54,6 @@ LocalDateTime[] loop_time_of_test;
   this.Loopable = false;
   this.pause_message = "";
   this.ScreenshotBase64 = "null";
-  
    }
 
    public void InitializeLoopTestVars(int number_of_rows)
@@ -203,6 +202,7 @@ public void setActionIndex (int newindex)
        this.Variable2 = variable;
    
    }
+
 @Override
  public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean BoolVal2, Boolean LOCKED)
  {

@@ -211,7 +211,33 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
- 
+    public void updatePlacedURLList(String to_updatename, String update_toname)
+    {
+       int bugindex = 0;
+    if (!"".equals(to_updatename))
+    {
+    for (ProcedureView BV : BugViewArray)
+      {
+            for (ActionView AV : BV.ActionsViewList )
+        {
+            String testing = AV.JTextFieldVariable1.getText();
+            
+            if (AV.JTextFieldVariable1.getText().contains("[stored_varname"))
+            {
+               AV.JTextFieldVariable1.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
+           //    UpdateScrollPane(BV);
+               
+            }
+              if (AV.JTextFieldVariable2.getText().contains("[stored_varname"))
+            {
+               AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
+           //    UpdateScrollPane(BV);
+            }
+            
+        }
+      } 
+    }    
+    }
     public void updatePlacedVariables(String to_updatename, String update_toname)
     {
     int bugindex = 0;
@@ -239,6 +265,14 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
       } 
     }
     }
+public void addSelectedVariableNameView(String varname)
+{
+    if(((DefaultComboBoxModel)jComboBoxStoredVariables.getModel()).getIndexOf(varname) == -1) {
+ jComboBoxStoredVariables.addItem(varname);
+ int newitemindex = jComboBoxStoredVariables.getItemCount()-1;
+        jComboBoxStoredVariables.setSelectedIndex(newitemindex);
+    }
+}
       public void MoveActionView (ProcedureView thisBugView, int toMoveIndex, int Direction)
    {
 
@@ -273,9 +307,11 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
 
        }
    }
+
   UpdateDisplay();
 
    }
+ 
       public void addSelectedVariableName(String varname)
       {
          
@@ -290,7 +326,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
  
 
  
-  public void UpdateStoredVarPulldownView( HashMap<String, String> VarHashMap)
+  public void updateStoredVarPulldownView( HashMap<String, String> VarHashMap)
   {
         jComboBoxStoredVariables.removeAllItems();
         jComboBoxStoredVariables.addItem("Select a stored variable");
@@ -299,13 +335,15 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
             jComboBoxStoredVariables.addItem(keyname);
         }
   }
-    public void UpdateStoredListsPulldownView(String selecteditem,  HashMap<String, String[]> VarLists)
+    public void updateStoredListsPulldownView(String olditem, String selecteditem,  HashMap<String, String[]> VarLists)
   {
       for (ProcedureView BV : BugViewArray)
       {
          
           if ("Dataloop".equals(BV.Type))
           {
+              if ("urllist".equals(BV.DataLoopSource))
+              {
               BV.JComboBoxStoredArrayLists.setEnabled(false); 
                  BV.JComboBoxStoredArrayLists.removeAllItems();
                
@@ -328,9 +366,13 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
          selecteditem = "Select a stored URL List";
      }
     BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+    BV.updatePlacedLoopVars(selecteditem);
+    String[] blanklist = new String[0];
+    BV.setJTableSourceToURLList(blanklist, selecteditem);
         BV.JComboBoxStoredArrayLists.setEnabled(true);
+              }
       }
-          
+    
       }
  
     
@@ -685,6 +727,21 @@ File newfile = new File(path + ".js");
      
    jButtonFlattenFile.setEnabled(enable);
                }
+   public void updatePulldowns(HashMap<String, String[]> VarLists)
+   {
+         for (ProcedureView BV : BugViewArray)
+      {
+          if ("Dataloop".equals(BV.Type))
+          {
+              if ("urllist".equals(BV.DataLoopSource))
+              {
+                  BV.JComboBoxStoredArrayLists.removeAll();
+                  
+              }
+          }
+              
+      }
+   }
  public void UpdateDisplay()
  {
  this.MainScrollPane.setVisible(false);
@@ -860,8 +917,8 @@ bugindex++;
         String[] blanklist = new String[0];
   newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
-      
-       newdataloopview.SetJComboBoxStoredArraylists(in_listname); 
+     
+       newdataloopview.setJComboBoxStoredArraylists(in_listname); 
      
    AddDataLoopProcView(newdataloopview);
         }

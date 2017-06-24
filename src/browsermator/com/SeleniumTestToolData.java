@@ -255,6 +255,7 @@ changes=true;
           {
       PROC.setURLListName(newname);
       BugArray.get(bugindex).setURLListName(newname);
+     
        String thisitem = "";
        Boolean alreadyhas = false;
   
@@ -285,6 +286,80 @@ changes=true;
      
     
     }
+          public void updateStoredURLListIndexes(SeleniumTestTool STAppFrame, ProcedureView thisBugView)
+      {
+          int actionindex = 0;
+        for (ActionView AV: thisBugView.ActionsViewList)
+        {
+         if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+        {
+            
+            setHasStoredArray(true);
+                             String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariable2.getText();
+         String newname = bugdashactionindex;
+         if (oldname.equals(newname))
+         {
+          // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+        VarLists.put(newname, new String[0]);
+       
+       //  addSelectedArrayName(bugdashactionindex);
+          }
+          else
+         {
+              if ("".equals(oldname))
+              {
+           
+            addSelectedArrayName(bugdashactionindex); 
+              }
+              else
+              {
+                 
+         updateSelectedArrayName(oldname, newname);
+        
+              }
+        }
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+     STAppFrame.updateStoredListsPulldownView(oldname, newname, VarLists);
+     
+   //  STAppFrame.updatePlacedLoopVariables(oldname, newname);
+        }
+       if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
+        {
+              setHasStoredVar(true);
+                                      String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+      
+              if ("".equals(oldname))
+          {
+           addSelectedVariableName(bugdashactionindex);
+           AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+         
+          }
+          else
+          {
+         updateSelectedVariableName(oldname, newname);
+     //    updateInsertedVariableNames(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+ 
+        }  
+       actionindex++;
+        }
+        
+      }
+          public void addSelectedVariableName(String varname)
+        {
+       
+        VarHashMap.put(varname, "");
+        
+       }
+    
     public void updateSelectedVariableName(String oldname, String newname)
       {
       
@@ -677,7 +752,7 @@ else
   
        
         newdataloop.setURLListData(blanklist, in_listname);
-       
+        VarLists.put(in_listname, blanklist);
    
      
    AddDataLoopProc(newdataloop);
