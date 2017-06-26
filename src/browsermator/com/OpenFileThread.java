@@ -95,9 +95,12 @@ public String doInBackground()
  {
   mainAppFrame.Navigator.setCursor(Cursor.getDefaultCursor()); 
   int last_index = mainAppController.MDIViewClasses.size()-1;
+  if (last_index>-1)
+  {
      MDIViewClasses.get(last_index).UpdateDisplay();
   JScrollBar vertical =  MDIViewClasses.get(last_index).MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
+  }
   if (isFlatten)
   {
   MDIViewClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
@@ -355,10 +358,11 @@ for (Procedure thisproc: STAppData.BugArray)
   public void BuildNewWindow(Document doc, String full_filename)
   {
    ArrayList<Procedure> newBugArray = new ArrayList<>();
-   ArrayList<ProcedureView> newBugViewArray = new ArrayList<>();
+  // ArrayList<ProcedureView> newBugViewArray = new ArrayList<>();
    NamedNodeMap NewAttributes = doc.getElementsByTagName("BrowserMatorWindow").item(0).getAttributes(); 
      STAppData = new SeleniumTestToolData(newBugArray);
-     STAppFrame = new SeleniumTestTool(newBugViewArray);
+     
+    
    String filename_read = NewAttributes.getNamedItem("Filename").getNodeValue();
 
    
@@ -366,7 +370,8 @@ for (Procedure thisproc: STAppData.BugArray)
 
 
   STAppData.setFilenames(full_filename);
-  STAppFrame.setFilename(full_filename);
+  STAppFrame = new SeleniumTestTool(STAppData);
+ 
     STAppFrame.setResizable(true);
   STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
@@ -436,7 +441,7 @@ try
    {
        ShowReport = true;
    }
-   STAppFrame.setShowReportView(ShowReport);
+ 
    STAppData.setShowReport(ShowReport);
             break;
             
@@ -447,7 +452,7 @@ try
    {
        IncludeScreenshots = true;
    }
-       STAppFrame.setIncludeScreenshotsView(IncludeScreenshots);
+    
        STAppData.setIncludeScreenshots(IncludeScreenshots);
             break;
             
@@ -459,7 +464,7 @@ try
    {
        EmailReport = true;
    }
-       STAppFrame.setEmailReportView(EmailReport);
+   
        STAppData.setEmailReport(EmailReport);
             break;
       
@@ -470,7 +475,7 @@ try
    {
        EmailReportFail = true;
    }
-    STAppFrame.setEmailReportFailView(EmailReportFail);
+  
        STAppData.setEmailReportFail(EmailReportFail);
             break;
          
@@ -482,18 +487,18 @@ try
        ExitAfter = true;
    }
        STAppData.setExitAfter(ExitAfter);
-       STAppFrame.setExitAfterView(ExitAfter);
+  
             break;        
        
         case "SMTPHostname":
  SMTPHostname = thisSettingsNodeValue;
-      STAppFrame.setSMTPHostname(SMTPHostname);
+    
        STAppData.setSMTPHostname(SMTPHostname);
             break;  
 
         case "EmailLoginName":
  EmailLoginName = thisSettingsNodeValue;
-      STAppFrame.setEmailLoginName(EmailLoginName);
+    
       STAppData.setEmailLoginName(EmailLoginName);
             break;  
         
@@ -504,7 +509,7 @@ try
    {
        PromptToClose = true;
    }
-       STAppFrame.setPromptToClose(PromptToClose);
+    
          STAppData.setPromptToClose(PromptToClose);
             break; 
       case "UniqueList":
@@ -514,12 +519,12 @@ try
    {
       UniqueList = true;
    }
-       STAppFrame.setUniqueListView(UniqueList);
+    
         STAppData.setUniqueList(UniqueList);
      
             break; 
          case "UniqueFileOption":
-       STAppFrame.setUniqueFileOptionView(thisSettingsNodeValue);
+  
         STAppData.setUniqueFileOption(thisSettingsNodeValue);
      
             break;          
@@ -527,19 +532,15 @@ try
           
         case "TargetBrowser":
  TargetBrowser = thisSettingsNodeValue;
-      STAppFrame.setTargetBrowser(TargetBrowser);
-      STAppData.setTargetBrowser(TargetBrowser);
-        if (TargetBrowser.equals("Firefox") || TargetBrowser.equals("Chrome"))
-      {
-      STAppFrame.setOSTypeActive(true);
     
-      }
+      STAppData.setTargetBrowser(TargetBrowser);
+   
             break;   
             
        case "WaitTime":
  WaitTime = thisSettingsNodeValue;
  int intWaitTime = Integer.parseInt(WaitTime);
-      STAppFrame.setjSpinnerWaitTime(intWaitTime);
+    
       STAppData.setWaitTime(intWaitTime);
             break;  
   
@@ -554,12 +555,12 @@ try
         case "Sessions":
  Sessions = thisSettingsNodeValue;
  int intSessions = Integer.parseInt(Sessions);
-      STAppFrame.setjSpinnerSessions(intSessions);
+  
       STAppData.setSessions(intSessions);
             break;               
        case "OSType":
  OSType = thisSettingsNodeValue;
-      STAppFrame.setOSType(OSType);
+     
        STAppData.setOSType(OSType);
     
             break;   
@@ -574,25 +575,25 @@ try
            {
    //            System.out.println("decrypt error" + e.toString());
            }
-      STAppFrame.setEmailPassword(unepassword);
+  
       STAppData.setEmailPassword(unepassword);
             break;  
       
        case "EmailTo":
  EmailTo = thisSettingsNodeValue;
-      STAppFrame.setEmailTo(EmailTo);
+    
        STAppData.setEmailTo(EmailTo);
             break;    
       
        case "EmailFrom":
  EmailFrom = thisSettingsNodeValue;
-      STAppFrame.setEmailFrom(EmailFrom);
+   
       STAppData.setEmailFrom(EmailFrom);
             break;   
        
        case "EmailSubject":
  EmailSubject = thisSettingsNodeValue;
-      STAppFrame.setSubject(EmailSubject);
+     
        STAppData.setSubject(EmailSubject);
             
     }
@@ -610,7 +611,9 @@ catch (Exception e)
 try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
-   
+
+   boolean hasDataloop = false;
+   boolean hasURLList = false;
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
@@ -631,7 +634,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     if ("Dataloop".equals(ProcType))
     {
         
-        
+        hasDataloop = true;
         String DataFile = "";
         if (Procedure.hasAttribute("DataLoopFile"))
                 {
@@ -646,7 +649,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         {
         File DataFile_file = new File(DataFile);
        
-        STAppFrame.AddNewDataLoopFileView(DataFile_file);
+   STAppFrame.AddNewDataLoopFileView(DataFile_file);
         
    STAppData.AddNewDataLoopFile(DataFile_file);
 
@@ -661,12 +664,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
        if ("urllist".equals(DataLoopSource))
         {
-         
+         hasURLList = true;
                 STAppFrame.AddNewDataLoopURLListView(DataFile);
    STAppData.AddNewDataLoopURLList(DataFile);
+  
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+  
      newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
@@ -853,9 +858,12 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   
 
         }   
-     
+ 
     }
-
+    if (hasDataloop && !hasURLList)
+ {
+    STAppFrame.setJButtonFlattenFileEnabled(true); 
+ } 
     }
 catch (Exception e)
         {
@@ -863,7 +871,7 @@ catch (Exception e)
           
         }
  
- 
+
 STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -871,7 +879,7 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowser(TargetBrowser);
+           STAppFrame.setTargetBrowserView(TargetBrowser);
            STAppData.setTargetBrowser(TargetBrowser);
           STAppData.changes = true;
           
@@ -982,7 +990,8 @@ STAppFrame.addjButtonDoStuffActionListener(
                                           
       }
     );
-  for (ProcedureView PV: STAppFrame.BugViewArray)
+ 
+     for (ProcedureView PV: STAppFrame.BugViewArray)
 {
     int avlockcount = 0;
     for (ActionView AV: PV.ActionsViewList)
@@ -991,6 +1000,7 @@ STAppFrame.addjButtonDoStuffActionListener(
        {
            avlockcount++;
        }
+     
     }
     if (avlockcount==PV.ActionsViewList.size())
     {
@@ -999,6 +1009,6 @@ STAppFrame.addjButtonDoStuffActionListener(
 }
 
 
-
+STAppFrame.initializeDisplay();
   }
 }

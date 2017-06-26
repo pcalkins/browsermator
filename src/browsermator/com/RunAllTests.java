@@ -64,7 +64,7 @@ Boolean RUNWITHGUI;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
   // SiteTest.showTaskGUI();
-   this.STAppFrame = new SeleniumTestTool();
+
   STAppData.VarHashMap.clear();
   STAppData.VarLists.clear();
 
@@ -1533,7 +1533,7 @@ if (number_of_rows==0)
           STAppData.setTargetBrowser("Silent Mode (HTMLUnit)");
           if (RUNWITHGUI)
           {
-              STAppFrame.setTargetBrowser("Silent Mode (HTMLUnit)");
+              STAppFrame.setTargetBrowserView("Silent Mode (HTMLUnit)");
           }
           driver = new HtmlUnitDriver();
       }
@@ -1542,7 +1542,7 @@ if (number_of_rows==0)
        STAppData.setTargetBrowser("Chrome 49");
        if (RUNWITHGUI)
        {
-       STAppFrame.setTargetBrowser("Chrome 49");     
+       STAppFrame.setTargetBrowserView("Chrome 49");     
        }
             ChromeOptions options = new ChromeOptions();
 options.setBinary(chrome_path);

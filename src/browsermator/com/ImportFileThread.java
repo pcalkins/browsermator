@@ -135,6 +135,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         {
             STAppFrame.AddNewDataLoopURLListView(DataFile);
             STAppData.AddNewDataLoopURLList(DataFile);
+         
+            
 
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);

@@ -29,27 +29,70 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class SeleniumTestTool extends JInternalFrame {
 
 String filename;
-
+String short_filename;
   JPanel BugPanel;
-ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
-  public SeleniumTestTool()
+SeleniumTestToolData STAppData;
+ArrayList<ProcedureView> BugViewArray;
+  HashMap<String, String> VarHashMap = new HashMap();
+  HashMap<String, String[]> VarLists = new HashMap();
+  public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
-     initComponents();
-  }
-  public SeleniumTestTool(ArrayList<ProcedureView> BugViewArray)
-  {
-  this.BugViewArray = BugViewArray;
+  this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
-  this.filename = "";
+  this.filename = STAppData.filename;
+  this.short_filename = STAppData.short_filename;
+  this.VarHashMap = STAppData.getVarHashMap();
+  this.VarLists = STAppData.getVarLists();
+  this.BugViewArray = new ArrayList<ProcedureView>();
  this.setIconifiable(true);
       initComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
- 
-  
+
 }
+  public void initializeDisplay()
+  {
+      setOSType(STAppData.getOSType());
+      setTargetBrowserView(STAppData.getTargetBrowser());
+      setFilename(STAppData.getFilename());
+      setShortFilename(STAppData.getShortFilename());
+      setPromptToClose(STAppData.getPromptToClose());
+      setUniqueFileOptionView(STAppData.getUniqueFileOption());
+      setShowReportView(STAppData.getShowReport());
+      setSMTPHostname (STAppData.getSMTPHostname());
+setEmailLoginName (STAppData.getEmailLoginName());
+ setEmailPassword (STAppData.getEmailPassword());
+setEmailTo (STAppData.getEmailTo());
+setEmailFrom(STAppData.getEmailFrom());
+ setSubject(STAppData.getEmailSubject());
+setExitAfterView (STAppData.getExitAfter());
+setjSpinnerWaitTime(STAppData.getWaitTime());
+   setjSpinnerSessions(STAppData.getSessions());
+   setUniqueListView(STAppData.getUniqueList());
+
+if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser().equals("Chrome"))
+      {
+      setOSTypeActive(true);
+    
+      }    
+  setVarHashMap(STAppData.getVarHashMap());
+setVarLists(STAppData.getVarLists());
+
+  }
+  public void setVarHashMap(HashMap<String, String> in_hashmap)
+  {
+      this.VarHashMap = in_hashmap;
+  }
+  public void setVarLists(HashMap<String, String[]> in_varlists)
+  {
+      this.VarLists = in_varlists;
+  }
+       public void setShortFilename(String in_short_filename)
+       {
+           this.short_filename = in_short_filename;
+       }
         public void setOSType(String OSType)
         {
             if ("Windows".equals(OSType))
@@ -83,50 +126,7 @@ jComboBoxStoredVariables.setFocusable(false);
                 
         }
         
-     public void setTargetBrowser (String targetbrowser)
-        {   
-            //legacy stuff
-            if ("Firefox-Marionette".equals(targetbrowser))
-            {
-                targetbrowser = "Firefox";
-            }
-            
-            jComboBoxTargetBrowser.setSelectedItem(targetbrowser);   
-          
-            
-            switch (targetbrowser)
-            {
-                case "Firefox":
-                    jButtonBrowseForFireFoxExe.setEnabled(true);
-                     setOSTypeActive(true);
-                    break;
-         
-                case "Internet Explorer-32":
-                    jButtonBrowseForFireFoxExe.setEnabled(false);
-                    break;
-                case "Internet Explorer-64":
-                    jButtonBrowseForFireFoxExe.setEnabled(false);
-                    break;  
-                case "Chrome":
-                    jButtonBrowseForFireFoxExe.setEnabled(false);
-                     setOSTypeActive(true);
-                    break;
-                
-                case "Chrome 49":
-                     jButtonBrowseForFireFoxExe.setEnabled(true);
-                     setOSTypeActive(true);
-                    break;
-                    
-                case "Silent Mode (HTMLUnit)":
-                    jButtonBrowseForFireFoxExe.setEnabled(false);
-                    break;
-                default:
-                      jButtonBrowseForFireFoxExe.setEnabled(false);
-                     setOSTypeActive(true);
-                    break;
-                    
-            }
-        }
+
   public String getFilename()
   {
 
@@ -211,6 +211,8 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
           if (ret_val=="Select a stored variable") { ret_val = ""; }
           return ret_val;  
       }
+  
+  //this is not used...
     public void updatePlacedURLList(String to_updatename, String update_toname)
     {
        int bugindex = 0;
@@ -572,10 +574,33 @@ public int GetWaitTime()
    }
      public void DeleteBugView (int BugIndex)
    {
+ 
 
    BugViewArray.remove(BugIndex);
-
+   RemoveUpdateURLListPulldowns(BugIndex);
+ 
    }
+     public void RemoveUpdateURLListPulldowns(int bugindex)
+     {
+        for (ProcedureView PV: BugViewArray)
+        {
+            if ("Dataloop".equals(PV.Type))
+            {
+                if ("urllist".equals(PV.DataLoopSource))
+                {
+                    
+              String selecteditem = PV.JComboBoxStoredArrayLists.getSelectedItem().toString();
+           PV.JComboBoxStoredArrayLists.removeAll();
+            for (String keyname: VarHashMap.keySet())
+        {
+            PV.JComboBoxStoredArrayLists.addItem(keyname);
+        }
+           PV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+            
+            }
+        }
+     }
+     }
  public void disableRemoves()
  {
     for (ProcedureView PV: BugViewArray)
@@ -921,8 +946,7 @@ bugindex++;
         }
          
      
-       
-        
+      
           BugViewArray.add(newdataloopview);
            BugViewArray.get(BugViewArray.size()-1).index = BugViewArray.size();
      
@@ -1412,7 +1436,7 @@ bugindex++;
     private void jButtonNewDataLoopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewDataLoopActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNewDataLoopActionPerformed
- 
+  
   public void setUniqueFileOptionView(String option)
   {
       if (option.equals("file"))

@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.06branched";
+   public final String ProgramVersion = "1.1.07branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -425,17 +425,21 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
  
   ArrayList<ProcedureView> blankprocviews = new ArrayList<ProcedureView>();
   ArrayList<Procedure> blankprocs = new ArrayList<Procedure>();
-  SeleniumTestTool STAppFrame = new SeleniumTestTool(blankprocviews);
+ 
   SeleniumTestToolData STAppData = new SeleniumTestToolData(blankprocs);
  STAppData.setFilenames(filename);
- STAppFrame.setFilename(filename);
- STAppFrame.ShowStoredVarControls(false);
+ 
+ 
  STAppData.setTargetBrowser("Chrome");
-  STAppFrame.setTargetBrowser("Chrome");
+  
     STAppData.setTargetBrowser("Chrome");
-  STAppFrame.setOSType("Windows32");
+
   STAppData.setOSType("Windows32");
-     STAppFrame.setClosable(true);
+  
+ SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);   
+STAppFrame.setFilename(filename);
+STAppFrame.ShowStoredVarControls(false);
+  STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
 
@@ -519,7 +523,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowser(TargetBrowser);
+           STAppFrame.setTargetBrowserView(TargetBrowser);
            STAppData.changes = true;
           
          }
@@ -565,6 +569,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
@@ -841,18 +846,16 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
           filename = "untitled" + MDIViewClasses.size();
            }
   
- ArrayList<ProcedureView> BugViewArray = new ArrayList<ProcedureView>();
+
   ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
   
-  SeleniumTestTool STAppFrame = new SeleniumTestTool(BugViewArray);
+  
   SeleniumTestToolData STAppData = new SeleniumTestToolData(BugArray);
- STAppFrame.setFilename(filename);
  STAppData.setFilenames(filename);
- STAppFrame.ShowStoredVarControls(false);
-  STAppFrame.setTargetBrowser("Chrome");
-   STAppData.setTargetBrowser("Chrome");
-  STAppFrame.setOSType("Windows32");
+ STAppData.setTargetBrowser("Chrome");
   STAppData.setOSType("Windows32");
+  
+  SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);
      STAppFrame.setClosable(true);
  
   STAppFrame.setMaximizable(true);
@@ -939,7 +942,7 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
             Object ActionType = e.getItem();
             String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowser(TargetBrowser);
+           STAppFrame.setTargetBrowserView(TargetBrowser);
            STAppData.setTargetBrowser(TargetBrowser);
            STAppData.changes = true;
           
@@ -2789,7 +2792,7 @@ File newfile = new File(path + ".js");
  
         }
     }
-   
+      STAppData.updateStoredURLListIndexes(STAppFrame, STAppFrame.BugViewArray.get(SwapIndex));
       STAppFrame.UpdateDisplay();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
 
@@ -2926,10 +2929,11 @@ File newfile = new File(path + ".js");
            );
            
  newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
-               STAppFrame.DeleteBugView(newbugview.index);
+      
+     STAppFrame.DeleteBugView(newbugview.index);
                STAppData.DeleteBug(newbugview.index);
                UpdateStoredVarPulldowns(STAppFrame, STAppData, newbugview.index);
-               STAppFrame.UpdateDisplay();
+                    STAppFrame.UpdateDisplay();
 
            });
 
@@ -3056,6 +3060,7 @@ File newfile = new File(path + ".js");
         
          }
            });
+     AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
        STAppFrame.addjCheckBoxShowReportActionListener((ActionEvent e) -> {
       STAppData.ShowReport = STAppFrame.getjCheckBoxShowReport();
   if (STAppData.ShowReport==false)

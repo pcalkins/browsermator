@@ -136,6 +136,14 @@ public void initVarLists()
 
    
 }
+public HashMap<String, String> getVarHashMap()
+{
+    return VarHashMap;
+}
+public HashMap<String, String[]> getVarLists()
+{
+   return VarLists;    
+}
  public void DeleteBug (int BugIndex)
    {
    for (Action A: BugArray.get(BugIndex).ActionsList)
@@ -151,7 +159,7 @@ public void initVarLists()
    }
  
   BugArray.remove(BugIndex);
- 
+  
 changes=true;
    }
  
@@ -286,6 +294,7 @@ changes=true;
      
     
     }
+  
           public void updateStoredURLListIndexes(SeleniumTestTool STAppFrame, ProcedureView thisBugView)
       {
           int actionindex = 0;
@@ -321,7 +330,7 @@ changes=true;
         
               }
         }
-          AV.JTextFieldVariableVARINDEX.setText(newname);
+          AV.setJTextFieldVariableVARINDEX(newname);
      STAppFrame.updateStoredListsPulldownView(oldname, newname, VarLists);
      
    //  STAppFrame.updatePlacedLoopVariables(oldname, newname);
@@ -500,6 +509,7 @@ catch (Exception e) {
     {
         this.EmailSubject = subject;
     }
+    
     public void setSMTPHostname(String smtp_hostname)
     {
         this.SMTPHostName = smtp_hostname;
@@ -544,6 +554,14 @@ catch (Exception e) {
     public String getEmailSubject()
     {
         return EmailSubject;
+    }
+    public String getFilename()
+    {
+        return filename;
+    }
+    public String getShortFilename()
+    {
+        return short_filename;
     }
       public void setFilenames (String filename)
     {
@@ -798,8 +816,7 @@ else
             newbug.ActionsList.add(action);
            
             action.index = newbug.ActionsList.size()-1;
-            
-
+        
 }
          public void setSessions (int number_of_sessions)
    {

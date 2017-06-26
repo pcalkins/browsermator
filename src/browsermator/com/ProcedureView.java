@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -447,6 +448,7 @@ ActionScrollPane.setVisible(true);
   
         
  }
+
           public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
           if ("Dataloop".equals(this_bug_in.Type))
@@ -463,6 +465,7 @@ ActionScrollPane.setVisible(true);
             {
               File this_data_file = new File(this_bug_in.DataFile);
               STAppFrame.AddNewDataLoopFileView(this_data_file);  
+          
               STAppData.AddNewDataLoopFile(this_data_file);
             } 
          
