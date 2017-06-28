@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -396,6 +395,7 @@ ActionScrollPane.setVisible(true);
          BugConstraints.anchor = anchor_value;
          BugLayout.setConstraints(component, BugConstraints);
          JPanelBug.add(component);
+         JPanelBug.revalidate();
      }
          public void Disable()
        {
@@ -427,7 +427,7 @@ ActionScrollPane.setVisible(true);
     Procedure this_bug;
     ProcedureView this_bugview;
     
-    public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData){
+    public PopUpDemo(STAppController mainAppController, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData){
         anItem = new JMenuItem("Clone Procedure");
         add(anItem);
      
@@ -436,20 +436,20 @@ ActionScrollPane.setVisible(true);
       
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-      cloneProcedure(this_bug, this_bugview, STAppFrame, STAppData);
+      cloneProcedure(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
       }
     });      
     }
              }
-              public void ShowContextMenu(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
+              public void ShowContextMenu(STAppController mainAppController, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
  {
-   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(this_bug, this_bugview, STAppFrame, STAppData);
+   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
         menu.show(evt.getComponent(), evt.getX(), evt.getY());
   
         
  }
 
-          public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+          public void cloneProcedure(STAppController mainAppController, Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
           if ("Dataloop".equals(this_bug_in.Type))
           {
@@ -474,6 +474,14 @@ ActionScrollPane.setVisible(true);
           {
          STAppFrame.AddNewBugView();
           STAppData.AddNewBug();
+               int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+          
           }
           
           
@@ -533,7 +541,7 @@ ActionScrollPane.setVisible(true);
        JButtonOK.addActionListener(listener);
            
        }
-       public void addRightClickPanelListener(Procedure newbug, ProcedureView newbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+       public void addRightClickPanelListener(STAppController mainAppController, Procedure newbug, ProcedureView newbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
        {
              JPanelBug.addMouseListener(new MouseAdapter(){
     @Override
@@ -541,7 +549,7 @@ ActionScrollPane.setVisible(true);
                  
                     if (evt.getButton()==3)
                     {
-                        ShowContextMenu(newbug, newbugview, STAppFrame, STAppData, evt);
+                        ShowContextMenu(mainAppController, newbug, newbugview, STAppFrame, STAppData, evt);
                     }
                 }
              });
@@ -768,7 +776,7 @@ ActionScrollPane.setVisible(true);
     panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
-   
+  
     AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
@@ -788,6 +796,7 @@ ActionScrollPane.setVisible(true);
     }
     
 });
+            
     }
      public void setDataFile (String data_file)
      {
@@ -815,11 +824,11 @@ ActionScrollPane.setVisible(true);
      {
       updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);
-     myTable = null;
+  //   myTable = null;
      myTable = new MyTable(in_list, list_name);
    
      
-     AddTableToGrid();   
+    
          if ("".equals(list_name))
     {
         JTextFieldDataFile.setText ("No data file or URL list set.");
@@ -833,6 +842,7 @@ ActionScrollPane.setVisible(true);
 //   JComboBoxStoredArrayLists.addItem(list_name);
  //   SetJComboBoxStoredArraylists(list_name);
     }
+          AddTableToGrid();   
      }
      
 

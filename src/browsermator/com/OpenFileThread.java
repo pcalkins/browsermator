@@ -969,8 +969,12 @@ STAppFrame.addjButtonDoStuffActionListener(
     
    STAppFrame.AddNewBugView();  
    STAppData.AddNewBug();
-    STAppFrame.UpdateDisplay();
-  JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+   int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
  
   }
@@ -985,7 +989,14 @@ STAppFrame.addjButtonDoStuffActionListener(
 
    STAppData.AddNewDataLoop(); 
    STAppFrame.AddNewDataLoopView();
-  
+     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+      mainAppController.AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
                                           
       }

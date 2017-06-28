@@ -79,7 +79,44 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       }    
   setVarHashMap(STAppData.getVarHashMap());
 setVarLists(STAppData.getVarLists());
-
+ populateSelectURLListPulldowns();
+  }
+ public void populateSelectURLListPulldowns()
+  {
+    for (ProcedureView BV : BugViewArray)
+      {
+         
+          if ("Dataloop".equals(BV.Type))
+          {
+            
+                   String selecteditem = BV.JComboBoxStoredArrayLists.getSelectedItem().toString();
+         
+              BV.JComboBoxStoredArrayLists.setEnabled(false); 
+                 BV.JComboBoxStoredArrayLists.removeAllItems();
+              
+        BV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+        for (String keyname: VarLists.keySet())
+        {
+     String[] parts = keyname.split("-");
+ String leftpart = parts[0];
+ if (!"".equals(leftpart))
+ {
+ int bugindex = Integer.parseInt(leftpart);
+ if (bugindex<BV.index+1)
+ {       
+           BV.JComboBoxStoredArrayLists.addItem(keyname);
+ }
+        }
+          }
+     if ("".equals(selecteditem))
+     {
+         selecteditem = "Select a stored URL List";
+     }
+    BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+    BV.JComboBoxStoredArrayLists.setEnabled(true); 
+            
+          }
+      }
   }
   public void setVarHashMap(HashMap<String, String> in_hashmap)
   {
@@ -764,7 +801,7 @@ this.BugPanel.removeAll();
 
 this.BugPanel.setLayout(layout);
 
-
+ populateSelectURLListPulldowns();
  
 int bugindex = 0;
     for (ProcedureView BV : BugViewArray)
@@ -948,7 +985,8 @@ bugindex++;
      
       
           BugViewArray.add(newdataloopview);
-           BugViewArray.get(BugViewArray.size()-1).index = BugViewArray.size();
+          newdataloopview.index = BugViewArray.size();
+        
      
         }
         public void AddNewDataLoopURLListView(String in_listname)
@@ -1429,13 +1467,13 @@ bugindex++;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonNewBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewBugActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonNewBugActionPerformed
-
     private void jButtonNewDataLoopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewDataLoopActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNewDataLoopActionPerformed
+
+    private void jButtonNewBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewBugActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonNewBugActionPerformed
   
   public void setUniqueFileOptionView(String option)
   {

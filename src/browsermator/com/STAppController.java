@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.07branched";
+   public final String ProgramVersion = "1.1.08branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -1961,6 +1961,7 @@ xmlfile.writeEndElement();
 
      OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, calling_MDI_Index, true, false);
   OPENREF.execute();
+  
             }
 
         }
@@ -2792,7 +2793,14 @@ File newfile = new File(path + ".js");
  
         }
     }
+      if ("urllist".equals(STAppFrame.BugViewArray.get(toMoveIndex).DataLoopSource))
+      {
+         STAppData.updateStoredURLListIndexes(STAppFrame, STAppFrame.BugViewArray.get(toMoveIndex)); 
+      }
+     if ("urllist".equals(STAppFrame.BugViewArray.get(SwapIndex).DataLoopSource))
+     {
       STAppData.updateStoredURLListIndexes(STAppFrame, STAppFrame.BugViewArray.get(SwapIndex));
+     }
       STAppFrame.UpdateDisplay();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
 
@@ -2894,7 +2902,7 @@ File newfile = new File(path + ".js");
          } 
           
            });
-         newbugview.addRightClickPanelListener(newbug, newbugview, STAppFrame, STAppData);
+         newbugview.addRightClickPanelListener(this, newbug, newbugview, STAppFrame, STAppData);
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
                MoveProcedure(STAppFrame, STAppData, newbugview.index, -1);
            });
@@ -2932,7 +2940,7 @@ File newfile = new File(path + ".js");
       
      STAppFrame.DeleteBugView(newbugview.index);
                STAppData.DeleteBug(newbugview.index);
-               UpdateStoredVarPulldowns(STAppFrame, STAppData, newbugview.index);
+              
                     STAppFrame.UpdateDisplay();
 
            });
