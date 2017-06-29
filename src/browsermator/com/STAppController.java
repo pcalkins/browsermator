@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.08branched";
+   public final String ProgramVersion = "1.1.09branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -2827,7 +2827,7 @@ File newfile = new File(path + ".js");
            STAppData.VarLists.remove(A.Variable2);
        }
    }
-   STAppFrame.updateStoredVarPulldownView(STAppData.VarHashMap);
+   STAppFrame.updateStoredVarPulldownView();
    }
        public void AddLoopHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, ProcedureView newbugview, Procedure newbug) 
       {
@@ -2938,9 +2938,9 @@ File newfile = new File(path + ".js");
            
  newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
       
-     STAppFrame.DeleteBugView(newbugview.index);
+    
                STAppData.DeleteBug(newbugview.index);
-              
+                STAppFrame.DeleteBugView(newbugview.index);
                     STAppFrame.UpdateDisplay();
 
            });
@@ -3031,8 +3031,9 @@ File newfile = new File(path + ".js");
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
+                 
                STAppData.AddActionToArray(thisActionToAdd, newbug);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);     
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
            STAppData.changes=true;  
@@ -3057,8 +3058,9 @@ File newfile = new File(path + ".js");
                ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-               STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
-               STAppData.AddActionToArray(thisActionToAdd, newbug);
+            STAppData.AddActionToArray(thisActionToAdd, newbug); 
+           STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
+              
             STAppFrame.UpdateDisplay();
        STAppFrame.ScrollActionPaneDown(newbugview);
            STAppData.changes=true;  

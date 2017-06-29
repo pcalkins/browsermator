@@ -150,6 +150,7 @@ String stringactionindex = Integer.toString(this.index+1);
      public void setJTextFieldVariableVARINDEX(String in_index)
      {
          JTextFieldVariableVARINDEX.setText(in_index);
+         
      }
 
      public void addJTextFieldFocusListener(FocusListener focuslistener)
@@ -283,7 +284,7 @@ String stringactionindex = Integer.toString(this.index+1);
            this.JLabelIndex.setText(bugdashactionindex);
           
          this.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
-           
+    
            
        }
        public void AddSetVarFocusListeners(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, Action action)

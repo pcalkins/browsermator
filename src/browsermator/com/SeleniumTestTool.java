@@ -33,16 +33,16 @@ String short_filename;
   JPanel BugPanel;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
-  HashMap<String, String> VarHashMap = new HashMap();
-  HashMap<String, String[]> VarLists = new HashMap();
+//  HashMap<String, String> VarHashMap = new HashMap();
+//  HashMap<String, String[]> VarLists = new HashMap();
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
   this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
   this.filename = STAppData.filename;
   this.short_filename = STAppData.short_filename;
-  this.VarHashMap = STAppData.getVarHashMap();
-  this.VarLists = STAppData.getVarLists();
+ // this.VarHashMap = STAppData.getVarHashMap();
+ // this.VarLists = STAppData.getVarLists();
   this.BugViewArray = new ArrayList<ProcedureView>();
  this.setIconifiable(true);
       initComponents();
@@ -77,8 +77,8 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       setOSTypeActive(true);
     
       }    
-  setVarHashMap(STAppData.getVarHashMap());
-setVarLists(STAppData.getVarLists());
+//  setVarHashMap(STAppData.getVarHashMap());
+// setVarLists(STAppData.getVarLists());
  populateSelectURLListPulldowns();
   }
  public void populateSelectURLListPulldowns()
@@ -95,7 +95,7 @@ setVarLists(STAppData.getVarLists());
                  BV.JComboBoxStoredArrayLists.removeAllItems();
               
         BV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
-        for (String keyname: VarLists.keySet())
+        for (String keyname: STAppData.VarLists.keySet())
         {
      String[] parts = keyname.split("-");
  String leftpart = parts[0];
@@ -118,14 +118,14 @@ setVarLists(STAppData.getVarLists());
           }
       }
   }
-  public void setVarHashMap(HashMap<String, String> in_hashmap)
-  {
-      this.VarHashMap = in_hashmap;
-  }
-  public void setVarLists(HashMap<String, String[]> in_varlists)
-  {
-      this.VarLists = in_varlists;
-  }
+ // public void setVarHashMap(HashMap<String, String> in_hashmap)
+//  {
+//      this.VarHashMap = in_hashmap;
+//  }
+//  public void setVarLists(HashMap<String, String[]> in_varlists)
+//  {
+//      this.VarLists = in_varlists;
+//  }
        public void setShortFilename(String in_short_filename)
        {
            this.short_filename = in_short_filename;
@@ -365,11 +365,11 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
  
 
  
-  public void updateStoredVarPulldownView( HashMap<String, String> VarHashMap)
+  public void updateStoredVarPulldownView()
   {
         jComboBoxStoredVariables.removeAllItems();
         jComboBoxStoredVariables.addItem("Select a stored variable");
-        for (String keyname: VarHashMap.keySet())
+        for (String keyname: STAppData.VarHashMap.keySet())
         {
             jComboBoxStoredVariables.addItem(keyname);
         }
@@ -614,10 +614,19 @@ public int GetWaitTime()
  
 
    BugViewArray.remove(BugIndex);
-   RemoveUpdateURLListPulldowns(BugIndex);
+   RemoveUpdateStoredPulldowns(BugIndex);
  
    }
-     public void RemoveUpdateURLListPulldowns(int bugindex)
+     public void RemoveUpdateStoredPulldowns(int bugindex)
+     {
+    
+            UpdateURLListPulldowns();
+     
+           updateStoredVarPulldownView();
+   
+     }
+     
+     public void UpdateURLListPulldowns()
      {
         for (ProcedureView PV: BugViewArray)
         {
@@ -627,16 +636,32 @@ public int GetWaitTime()
                 {
                     
               String selecteditem = PV.JComboBoxStoredArrayLists.getSelectedItem().toString();
-           PV.JComboBoxStoredArrayLists.removeAll();
-            for (String keyname: VarHashMap.keySet())
+       
+           PV.JComboBoxStoredArrayLists.removeAllItems();
+           PV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+           boolean hasSelecteditem = false;
+            for (String keyname: STAppData.VarLists.keySet())
         {
+            if (keyname.equals(selecteditem))
+            {
+                hasSelecteditem = true;
+            }
             PV.JComboBoxStoredArrayLists.addItem(keyname);
         }
+            if (hasSelecteditem)
+            {
            PV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
-            
+            }
+            else
+            {
+           PV.JComboBoxStoredArrayLists.setSelectedIndex(0);   
+            }
+     
+           
             }
         }
      }
+   
      }
  public void disableRemoves()
  {
@@ -833,7 +858,7 @@ int bugindex = 0;
 
        
         AV.SetIndexes(bugindex, actionindex);
-
+    
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
@@ -1048,9 +1073,22 @@ bugindex++;
       public void AddActionViewToArray (ActionView actionview, ProcedureView newbugview)
 {
             newbugview.ActionsViewList.add(actionview);
-          
-            actionview.index = newbugview.ActionsViewList.size()-1;
-         
+                 
+          actionview.index = newbugview.ActionsViewList.size()-1;
+        actionview.SetIndexes(newbugview.index, actionview.index);
+        
+               if ("StoreLinksAsURLListByXPATH".equals(actionview.ActionType))
+           {
+       
+              
+              UpdateURLListPulldowns();
+           }
+                    if ("StoreLinkAsVarByXPATH".equals(actionview.ActionType))
+           {
+       
+              
+             updateStoredVarPulldownView();
+           }
             
 
 }

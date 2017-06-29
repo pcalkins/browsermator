@@ -816,6 +816,22 @@ else
             newbug.ActionsList.add(action);
            
             action.index = newbug.ActionsList.size()-1;
+               if ("Store Links as URL List by XPATH".equals(action.Type))
+           {
+                    String stringactionindex = Integer.toString(action.index+1);
+        String stringbugindex = Integer.toString(newbug.index);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+              addSelectedArrayName(bugdashactionindex);
+           
+           }
+                        if ("Store Link as Variable by XPATH".equals(action.Type))
+           {
+                    String stringactionindex = Integer.toString(action.index+1);
+        String stringbugindex = Integer.toString(newbug.index);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+             addSelectedVariableName(bugdashactionindex);
+           
+           }
         
 }
          public void setSessions (int number_of_sessions)
