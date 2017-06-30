@@ -146,10 +146,17 @@ public String doInBackground()
             }
             catch (Exception exce)
             {
-                System.out.println(exce.toString());
+                System.out.println("Exception quitting" + exce.toString());
             }
  }
+ try
+ {
    driver.quit();
+ }
+ catch (Exception ex)
+ {
+     // don't worry it should close
+ }
   
     
     if (STAppData.getExitAfter())
@@ -1353,7 +1360,7 @@ while(thisContinuePrompt.isVisible() == true){
       int number_of_rows = 0;
       if ("urllist".equals(thisbug.DataLoopSource))
       {
-      number_of_rows = STAppData.BugArray.get(BugIndex).URLListRunTimeEntries.length;
+      number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.length;
       }
       if ("file".equals(thisbug.DataLoopSource))
       {

@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.09branched";
+   public final String ProgramVersion = "1.1.10branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -2840,7 +2840,8 @@ File newfile = new File(path + ".js");
           
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
       newbugview.setJTableSourceToURLList(blanklist, selectedarraylist);
-     
+      newbug.setURLListName(selectedarraylist);
+       newbug.setDataLoopSource("urllist");
 
                }
             
