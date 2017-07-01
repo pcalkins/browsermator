@@ -165,22 +165,39 @@ public String doInBackground()
         STAppFrame.setRunActionsButtonName("Run All Procedures");
     }
      }
+         if (STAppData.getPromptToClose())
+     {
+  
+   
+     }
+     else
+     { 
+    boolean closecaught = false;
+   
  try
  {
      driver.close();
  }
  catch (Exception e)
  {
+     closecaught = true;
      System.out.println(e.toString());
      try {
                 driver.quit();
             }
             catch (Exception exce)
             {
+               
                 System.out.println("Exception quitting" + exce.toString());
             }
  }
- try
+ if (closecaught)
+ {
+ 
+ }
+ else
+ {
+     try
  {
    driver.quit();
  }
@@ -188,44 +205,16 @@ public String doInBackground()
  {
      // don't worry it should close
  }
-  
+ }
+ 
+  }
     
     if (STAppData.getExitAfter())
     {
     System.exit(0);
     }
  
-        if (STAppData.getPromptToClose())
-     {
-  
-   
-     }
-     else
-     {
- try
-        {
-        driver.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-           try {
-                driver.quit();
-            }
-            catch (Exception ex)
-            {
-                System.out.println(ex.toString());
-            }
-        }
- try
- {
-   driver.quit();
- }
- catch (Exception ex)
- {
-     // don't worry it should close
- }
-     }
+    
              FillReport();
     STAppFrame.UpdateDisplay(); 
      BrowserMatorReport = new BrowserMatorReport(STAppData);
@@ -1318,23 +1307,41 @@ while(thisContinuePrompt.isVisible() == true){
 }
   
    
-        try
-        {
-        driver.close();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-            try {
+       boolean closecaught = false;
+   
+ try
+ {
+     driver.close();
+ }
+ catch (Exception e)
+ {
+     closecaught = true;
+     System.out.println(e.toString());
+     try {
                 driver.quit();
             }
-            catch (Exception ex)
+            catch (Exception exce)
             {
-                System.out.println(ex.toString());
+               
+                System.out.println("Exception quitting" + exce.toString());
             }
-        }
-    driver.quit();
-     } 
+ }
+ if (closecaught)
+ {
+ 
+ }
+ else
+ {
+     try
+ {
+   driver.quit();
+ }
+ catch (Exception ex)
+ {
+     // don't worry it should close
+ }
+ }    
+ }
  }
 
   public void FillReport()

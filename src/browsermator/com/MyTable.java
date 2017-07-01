@@ -298,19 +298,20 @@ this.URLListRunTimeEntries = in_entries;
      
  public void refreshRuntimeEntriesFile()
  {
-     if (runtimeEntries.size()>0)
-     {
-     runtimeEntries.clear();
-     try
-     {
-      CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
-              myEntries = CSVFileReader.readAll();   
-     }
-     catch(Exception ex)
-     {
-         System.out.println("Exception reading csv file: 311 mytable" + ex.toString());
-     }
-     }
+   //  if (runtimeEntries.size()>0)
+   //  {
+   //  runtimeEntries.clear();
+ //    try
+ //    {
+ //     CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
+ //             myEntries = CSVFileReader.readAll();   
+ //             runtimeEntries = CSVFileReader.readAll();
+ //    }
+ //    catch(Exception ex)
+ //    {
+ //        System.out.println("Exception reading csv file: 311 mytable" + ex.toString());
+ //    }
+  //   }
  }
  public void refreshURLListRunTimeEntries()
  {
