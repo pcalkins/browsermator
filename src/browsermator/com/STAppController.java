@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.10branched";
+   public final String ProgramVersion = "1.1.11branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -476,14 +476,9 @@ STAppFrame.ShowStoredVarControls(false);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
- if (SHOWGUI)
- {
+
  RunActions(STAppFrame, STAppData); 
- }
- else
- {
-     RunActions(STAppData);
- }
+ 
   
         }
       }

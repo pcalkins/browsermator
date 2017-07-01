@@ -4,6 +4,8 @@ package browsermator.com;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -82,6 +84,33 @@ public String doInBackground()
      STAppFrame.disableRemoves();
      STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     STAppFrame.setRunActionsButtonName("Running...(Click to Cancel)");
+        STAppFrame.addjButtonDoStuffActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+            if ("Running...(Click to Cancel)".equals(STAppFrame.getRunActionsButtonName()))
+            {
+          
+      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut("cancel");
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+      
+       (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             STAppData.cancelled = true;
+             STAppFrame.enablejButtonDoStuff(false);
+            }
+        }).execute();
+            }
+      }
+      }
+    );
     }
      STAppData.testRunning = true;
      
@@ -103,8 +132,10 @@ public String doInBackground()
 @Override
  protected void done()
  {
+    
       if (RUNWITHGUI)
      {
+          STAppFrame.enablejButtonDoStuff(true);
     STAppFrame.enableAdds();
     STAppFrame.enableRemoves();
     STAppFrame.hideTaskGUI();
@@ -1360,6 +1391,7 @@ while(thisContinuePrompt.isVisible() == true){
       int number_of_rows = 0;
       if ("urllist".equals(thisbug.DataLoopSource))
       {
+ 
       number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.length;
       }
       if ("file".equals(thisbug.DataLoopSource))

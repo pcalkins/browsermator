@@ -30,7 +30,7 @@ String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
   String URLListName;
   String[] URLListData;
-  String[] URLListRunTimeEntries;
+//  String[] URLListRunTimeEntries;
   
  
    Procedure ()
@@ -50,7 +50,7 @@ this.Type = "";
 this.DataLoopSource = "urllist";
 this.URLListName = "";
 this.URLListData = new String[0];
-this.URLListRunTimeEntries = new String[0];
+// this.URLListRunTimeEntries = new String[0];
 
    }
    public void RefreshFileData()
@@ -59,7 +59,7 @@ this.URLListRunTimeEntries = new String[0];
    }
    public void RefreshURLListData()
    {
-    URLListRunTimeEntries = new String[0];
+    URLListData = new String[0];
    }
 
           public void Disable()

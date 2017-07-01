@@ -1768,6 +1768,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    public void addjButtonDoStuffActionListener(ActionListener listener) {
        jButtonDoStuff.addActionListener(listener);
    }
+   public void enablejButtonDoStuff(boolean enable_it)
+   {
+       jButtonDoStuff.setEnabled(enable_it);
+   }
       public void addjButtonFlattenFileActionListener(ActionListener listener) {
        jButtonFlattenFile.addActionListener(listener);
    }
