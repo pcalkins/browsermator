@@ -104,9 +104,9 @@ public String doInBackground()
             @Override
             protected void process(List<String> chunks) {
              STAppData.cancelled = true;
-             STAppFrame.enablejButtonDoStuff(false);
-            }
-        }).execute();
+            STAppFrame.enablejButtonDoStuff(false);
+           }
+       }).execute();
             }
       }
       }
@@ -165,13 +165,7 @@ public String doInBackground()
         STAppFrame.setRunActionsButtonName("Run All Procedures");
     }
      }
-         if (STAppData.getPromptToClose())
-     {
-  
-   
-     }
-     else
-     { 
+
     boolean closecaught = false;
    
  try
@@ -207,7 +201,7 @@ public String doInBackground()
  }
  }
  
-  }
+  
     
     if (STAppData.getExitAfter())
     {
@@ -1280,7 +1274,7 @@ else
         thisbug.Pass = false;
     }
   
-   publish(thisbugindex);
+ publish(thisbugindex);
     thisbugindex++;
       }
  
@@ -1307,40 +1301,7 @@ while(thisContinuePrompt.isVisible() == true){
 }
   
    
-       boolean closecaught = false;
-   
- try
- {
-     driver.close();
- }
- catch (Exception e)
- {
-     closecaught = true;
-     System.out.println(e.toString());
-     try {
-                driver.quit();
-            }
-            catch (Exception exce)
-            {
-               
-                System.out.println("Exception quitting" + exce.toString());
-            }
- }
- if (closecaught)
- {
- 
- }
- else
- {
-     try
- {
-   driver.quit();
- }
- catch (Exception ex)
- {
-     // don't worry it should close
- }
- }    
+     
  }
  }
 

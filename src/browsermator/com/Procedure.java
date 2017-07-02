@@ -56,7 +56,7 @@ this.URLListData = new String[0];
    public void RefreshFileData()
    {
    RunTimeFileSet.clear();
-   setDataFile(DataFile);
+  // setDataFile(DataFile);
    }
    public void RefreshURLListData()
    {

@@ -122,8 +122,8 @@ SortedComboBoxModel <String> sortmodel;
                                         new Comparator<String>() {
             public int compare(String list_item1, String list_item2) {
               
-              if ("Select a stored URL List".equals(list_item1)) { list_item1 = "0-0"; }
-              if ("Select a stored URL List".equals(list_item2)) { list_item2 = "0-0"; }
+              if ("Select a stored URL List".equals(list_item1) || "".equals(list_item1)) { list_item1 = "0-0"; }
+              if ("Select a stored URL List".equals(list_item2)|| "".equals(list_item2)) { list_item2 = "0-0"; }
               String[] left_and_right_item1 = list_item1.split("-");
               String[] left_and_right_item2 = list_item2.split("-");
               Integer leftitem1 = Integer.parseInt(left_and_right_item1[0]);
@@ -453,21 +453,47 @@ ActionScrollPane.setVisible(true);
       {
           if ("Dataloop".equals(this_bug_in.Type))
           {
-            if ("urllist".equals(this_bug_in.DataLoopSource))
-            {
-                String[] blanklist = new String[0];
+
+      
+        String DataFile = "";
+  
+        if ("file".equals(DataLoopSource))
+        {
+        File DataFile_file = new File(DataFile);
+       
+   STAppFrame.AddNewDataLoopFileView(DataFile_file);
         
-               STAppFrame.AddNewDataLoopURLListView(this_bugview_in.URLListName);
-               STAppData.AddNewDataLoopURLList(this_bug_in.URLListName);  
-            
-            }
-            else
-            {
-              File this_data_file = new File(this_bug_in.DataFile);
-              STAppFrame.AddNewDataLoopFileView(this_data_file);  
-          
-              STAppData.AddNewDataLoopFile(this_data_file);
-            } 
+   STAppData.AddNewDataLoopFile(DataFile_file);
+
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+        }
+       if ("urllist".equals(DataLoopSource))
+        {
+       
+                STAppFrame.AddNewDataLoopURLListView(DataFile);
+   STAppData.AddNewDataLoopURLList(DataFile);
+  
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+  
+     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+        }
+  
+   
+    
+
          
           }
           else
