@@ -140,12 +140,12 @@ public String doInBackground()
     STAppFrame.enableRemoves();
     STAppFrame.hideTaskGUI();
     STAppFrame.RefreshViewData();
-    STAppData.RefreshData();
+  STAppData.RefreshData();
     STAppFrame.setJTextFieldProgress("");
      }
       else
       {
-      STAppData.RefreshData();
+     STAppData.RefreshData();
       }
    STAppData.testRunning = false; 
    
@@ -825,6 +825,7 @@ else
       {
             ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+    
       }
       number_of_rows = STAppData.VarLists.get(thisbug.URLListName).length;
     }

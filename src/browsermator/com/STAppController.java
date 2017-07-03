@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.13branched";
+   public final String ProgramVersion = "1.1.14branched";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;

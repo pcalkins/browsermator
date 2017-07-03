@@ -40,9 +40,10 @@ public class MyTable {
    List<String[]> myEntries;
    List<String[]> runtimeEntries;
    String[] URLListRunTimeEntries;
-
+ String listname;
  MyTable (String csvFile)
  {
+     
         DataFile = csvFile;
         DataTable = new JTable();
         myEntries = new ArrayList<>();
@@ -278,10 +279,11 @@ catch (Exception ex)
        
 }
  }
+
  MyTable(String[] in_entries, String list_name)
 
 {
-    
+    listname = list_name;
           columnnames[0] = "Stored URL List:" + list_name;
            DefaultTableModel tableModel = new DefaultTableModel(columnnames, 0); 
         
@@ -292,9 +294,39 @@ catch (Exception ex)
    DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));
     DataTable.setPreferredSize(new Dimension (700,150));
 this.URLListRunTimeEntries = in_entries;
+
 }
+ public void populateTableWithURLListRunTimeEntries()
+ {
+     columnnames[0] = "Stored URL List:" + listname;
 
   
+          DefaultTableModel tableModel = new DefaultTableModel(columnnames, URLListRunTimeEntries.length); 
+         
+           rowcount = tableModel.getRowCount();
+          this.number_of_records = rowcount;
+             int columnnumber = 0;
+          for (int x = 0; x<rowcount; x++)
+           {
+             
+               
+               tableModel.setValueAt(URLListRunTimeEntries[x], x, columnnumber);
+
+ }
+                DataTable = new JTable(tableModel);
+        
+   
+        int number_of_rows = DataTable.getRowCount();
+         DataTable.getColumnModel().getColumn(0).setPreferredWidth(800);
+        if (number_of_rows < 20)
+        {
+      DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
+        }
+        else
+        {
+       DataTable.setPreferredScrollableViewportSize(new Dimension (800,400));     
+        }
+ }
      
  public void refreshRuntimeEntriesFile()
  {

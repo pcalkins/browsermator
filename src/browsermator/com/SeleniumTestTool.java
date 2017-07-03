@@ -1024,7 +1024,7 @@ bugindex++;
     
         newdataloopview.setURLListName(in_listname);
         String[] blanklist = new String[0];
-  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
+//  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
      
      
@@ -1042,7 +1042,7 @@ bugindex++;
         if (CSVFile.exists())
         {
             
-           newdataloopview.setDataFile(CSVFile.getAbsolutePath());
+         newdataloopview.setDataFile(CSVFile.getAbsolutePath());
         }
   
    AddDataLoopProcView(newdataloopview);

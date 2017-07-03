@@ -56,7 +56,7 @@ this.URLListData = new String[0];
    public void RefreshFileData()
    {
    RunTimeFileSet.clear();
-  // setDataFile(DataFile);
+  setDataFile(DataFile);
    }
    public void RefreshURLListData()
    {
@@ -129,6 +129,7 @@ this.URLListData = new String[0];
    {
        URLListData = in_list;
        URLListName = list_name;
+     
    }
    public String getPassText()
    {

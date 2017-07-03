@@ -852,8 +852,11 @@ ActionScrollPane.setVisible(true);
          JPanelBug.remove(panelForTable);
   //   myTable = null;
      myTable = new MyTable(in_list, list_name);
-   
-     
+     if (in_list.length>0)
+     {
+     myTable.populateTableWithURLListRunTimeEntries();
+    
+     }
     
          if ("".equals(list_name))
     {
