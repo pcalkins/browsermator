@@ -61,6 +61,7 @@ jComboBoxStoredVariables.setFocusable(false);
       setPromptToClose(STAppData.getPromptToClose());
       setUniqueFileOptionView(STAppData.getUniqueFileOption());
       setShowReportView(STAppData.getShowReport());
+      setIncludeScreenShotView(STAppData.getIncludeScreenshots());
       setSMTPHostname (STAppData.getSMTPHostname());
 setEmailLoginName (STAppData.getEmailLoginName());
  setEmailPassword (STAppData.getEmailPassword());
@@ -71,6 +72,8 @@ setExitAfterView (STAppData.getExitAfter());
 setjSpinnerWaitTime(STAppData.getWaitTime());
    setjSpinnerSessions(STAppData.getSessions());
    setUniqueListView(STAppData.getUniqueList());
+   setEmailReportView(STAppData.getEmailReport());
+    setEmailReportFailView(STAppData.getEmailReportFail());
 
 if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser().equals("Chrome"))
       {
@@ -1566,6 +1569,10 @@ public boolean getjCheckBoxEmailReportSelected()
 {
     return jCheckBoxEmailReport.isSelected();
 }
+public void addjCheckBoxIncludeScreenshotsActionListener(ActionListener listener)
+{
+    jCheckBoxIncludeScreenshots.addActionListener(listener);
+}
 public void addjCheckBoxEmailReportActionListener(ActionListener listener)
 {
     jCheckBoxEmailReport.addActionListener(listener);
@@ -1951,7 +1958,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         }
      
     }
-    
+    public void setIncludeScreenShotView (Boolean include_screenshots)
+    {
+      jCheckBoxIncludeScreenshots.setSelected(include_screenshots);
+    }
+            
         public void setEmailReportFailView (Boolean emailreportfail)
     {
       

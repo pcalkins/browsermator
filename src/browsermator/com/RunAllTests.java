@@ -120,9 +120,13 @@ public String doInBackground()
       {
           thisbugview.JLabelPass.setVisible(false);
       }
+          RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
      }
- 
-    RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
+     else
+     {
+           RunAllActions(STAppData, targetbrowser, OSType);
+     }
+  
      
     ret_val = "Run All Procedures";
     
@@ -143,10 +147,7 @@ public String doInBackground()
   STAppData.RefreshData();
     STAppFrame.setJTextFieldProgress("");
      }
-      else
-      {
-     STAppData.RefreshData();
-      }
+ 
    STAppData.testRunning = false; 
    
     if (RUNWITHGUI)
@@ -199,6 +200,7 @@ public String doInBackground()
  {
      // don't worry it should close
  }
+  
  }
  
   
@@ -210,7 +212,10 @@ public String doInBackground()
  
     
              FillReport();
+             if (RUNWITHGUI)
+             {
     STAppFrame.UpdateDisplay(); 
+             }
      BrowserMatorReport = new BrowserMatorReport(STAppData);
       if (STAppData.getShowReport())
        {
@@ -245,6 +250,11 @@ public String doInBackground()
         BrowserMatorReport.EmailReport();
   
     }
+         if (STAppFrame==null)
+     {
+    
+     System.exit(0);
+      }
     if (STAppData.getExitAfter())
     {
     
@@ -1558,5 +1568,874 @@ options.setBinary(chrome_path);
   driver = new ChromeDriver(options);     
       }
   }
+   public void RunAllActions(SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
+ {
+ STAppData.TimeOfRun = LocalDateTime.now();
+    LocalDate today = LocalDate.now();
+    switch (TargetBrowser)
+   {
+        // legacy file support
+     case "Firefox-Marionette":
+     // legacy file support
+         if ("Windows".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
+     }   
+     if ("Windows32".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
+     }
+     if ("Windows64".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win64\\geckodriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-osx\\geckodriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux32\\geckodriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux64\\geckodriver");
+     }
+   
+    if (firefox_path!=null) {
+        System.setProperty("webdriver.firefox.bin", firefox_path);
+    }
+
+    try
+    {
+
+// FirefoxProfile profile = new FirefoxProfile();
+
+ //DesiredCapabilities cap = DesiredCapabilities.firefox();
+   //     cap.setJavascriptEnabled(true);
+   //     cap.setCapability("marionette", false);
+        
+   //     profile.setPreference("dom.max_script_run_time", 1);
+        driver = new FirefoxDriver();
+    
+
+    //  driver =  new MarionetteDriver();
+    }
+    catch (Exception ex)
+    {
+        System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+        if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome 49", false,0,0);
+              FallbackDriver("Chrome49");
+         
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+            FallbackDriver("HTMLUnit");
+         
+          }
+    }
+      
+     break;
+            
+    case "Firefox":
+   
+     if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");  
+     }
+     if ("Windows32".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win32\\geckodriver.exe");
+     }
+     if ("Windows64".equals(OSType))
+     {
+       System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-win64\\geckodriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-osx\\geckodriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux32\\geckodriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+      System.setProperty("webdriver.gecko.driver", "lib\\geckodriver-linux64\\geckodriver");
+     }
+   
+    if (firefox_path!=null) {
+        System.setProperty("webdriver.firefox.bin", firefox_path);
+    }
+
+    try
+    {
+// DesiredCapabilities cap = DesiredCapabilities.firefox();
+  //      cap.setJavascriptEnabled(false);
+
+  //     FirefoxProfile profile = new FirefoxProfile();
+
+ // DesiredCapabilities cap = DesiredCapabilities.firefox();
+  //    cap.setJavascriptEnabled(true);
+  //     cap.setCapability("marionette", true);
+        
+ //      profile.setPreference("dom.max_script_run_time", 30);
+        driver = new FirefoxDriver();
+       
+
+    //  driver =  new MarionetteDriver();
+    }
+    catch (Exception ex)
+    {
+        System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
+       if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to Chrome 49", false,0,0);
+            FallbackDriver("Chrome49");
+      
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
+         FallbackDriver("HTMLUnit");
+          }
+    }
+      
+     break;
+     
+     case "Silent Mode (HTMLUnit)":
+     driver = new HtmlUnitDriver();  
+     break;
+     
+     case "Internet Explorer-32":
+     System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win32\\IEDriverServer.exe");
+     try
+     {
+     driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+     {
+         System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
+         if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome 49", false,0,0);
+             FallbackDriver("Chrome49");
+     
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
+          FallbackDriver("HTMLUnit");
+          }
+     }
+     break;
+     case "Internet Explorer-64":
+     System.setProperty("webdriver.ie.driver", "lib\\iedriverserver_win64\\IEDriverServer.exe");
+     try
+     {
+     driver = new InternetExplorerDriver();
+     }
+     catch (Exception ex)
+             {
+             System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
+          if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to Chrome 49", false,0,0);
+           FallbackDriver("Chrome49");
+        
+    }
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
+          FallbackDriver("HTMLUnit");
+          }
+             }
+     break;
+     case "Chrome":
+         //legacy support
+         if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Windows32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+       if ("Windows64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac64\\chromedriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver");
+     }
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+        if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome 49", false,0,0);
+         FallbackDriver("Chrome49");
+     
+
+    }
+
+          else
+          {
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to HTMLUnitDriver", false,0,0);
+         FallbackDriver("HTMLUnit");
+          }
+   }
+     break;
+
+     
+     
+   case "Chrome 49":
+         ChromeOptions options = new ChromeOptions();
+      if (chrome_path!=null) {
+        
+options.setBinary(chrome_path);
+
+
+    }
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+   
+    
+     try
+     {
+        driver = new ChromeDriver(options);     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver 49: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver, will fallback to HTMLUnitDriver", false,0, 0);
+      FallbackDriver("HTMLUnit");
+   }
+     break;
+         
+         default: 
+           //legacy support
+         if ("Windows".equals(OSType))
+     {
+        System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Windows32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+       if ("Windows64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver.exe");
+     }
+     if ("Mac".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_mac64\\chromedriver");
+     }
+     if ("Linux-32".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux32\\chromedriver");
+     }
+     if ("Linux-64".equals(OSType))
+     {
+     System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_linux64\\chromedriver");
+     }
+     try
+     {
+        driver = new ChromeDriver();     
+     }
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+        if (chrome_path!=null) {
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to Chrome 49", false,0,0);
+         FallbackDriver("Chrome49");
+     
+
+    }
+   }
+    }
+  
+  int WaitTime = STAppData.getWaitTime();
+  //timeouts still buggy.. removed
+ // int Timeout = SiteTest.getTimeout();
+ // int Timeout = 20;
+  
+ // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+ //driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+ //driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+
+     int totalpause = WaitTime * 1000;
+        
+  
+  int thisbugindex = 0;
+  
+
+  
+     for (Procedure thisbug : STAppData.BugArray)
+      {
+          String bugtitle = STAppData.BugArray.get(thisbugindex).getBugTitle();
+      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(bugtitle);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+     
+   int bug_INT = thisbugindex+1;
+  String bug_ID = Integer.toString(bug_INT);
+
+
+int action_INT = 0;
+String action_ID = "";
+
+if (!"Dataloop".equals(thisbug.Type))
+{
+    action_INT=0;
+   for( Action ThisAction : thisbug.ActionsList ) {
+         if (STAppData.cancelled)
+          {
+          
+             publish(thisbugindex);
+             
+             break;
+          } 
+      
+       String original_value = ThisAction.Variable2;
+       
+ action_INT++;
+ action_ID = Integer.toString(action_INT);
+
+           if (!ThisAction.Locked)
+   {
+    
+   try
+   {
+       if (totalpause>0)
+       {
+      try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+     
+          break;
+        
+  }
+       }
+                     String varfieldname="";
+          if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
+       {
+           if (ThisAction.Variable2.contains("[stored_varname-start]"))
+                   {
+          varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
+
+         ThisAction.RunAction(driver);
+          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           else
+           {
+              if (ThisAction.Variable1.contains("[stored_varname-start]"))
+                   {
+         varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
+          ThisAction.RunAction(driver);
+          ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           }
+       
+       }
+       else
+       {
+                 if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+         
+        int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
+        }
+                 else
+                 {
+         ThisAction.RunAction(driver);    
+                 }
+              
+       }
+       
+  
+       if (!"".equals(ThisAction.tostore_varvalue))
+       {
+        
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+       }
+    if (ThisAction.tostore_varlist.length>0)
+       {
+      
+           STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+
+       }
+    
+       
+      
+    
+   }
+  catch (Exception ex)
+     {
+  System.out.println(ex.toString());
+      ThisAction.Pass = false;
+     
+          break;
+      
+       
+     }
+         if (STAppData.getIncludeScreenshots())
+    { 
+      try
+       {
+     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.ScreenshotBase64 = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+       }
+       catch (Exception ex)
+       {
+            ThisAction.ScreenshotBase64 = "Screenshot Failed";
+      //     System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
+    }
+         else
+         {
+              ThisAction.ScreenshotBase64 = ""; 
+         }
+   
+   }   
+           else
+           {
+              ThisAction.ScreenshotBase64 = ""; 
+             ThisAction.Pass = true; 
+           
+           }
+         
+   }  
+
+}
+else
+{
+     int number_of_rows = 0;
+    if ("urllist".equals(thisbug.DataLoopSource))
+    {
+        
+      if (thisbug.getLimit()>0 || thisbug.getRandom())
+      {
+      STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
+      }
+      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+     
+      number_of_rows = STAppData.VarLists.get(thisbug.URLListName).length;
+    }
+    else
+    {
+   if ("file".equals(thisbug.DataLoopSource))
+    {
+        if (thisbug.getLimit()>0 || thisbug.getRandom())
+        {
+            
+         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom())); 
+     number_of_rows = thisbug.RunTimeFileSet.size();
+        }
+        else
+        {
+            thisbug.setRunTimeFileSet(thisbug.DataSet);
+            number_of_rows = thisbug.RunTimeFileSet.size();
+        }
+        
+    }     
+    }
  
+// if (number_of_rows==0)
+// {
+//  number_of_rows = FillTables(thisbug, thisbugview);
+// }
+  for( Action ThisAction : thisbug.ActionsList ) { 
+ ThisAction.InitializeLoopTestVars(number_of_rows);
+  } 
+
+ for (int x = 0; x<number_of_rows; x++)
+    {
+  
+   int changex = -1;
+  action_INT = 0;
+    for( Action ThisAction : thisbug.ActionsList ) {
+       if (STAppData.cancelled)
+          {
+       
+             publish(thisbugindex);
+             break;
+          }  
+     
+         
+          
+       action_INT++;
+ action_ID = Integer.toString(action_INT) + "-" + Integer.toString(x);   
+        String original_value1 = ThisAction.Variable1;
+           String original_value2 = ThisAction.Variable2;
+      if (!ThisAction.Locked)
+   {
+   
+ 
+               DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
+    if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
+    {
+        if ("Pause with Continue Button".equals(ThisAction.Type))
+        {
+           String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
+        changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
+        
+        ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+           if (STAppData.getIncludeScreenshots())
+    { 
+
+       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>";
+    } 
+           else
+           {
+             ThisAction.loop_ScreenshotsBase64[x] = "";
+           }
+        }
+       else
+        {
+            try
+            {
+                   if (totalpause>0)
+       {
+                  try
+  {
+  Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+  
+         System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+            publish(thisbugindex);
+          
+          break;
+  }
+       }
+      
+     
+       
+                  String varfieldname="";
+       if (ThisAction.Variable2.contains("[stored_varname-start]") || ThisAction.Variable1.contains("[stored_varname-start]"))
+       {
+           if (ThisAction.Variable2.contains("[stored_varname-start]"))
+                   {
+          varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
+        String action_title3 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2; 
+                  
+       
+          ThisAction.RunAction(driver);
+          ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           else
+           {
+              if (ThisAction.Variable1.contains("[stored_varname-start]"))
+                   {
+         varfieldname = ThisAction.Variable1;
+         //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
+      // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
+               String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
+
+       
+         String fieldname = split_testfield_end[0].substring(22);
+      
+         ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
+       
+      
+          ThisAction.RunAction(driver);
+          ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
+                   }
+           }
+           
+       }
+       
+       else
+       {
+     
+         ThisAction.RunAction(driver);    
+       }   
+         
+          if (!"".equals(ThisAction.tostore_varvalue))
+       {
+        
+           STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
+       }
+       
+        ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+            }
+             catch (Exception ex)
+     {
+   
+          ThisAction.loop_pass_values[x] = false;
+          ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+        
+          
+          break;
+       
+     }
+                  if (STAppData.getIncludeScreenshots())
+    { 
+              try
+        {
+    File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+  
+        }
+                 catch (Exception ex)
+       {
+          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+     //      System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
+    }
+                  else
+                  {
+                   ThisAction.loop_ScreenshotsBase64[x] = "";    
+                  }
+            
+        }
+    }
+    else
+    {
+  
+       
+            String concat_variable="";
+            String concat_variable2="";
+            if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable = var1Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
+ if (var1Parser.hasDataLoopVar)
+ {
+     ThisAction.Variable1 = concat_variable;
+        if ("".equals(ThisAction.Variable1))
+           {
+               ThisAction.Variable1 = " ";
+           }
+      
+ }
+    if ("urllist".equals(thisbug.DataLoopSource))
+            {
+ concat_variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+            }
+            if ("file".equals(thisbug.DataLoopSource))
+            {
+   concat_variable2 = var2Parser.GetFullValueFromFile(x, thisbug.RunTimeFileSet);             
+            }
+        
+   if (var2Parser.hasDataLoopVar)
+ {
+     ThisAction.Variable2 = concat_variable2;
+     if ("".equals(ThisAction.Variable2))
+           {
+               ThisAction.Variable2 = " ";
+           } 
+ }  
+ 
+     try
+             {
+                 if (totalpause>0)
+                 {
+                                 try
+  {
+   Thread.sleep(totalpause);  
+  }
+  catch (Exception ex)
+  {
+    
+         System.out.println ("Exception when sleeping: " + ex.toString());
+       ThisAction.Pass = false;
+     
+          break;
+  }
+                 }
+             
+      ThisAction.RunAction(driver);
+
+      ThisAction.Variable1 = original_value1;
+   ThisAction.Variable2 = original_value2;
+   ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+             if (STAppData.getIncludeScreenshots())
+    { 
+        try
+        {
+     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+     full_scrn.deleteOnExit();
+   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+       }
+                  catch (Exception ex)
+       {
+          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+     //      System.out.println("Exception creating screenshot: " + ex.toString());     
+    }
+        
+    } 
+             else
+             {
+             ThisAction.loop_ScreenshotsBase64[x] = "";     
+             }
+             }
+      catch (Exception ex)
+     {
+   
+       ThisAction.Variable1 = original_value1;
+       ThisAction.Variable2 = original_value2;
+       ThisAction.loop_pass_values[x] = false;
+        ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+      
+          break;
+       
+     }
+             }
+   
+      }
+      else
+      {
+          ThisAction.Pass = true;
+          ThisAction.loop_pass_values[x] = ThisAction.Pass;
+        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+            
+      }
+     
+     }
+ 
+             if (changex!=x)
+    {
+        if (changex==-1)
+        {
+      
+        }
+        else
+        {
+        
+        x=changex-1;
+          
+        }
+    }
+    }
+     //check if all actions passed
+    for( Action ThisAction : thisbug.ActionsList )
+    {   
+        ThisAction.Pass = false;
+      
+        int actions_passed = 0;
+        for (Boolean passvalue: ThisAction.loop_pass_values)
+        {
+            if (passvalue)
+            {
+                actions_passed++;
+            }
+        }
+        if (actions_passed == ThisAction.loop_pass_values.length)
+        {
+            ThisAction.Pass = true;
+        }
+    }
+     
+   }
+  int actions_passed = 0;
+ for( Action ThisAction : thisbug.ActionsList )
+    {   
+     
+      
+      
+        Boolean passvalue = ThisAction.Pass;
+        
+            if (passvalue)
+            {
+                actions_passed++;
+            }
+        
+     
+    }
+    if (actions_passed == thisbug.ActionsList.size())
+        {
+            thisbug.Pass = true;
+        }
+    else
+    {
+        thisbug.Pass = false;
+    }
+  
+ publish(thisbugindex);
+    thisbugindex++;
+      }
+ 
+         if (STAppData.getPromptToClose())
+     {
+          Prompter thisContinuePrompt = new Prompter(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
+  
+    
+
+
+    
+while(thisContinuePrompt.isVisible() == true){
+       try
+       {
+ Thread.sleep(200);
+
+       }
+       catch (InterruptedException e)
+               {
+                  System.out.println("pause exception: " + e.toString());
+                
+              }
+  
+}
+  
+   
+     
+ }
+ }
 }

@@ -97,9 +97,17 @@ private ButtonGroup LookAndFeelGroup;
  }
   public void setWindowProps(FileInputStream input)
           {
+              try
+              {
+            newProps.load(input);
+              }
+              catch (Exception ex)
+              {
+                  System.out.println ("Exception loading config : " + ex.toString());
+              }
                 int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
    int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
-   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1025"));
+   int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1200"));
    int winHeight = Integer.parseInt(newProps.getProperty("main_window_sizeHeight", "802"));
       java.awt.Point startPosition = new java.awt.Point(winLocX, winLocY);
             if (isLocationInScreenBounds(startPosition) )
@@ -314,5 +322,9 @@ super.setSize(Width-300,Height-300);
    public void addFileMenuOpenActionListener (ActionListener listener) {
        openMenuItem.addActionListener(listener);
       
+   }
+   public void showMainWindow (boolean visible)
+   {
+       this.setVisible(visible);
    }
 }

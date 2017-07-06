@@ -47,7 +47,16 @@ int calling_MDI_Index;
 boolean isFlatten;
 boolean RunIt;
 boolean fromCloud=false;
-
+boolean hasGUI = true;
+public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayList<SeleniumTestToolData> in_MDIDataClasses)
+{
+   hasGUI = false;
+   mainAppController = in_mainAppController;
+   MDIDataClasses = in_MDIDataClasses;
+   RunIt = true;
+   file = in_file;
+ 
+}
     public OpenFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
 {
   this.isFlatten = isFlatten;
@@ -74,13 +83,20 @@ boolean fromCloud=false;
 @Override 
 public String doInBackground()
  {
-     mainAppFrame.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+     
+   if (hasGUI)
+   {
+       mainAppFrame.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+   }
     try {
         int MDI_CLASS_INDEX;
            MDI_CLASS_INDEX = OpenFile();
          if (MDI_CLASS_INDEX>=0)
      {
+         if (hasGUI)
+         {
            mainAppController.DisplayWindow(MDI_CLASS_INDEX);
+         }
            
      }
        }
@@ -93,6 +109,8 @@ public String doInBackground()
 @Override
  protected void done()
  {
+     if (hasGUI)
+     {
   mainAppFrame.Navigator.setCursor(Cursor.getDefaultCursor()); 
   int last_index = mainAppController.MDIViewClasses.size()-1;
   if (last_index>-1)
@@ -105,13 +123,22 @@ public String doInBackground()
   {
   MDIViewClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
   }
-   if (RunIt)
+ 
+     } 
+       if (RunIt)
   {
+      if (hasGUI)
+      {
    int current_MDI_Index = mainAppController.GetCurrentWindow();
 
-    if (current_MDI_Index>=0) {    mainAppController.RunActions(MDIDataClasses.get(current_MDI_Index)); }   
+    if (current_MDI_Index>=0) {    mainAppController.RunActions(MDIViewClasses.get(current_MDI_Index), MDIDataClasses.get(current_MDI_Index));
+    }
+      }
+    else
+    {
+        mainAppController.RunActions(MDIDataClasses.get(0));
+    } 
   } 
-     
  }
  @Override
  protected void process ( List <Integer> bugindex)
@@ -153,6 +180,8 @@ int MDI_Index = -1;
     
      int alreadyopen_index = -1;
      int thisfile_index = 0;
+     if (hasGUI)
+     {
      for (SeleniumTestTool thisfile: MDIViewClasses)
      {
          
@@ -169,6 +198,7 @@ int MDI_Index = -1;
           
          }
          thisfile_index++;
+     }
      }
      if (PromptForSameFileName==false)
     {
@@ -197,8 +227,10 @@ finally
  
    BuildNewWindow(doc, full_filename);
  
-
+ if (hasGUI)
+ {
   STAppFrame.setFilename(full_filename);
+ }
   STAppData.setFilenames(full_filename);
   if (this.fromCloud)
   {
@@ -206,10 +238,14 @@ finally
   }
   else
   {
+      if (hasGUI)
+      {
    mainAppFrame.Navigator.addRecentFile(full_filename);
+      }
   }
   
-
+if (hasGUI)
+{
 STAppData.AllFieldValues.clear();
 STAppData.AllFieldValues.add(STAppData.getOSType());
 STAppData.AllFieldValues.add(STAppData.getTargetBrowser());
@@ -313,10 +349,13 @@ for (Procedure thisproc: STAppData.BugArray)
         
     }
 }
-
+}
+ if (hasGUI)
+ {
  MDIViewClasses.add(STAppFrame);
+ }
    MDIDataClasses.add(STAppData);
-   MDI_Index =  MDIViewClasses.size()-1;
+   MDI_Index =  MDIDataClasses.size()-1;
 
 }
 
@@ -324,6 +363,8 @@ for (Procedure thisproc: STAppData.BugArray)
     }
    else
      {
+         if (hasGUI)
+         {
          if (mainAppController.MDIViewClasses.get(alreadyopen_index).isIcon())
          {
              try
@@ -344,6 +385,7 @@ for (Procedure thisproc: STAppData.BugArray)
          {
              System.out.println("Exception selecting window: " + ex.toString());
              
+         }
          }
 //  mainApp.DisplayWindow(alreadyopen_index);
  //   JOptionPane.showMessageDialog (null, filealreadyopen + " is already open", "File is open", JOptionPane.INFORMATION_MESSAGE);
@@ -370,6 +412,8 @@ for (Procedure thisproc: STAppData.BugArray)
 
 
   STAppData.setFilenames(full_filename);
+  if (hasGUI)
+  {
   STAppFrame = new SeleniumTestTool(STAppData);
  
     STAppFrame.setResizable(true);
@@ -398,6 +442,7 @@ for (Procedure thisproc: STAppData.BugArray)
      
       }
     });
+  }
   NodeList FileSettingsNode = doc.getElementsByTagName("FileSettings");
  
   String thisSettingsNodeName;
@@ -648,35 +693,54 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         if ("file".equals(DataLoopSource))
         {
         File DataFile_file = new File(DataFile);
-       
+    if (hasGUI)
+    {
    STAppFrame.AddNewDataLoopFileView(DataFile_file);
-        
+    }   
    STAppData.AddNewDataLoopFile(DataFile_file);
 
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+    int last_added_bug_index = STAppData.BugArray.size()-1;
+     Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+    if (hasGUI)
+    {
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+     mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+      STAppFrame.UpdateDisplay();
+         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
+    }
+  
+
+    
+ 
+     
         }
        if ("urllist".equals(DataLoopSource))
         {
          hasURLList = true;
+          STAppData.AddNewDataLoopURLList(DataFile);
+           int last_added_bug_index = STAppData.BugArray.size()-1;
+           Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+         if (hasGUI)
+         {
                 STAppFrame.AddNewDataLoopURLListView(DataFile);
-   STAppData.AddNewDataLoopURLList(DataFile);
-  
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-  
-     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
+                  ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+                    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+                      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+                       STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
+         }
+  
+  
+   
+ 
+  
+  
+   
+    
+ 
         }
       if (Procedure.hasAttribute("Random"))
   {
@@ -688,26 +752,38 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     }
    
     STAppData.BugArray.get(i).setRandom(Rand);
+    if (hasGUI)
+    {
     STAppFrame.BugViewArray.get(i).setRandom(Rand);
+    }
   }
     if (Procedure.hasAttribute("Limit"))
   {
     int limit = Integer.parseInt(Procedure.getAttribute("Limit"));
     STAppData.BugArray.get(i).setLimit(limit);
+     if (hasGUI)
+    {
     STAppFrame.BugViewArray.get(i).setLimit(limit);
+    }
   }
     }
     else
     {
-     STAppData.AddNewBug();   
+     STAppData.AddNewBug(); 
+     int last_added_bug_index = STAppData.BugArray.size()-1;
+      Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      if (hasGUI)
+    {
     STAppFrame.AddNewBugView();  
-       int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+     ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
+       STAppFrame.UpdateDisplay();
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
+    }
+       
+      
+ 
     }
     String BugTitle = "";
     if (Procedure.hasAttribute("Title"))
@@ -715,7 +791,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         BugTitle = Procedure.getAttribute("Title");
     }
     STAppData.BugArray.get(i).setBugTitle(BugTitle);
+       if (hasGUI)
+    {
     STAppFrame.BugViewArray.get(i).setBugTitle(BugTitle);
+    }
     String BugURL = "";
     if (Procedure.hasAttribute("URL"))
     {
@@ -808,8 +887,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                 
     } 
     
-   Procedure NewProcedure = STAppData.BugArray.get(i);
-   ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
+ 
    if (ActionType.contains("Password"))
    {
        try
@@ -828,6 +906,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
    HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
+     Procedure NewProcedure = STAppData.BugArray.get(i);
+      if (hasGUI)
+    {
+   ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
     if (thisActionHashMap.containsKey(ActionType))
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
@@ -853,6 +935,36 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
                
              }
+    }
+      else
+      {
+           if (thisActionHashMap.containsKey(ActionType))
+           {
+               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+             //  thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
+            //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
+            //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
+               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
+              
+           }      
+ 
+     if (thisPassFailActionHashMap.containsKey(ActionType))
+             {
+               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
+            // thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
+            //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
+            //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
+               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
+               
+             }
+      }
+   
  
  
   
@@ -860,9 +972,14 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }   
  
     }
+
     if (hasDataloop && !hasURLList)
  {
+        if (hasGUI)
+     {
     STAppFrame.setJButtonFlattenFileEnabled(true); 
+     }
+ 
  } 
     }
 catch (Exception e)
@@ -871,7 +988,8 @@ catch (Exception e)
           
         }
  
-
+     if (hasGUI)
+     {
 STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -887,7 +1005,8 @@ STAppFrame.addTargetBrowserItemListener( new ItemListener() {
         }
         
         });
- 
+     
+   
   
 STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
 new ActionListener() {
@@ -1021,5 +1140,6 @@ STAppFrame.addjButtonDoStuffActionListener(
 
 
 STAppFrame.initializeDisplay();
+     }
   }
 }

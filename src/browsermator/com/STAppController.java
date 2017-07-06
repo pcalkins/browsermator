@@ -50,7 +50,7 @@ public final class STAppController  {
  
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.14branched";
+   public final String ProgramVersion = "1.1.15b";
    public String loginName;
    public String loginPassword;
   Boolean SHOWGUI = true;
@@ -63,8 +63,16 @@ public final class STAppController  {
 
   public STAppController(String[] args) throws PropertyVetoException {
   
-    
-       this.mainAppFrame = new MainAppFrame();        
+
+     this.mainAppFrame = new MainAppFrame(); 
+    if (args.length>0) { 
+   
+        CheckArgs(args);}
+
+    if(SHOWGUI)
+         {
+        
+       
                   this.loginName = "";
     this.loginPassword = "";
 
@@ -92,6 +100,7 @@ if (file_exists == false)
     catch (Exception e) {
 			System.out.println("Exception: " + e);
 		} 
+    
    // super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
    //  super.setVisible(true);
  
@@ -256,8 +265,14 @@ mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
         {
             System.out.println("setting maximum error" + e);
         }
-  if (args.length>0) { CheckArgs(args);}
-  
+         }
+
+ 
+         if (SHOWGUI)
+    { 
+
+       
+      
   CurrentMDIWindowIndex = GetCurrentWindow();  
   if (CurrentMDIWindowIndex == -1)
   {
@@ -999,7 +1014,7 @@ STAppFrame.ShowStoredVarControls(false);
   }
   }
     ); 
-  
+         }
   
   }
  
@@ -1036,6 +1051,8 @@ STAppFrame.ShowStoredVarControls(false);
       
   }
   public int CheckToSaveChanges(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Boolean savenow) 
+  {
+  if (SHOWGUI)
   {
 if (STAppData.testRunning)
 {
@@ -1219,7 +1236,11 @@ else
 }
 return 1;
   }
-    
+  else
+  {
+      return 1;
+  }
+  }
       private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
      int closure = 0;
      int number_of_windows_to_close = 0;
@@ -1289,6 +1310,8 @@ return 1;
    
     
 } 
+
+
 
       public void AddMainAppListeners()
       {
@@ -2119,12 +2142,27 @@ STAppData.changes = false;
      public void OpenFile (File file, boolean RunIt) 
     {
         
-    int current_MDI_Index = GetCurrentWindow();
+   if (!SHOWGUI)
+   {
+      OpenFileThread OPENREF = new OpenFileThread(this, file, MDIDataClasses);
+  OPENREF.execute();       
+   }
+   else
+   {
+    if (RunIt)
+    {
+         int current_MDI_Index = GetCurrentWindow();
+      OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt);
+  OPENREF.execute();    
+    }
+    else
+    {
+          int current_MDI_Index = GetCurrentWindow();
   OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt);
   OPENREF.execute();
-  
+    }
  
-
+   }
     }
       public void OpenFile (File file, boolean RunIt, boolean fromCloud) 
     {
@@ -2172,8 +2210,19 @@ STAppData.changes = false;
    
      }
   
-    if (args[0].equals("run"))
+    if (args[0].equals("runsilent"))
     {
+       SHOWGUI=false;
+ 
+   File file_to_open = new File(args[1]);
+   
+    OpenFile(file_to_open, true);
+  
+   
+    }
+      if (args[0].equals("run"))
+    {
+      
    File file_to_open = new File(args[1]);
     OpenFile(file_to_open, true);
   
@@ -2423,8 +2472,17 @@ try {
   {
    
       STAppController app = new STAppController(args); 
-      app.mainAppFrame.setVisible(true); 
  
+app.mainAppFrame.setVisible(true); 
+if (args.length>0)
+{
+    if (args[0].equals("runsilent"))
+    {
+    app.mainAppFrame.setVisible(false); 
+    }
+}
+   
+  
   }
   catch (PropertyVetoException e)
           {
@@ -3069,24 +3127,27 @@ File newfile = new File(path + ".js");
      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
        STAppFrame.addjCheckBoxShowReportActionListener((ActionEvent e) -> {
       STAppData.ShowReport = STAppFrame.getjCheckBoxShowReport();
+      
   if (STAppData.ShowReport==false)
   {
+       STAppFrame.setShowReportView(false);
       STAppFrame.setjCheckBoxIncludeScreenshotsEnabled(false);
     
   }
   else
   {
-      STAppFrame.setjCheckBoxEmailReportEnabled(false);
+  STAppFrame.setShowReportView(true);
      STAppData.EmailReportFail = false;
-      STAppFrame.setjCheckBoxEmailReportEnabled(false);
+  
       STAppData.EmailReport = false;
-    STAppFrame.setjCheckBoxIncludeScreenshotsEnabled(true);  
-     STAppFrame.setjCheckBoxExitAfterEnabled(false);
       STAppData.ExitAfter = false;
   }
           
        });
-
+ STAppFrame.addjCheckBoxIncludeScreenshotsActionListener((ActionEvent e) -> {
+         STAppData.IncludeScreenshots = STAppFrame.getIncludeScreenshots();
+          
+       });
        STAppFrame.addjCheckBoxPromptToCloseActionListener((ActionEvent e) -> {
          STAppData.PromptToClose = STAppFrame.getjCheckBoxPromptToClose();
           
