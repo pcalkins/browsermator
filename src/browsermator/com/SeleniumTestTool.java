@@ -40,18 +40,20 @@ ArrayList<ProcedureView> BugViewArray;
   this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
   this.filename = STAppData.filename;
-  this.short_filename = STAppData.short_filename;
+  
+ this.short_filename = STAppData.short_filename;
  // this.VarHashMap = STAppData.getVarHashMap();
  // this.VarLists = STAppData.getVarLists();
   this.BugViewArray = new ArrayList<ProcedureView>();
  this.setIconifiable(true);
-      initComponents();
+   initComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
 
 }
+
   public void initializeDisplay()
   {
       setOSType(STAppData.getOSType());
@@ -84,6 +86,8 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
 // setVarLists(STAppData.getVarLists());
  populateSelectURLListPulldowns();
   }
+  
+
  public void populateSelectURLListPulldowns()
   {
     for (ProcedureView BV : BugViewArray)
@@ -129,9 +133,18 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
 //  {
 //      this.VarLists = in_varlists;
 //  }
+ public void setFilenames()
+ {
+     setShortFilename(STAppData.short_filename);
+     setFilename(STAppData.filename);
+ }
        public void setShortFilename(String in_short_filename)
        {
            this.short_filename = in_short_filename;
+       
+
+   setTitle(in_short_filename);
+   repaint();
        }
         public void setOSType(String OSType)
         {
@@ -177,7 +190,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
   {
       this.filename = in_filename;
       
-     this.title = in_filename;
+  
   }
        public File ChangeCSVFile()
       {

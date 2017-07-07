@@ -62,7 +62,7 @@ public String doInBackground()
  {
    if (calling_MDI_Index == -1)
    {
-       mainAppFrame.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      mainAppController.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
    else
    {
@@ -354,7 +354,7 @@ public String doInBackground()
  {
      if (calling_MDI_Index == -1)
    { 
-  mainAppFrame.Navigator.setCursor(Cursor.getDefaultCursor());   
+  mainAppController.Navigator.setCursor(Cursor.getDefaultCursor());   
    }
       else
    {

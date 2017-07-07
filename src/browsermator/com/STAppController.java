@@ -47,12 +47,14 @@ import javax.xml.stream.XMLStreamWriter;
 
 
 public final class STAppController  {
- 
+ public final SiteTestView Navigator;
+public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.15b";
+   public final String ProgramVersion = "1.1.16b";
    public String loginName;
    public String loginPassword;
+
   Boolean SHOWGUI = true;
   public int user_id;
 //  String rootURL = "http://localhost";
@@ -64,14 +66,15 @@ public final class STAppController  {
   public STAppController(String[] args) throws PropertyVetoException {
   
 
-     this.mainAppFrame = new MainAppFrame(); 
+     mainAppFrame = new MainAppFrame(); 
+    Navigator = new SiteTestView();
     if (args.length>0) { 
    
         CheckArgs(args);}
 
     if(SHOWGUI)
          {
-        
+       
        
                   this.loginName = "";
     this.loginPassword = "";
@@ -182,15 +185,15 @@ if (file_exists == false)
         }
     });
           
-
+  
    
     
-     mainAppFrame.Navigator.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-     mainAppFrame.Navigator.addInternalFrameListener(new InternalFrameAdapter(){
+    Navigator.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    Navigator.addInternalFrameListener(new InternalFrameAdapter(){
 
     @Override
     public void internalFrameDeactivated(    InternalFrameEvent event){
-      JInternalFrame[] iframes = mainAppFrame.SeleniumToolDesktop.getAllFrames();
+      JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
 
                      for (JInternalFrame iframe : iframes)
                 {
@@ -199,7 +202,7 @@ if (file_exists == false)
                        String thisFrameName = iframe.getTitle();
                        if ("".equals(thisFrameName))
                        {
-                           mainAppFrame.SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
+                          SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                        
                        }
                     
@@ -211,7 +214,7 @@ if (file_exists == false)
     }
         @Override
     public void internalFrameActivated(    InternalFrameEvent event){
-      JInternalFrame[] iframes = mainAppFrame.SeleniumToolDesktop.getAllFrames();
+      JInternalFrame[] iframes = SeleniumToolDesktop.getAllFrames();
 
       for (JInternalFrame iframe : iframes)
                 {
@@ -220,7 +223,7 @@ if (file_exists == false)
                        String thisFrameName = iframe.getTitle();
                        if ("".equals(thisFrameName))
                        {
-                           mainAppFrame.SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
+                          SeleniumToolDesktop.setComponentZOrder(iframe, iframes.length-1);
                         
                        }
               
@@ -231,13 +234,13 @@ if (file_exists == false)
   }
 ); 
  
-               
-     mainAppFrame.SeleniumToolDesktop = new JDesktopPane();
-     mainAppFrame.SeleniumToolDesktop.setDesktopManager(new browsermatorDesktopManager());
-     mainAppFrame.SeleniumToolDesktop.setSize(1200,800);
-     mainAppFrame.SeleniumToolDesktop.setVisible(true);
-     
+         SeleniumToolDesktop = new JDesktopPane();
     
+     SeleniumToolDesktop.setDesktopManager(new browsermatorDesktopManager());
+     SeleniumToolDesktop.setSize(1200,800);
+     SeleniumToolDesktop.setVisible(true);
+     
+
     
   try
   {
@@ -250,16 +253,21 @@ if (file_exists == false)
     
     CurrentMDIWindowIndex = -1;
      
-mainAppFrame.Navigator.setVisible(true);
+Navigator.setVisible(true);
+mainAppFrame.initComponents();
 
+ 
 
-  mainAppFrame.add(mainAppFrame.SeleniumToolDesktop);
+ mainAppFrame.add(SeleniumToolDesktop);
 
-mainAppFrame.SeleniumToolDesktop.add(mainAppFrame.Navigator);
+   SeleniumToolDesktop.add(Navigator);
+ 
+   
+
 
   try
         {
-        mainAppFrame.Navigator.setMaximum(true);
+       Navigator.setMaximum(true);
         }
         catch (PropertyVetoException e)
         {
@@ -615,7 +623,7 @@ STAppFrame.ShowStoredVarControls(false);
           
           }  });
             
-  mainAppFrame.Navigator.addRecentFile1MouseListener(
+  Navigator.addRecentFile1MouseListener(
   new MouseListener()
           {
               @Override
@@ -624,20 +632,20 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mousePressed(MouseEvent e) {
-           mainAppFrame.Navigator.setMouseClickColor(1);
+           Navigator.setMouseClickColor(1);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOutColor(1);
+          Navigator.setMouseOutColor(1);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOverColor(1);
+          Navigator.setMouseOverColor(1);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
           
-         String RecentFileName = mainAppFrame.Navigator.getRecentFile1();
+         String RecentFileName = Navigator.getRecentFile1();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
@@ -653,7 +661,7 @@ STAppFrame.ShowStoredVarControls(false);
 
           
           }  });
-  mainAppFrame.Navigator.addRecentFile2MouseListener(
+  Navigator.addRecentFile2MouseListener(
   new MouseListener()
           {
                @Override
@@ -662,20 +670,20 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mousePressed(MouseEvent e) {
-           mainAppFrame.Navigator.setMouseClickColor(2);
+           Navigator.setMouseClickColor(2);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOutColor(2);
+          Navigator.setMouseOutColor(2);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOverColor(2);
+          Navigator.setMouseOverColor(2);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
           
-         String RecentFileName = mainAppFrame.Navigator.getRecentFile2();
+         String RecentFileName = Navigator.getRecentFile2();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
@@ -689,7 +697,7 @@ STAppFrame.ShowStoredVarControls(false);
 
           
           }  });
-  mainAppFrame.Navigator.addRecentFile3MouseListener(
+  Navigator.addRecentFile3MouseListener(
   new MouseListener()
           {
                @Override
@@ -698,20 +706,20 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mousePressed(MouseEvent e) {
-           mainAppFrame.Navigator.setMouseClickColor(3);
+           Navigator.setMouseClickColor(3);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOutColor(3);
+          Navigator.setMouseOutColor(3);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOverColor(3);
+          Navigator.setMouseOverColor(3);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
           
-         String RecentFileName = mainAppFrame.Navigator.getRecentFile3();
+         String RecentFileName = Navigator.getRecentFile3();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
@@ -726,7 +734,7 @@ STAppFrame.ShowStoredVarControls(false);
           
           }  });
   
-  mainAppFrame.Navigator.addRecentFile4MouseListener(
+  Navigator.addRecentFile4MouseListener(
   new MouseListener()
           {
                @Override
@@ -735,20 +743,20 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mousePressed(MouseEvent e) {
-           mainAppFrame.Navigator.setMouseClickColor(4);
+           Navigator.setMouseClickColor(4);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOutColor(4);
+         Navigator.setMouseOutColor(4);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOverColor(4);
+         Navigator.setMouseOverColor(4);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
           
-         String RecentFileName = mainAppFrame.Navigator.getRecentFile4();
+         String RecentFileName = Navigator.getRecentFile4();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
@@ -764,7 +772,7 @@ STAppFrame.ShowStoredVarControls(false);
           
           }  });
   
-  mainAppFrame.Navigator.addRecentFile5MouseListener(
+  Navigator.addRecentFile5MouseListener(
   new MouseListener()
           {
                @Override
@@ -773,20 +781,20 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mousePressed(MouseEvent e) {
-           mainAppFrame.Navigator.setMouseClickColor(5);
+          Navigator.setMouseClickColor(5);
             }
             @Override
             public void mouseExited(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOutColor(5);
+          Navigator.setMouseOutColor(5);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-          mainAppFrame.Navigator.setMouseOverColor(5);
+         Navigator.setMouseOverColor(5);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
           
-         String RecentFileName = mainAppFrame.Navigator.getRecentFile5();
+         String RecentFileName = Navigator.getRecentFile5();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
@@ -801,7 +809,7 @@ STAppFrame.ShowStoredVarControls(false);
           
           }  });
   
-  mainAppFrame.Navigator.addJButtonSaveEmailConfigActionListener(
+  Navigator.addJButtonSaveEmailConfigActionListener(
           new ActionListener()
           {
               public void actionPerformed (ActionEvent evt)
@@ -818,7 +826,7 @@ STAppFrame.ShowStoredVarControls(false);
   
   
   
-  mainAppFrame.Navigator.addJButtonOpenWebSiteTestActionListener(
+  Navigator.addJButtonOpenWebSiteTestActionListener(
   new ActionListener()
           {
           public void actionPerformed (ActionEvent evt)
@@ -841,7 +849,7 @@ STAppFrame.ShowStoredVarControls(false);
 
      
 
-  mainAppFrame.Navigator.addjButtonNewWebsiteTestActionListener(
+  Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
   {
   public void actionPerformed (ActionEvent evt)
@@ -1183,8 +1191,7 @@ else
                       //checking "untitled" is kluge, fix this later
                      if (STAppData.filename.contains("untitled"))
                      {
-                      if (savenow)
-                      {
+                    
                         try
                           {
                         SaveFileNow(STAppFrame, STAppData, true, false);
@@ -1193,11 +1200,9 @@ else
                           {
                               
                           }
-                      }  
-                      else
-                      {
-                          ThreadSaveFile(mainAppFrame, STAppFrame, STAppData, true, false);  
-                      }
+                      
+                    
+                      return 0;
                      }
                      else
                      {
@@ -1987,23 +1992,23 @@ if (isFlatten==false)
 {
  
 STAppData.setFilenames(file.getAbsolutePath());
-STAppFrame.setFilename(STAppData.filename);
+STAppFrame.setFilenames();
 if (isSaveAs)
 {
 if (STAppFrame.filename.equals(old_filename))
 {
-  mainAppFrame.Navigator.addRecentFile(file.getAbsolutePath());
+ Navigator.addRecentFile(file.getAbsolutePath());
 }
 else
 {
-mainAppFrame.Navigator.addRecentFile(file.getAbsolutePath());
+Navigator.addRecentFile(file.getAbsolutePath());
 this.UpdateWindowName(calling_MDI_Index, old_filename);
 
 }
 }
 else
 {
-mainAppFrame.Navigator.addRecentFile(STAppData.filename);
+Navigator.addRecentFile(STAppData.filename);
 }
 }
 
@@ -2270,13 +2275,14 @@ STAppData.changes = false;
    {
        if (MDI_CLASS_INDEX>=0)
        {
-  MDIViewClasses.get(MDI_CLASS_INDEX).setFilename(MDIViewClasses.get(MDI_CLASS_INDEX).filename);
+  
   MDIDataClasses.get(MDI_CLASS_INDEX).setFilenames(MDIViewClasses.get(MDI_CLASS_INDEX).filename);
+  MDIViewClasses.get(MDI_CLASS_INDEX).setFilenames();
 // MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
  // MDIClasses.get(MDI_CLASS_INDEX).setVisible(true);
 //  MDIClasses.get(MDI_CLASS_INDEX).setSize(1400,900);
   mainAppFrame.setSaveMenuItemEnabled(true);
-  mainAppFrame.SeleniumToolDesktop.add(MDIViewClasses.get(MDI_CLASS_INDEX));
+  SeleniumToolDesktop.add(MDIViewClasses.get(MDI_CLASS_INDEX));
 
   MDIViewClasses.get(MDI_CLASS_INDEX).moveToFront();
         try
@@ -2422,13 +2428,13 @@ catch (Exception e) {
    String from = applicationProps.getProperty("email_from");
    String subject = applicationProps.getProperty("email_subject");
 
-   mainAppFrame.Navigator.setSMTPHostname(smtp_hostname);
-   mainAppFrame.Navigator.setEmailLoginName(login_name);
-   mainAppFrame.Navigator.setEmailPassword(password);
-   mainAppFrame.Navigator.setEmailTo(to);
-   mainAppFrame.Navigator.setEmailFrom(from);
-   mainAppFrame.Navigator.setSubject(subject);
-   mainAppFrame.Navigator.setVersion("Version: " + this.ProgramVersion);
+   Navigator.setSMTPHostname(smtp_hostname);
+   Navigator.setEmailLoginName(login_name);
+   Navigator.setEmailPassword(password);
+   Navigator.setEmailTo(to);
+   Navigator.setEmailFrom(from);
+   Navigator.setSubject(subject);
+   Navigator.setVersion("Version: " + this.ProgramVersion);
   
 	}
  public void SaveGlobalEmailSettings() throws IOException
@@ -2444,17 +2450,17 @@ catch (Exception e) {
 try {
     Properties props = new Properties();
    props.load(input);
-    props.setProperty("smtp_hostname", mainAppFrame.Navigator.getSMTPHostname() );
-    props.setProperty("email_login_name", mainAppFrame.Navigator.getEmailLoginName() );
-    String password = mainAppFrame.Navigator.getEmailPassword();
+    props.setProperty("smtp_hostname", Navigator.getSMTPHostname() );
+    props.setProperty("email_login_name", Navigator.getEmailLoginName() );
+    String password = Navigator.getEmailPassword();
     if (!"".equals(password))
     {
     password = Protector.encrypt(password);
     }
     props.setProperty("email_login_password", password );
-    props.setProperty("email_to", mainAppFrame.Navigator.getEmailTo() );
-    props.setProperty("email_from", mainAppFrame.Navigator.getEmailFrom() );
-    props.setProperty("email_subject", mainAppFrame.Navigator.getSubject() );
+    props.setProperty("email_to", Navigator.getEmailTo() );
+    props.setProperty("email_from", Navigator.getEmailFrom() );
+    props.setProperty("email_subject", Navigator.getSubject() );
     
     FileWriter writer = new FileWriter(configFile);
     props.store(writer, "browsermator_settings");

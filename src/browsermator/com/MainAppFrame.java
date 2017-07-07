@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
-import javax.swing.JDesktopPane;
+// import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -36,8 +36,8 @@ public class MainAppFrame extends JFrame {
       String filename;
       String short_filename;
       private JRadioButtonMenuItem LookAndFeelOptions[];
-      public final SiteTestView Navigator;
-public JDesktopPane SeleniumToolDesktop;
+ //     public final SiteTestView Navigator;
+// public JDesktopPane SeleniumToolDesktop;
 private ButtonGroup LookAndFeelGroup;
      private JMenuBar menuBar;
      private JMenu fileMenu;
@@ -59,11 +59,13 @@ private ButtonGroup LookAndFeelGroup;
   public MainAppFrame()
   {
           super ("Browsermator");
-      initComponents();
+   
+      
       this.filename = "";
       this.short_filename = "";
-       Navigator = new SiteTestView();
-    
+     //  Navigator = new SiteTestView();
+   
+     
   }
  public void addjMenuViewItem(JMenuItem newfileitem)
  {
@@ -158,7 +160,7 @@ super.setSize(Width-300,Height-300);
     
     }
           @SuppressWarnings("unchecked")
-    private void initComponents() {
+    public void initComponents() {
    
       menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();

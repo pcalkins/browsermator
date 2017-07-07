@@ -86,7 +86,7 @@ public String doInBackground()
      
    if (hasGUI)
    {
-       mainAppFrame.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      mainAppController.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
     try {
         int MDI_CLASS_INDEX;
@@ -111,7 +111,7 @@ public String doInBackground()
  {
      if (hasGUI)
      {
-  mainAppFrame.Navigator.setCursor(Cursor.getDefaultCursor()); 
+  mainAppController.Navigator.setCursor(Cursor.getDefaultCursor()); 
   int last_index = mainAppController.MDIViewClasses.size()-1;
   if (last_index>-1)
   {
@@ -226,12 +226,12 @@ finally
 {
  
    BuildNewWindow(doc, full_filename);
- 
+   STAppData.setFilenames(full_filename);
  if (hasGUI)
  {
-  STAppFrame.setFilename(full_filename);
+  STAppFrame.setFilenames();
  }
-  STAppData.setFilenames(full_filename);
+
   if (this.fromCloud)
   {
       
@@ -240,7 +240,7 @@ finally
   {
       if (hasGUI)
       {
-   mainAppFrame.Navigator.addRecentFile(full_filename);
+   mainAppController.Navigator.addRecentFile(full_filename);
       }
   }
   

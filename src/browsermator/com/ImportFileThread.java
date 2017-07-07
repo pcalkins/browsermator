@@ -122,14 +122,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             STAppFrame.AddNewDataLoopFileView(DataFile_file);
             STAppData.AddNewDataLoopFile(DataFile_file);
   
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
- 
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+   
         }
        if ("urllist".equals(DataLoopSource))
         {
@@ -138,14 +131,22 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
          
             
 
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+  
+        }
+ 
+    }
+    else
+    {
+     STAppData.AddNewBug();   
+    STAppFrame.AddNewBugView(); 
+  
+    }
+    
+      int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-        }
+ 
       if (Procedure.hasAttribute("Random"))
   {
   String stRand = Procedure.getAttribute("Random");
@@ -155,41 +156,28 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         Rand = true;
     }
    
-    STAppData.BugArray.get(i).setRandom(Rand);
-    STAppFrame.BugViewArray.get(i).setRandom(Rand);
+    newbug.setRandom(Rand);
+    newbugview.setRandom(Rand);
   }
     if (Procedure.hasAttribute("Limit"))
   {
     int limit = Integer.parseInt(Procedure.getAttribute("Limit"));
-    STAppData.BugArray.get(i).setLimit(limit);
-    STAppFrame.BugViewArray.get(i).setLimit(limit);
-  }
-    }
-    else
-    {
-     STAppData.AddNewBug();   
-    STAppFrame.AddNewBugView(); 
-     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-    }
-    String BugTitle = "";
+    newbug.setLimit(limit);
+    newbugview.setLimit(limit);
+  } 
+ String BugTitle = "";
     if (Procedure.hasAttribute("Title"))
     {
         BugTitle = Procedure.getAttribute("Title");
     }
-    STAppData.BugArray.get(i).setBugTitle(BugTitle);
-    STAppFrame.BugViewArray.get(i).setBugTitle(BugTitle);
+    newbug.setBugTitle(BugTitle);
+    newbugview.setBugTitle(BugTitle);
     String BugURL = "";
     if (Procedure.hasAttribute("URL"))
     {
         BugURL = Procedure.getAttribute("URL");
     }
-    STAppData.BugArray.get(i).setBugURL(BugURL);
+    newbug.setBugURL(BugURL);
     
     // needed?
    // String stPass = Procedure.getAttribute("Pass");
@@ -276,8 +264,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                 
     } 
     
-   Procedure NewProcedure = STAppData.BugArray.get(i);
-   ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
+  
    if (ActionType.contains("Password"))
    {
        try
@@ -302,10 +289,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, NewProcedure);
-               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, NewProcedureView);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
                
            }      
  
@@ -315,10 +302,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-              thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), NewProcedure, NewProcedureView);
-               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, NewProcedure);
-               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, NewProcedureView);
+              thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
              }
             
 // MDIClasses.get(MDI_INDEX).UpdateDisplay();
@@ -331,6 +318,9 @@ catch (Exception e)
             System.out.println("Exception parsing procedure node" + e.toString());
           
         }
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
   }
    public void ImportFile (File file, int MDI_INDEX)
   {
@@ -342,10 +332,7 @@ if(!file.exists()) {
 }
 else
 {
-        
-
-
-   
+  
 Document doc=null;
 try
 {
