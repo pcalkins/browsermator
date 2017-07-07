@@ -503,8 +503,8 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
    
 
   STAppFrame.UpdateScrollPane(newbugview);
- // UpdateScrollPane();
-  scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+
+ // scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
                 }
@@ -517,8 +517,8 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
           original_locationY = snapped_locationY;
   STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
   STAppFrame.UpdateScrollPane(newbugview);
- // UpdateScrollPane(); 
- scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
+
+// scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
  
  
      }

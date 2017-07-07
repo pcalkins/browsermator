@@ -21,6 +21,8 @@ import javax.swing.JScrollBar;
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -83,7 +85,7 @@ public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayL
 @Override 
 public String doInBackground()
  {
-     
+
    if (hasGUI)
    {
       mainAppController.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -111,6 +113,7 @@ public String doInBackground()
  {
      if (hasGUI)
      {
+           int current_MDI_Index = mainAppController.GetCurrentWindow();
   mainAppController.Navigator.setCursor(Cursor.getDefaultCursor()); 
   int last_index = mainAppController.MDIViewClasses.size()-1;
   if (last_index>-1)
@@ -123,14 +126,18 @@ public String doInBackground()
   {
   MDIViewClasses.get(calling_MDI_Index).setFlattenFileButtonName ("Flatten to New File");
   }
+   if (fromCloud)
+   {
+    MDIDataClasses.get(current_MDI_Index).setIsTemplateOrNew(true);   
+   }
  
      } 
        if (RunIt)
   {
       if (hasGUI)
       {
-   int current_MDI_Index = mainAppController.GetCurrentWindow();
-
+ 
+  int current_MDI_Index = mainAppController.GetCurrentWindow();
     if (current_MDI_Index>=0) {    mainAppController.RunActions(MDIViewClasses.get(current_MDI_Index), MDIDataClasses.get(current_MDI_Index));
     }
       }
@@ -1070,6 +1077,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         }
       }
     );  
+   
         STAppFrame.addjButtonGutsViewActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)

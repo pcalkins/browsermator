@@ -51,7 +51,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.16b";
+   public final String ProgramVersion = "1.1.17b";
    public String loginName;
    public String loginPassword;
 
@@ -458,7 +458,7 @@ mainAppFrame.initComponents();
     STAppData.setTargetBrowser("Chrome");
 
   STAppData.setOSType("Windows32");
-  
+  STAppData.setIsTemplateOrNew(true);
  SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);   
 STAppFrame.setFilename(filename);
 STAppFrame.ShowStoredVarControls(false);
@@ -467,7 +467,7 @@ STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setMaximizable(true);
 
   STAppFrame.setResizable(true);
-
+  
   MDIViewClasses.add(STAppFrame);
   MDIDataClasses.add(STAppData);
     DisplayWindow (MDIViewClasses.size()-1);
@@ -872,7 +872,7 @@ STAppFrame.ShowStoredVarControls(false);
  STAppData.setFilenames(filename);
  STAppData.setTargetBrowser("Chrome");
   STAppData.setOSType("Windows32");
-  
+  STAppData.setIsTemplateOrNew(true);
   SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);
      STAppFrame.setClosable(true);
  
@@ -1187,9 +1187,8 @@ else
   int result = JOptionPane.showConfirmDialog(STAppFrame,"Do you wish to save changes to " + STAppData.filename + "?","Browsermator",JOptionPane.YES_NO_CANCEL_OPTION);
             switch(result){
                   case JOptionPane.YES_OPTION:
-                 //   SaveFile
-                      //checking "untitled" is kluge, fix this later
-                     if (STAppData.filename.contains("untitled"))
+
+                     if (STAppData.getIsTemplateOrNew())
                      {
                     
                         try
@@ -1227,8 +1226,7 @@ else
                      
                      
                 case JOptionPane.NO_OPTION:
-                // close window  
-                //    System.out.println("close");
+              
                     return 0;
                 case JOptionPane.CLOSED_OPTION:
            
@@ -1243,7 +1241,7 @@ return 1;
   }
   else
   {
-      return 1;
+      return 0;
   }
   }
       private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
@@ -1450,15 +1448,15 @@ File file=null;
       {
       fc.setCurrentDirectory(new File(lastused_save_dir));
       }  
-      //"untitled" kluge again... fix this later
-    if (isSaveAs==true || STAppData.filename.contains("untitled") == true)
+     
+    if (isSaveAs==true || STAppData.getIsTemplateOrNew() == true)
     {
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
 
     fc.setFileFilter(filefilter);
     fc.setPreferredSize(new Dimension(800,600));
-    // and again "untitled" kluge
-    if (STAppData.filename.contains("untitled") == false  && isSaveAs==true)
+   
+    if (STAppData.getIsTemplateOrNew() == false  && isSaveAs==true)
     {
           String[] left_side_of_dot = STAppData.filename.split("\\.");
                 if (isFlatten)
@@ -1566,7 +1564,7 @@ xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
     
-Integer WaitTime = STAppFrame.GetWaitTime();
+Integer WaitTime = STAppData.getWaitTime();
 String WaitTimeString = WaitTime.toString();
 xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
@@ -1578,7 +1576,7 @@ xmlfile.writeStartElement("Timeout");
     xmlfile.writeCharacters(TimeoutString);
     xmlfile.writeEndElement();  
     
-Integer NumberOfSessions = STAppFrame.getSessions();
+Integer NumberOfSessions = STAppData.getSessions();
 String NumberOfSessionsString = NumberOfSessions.toString();
 xmlfile.writeStartElement("Sessions");
     xmlfile.writeCharacters(NumberOfSessionsString);
@@ -2929,6 +2927,8 @@ File newfile = new File(path + ".js");
        
        public void AddNewHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, ProcedureView newbugview, Procedure newbug)
       {
+        
+               
          newbugview.addJSpinnerLimitListener(new ChangeListener() {
 
         @Override
@@ -3150,6 +3150,19 @@ File newfile = new File(path + ".js");
   }
           
        });
+        STAppFrame.addjSpinnerWaitTimeChangeListener(new ChangeListener(){
+           @Override
+        public void stateChanged(ChangeEvent e) {
+        STAppData.setWaitTime(STAppFrame.GetWaitTime());
+        }    
+          });
+            STAppFrame.addjSpinnerSessionsChangeListener(new ChangeListener(){
+           @Override
+        public void stateChanged(ChangeEvent e) {
+        STAppData.setSessions(STAppFrame.getSessions());
+        }    
+          });
+        
  STAppFrame.addjCheckBoxIncludeScreenshotsActionListener((ActionEvent e) -> {
          STAppData.IncludeScreenshots = STAppFrame.getIncludeScreenshots();
           
@@ -3359,7 +3372,8 @@ File newfile = new File(path + ".js");
           int sessions = 1;
          if (STAppData.MultiSession)
          {
-          sessions = STAppData.getSessions();
+          sessions = STAppFrame.getSessions();
+         
          }
          
           String tbrowser = STAppData.getTargetBrowser();

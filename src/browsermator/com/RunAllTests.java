@@ -593,8 +593,10 @@ options.setBinary(chrome_path);
     }
    }
     }
-  
-  int WaitTime = STAppData.getWaitTime();
+    int WaitTime = 0;
+
+  WaitTime = STAppData.getWaitTime();
+
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
  // int Timeout = 20;

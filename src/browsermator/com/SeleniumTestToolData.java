@@ -47,6 +47,7 @@ ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
   Boolean changes;
   String TargetBrowser;
   Boolean MultiSession;
+  Boolean TemplateOrNew;
   String OSType;
   int WaitTime;
   int Sessions;
@@ -74,7 +75,7 @@ String EmailLoginName;
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
-           
+           this.TemplateOrNew = false;
             this.BugArray = BugArray;
                 this.UniqueOption = "file";
       this.UniqueList = false;
@@ -128,13 +129,17 @@ public void initVarHashMap()
 {
     this.VarHashMap = new HashMap();
 }
-
+public void setIsTemplateOrNew(boolean is_template_or_new)
+{
+  this.TemplateOrNew = is_template_or_new;
+}
+public boolean getIsTemplateOrNew()
+{
+    return TemplateOrNew;
+}
 public void initVarLists()
 {
-    
-   this.VarLists = new HashMap();
-
-   
+ this.VarLists = new HashMap(); 
 }
 public HashMap<String, String> getVarHashMap()
 {

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -1805,6 +1806,15 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    {
        jButtonGutsView.addActionListener(listener);
    }
+     public void addjSpinnerWaitTimeChangeListener(ChangeListener listener)
+   {
+       jSpinnerWaitTime.addChangeListener(listener);
+   }
+         public void addjSpinnerSessionsChangeListener(ChangeListener listener)
+   {
+       jSpinnerSessions.addChangeListener(listener);
+   }
+   
  public void clearEmailSettings()
  {
      setSMTPHostname("");

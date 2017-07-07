@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class Action implements Initializable {
   
@@ -97,7 +99,7 @@ LocalDateTime[] loop_time_of_test;
      
        try { 
   
-             
+  
           List<WebElement> elements = driver.findElements(By.xpath(xpather));
           
  if (this.BoolVal2)
