@@ -47,8 +47,8 @@ Boolean RUNWITHGUI;
   this.OSType = STAppData.OSType;
   STAppFrame.showTaskGUI();
     
-  STAppData.VarHashMap.clear();
-  STAppData.VarLists.clear();
+//  STAppData.VarHashMap.clear();
+//  STAppData.VarLists.clear();
 
   
  
@@ -67,8 +67,8 @@ Boolean RUNWITHGUI;
   this.OSType = in_SiteTest.OSType;
   // SiteTest.showTaskGUI();
 
-  STAppData.VarHashMap.clear();
-  STAppData.VarLists.clear();
+ // STAppData.VarHashMap.clear();
+//  STAppData.VarLists.clear();
 
       
  }

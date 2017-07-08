@@ -61,6 +61,7 @@ this.URLListData = new String[0];
    public void RefreshURLListData()
    {
     URLListData = new String[0];
+     setURLListData(URLListData, URLListName);
    }
 
           public void Disable()

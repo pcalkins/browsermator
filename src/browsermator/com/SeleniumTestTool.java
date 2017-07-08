@@ -764,10 +764,12 @@ public int GetWaitTime()
              }
              else
              {
-           procview.myTable.refreshURLListRunTimeEntries();
+           procview.myTable.refreshURLListRunTimeEntries();  
+    
              }
          }
      }
+  
  }
    public File BrowseForJSFileAction ()
    {
@@ -814,21 +816,7 @@ File newfile = new File(path + ".js");
      
    jButtonFlattenFile.setEnabled(enable);
                }
-   public void updatePulldowns(HashMap<String, String[]> VarLists)
-   {
-         for (ProcedureView BV : BugViewArray)
-      {
-          if ("Dataloop".equals(BV.Type))
-          {
-              if ("urllist".equals(BV.DataLoopSource))
-              {
-                  BV.JComboBoxStoredArrayLists.removeAll();
-                  
-              }
-          }
-              
-      }
-   }
+ 
  public void UpdateDisplay()
  {
  this.MainScrollPane.setVisible(false);
