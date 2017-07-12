@@ -846,21 +846,11 @@ int node_match_index = 0;
     }
  
   
-for (int x = 0; x<VarLists.get(URLListName).length; x++)
-{ 
+
   ArrayList<String> convert_list = new ArrayList(Arrays.asList(currentlist));
 
-    for (int y = 0; y<removeList.size(); y++)
-    {
-   if (VarLists.get(URLListName)[x].equals(removeList.get(y)))
-   {
-       convert_list.remove(x);
-       
-   }
-    }
-    currentlist = convert_list.toArray(new String[convert_list.size()]);
-
-}
+    convert_list.removeAll(removeList);
+   currentlist =convert_list.stream().toArray(String[]::new);
 // VarLists.get(URLListName).clear();
 VarLists.replace(URLListName, currentlist);
 
