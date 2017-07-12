@@ -334,7 +334,36 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
-     this.JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+       this.JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+       String[] blanklist = new String[0];
+       if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname))
+       {
+                 JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
+         this.setJTableSourceToURLList(blanklist, in_listname);     
+          
+                
+       }
+       else
+       {
+        String[] splitter = in_listname.split("-");
+         
+                String leftpart = splitter[0];
+                
+                if (this.index+1 > Integer.parseInt(leftpart))
+                {
+                     JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+                    
+                   setJTableSourceToURLList(blanklist, in_listname);
+                }
+                else
+                {
+                     JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
+                    this.setJTableSourceToURLList(blanklist, "");  
+                }
+       }
+        
+                  
+   
    }
    public Boolean getLocked()
    {
@@ -858,7 +887,7 @@ ActionScrollPane.setVisible(true);
     
      }
     
-         if ("".equals(list_name))
+         if ("".equals(list_name) || "Select a stored URL List".equals(list_name))
     {
         JTextFieldDataFile.setText ("No data file or URL list set.");
     }

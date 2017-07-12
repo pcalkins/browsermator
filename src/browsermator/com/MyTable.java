@@ -284,7 +284,14 @@ catch (Exception ex)
 
 {
     listname = list_name;
+         if ("".equals(list_name) || "Select a stored URL List".equals(list_name))
+         {
+      columnnames[0] = "No data file or URL list set."; 
+         }
+         else
+         {
           columnnames[0] = "Stored URL List:" + list_name;
+         }
            DefaultTableModel tableModel = new DefaultTableModel(columnnames, 0); 
         
 

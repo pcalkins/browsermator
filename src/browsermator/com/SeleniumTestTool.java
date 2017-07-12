@@ -761,8 +761,9 @@ public int GetWaitTime()
  
 
    BugViewArray.remove(BugIndex);
- //  RemoveUpdateStoredPulldowns(BugIndex);
+
    ChangeURLListPulldowns(BugIndex);
+   
  
    }
      public void ChangeURLListPulldowns(int BugIndex)
@@ -787,19 +788,22 @@ public int GetWaitTime()
    
     updateStoredURLListIndexes(PV);
        }
+    
    }
+             RemoveUpdateStoredPulldowns();
      }
-     public void RemoveUpdateStoredPulldowns(int bugindex)
+     public void RemoveUpdateStoredPulldowns()
      {
     
-            UpdateURLListPulldowns();
-     
+            UpdateURLListPulldowns();  
            updateStoredVarPulldownView();
+           UpdateDisplay();
    
      }
      
      public void UpdateURLListPulldowns()
      {
+        int procedureindex = 0;
         for (ProcedureView PV: BugViewArray)
         {
             if ("Dataloop".equals(PV.Type))
@@ -820,18 +824,25 @@ public int GetWaitTime()
             }
             PV.JComboBoxStoredArrayLists.addItem(keyname);
         }
+             String[] blanklist = new String[0];
             if (hasSelecteditem)
             {
-           PV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
+               PV.setURLListName(selecteditem);
+               STAppData.BugArray.get(procedureindex).setURLListName(selecteditem);
+               
             }
             else
             {
-           PV.JComboBoxStoredArrayLists.setSelectedIndex(0);   
+           PV.JComboBoxStoredArrayLists.setSelectedIndex(0); 
+         PV.setURLListName("");
+           PV.setJTableSourceToURLList(blanklist, "");
+           STAppData.BugArray.get(procedureindex).setURLListName("");
             }
      
            
             }
         }
+            procedureindex++;
      }
    
      }
