@@ -51,7 +51,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.18b";
+   public final String ProgramVersion = "1.1.20b";
    public String loginName;
    public String loginPassword;
 
@@ -2825,38 +2825,38 @@ File newfile = new File(path + ".js");
             return null;
             }   
    }
-   public void MoveProcedure (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, int toMoveIndex, int Direction)
+   public void MoveProcedure (SeleniumTestTool STAppFrame, int toMoveIndex, int Direction)
    {
      int SwapIndex = toMoveIndex + Direction;
     if (Direction == 1)
        {
-      if (SwapIndex<STAppData.BugArray.size())
+      if (SwapIndex<STAppFrame.STAppData.BugArray.size())
       {
-    Collections.swap(STAppData.BugArray, toMoveIndex, SwapIndex);
+    Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
-  STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
+  STAppFrame.STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
   STAppFrame.BugViewArray.get(SwapIndex).index = SwapIndex;
-    
+    STAppFrame.ChangeURLListPulldowns(SwapIndex);
       }
        }  
     if (Direction == -1)
     {
         if (SwapIndex >= 0)
         {
-    Collections.swap(STAppData.BugArray, toMoveIndex, SwapIndex);
+    Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
-  STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
+  STAppFrame.STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
   STAppFrame.BugViewArray.get(SwapIndex).index = SwapIndex;
- 
+  STAppFrame.ChangeURLListPulldowns(SwapIndex);
         }
     }
       if ("urllist".equals(STAppFrame.BugViewArray.get(toMoveIndex).DataLoopSource))
       {
-         STAppData.updateStoredURLListIndexes(STAppFrame, STAppFrame.BugViewArray.get(toMoveIndex)); 
+         STAppFrame.updateStoredURLListIndexes(STAppFrame.BugViewArray.get(toMoveIndex)); 
       }
      if ("urllist".equals(STAppFrame.BugViewArray.get(SwapIndex).DataLoopSource))
      {
-      STAppData.updateStoredURLListIndexes(STAppFrame, STAppFrame.BugViewArray.get(SwapIndex));
+      STAppFrame.updateStoredURLListIndexes(STAppFrame.BugViewArray.get(SwapIndex));
      }
       STAppFrame.UpdateDisplay();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
@@ -2964,10 +2964,10 @@ File newfile = new File(path + ".js");
            });
          newbugview.addRightClickPanelListener(this, newbug, newbugview, STAppFrame, STAppData);
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, STAppData, newbugview.index, -1);
+               MoveProcedure(STAppFrame, newbugview.index, -1);
            });
          newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, STAppData, newbugview.index, 1);
+               MoveProcedure(STAppFrame, newbugview.index, 1);
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                
@@ -3176,6 +3176,7 @@ File newfile = new File(path + ".js");
   if (STAppData.ExitAfter)
   {
       STAppFrame.setjCheckBoxShowReportSelected(false);
+      STAppFrame.setjCheckBoxIncludeScreenshotsEnabled(false);
       STAppData.ShowReport = false;
       
       

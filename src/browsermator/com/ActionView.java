@@ -499,7 +499,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                      STAppData.MoveAction(newbug, action.index, -1);
                      
                      original_locationY = snapped_locationY;
-     STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
+     STAppFrame.updateStoredURLListIndexes(newbugview);
    
 
   STAppFrame.UpdateScrollPane(newbugview);
@@ -515,7 +515,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                    STAppFrame.MoveActionView(newbugview, action.index, 1); 
                     STAppData.MoveAction(newbug, action.index, 1); 
           original_locationY = snapped_locationY;
-  STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
+  STAppFrame.updateStoredURLListIndexes(newbugview);
   STAppFrame.UpdateScrollPane(newbugview);
 
 // scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  

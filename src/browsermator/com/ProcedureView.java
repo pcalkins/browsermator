@@ -334,7 +334,7 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
-   //    this.JComboBoxStoredArrayLists.addItem(in_listname);
+     this.JComboBoxStoredArrayLists.setSelectedItem(in_listname);
    }
    public Boolean getLocked()
    {

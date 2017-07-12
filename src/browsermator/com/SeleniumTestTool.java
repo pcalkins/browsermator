@@ -87,7 +87,137 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
 // setVarLists(STAppData.getVarLists());
  populateSelectURLListPulldowns();
   }
+   public void refreshStoredArrayPulldown(ProcedureView PV)
+   {
+       PV.JComboBoxStoredArrayLists.removeAllItems();
+       PV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+       for (String keyname: STAppData.VarLists.keySet())
+       {
+           PV.JComboBoxStoredArrayLists.addItem(keyname);
+       }
+   }
   
+    public void updateSelectedArrayName(String oldname, String newname)
+    {
+           if (STAppData.VarLists.containsKey(oldname))
+      {
+          STAppData.VarLists.remove(oldname);
+      }  
+        if (STAppData.VarLists.containsKey(newname))
+        {       
+      
+            
+       int bugindex = 0;  
+            for (Procedure PROC: STAppData.BugArray)
+      {
+          if (oldname.equals(PROC.URLListName))
+          {
+      PROC.setURLListName(newname);
+      refreshStoredArrayPulldown(BugViewArray.get(bugindex));
+      STAppData.BugArray.get(bugindex).setURLListName(newname);
+      BugViewArray.get(bugindex).setURLListName(newname);
+     
+      
+          }
+          
+          bugindex++;
+      }
+        }
+        else
+        {
+          
+            STAppData.VarLists.put(newname, new String[0]);
+           
+             int bugindex = 0;  
+            for (Procedure PROC: STAppData.BugArray)
+      {
+          if (oldname.equals(PROC.URLListName))
+          {
+     
+      
+     PROC.setURLListName(newname);
+      refreshStoredArrayPulldown(BugViewArray.get(bugindex));
+      STAppData.BugArray.get(bugindex).setURLListName(newname);
+      BugViewArray.get(bugindex).setURLListName(newname);
+ BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
+
+          }
+          bugindex++;
+      }
+        }
+      
+     
+    
+    }
+  
+          public void updateStoredURLListIndexes(ProcedureView thisBugView)
+      {
+          int actionindex = 0;
+        for (ActionView AV: thisBugView.ActionsViewList)
+        {
+         if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+        {
+            
+            STAppData.setHasStoredArray(true);
+                             String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariable2.getText();
+         String newname = bugdashactionindex;
+         if (oldname.equals(newname))
+         {
+          // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+      STAppData.VarLists.put(newname, new String[0]);
+       
+       //  addSelectedArrayName(bugdashactionindex);
+          }
+          else
+         {
+              if ("".equals(oldname))
+              {
+           
+           STAppData.addSelectedArrayName(bugdashactionindex); 
+              }
+              else
+              {
+                 
+         updateSelectedArrayName(oldname, newname);
+         
+              }
+        }
+         AV.JTextFieldVariable2.setText(newname);
+       //  AV.setJTextFieldVariableVARINDEX(newname);
+   //  updateStoredListsPulldownView(oldname, newname, STAppData.VarLists);
+     
+   //  STAppFrame.updatePlacedLoopVariables(oldname, newname);
+        }
+       if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
+        {
+              STAppData.setHasStoredVar(true);
+                                      String stringactionindex = Integer.toString(actionindex+1);
+        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+         String newname = bugdashactionindex;
+      
+              if ("".equals(oldname))
+          {
+           addSelectedVariableName(bugdashactionindex);
+           AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+         
+          }
+          else
+          {
+         STAppData.updateSelectedVariableName(oldname, newname);
+     //    updateInsertedVariableNames(oldname, newname);
+          AV.JTextFieldVariableVARINDEX.setText(newname);
+          }
+ 
+        }  
+       actionindex++;
+        }
+        
+      } 
 
  public void populateSelectURLListPulldowns()
   {
@@ -624,16 +754,41 @@ public int GetWaitTime()
      thisBugView.ActionsViewList.get(BugViewIndex).index--;
      }
      }
-
+ updateStoredURLListIndexes(thisBugView);
    }
      public void DeleteBugView (int BugIndex)
    {
  
 
    BugViewArray.remove(BugIndex);
-   RemoveUpdateStoredPulldowns(BugIndex);
+ //  RemoveUpdateStoredPulldowns(BugIndex);
+   ChangeURLListPulldowns(BugIndex);
  
    }
+     public void ChangeURLListPulldowns(int BugIndex)
+     {
+            for (ProcedureView PV: BugViewArray)
+   {
+       if (PV.index>=BugIndex)
+       {
+           for (ActionView AV: PV.ActionsViewList)
+           {
+           if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+        {
+                 STAppData.setHasStoredArray(true);
+                             String stringactionindex = Integer.toString(AV.index+1);
+        String stringbugindex = Integer.toString(PV.index+1);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        String oldname = AV.JTextFieldVariable2.getText();
+         String newname = bugdashactionindex; 
+             updateSelectedArrayName(oldname, newname);   
+        }
+           }
+   
+    updateStoredURLListIndexes(PV);
+       }
+   }
+     }
      public void RemoveUpdateStoredPulldowns(int bugindex)
      {
     

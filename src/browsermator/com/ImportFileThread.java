@@ -79,7 +79,7 @@ public String doInBackground()
  }
   public void ImportNewWindow (Document doc, int MDI_INDEX)
   {
-
+int current_number_of_procedures = STAppFrame.BugViewArray.size();
  try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
@@ -126,8 +126,30 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         }
        if ("urllist".equals(DataLoopSource))
         {
-            STAppFrame.AddNewDataLoopURLListView(DataFile);
-            STAppData.AddNewDataLoopURLList(DataFile);
+         
+        
+               String[] parts = DataFile.split("-");
+ String leftpart = parts[0];
+  String rightpart = "0";
+ if (parts.length>1)
+ {
+rightpart = parts[1];
+ }
+ if (!"".equals(leftpart))
+ {
+ leftpart = Integer.toString(current_number_of_procedures + Integer.parseInt(leftpart));  
+ }
+ else
+ {
+     leftpart = "0";
+ }
+ 
+    
+ String combinedDataFile = leftpart + "-" + rightpart;
+
+            STAppFrame.AddNewDataLoopURLListView(combinedDataFile);
+            STAppData.AddNewDataLoopURLList(combinedDataFile);
+            
          
             
 
@@ -144,6 +166,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     
       int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
  

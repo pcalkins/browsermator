@@ -38,7 +38,7 @@ public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTes
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
                           STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
-                              STAppData.updateStoredURLListIndexes(STAppFrame, newbugview);
+                              STAppFrame.updateStoredURLListIndexes(newbugview);
                            STAppFrame.UpdateScrollPane(newbugview);
    });
    
