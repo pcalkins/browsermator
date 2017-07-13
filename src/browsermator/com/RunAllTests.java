@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -600,11 +601,11 @@ options.setBinary(chrome_path);
 
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
- // int Timeout = 20;
+  int Timeout = 5;
   
- // driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
- //driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
- //driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+ driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
         
