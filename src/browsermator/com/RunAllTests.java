@@ -36,6 +36,8 @@ BrowserMatorReport BrowserMatorReport;
 Boolean RUNWITHGUI;
  public RunAllTests (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
+         STAppFrame.RefreshViewData();
+  STAppData.RefreshData();
   RUNWITHGUI = true;
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
@@ -47,8 +49,7 @@ Boolean RUNWITHGUI;
   this.OSType = STAppData.OSType;
   STAppFrame.showTaskGUI();
     
-//  STAppData.VarHashMap.clear();
-//  STAppData.VarLists.clear();
+
 
   
  
@@ -56,6 +57,7 @@ Boolean RUNWITHGUI;
  }
  public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
+     STAppData.RefreshData();
  //we're in no GUI Mode
      RUNWITHGUI = false;
   FFprops = new FireFoxProperties(targetbrowser);
@@ -143,8 +145,7 @@ public String doInBackground()
     STAppFrame.enableAdds();
     STAppFrame.enableRemoves();
     STAppFrame.hideTaskGUI();
-    STAppFrame.RefreshViewData();
-  STAppData.RefreshData();
+    STAppFrame.resetRunButtons();
     STAppFrame.setJTextFieldProgress("");
      }
  

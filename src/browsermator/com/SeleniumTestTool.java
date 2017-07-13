@@ -884,6 +884,13 @@ public int GetWaitTime()
        PV.JButtonYesNoPromptPassFail.setEnabled(true);
    }    
  }
+ public void resetRunButtons()
+ {
+   for (ProcedureView PV: BugViewArray)
+   {
+       PV.JButtonRunTest.setText("Run");
+   }   
+ }
  public void clearPassFailColors()
  {
    for (ProcedureView PV: BugViewArray)
