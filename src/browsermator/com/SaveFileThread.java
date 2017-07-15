@@ -17,15 +17,19 @@ import javax.swing.SwingWorker;
  * @author pcalkins
  */
 public class SaveFileThread extends SwingWorker<String, Integer>{
- STAppController mainApp;
+ MainAppFrame mainAppFrame;
+ STAppController mainAppController;
  SeleniumTestTool STAppFrame;
+ SeleniumTestToolData STAppData;
  boolean isSaveAs;
  boolean isFlatten;
  int calling_MDI_Index;
-    public SaveFileThread(STAppController mainApp, SeleniumTestTool STAppFrame, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
+    public SaveFileThread(STAppController in_mainAppData, MainAppFrame in_mainAppFrame, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index)
  {
-   this.mainApp = mainApp;  
+   this.mainAppFrame = in_mainAppFrame;
+   this.mainAppController = in_mainAppData;
    this.STAppFrame = STAppFrame;
+   this.STAppData = STAppData;
    this.isSaveAs = isSaveAs;
    this.isFlatten = isFlatten;
    this.calling_MDI_Index = calling_MDI_Index;
@@ -35,7 +39,7 @@ public String doInBackground()
  {
    if (calling_MDI_Index == -1)
    {
-       mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+       mainAppController.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
    else
    {
@@ -47,7 +51,7 @@ public String doInBackground()
      }
      try
                       {
-                     mainApp.SaveFile(STAppFrame, isSaveAs, isFlatten, calling_MDI_Index);
+                     mainAppController.SaveFile(STAppFrame, STAppData, isSaveAs, isFlatten, calling_MDI_Index);
             
                       }
                       catch (Exception e)
@@ -62,7 +66,7 @@ public String doInBackground()
  {
      if (calling_MDI_Index == -1)
    { 
-  mainApp.Navigator.setCursor(Cursor.getDefaultCursor());   
+  mainAppController.Navigator.setCursor(Cursor.getDefaultCursor());   
    }
       else
    {
@@ -75,7 +79,7 @@ public String doInBackground()
      }
      else
      {
-         mainApp.RefreshCleanState(STAppFrame);
+         mainAppController.RefreshCleanState(STAppData);
      }
      
  }

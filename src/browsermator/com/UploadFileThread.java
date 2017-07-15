@@ -33,8 +33,10 @@ import javax.xml.stream.XMLStreamWriter;
  * @author pcalkins
  */
 public class UploadFileThread extends SwingWorker<String, Integer>{
- STAppController mainApp;
+ STAppController mainAppController;
+ MainAppFrame mainAppFrame;
  SeleniumTestTool STAppFrame;
+ SeleniumTestToolData STAppData;
  int calling_MDI_Index;
 String Header;
 String Footer;
@@ -46,10 +48,12 @@ JPanel mainPanel;
 JFrame ReportFrame;
 
 
- public UploadFileThread(STAppController mainApp, SeleniumTestTool STAppFrame, int calling_MDI_Index)
+ public UploadFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, int calling_MDI_Index)
  {
-   this.mainApp = mainApp;  
-   this.STAppFrame = STAppFrame;
+   this.mainAppFrame = in_mainAppFrame;
+   this.mainAppController = in_mainAppController;
+   this.STAppFrame = in_STAppFrame;
+   this.STAppData = in_STAppData;
    this.calling_MDI_Index = calling_MDI_Index;
 
  }
@@ -58,16 +62,16 @@ public String doInBackground()
  {
    if (calling_MDI_Index == -1)
    {
-       mainApp.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      mainAppController.Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
    else
    {
      STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
    }
-   mainApp.LoadNameAndPassword();
+   mainAppController.LoadNameAndPassword();
  
-  mainApp.LookUpUser(mainApp.loginName, mainApp.loginPassword);
-   if (mainApp.user_id >0 )
+  mainAppController.LookUpUser(mainAppController.loginName, mainAppController.loginPassword);
+   if (mainAppController.user_id >0 )
    {
        
    
@@ -87,8 +91,8 @@ public String doInBackground()
    else
    {
      Login_Register_Dialog loginDialog = new Login_Register_Dialog();
-     loginDialog.setLoginName(mainApp.loginName);
-  loginDialog.setPassword(mainApp.loginPassword);
+     loginDialog.setLoginName(mainAppController.loginName);
+  loginDialog.setPassword(mainAppController.loginPassword);
      loginDialog.addjTextFieldConfirmPasswordDocListener(
              new DocumentListener()
            {
@@ -214,14 +218,14 @@ public String doInBackground()
         public void actionPerformed(ActionEvent evt)
         { 
  loginDialog.setStatus("");
-       mainApp.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
-  if (mainApp.user_id >0 )
+       mainAppController.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
+  if (mainAppController.user_id >0 )
    {
        
    
      try
                       {
-                           mainApp.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
+                           mainAppController.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
                      UploadFile(STAppFrame);
                      loginDialog.dispose();
                       }
@@ -234,7 +238,7 @@ public String doInBackground()
    }
   else
   {
-      if (mainApp.user_id==0)
+      if (mainAppController.user_id==0)
       {
       loginDialog.setStatus("Login has failed.");
       }
@@ -255,14 +259,14 @@ public String doInBackground()
        if ("login".equals(loginDialog.mode) && loginDialog.isActive )
        {
       loginDialog.setStatus("");
-      mainApp.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
-       if (mainApp.user_id >0 )
+      mainAppController.LookUpUser(loginDialog.getLoginName(), loginDialog.getPassword());
+       if (mainAppController.user_id >0 )
    {
        
    
      try
                       {
-                          mainApp.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
+                          mainAppController.SaveNameAndPassword(loginDialog.getLoginName(), loginDialog.getPassword());
                      UploadFile(STAppFrame);
                      loginDialog.dispose();
                       }
@@ -289,20 +293,20 @@ public String doInBackground()
        if ("recover".equals(loginDialog.mode)&& loginDialog.isActive)
        {
            loginDialog.setStatus("");
-     String statustext = mainApp.RecoverPassword(loginDialog.getEmail());
+     String statustext = mainAppController.RecoverPassword(loginDialog.getEmail());
      loginDialog.setStatus (statustext);
      
        }
        if ("register".equals(loginDialog.mode)&& loginDialog.isActive)
        {
            loginDialog.setStatus("");
-      String statustext = mainApp.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
+      String statustext = mainAppController.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
       if ("Success".equals(statustext))
       {
              try
      {
       UploadFile(STAppFrame);
-        mainApp.SaveNameAndPassword(mainApp.loginName, mainApp.loginPassword);
+        mainAppController.SaveNameAndPassword(mainAppController.loginName, mainAppController.loginPassword);
         loginDialog.dispose();
      }
       catch (Exception ex)
@@ -323,7 +327,7 @@ public String doInBackground()
         public void actionPerformed(ActionEvent evt)
         { 
  loginDialog.setStatus("");
-       String statustext = mainApp.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
+       String statustext = mainAppController.RegisterUser(loginDialog, loginDialog.getLoginName(), loginDialog.getEmail(), loginDialog.getPassword());
         loginDialog.setStatus(statustext);
   
         }
@@ -334,7 +338,7 @@ public String doInBackground()
         public void actionPerformed(ActionEvent evt)
         { 
  
-       String status =  mainApp.RecoverPassword(loginDialog.getEmail());
+       String status =  mainAppController.RecoverPassword(loginDialog.getEmail());
          loginDialog.setStatus(status);
   
         }
@@ -350,7 +354,7 @@ public String doInBackground()
  {
      if (calling_MDI_Index == -1)
    { 
-  mainApp.Navigator.setCursor(Cursor.getDefaultCursor());   
+  mainAppController.Navigator.setCursor(Cursor.getDefaultCursor());   
    }
       else
    {
@@ -388,8 +392,8 @@ File file= File.createTempFile(noext_filename, ".browsermation");
              try {
 xmlfile.writeStartElement("BrowserMatorWindow");
 xmlfile.writeAttribute("Filename",noext_filename);
-xmlfile.writeAttribute("ProgramVersion", mainApp.ProgramVersion);
-String ShowReport = Boolean.toString(STAppFrame.getShowReport());
+xmlfile.writeAttribute("ProgramVersion", mainAppController.ProgramVersion);
+String ShowReport = Boolean.toString(STAppData.getShowReport());
 
 xmlfile.writeStartElement("FileSettings");
 
@@ -397,71 +401,71 @@ xmlfile.writeStartElement("ShowReport");
     xmlfile.writeCharacters(ShowReport);
     xmlfile.writeEndElement();
 // xmlfile.writeAttribute("ShowReport", ShowReport);
-String EmailReport = Boolean.toString(STAppFrame.getEmailReport());
+String EmailReport = Boolean.toString(STAppData.getEmailReport());
   xmlfile.writeStartElement("EmailReport");
     xmlfile.writeCharacters(EmailReport);
     xmlfile.writeEndElement();
     
-    String IncludeScreenshots = Boolean.toString(STAppFrame.getIncludeScreenshots());
+    String IncludeScreenshots = Boolean.toString(STAppData.getIncludeScreenshots());
 xmlfile.writeStartElement("IncludeScreenshots");
     xmlfile.writeCharacters(IncludeScreenshots);
     xmlfile.writeEndElement();
 // xmlfile.writeAttribute("EmailReport", EmailReport);
-String EmailReportFail = Boolean.toString(STAppFrame.getEmailReportFail());
+String EmailReportFail = Boolean.toString(STAppData.getEmailReportFail());
 xmlfile.writeStartElement("EmailReportFail");
     xmlfile.writeCharacters(EmailReportFail);
     xmlfile.writeEndElement();
     
 // xmlfile.writeAttribute("EmailReportFail", EmailReportFail);
-String ExitAfter = Boolean.toString(STAppFrame.getExitAfter());
+String ExitAfter = Boolean.toString(STAppData.getExitAfter());
 xmlfile.writeStartElement("ExitAfter");
     xmlfile.writeCharacters(ExitAfter);
     xmlfile.writeEndElement();    
 // xmlfile.writeAttribute("ExitAfter", ExitAfter);
-   String SMTPHostname = STAppFrame.getSMTPHostname();
+   String SMTPHostname = STAppData.getSMTPHostname();
 xmlfile.writeStartElement("SMTPHostname");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement(); 
 // xmlfile.writeAttribute("SMTPHostname", STAppFrame.getSMTPHostname());
     
-  String EmailLoginName = STAppFrame.getEmailLoginName();
+  String EmailLoginName = STAppData.getEmailLoginName();
 xmlfile.writeStartElement("EmailLoginName");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement();     
 // xmlfile.writeAttribute("EmailLoginName", STAppFrame.getEmailLoginName());
-String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
+String PromptToClose = Boolean.toString(STAppData.getPromptToClose());
 xmlfile.writeStartElement("PromptToClose");
     xmlfile.writeCharacters(PromptToClose);
     xmlfile.writeEndElement();     
 // String PromptToClose = Boolean.toString(STAppFrame.getPromptToClose());
 //    xmlfile.writeAttribute("PromptToClose", PromptToClose);
-String TargetBrowser = STAppFrame.TargetBrowser;
+String TargetBrowser = STAppData.getTargetBrowser();
 xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeCharacters(TargetBrowser);
     xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
     
-Integer WaitTime = STAppFrame.GetWaitTime();
+Integer WaitTime = STAppData.getWaitTime();
 String WaitTimeString = WaitTime.toString();
 xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
     xmlfile.writeEndElement();   
  
-    Integer Timeout = STAppFrame.getTimeout();
+    Integer Timeout = STAppData.getTimeout();
 String TimeoutString = Timeout.toString();
 xmlfile.writeStartElement("Timeout");
     xmlfile.writeCharacters(TimeoutString);
     xmlfile.writeEndElement();  
     
     
-Integer Sessions = STAppFrame.getSessions();
+Integer Sessions = STAppData.getSessions();
 String SessionsString = Sessions.toString();
 xmlfile.writeStartElement("Sessions");
     xmlfile.writeCharacters(SessionsString);
     xmlfile.writeEndElement();  
 
 
-String OSType = STAppFrame.OSType;
+String OSType = STAppData.getOSType();
 xmlfile.writeStartElement("OSType");
     xmlfile.writeCharacters(OSType);
     xmlfile.writeEndElement();  
@@ -470,29 +474,29 @@ xmlfile.writeStartElement("EmailPassword");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement();    
 // xmlfile.writeAttribute("EmailPassword", EmailPassword);
-String EmailTo = STAppFrame.getEmailTo();
+String EmailTo = STAppData.getEmailTo();
 xmlfile.writeStartElement("EmailTo");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement();  
 // xmlfile.writeAttribute("EmailTo", STAppFrame.getEmailTo());
 
-String EmailFrom = STAppFrame.getEmailFrom();
+String EmailFrom = STAppData.getEmailFrom();
 xmlfile.writeStartElement("EmailFrom");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement(); 
 // xmlfile.writeAttribute("EmailFrom", STAppFrame.getEmailFrom());
-String EmailSubject = STAppFrame.getSubject();
+String EmailSubject = STAppData.getEmailSubject();
 xmlfile.writeStartElement("EmailSubject");
     xmlfile.writeCharacters("");
     xmlfile.writeEndElement();     
 // xmlfile.writeAttribute("EmailSubject", STAppFrame.getSubject());
 xmlfile.writeEndElement();
 
-for (Procedure thisbug: STAppFrame.BugArray)
+for (Procedure thisbug: STAppData.BugArray)
 {
 
 xmlfile.writeStartElement("Procedure");
-xmlfile.writeAttribute("Title", thisbug.BugTitle);
+xmlfile.writeAttribute("Title", thisbug.getBugTitle());
 xmlfile.writeAttribute("URL", thisbug.BugURL);
 xmlfile.writeAttribute("Pass", Boolean.toString(thisbug.Pass));
 String index = String.valueOf(thisbug.index);
@@ -503,14 +507,14 @@ xmlfile.writeAttribute("Locked", LockedString);
 
 if ("Dataloop".equals(thisbug.Type))
 {
-String string_limit = Integer.toString(thisbug.limit);
+String string_limit = Integer.toString(thisbug.getLimit());
 
 xmlfile.writeAttribute("DataLoopFile", thisbug.DataFile);
 xmlfile.writeAttribute("DataLoopSource", thisbug.DataLoopSource);
 xmlfile.writeAttribute("Limit", string_limit);
 
 String string_randval = "false";
-if (thisbug.random)
+if (thisbug.getRandom())
 {
     string_randval = "true";
 }
@@ -598,7 +602,7 @@ xmlfile.writeEndElement();
         public void actionPerformed(ActionEvent evt)
         { 
        thisUpDiag.hideWarningMessage();
-      SendFileThread sendREF = new SendFileThread(mainApp, thisUpDiag,file, mainApp.loginName, mainApp.loginPassword);
+      SendFileThread sendREF = new SendFileThread(mainAppController, thisUpDiag,file, mainAppController.loginName, mainAppController.loginPassword);
        sendREF.execute();
   
         }

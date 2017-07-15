@@ -53,7 +53,7 @@ String HTMLReportForSave;
 String TextReport;
 BorderLayout thisLayout;
 JPanel mainPanel;
-SeleniumTestTool SiteTest;
+SeleniumTestToolData STAppData;
 String LineBreak;
 String Header;
 String Footer;
@@ -65,9 +65,9 @@ Boolean ReportDisplayed;
 File TEMP_HTML_FILE;
 
 
-    public BrowserMatorReport (SeleniumTestTool SiteTest)
+    public BrowserMatorReport (SeleniumTestToolData SiteTest)
  {
-   this.SiteTest = SiteTest;
+   this.STAppData = SiteTest;
    this.ReportDisplayed = false;
    this.TEMP_HTML_FILE = null;
    this.HTMLReport = "";
@@ -91,13 +91,13 @@ File TEMP_HTML_FILE;
 
 
    // String smtp_hostname = this.SiteTest.getSMTPHostname();
-   String login_name = this.SiteTest.getEmailLoginName();
+   String login_name = STAppData.getEmailLoginName();
    
-   String password = this.SiteTest.getEmailPassword();
-   String to = this.SiteTest.getEmailTo();
-   String from = this.SiteTest.getEmailFrom();
-   String subject = this.SiteTest.getSubject();
-   if (this.SiteTest.AllTestsPassed.equals(true))
+   String password = STAppData.getEmailPassword();
+   String to = STAppData.getEmailTo();
+   String from = STAppData.getEmailFrom();
+   String subject = STAppData.getEmailSubject();
+   if (STAppData.AllTestsPassed.equals(true))
    {
        subject = subject + " - All Procedures PASSED";
    }
@@ -108,12 +108,12 @@ File TEMP_HTML_FILE;
   
    
        
-   applicationProps.put("mail.smtp.host", this.SiteTest.getSMTPHostname());
-    applicationProps.put("email_login_name", this.SiteTest.getEmailLoginName());
-     applicationProps.put("email_login_password", this.SiteTest.getEmailPassword());
-      applicationProps.put("email_to", this.SiteTest.getEmailTo());
-       applicationProps.put("email_from", this.SiteTest.getEmailFrom());
-       applicationProps.put("email_subject", this.SiteTest.getSubject());
+   applicationProps.put("mail.smtp.host", STAppData.getSMTPHostname());
+    applicationProps.put("email_login_name", STAppData.getEmailLoginName());
+     applicationProps.put("email_login_password", STAppData.getEmailPassword());
+      applicationProps.put("email_to", STAppData.getEmailTo());
+       applicationProps.put("email_from", STAppData.getEmailFrom());
+       applicationProps.put("email_subject", STAppData.getEmailSubject());
        
     Session session = Session.getInstance(applicationProps, null);
 
@@ -315,7 +315,7 @@ mainPanel = new JPanel(new BorderLayout());
 "   }"
                  + "}\n</SCRIPT>\n</HEAD>\n<BODY>\n<DIV ID = \"Controls\">\n<BUTTON NAME = \"SHOWALLSCREENS\" ONCLICK=\"ShowAllScreens()\">Show All Screenshots</BUTTON> <BUTTON NAME = \"HIDEALLSCREENS\" ONCLICK=\"HideAllScreens()\">Hide All Screenshots</BUTTON>\n</DIV>\n<DIV ID=\"Report\">\n";
          Footer = "</DIV>\n</BODY>\n</HTML>"; 
-            ReportText= "Procedure report: " + SiteTest.filename + SiteTest.TimeOfRun.toString() + LineBreak;
+            ReportText= "Procedure report: " + STAppData.filename + STAppData.TimeOfRun.toString() + LineBreak;
     int action_INT=0;
     int bug_INT=0;
     String bug_ID="";
@@ -352,12 +352,12 @@ mainPanel = new JPanel(new BorderLayout());
                 }
     }
      String to_write = "</html>";
-        for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
+        for(int BugIndex=0; BugIndex<STAppData.BugArray.size(); BugIndex++)
      {
-       bug_INT = BugViewIndex + 1;
+       bug_INT = BugIndex + 1;
        bug_ID = Integer.toString(bug_INT);
        
-        to_write = "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
+        to_write = "Procedure " + STAppData.BugArray.get(BugIndex).getBugTitle() + " " + STAppData.BugArray.get(BugIndex).getPassText() + LineBreak;
          if (writer!=null)
     {
          try
@@ -373,11 +373,11 @@ mainPanel = new JPanel(new BorderLayout());
                 }
     }
         
-         int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
+         int number_of_actions = STAppData.BugArray.get(BugIndex).ActionsList.size();
         int passvalueslength = 0;
-        if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
+        if (STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values!=null)
         {
-              passvalueslength = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values.length;
+              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.length;
         }
               if (passvalueslength>0)
             {
@@ -387,20 +387,20 @@ mainPanel = new JPanel(new BorderLayout());
         {
         action_INT = ActionViewIndex + 1;
         action_ID = Integer.toString(action_INT) + "-" + passindex;
-           if (!SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Locked)  
+           if (!STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Locked)  
        {
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisType = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2;
             String ThisScreenshot = "";
             String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
                int index_of_fileslashes = ThisScreenshot.indexOf("file:///")+8;
         int index_of_id = ThisScreenshot.indexOf("id")-2;
           if (index_of_fileslashes > 0 && index_of_id>index_of_fileslashes)
@@ -422,7 +422,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
             pass_string = " has passed at ";
         }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+         if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
                    to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
@@ -489,26 +489,26 @@ mainPanel = new JPanel(new BorderLayout());
    
             String concat_variable="";
             String concat_variable2="";
-                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+                    if ("urllist".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
- concat_variable = var1Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+ concat_variable = var1Parser.GetFullValueFromURLList(passindex, STAppData.BugArray.get(BugIndex).URLListData);
             }
-            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            if ("file".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
-   concat_variable = var1Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+   concat_variable = var1Parser.GetFullValueFromFile(passindex, STAppData.BugArray.get(BugIndex).RunTimeFileSet);             
             }
 
  if (!"".equals(concat_variable))
  {
      ThisValue1 = concat_variable;
  }
-                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+                    if ("urllist".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
- concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+ concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, STAppData.BugArray.get(BugIndex).URLListData);
             }
-            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            if ("file".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
-   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, STAppData.BugArray.get(BugIndex).RunTimeFileSet);             
             }
   
      if (!"".equals(concat_variable2))
@@ -516,7 +516,7 @@ mainPanel = new JPanel(new BorderLayout());
     ThisValue2 = concat_variable2;  
      }
       
- if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+ if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
              to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
@@ -587,16 +587,16 @@ mainPanel = new JPanel(new BorderLayout());
         
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisType = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2;
             String ThisScreenshot = "null";
             String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Pass;
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Pass;
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
                int index_of_fileslashes = ThisScreenshot.indexOf("file:///")+8;
         int index_of_id = ThisScreenshot.indexOf("id")-2;
         if (index_of_fileslashes > 0 && index_of_id>index_of_fileslashes)
@@ -614,7 +614,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
             pass_string = " has passed at ";
         }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+         if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
             to_write = bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
@@ -782,7 +782,7 @@ mainPanel = new JPanel(new BorderLayout());
      {
          Header = "<HTML><BODY>";
          Footer = "</BODY></HTML>";
-     if (SiteTest.EmailReport)
+     if (STAppData.getEmailReport())
      {
        LineBreak = "\n";
        Header = "";
@@ -793,23 +793,23 @@ mainPanel = new JPanel(new BorderLayout());
          LineBreak = "<br>";
      }
      }
-      String ReportText= "Procedure report: " + SiteTest.filename + SiteTest.TimeOfRun.toString() + LineBreak;
+      String ReportText= "Procedure report: " + STAppData.filename + STAppData.TimeOfRun.toString() + LineBreak;
     int action_INT=0;
     int bug_INT=0;
     String bug_ID="";
     String action_ID="";
-        for(int BugViewIndex=0; BugViewIndex<SiteTest.BugViewArray.size(); BugViewIndex++)
+        for(int BugIndex=0; BugIndex<STAppData.BugArray.size(); BugIndex++)
      {
-       bug_INT = BugViewIndex + 1;
+       bug_INT = BugIndex + 1;
        bug_ID = Integer.toString(bug_INT);
-         ReportText = ReportText + "Procedure " + SiteTest.BugViewArray.get(BugViewIndex).JTextFieldBugTitle.getText() + " " + SiteTest.BugViewArray.get(BugViewIndex).JLabelPass.getText() + LineBreak;
-        int number_of_actions = SiteTest.BugViewArray.get(BugViewIndex).ActionsViewList.size();
+         ReportText = ReportText + "Procedure " + STAppData.BugArray.get(BugIndex).getBugTitle() + " " + STAppData.BugArray.get(BugIndex).getPassText() + LineBreak;
+        int number_of_actions = STAppData.BugArray.get(BugIndex).ActionsList.size();
         int passvalueslength = 0;
         if (number_of_actions>0)
         {
-        if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values!=null)
+        if (STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values!=null)
         {
-              passvalueslength = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(0).loop_pass_values.length;
+              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.length;
         }
         }
               if (passvalueslength>0)
@@ -820,20 +820,20 @@ mainPanel = new JPanel(new BorderLayout());
         {
         action_INT = ActionViewIndex + 1;
         action_ID = Integer.toString(action_INT) + "-" + passindex;
-           if (!SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Locked)  
+           if (!STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Locked)  
        {
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisType = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2;
             String ThisScreenshot = "";
             String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
         
@@ -841,7 +841,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
             pass_string = " has passed at ";
         }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+         if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
@@ -894,26 +894,26 @@ mainPanel = new JPanel(new BorderLayout());
    
             String concat_variable="";
             String concat_variable2="";
-                         if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+                         if ("urllist".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
- concat_variable = var1Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+ concat_variable = var1Parser.GetFullValueFromURLList(passindex, STAppData.BugArray.get(BugIndex).URLListData);
             }
-            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            if ("file".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
-   concat_variable = var1Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+   concat_variable = var1Parser.GetFullValueFromFile(passindex, STAppData.BugArray.get(BugIndex).RunTimeFileSet);             
             }      
  
  if (!"".equals(concat_variable))
  {
      ThisValue1 = concat_variable;
  }
-                    if ("urllist".equals(SiteTest.BugViewArray.get(BugViewIndex).DataLoopSource))
+                    if ("urllist".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
- concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, SiteTest.BugArray.get(BugViewIndex).URLListData);
+ concat_variable2 = var2Parser.GetFullValueFromURLList(passindex, STAppData.BugArray.get(BugIndex).URLListData);
             }
-            if ("file".equals(SiteTest.BugArray.get(BugViewIndex).DataLoopSource))
+            if ("file".equals(STAppData.BugArray.get(BugIndex).DataLoopSource))
             {
-   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, SiteTest.BugArray.get(BugViewIndex).RunTimeFileSet);             
+   concat_variable2 = var2Parser.GetFullValueFromFile(passindex, STAppData.BugArray.get(BugIndex).RunTimeFileSet);             
             }
    
      if (!"".equals(concat_variable2))
@@ -921,7 +921,7 @@ mainPanel = new JPanel(new BorderLayout());
     ThisValue2 = concat_variable2;  
      }
       
- if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+ if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1
@@ -979,22 +979,22 @@ mainPanel = new JPanel(new BorderLayout());
         
                 Boolean ThisPassValue = false;
             LocalDateTime ThisTimeValue = LocalDateTime.now();
-            String ThisType = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type;
-            String ThisValue1 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1;
-            String ThisValue2 = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2;
+            String ThisType = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type;
+            String ThisValue1 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1;
+            String ThisValue2 = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2;
             String ThisScreenshot = "null";
             String pass_string = " has failed at ";
-                   DataLoopVarParser var1Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Pass;
-        ThisTimeValue = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
-        ThisScreenshot = SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
+                   DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
+    DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Pass;
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).TimeOfTest;
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).ScreenshotBase64;
         
         if (ThisPassValue)
         {
             pass_string = " has passed at ";
         }
-         if (SiteTest.BugArray.get(BugViewIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
+         if (STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Type.contains("assword"))
               {
              ReportText = ReportText + bug_ID + "-" + action_ID + " Action: " + 
                 ThisType + " " + ThisValue1

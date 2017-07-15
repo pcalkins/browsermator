@@ -11,6 +11,6 @@ package browsermator.com;
  */
 public interface Loopable {
   
- void AddLoopListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview);   
+ void AddLoopListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview);   
 
 }

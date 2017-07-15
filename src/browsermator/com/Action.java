@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class Action implements Initializable {
   
@@ -54,7 +56,6 @@ LocalDateTime[] loop_time_of_test;
   this.Loopable = false;
   this.pause_message = "";
   this.ScreenshotBase64 = "null";
-  
    }
 
    public void InitializeLoopTestVars(int number_of_rows)
@@ -80,7 +81,7 @@ LocalDateTime[] loop_time_of_test;
        
    }
 
-     public int RunAction (WebDriver driver, String message, SeleniumTestTool in_sitetest, int currentrecord, int number_of_records)
+     public int RunAction (WebDriver driver, String message, SeleniumTestToolData in_sitetest, int currentrecord, int number_of_records)
     {
         return number_of_records;
     }
@@ -98,7 +99,7 @@ LocalDateTime[] loop_time_of_test;
      
        try { 
   
-             
+  
           List<WebElement> elements = driver.findElements(By.xpath(xpather));
           
  if (this.BoolVal2)
@@ -203,6 +204,7 @@ public void setActionIndex (int newindex)
        this.Variable2 = variable;
    
    }
+
 @Override
  public void SetVars (String Variable1, String Variable2, String Password, Boolean BoolVal1, Boolean BoolVal2, Boolean LOCKED)
  {

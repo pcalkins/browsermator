@@ -106,6 +106,7 @@ JLabel JLabelUseList;
 JLabel JLabelOR;
 String Type;
 TitledBorder BugPanelBorder;
+String DataFile;
 Boolean Locked;
 JButton JButtonOK = new JButton("Disable");
 JCheckBox JCheckBoxRandom = new JCheckBox("Randomize");
@@ -121,8 +122,8 @@ SortedComboBoxModel <String> sortmodel;
                                         new Comparator<String>() {
             public int compare(String list_item1, String list_item2) {
               
-              if ("Select a stored URL List".equals(list_item1)) { list_item1 = "0-0"; }
-              if ("Select a stored URL List".equals(list_item2)) { list_item2 = "0-0"; }
+              if ("Select a stored URL List".equals(list_item1) || "".equals(list_item1)) { list_item1 = "0-0"; }
+              if ("Select a stored URL List".equals(list_item2)|| "".equals(list_item2)) { list_item2 = "0-0"; }
               String[] left_and_right_item1 = list_item1.split("-");
               String[] left_and_right_item2 = list_item2.split("-");
               Integer leftitem1 = Integer.parseInt(left_and_right_item1[0]);
@@ -144,8 +145,9 @@ SortedComboBoxModel <String> sortmodel;
    
     ProcedureView()
      {
+         DataFile = "";
 URLListName = "";
- DataLoopSource = "urllist";
+ DataLoopSource = "none";
          limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
@@ -332,6 +334,36 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
+       this.JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+       String[] blanklist = new String[0];
+       if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname))
+       {
+                 JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
+         this.setJTableSourceToURLList(blanklist, in_listname);     
+          
+                
+       }
+       else
+       {
+        String[] splitter = in_listname.split("-");
+         
+                String leftpart = splitter[0];
+                
+                if (this.index+1 > Integer.parseInt(leftpart))
+                {
+                     JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+                    
+                   setJTableSourceToURLList(blanklist, in_listname);
+                }
+                else
+                {
+                     JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
+                    this.setJTableSourceToURLList(blanklist, "");  
+                }
+       }
+        
+                  
+   
    }
    public Boolean getLocked()
    {
@@ -347,9 +379,9 @@ ActionScrollPane.setVisible(true);
      {
          this.Type = type;
      }
-     public void setTitle(String title)
+     public void setBugTitle(String title)
      {
-        JLabelBugTitle.setText(title);
+        JTextFieldBugTitle.setText(title);
     
      }
      public void setLastSelectedField (int variable_number, int procedure_index, int action_index)
@@ -392,6 +424,7 @@ ActionScrollPane.setVisible(true);
          BugConstraints.anchor = anchor_value;
          BugLayout.setConstraints(component, BugConstraints);
          JPanelBug.add(component);
+         JPanelBug.revalidate();
      }
          public void Disable()
        {
@@ -422,61 +455,100 @@ ActionScrollPane.setVisible(true);
     Action thisAct;
     Procedure this_bug;
     ProcedureView this_bugview;
-    SeleniumTestTool window;
-    public PopUpDemo(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window){
+    
+    public PopUpDemo(STAppController mainAppController, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData){
         anItem = new JMenuItem("Clone Procedure");
         add(anItem);
      
         this.this_bug = this_bug;
         this.this_bugview = this_bugview;
-        this.window = window;
+      
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-      cloneProcedure(this_bug, this_bugview, window);
+      cloneProcedure(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
       }
     });      
     }
              }
-              public void ShowContextMenu(Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool window, MouseEvent evt)
+              public void ShowContextMenu(STAppController mainAppController, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
  {
-   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(this_bug, this_bugview, window);
+   ProcedureView.PopUpDemo menu = new ProcedureView.PopUpDemo(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
         menu.show(evt.getComponent(), evt.getX(), evt.getY());
   
         
  }
-          public void cloneProcedure(Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool window)
+
+          public void cloneProcedure(STAppController mainAppController, Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
           if ("Dataloop".equals(this_bug_in.Type))
           {
-            if ("urllist".equals(this_bug_in.DataLoopSource))
-            {
-                String[] blanklist = new String[0];
+
+      
+        String DataFile = "";
+  
+        if ("file".equals(DataLoopSource))
+        {
+        File DataFile_file = new File(DataFile);
+       
+   STAppFrame.AddNewDataLoopFileView(DataFile_file);
         
-           
-               window.AddNewDataLoopURLList(this_bug_in.URLListName);  
-            
-            }
-            else
-            {
-              File this_data_file = new File(this_bug_in.DataFile);
-               window.AddNewDataLoopFile(this_data_file);    
-            } 
+   STAppData.AddNewDataLoopFile(DataFile_file);
+
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+        }
+       if ("urllist".equals(DataLoopSource))
+        {
+       
+                STAppFrame.AddNewDataLoopURLListView(DataFile);
+   STAppData.AddNewDataLoopURLList(DataFile);
+  
+    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+  
+     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+        }
+  
+   
+    
+
          
           }
           else
           {
-          window.AddNewBug();
-    
+         STAppFrame.AddNewBugView();
+          STAppData.AddNewBug();
+               int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+          
           }
           
           
-          window.BugViewArray.get(window.BugViewArray.size()-1).setTitle(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE" );
-          window.BugViewArray.get(window.BugViewArray.size()-1).JTextFieldBugTitle.setText(this_bugview_in.JTextFieldBugTitle.getText() + "-CLONE");
-          window.BugViewArray.get(window.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
-          window.BugViewArray.get(window.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
-          Procedure this_bug = window.BugArray.get(window.BugArray.size()-1);
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+        STAppData.BugArray.get(STAppData.BugArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
+            STAppData.BugArray.get(STAppData.BugArray.size()-1).setLimit(this_bug_in.getLimit());
+          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
+          STAppData.BugArray.get(STAppData.BugArray.size()-1).setRandom(this_bug_in.getRandom());
+          Procedure this_bug = STAppData.BugArray.get(STAppData.BugArray.size()-1);
           
-          ProcedureView this_bugview = window.BugViewArray.get(window.BugViewArray.size()-1);
+          ProcedureView this_bugview = STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1);
           for (Action ACT: this_bug_in.ActionsList)
           {
       String ActionType = ACT.Type;
@@ -494,9 +566,10 @@ ActionScrollPane.setVisible(true);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-               window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               STAppData.AddActionToArray (thisActionToAdd, this_bug);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
           //    window.UpdateDisplay();
            }      
  
@@ -506,14 +579,15 @@ ActionScrollPane.setVisible(true);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, window, this_bug, this_bugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, window, this_bug, this_bugview);
-              window.AddActionToArray (thisActionToAdd, thisActionViewToAdd, this_bug, this_bugview);
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
+             STAppData.AddActionToArray (thisActionToAdd, this_bug);
+               STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
           //    window.UpdateDisplay();
              }
       }
-                window.UpdateDisplay();
-           JScrollBar vertical = window.MainScrollPane.getVerticalScrollBar();
+                STAppFrame.UpdateDisplay();
+           JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
       }
 
@@ -522,7 +596,7 @@ ActionScrollPane.setVisible(true);
        JButtonOK.addActionListener(listener);
            
        }
-       public void addRightClickPanelListener(Procedure newbug, ProcedureView newbugview, SeleniumTestTool Window)
+       public void addRightClickPanelListener(STAppController mainAppController, Procedure newbug, ProcedureView newbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
        {
              JPanelBug.addMouseListener(new MouseAdapter(){
     @Override
@@ -530,7 +604,7 @@ ActionScrollPane.setVisible(true);
                  
                     if (evt.getButton()==3)
                     {
-                        ShowContextMenu(newbug, newbugview, Window, evt);
+                        ShowContextMenu(mainAppController, newbug, newbugview, STAppFrame, STAppData, evt);
                     }
                 }
              });
@@ -622,7 +696,7 @@ ActionScrollPane.setVisible(true);
   ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
  BugPanelBorder = BorderFactory.createTitledBorder("Procedure " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-         setTitle("Procedure ");
+         setBugLabelType("Procedure");
          
         }
         else
@@ -632,17 +706,37 @@ ActionScrollPane.setVisible(true);
     ActionScrollPane.setColumnHeaderView(ActionScrollPaneTitle);
      BugPanelBorder = BorderFactory.createTitledBorder("Data Loop " + stringbugindex);
          JPanelBug.setBorder(BugPanelBorder);
-          setTitle("Data Loop ");
+          setBugLabelType("Data Loop");
         }
    }
-   
+   public void setBugLabelType(String labeltype)
+   {
+       JLabelBugTitle.setText(labeltype);
+   }
    public void EnableArrayListsPulldown()
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-
-   public void SetJComboBoxStoredArraylists(String itemname)
+   public void populateJComboBoxStoredArrayLists( HashMap<String, String[]> VarLists)
    {
+              for (String keyname: VarLists.keySet())
+        {
+     String[] parts = keyname.split("-");
+ String leftpart = parts[0];
+ if (!"".equals(leftpart))
+ {
+ int bugindex = Integer.parseInt(leftpart);
+ if (bugindex<index+1)
+ {       
+           JComboBoxStoredArrayLists.addItem(keyname);
+ }
+        }
+          }
+              JComboBoxStoredArrayLists.setSelectedItem(URLListName);
+   }
+   public void setJComboBoxStoredArraylists(String itemname)
+   {
+       
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
    }
    
@@ -655,11 +749,11 @@ ActionScrollPane.setVisible(true);
          JTextFieldDataFile.setText(dataFile);
 
      }
-     public void UpdatePlacedLoopVars(String newsource, String dataloopsource)
+     public void updatePlacedLoopVars(String newsource)
      {
          Boolean isStoredList = true;
           
-             if ("file".equals(dataloopsource))
+             if ("file".equals(DataLoopSource))
              {
                 isStoredList = false; 
              }
@@ -737,7 +831,7 @@ ActionScrollPane.setVisible(true);
     panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
-   
+  
     AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
@@ -757,34 +851,43 @@ ActionScrollPane.setVisible(true);
     }
     
 });
+            
     }
+     public void setDataFile (String data_file)
+     {
+         DataFile = data_file;
+     }
      public void setJTableSourceToFile (String sourceCSVfile)
      {
-     UpdatePlacedLoopVars(sourceCSVfile, "file");
+     updatePlacedLoopVars(sourceCSVfile);
          JPanelBug.remove(panelForTable);
      myTable = null;
      myTable = new MyTable(sourceCSVfile);
     
-     
-     AddTableToGrid();
          JTextFieldDataFile.setText(sourceCSVfile);
-   
+     AddTableToGrid();
+     
+     
          
      }
      public void setDataLoopSource(String in_looptype)
      {
          this.DataLoopSource = in_looptype;
      }
+  
      public void setJTableSourceToURLList(String[] in_list, String list_name)
      {
-      UpdatePlacedLoopVars(list_name, "urllist");
+      updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);
-     myTable = null;
+  //   myTable = null;
      myTable = new MyTable(in_list, list_name);
-   
-     
-     AddTableToGrid();   
-         if ("".equals(list_name))
+     if (in_list.length>0)
+     {
+     myTable.populateTableWithURLListRunTimeEntries();
+    
+     }
+    
+         if ("".equals(list_name) || "Select a stored URL List".equals(list_name))
     {
         JTextFieldDataFile.setText ("No data file or URL list set.");
     }
@@ -797,6 +900,7 @@ ActionScrollPane.setVisible(true);
 //   JComboBoxStoredArrayLists.addItem(list_name);
  //   SetJComboBoxStoredArraylists(list_name);
     }
+          AddTableToGrid();   
      }
      
 

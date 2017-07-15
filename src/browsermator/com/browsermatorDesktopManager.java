@@ -41,7 +41,7 @@ public class browsermatorDesktopManager extends DefaultDesktopManager
   }  
  
     public void iconifyFrame(JInternalFrame f) {
-  // f.addInternalFrameListener(ifl);
+ //  f.addInternalFrameListener(ifl);
  
   int minWidth = computeMinFrameWidth();
   int minHeight = computeMinFrameHeight();
@@ -53,8 +53,9 @@ public class browsermatorDesktopManager extends DefaultDesktopManager
       JInternalFrame.JDesktopIcon icon = f.getDesktopIcon();
     icon.setSize(desiredWidth, desiredHeight);
    super.activateFrame(f);
+   
  // int desktopIconWidth = UIManager.getInt("DesktopIcon.width");
-  //      System.out.println("desktopIconWidth = " + desktopIconWidth);
+  //    System.out.println("desktopIconWidth = " + desiredWidth + " Title : " + f.getTitle());
  
    try
    {

@@ -29,19 +29,21 @@ public class TypePasswordAtXPATHActionView extends ActionView
    }
    
  @Override  
- public void AddListeners(Action action, SeleniumTestTool Window, Procedure newbug, ProcedureView newbugview)
+  public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
-    addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+ AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
+
+                        addJButtonDeleteActionActionListener((ActionEvent evt) -> {
+                          STAppFrame.DeleteActionView(newbugview, action.index);
+                          STAppData.DeleteAction(newbug, action.index);
+                           STAppFrame.UpdateScrollPane(newbugview);
+   });
+  
+
+ addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
           action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
           
        });
-     AddDraggers(action, Window, newbug, newbugview);
-     
-
-                        addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          Window.DeleteAction(newbug, newbugview, action.index);
-                          Window.UpdateScrollPane(newbugview);
-   });
   
 
 

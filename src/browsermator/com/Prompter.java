@@ -66,7 +66,7 @@ public class Prompter extends JFrame implements ActionListener
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
         int x = (int) rect.getMaxX() - this.getWidth();
-      
+       setResizable(false);
         this.setLocation(x, 0);
                 this.setTitle(filename);
                 add(WholePrompt);
