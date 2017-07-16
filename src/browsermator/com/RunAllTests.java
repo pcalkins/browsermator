@@ -58,7 +58,7 @@ Boolean RUNWITHGUI;
  }
  public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
-     STAppData.RefreshData();
+  //   STAppData.RefreshData();
  //we're in no GUI Mode
      RUNWITHGUI = false;
   FFprops = new FireFoxProperties(targetbrowser);
@@ -601,11 +601,11 @@ options.setBinary(chrome_path);
 
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
-  int Timeout = 5;
+//  int Timeout = 5;
   
- driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
         
@@ -1372,6 +1372,8 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
       int number_of_rows = 0;
+      if (!STAppData.BugArray.get(BugIndex).URLListData.equals(null))
+      {
       if ("urllist".equals(thisbug.DataLoopSource))
       {
  
@@ -1380,6 +1382,7 @@ while(thisContinuePrompt.isVisible() == true){
       if ("file".equals(thisbug.DataLoopSource))
       {
           number_of_rows = STAppData.BugArray.get(BugIndex).RunTimeFileSet.size();
+      }
       }
 if (number_of_rows==0)
 {

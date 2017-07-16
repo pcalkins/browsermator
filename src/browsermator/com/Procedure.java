@@ -50,7 +50,7 @@ this.Type = "";
 this.DataLoopSource = "urllist";
 this.URLListName = "";
 this.URLListData = new String[0];
-// this.URLListRunTimeEntries = new String[0];
+
 
    }
    public void RefreshFileData()
@@ -61,7 +61,7 @@ this.URLListData = new String[0];
    public void RefreshURLListData()
    {
     URLListData = new String[0];
-     setURLListData(URLListData, URLListName);
+      setURLListData(URLListData, URLListName);
    }
 
           public void Disable()

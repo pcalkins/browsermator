@@ -51,7 +51,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.23b";
+   public final String ProgramVersion = "1.1.24b";
    public String loginName;
    public String loginPassword;
 
@@ -650,9 +650,17 @@ STAppFrame.ShowStoredVarControls(false);
         if (!"".equals(RecentFileName))
  {
      
-     
+       if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
 
-      OpenFile(RecentFile, false);
+    
        
           
        }
@@ -688,10 +696,15 @@ STAppFrame.ShowStoredVarControls(false);
         if (!"".equals(RecentFileName))
  {
      
-     
-
-       OpenFile(RecentFile, false);
- 
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
             }
      
 
@@ -724,9 +737,15 @@ STAppFrame.ShowStoredVarControls(false);
         if (!"".equals(RecentFileName))
  {
      
-     
-
-    OpenFile(RecentFile, false);
+       if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
      
             }
      
@@ -761,9 +780,15 @@ STAppFrame.ShowStoredVarControls(false);
         if (!"".equals(RecentFileName))
  {
      
-     
-
+         if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
      OpenFile(RecentFile, false);
+  }
   
        
             }
@@ -793,16 +818,21 @@ STAppFrame.ShowStoredVarControls(false);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-          
+        
          String RecentFileName = Navigator.getRecentFile5();
          File RecentFile = new File(RecentFileName);
         if (!"".equals(RecentFileName))
  {
      
-     
-
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
      OpenFile(RecentFile, false);
-    
+  }
             }
      
 
