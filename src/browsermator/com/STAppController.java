@@ -51,7 +51,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.24b";
+   public final String ProgramVersion = "1.1.25b";
    public String loginName;
    public String loginPassword;
 
@@ -2857,6 +2857,7 @@ File newfile = new File(path + ".js");
    }
    public void MoveProcedure (SeleniumTestTool STAppFrame, int toMoveIndex, int Direction)
    {
+     
      int SwapIndex = toMoveIndex + Direction;
     if (Direction == 1)
        {
@@ -2864,8 +2865,9 @@ File newfile = new File(path + ".js");
       {
     Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
-  STAppFrame.STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
-  STAppFrame.BugViewArray.get(SwapIndex).index = SwapIndex;
+  STAppFrame.ResetBugIndexes();
+
+  
     STAppFrame.ChangeURLListPulldowns(SwapIndex);
       }
        }  
@@ -2875,26 +2877,18 @@ File newfile = new File(path + ".js");
         {
     Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
-  STAppFrame.STAppData.BugArray.get(toMoveIndex).index = toMoveIndex;
-  STAppFrame.BugViewArray.get(SwapIndex).index = SwapIndex;
+ STAppFrame.ResetBugIndexes();
   STAppFrame.ChangeURLListPulldowns(SwapIndex);
         }
     }
-      if ("urllist".equals(STAppFrame.BugViewArray.get(toMoveIndex).DataLoopSource))
-      {
-         STAppFrame.updateStoredURLListIndexes(STAppFrame.BugViewArray.get(toMoveIndex)); 
-      }
-     if ("urllist".equals(STAppFrame.BugViewArray.get(SwapIndex).DataLoopSource))
-     {
-      STAppFrame.updateStoredURLListIndexes(STAppFrame.BugViewArray.get(SwapIndex));
-     }
+
       STAppFrame.UpdateDisplay();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
 
         Rectangle bounds =  STAppFrame.BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
      bounds.height = 50;
       component.scrollRectToVisible(bounds);
-     
+      
     
    }
  
@@ -2994,10 +2988,10 @@ File newfile = new File(path + ".js");
            });
          newbugview.addRightClickPanelListener(this, newbug, newbugview, STAppFrame, STAppData);
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, newbugview.index, -1);
+               MoveProcedure(STAppFrame, newbugview.index-1, -1);
            });
          newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, newbugview.index, 1);
+               MoveProcedure(STAppFrame, newbugview.index-1, 1);
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                

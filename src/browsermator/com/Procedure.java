@@ -53,6 +53,10 @@ this.URLListData = new String[0];
 
 
    }
+   public void setIndex(int newindex)
+   {
+       this.index = newindex;
+   }
    public void RefreshFileData()
    {
    RunTimeFileSet.clear();

@@ -687,7 +687,7 @@ ActionScrollPane.setVisible(true);
    public void SetIndex(int bugindex)
    {
        this.index = bugindex;
-       String stringbugindex = Integer.toString(this.index+1);
+       String stringbugindex = Integer.toString(this.index);
        
        this.JLabelBugIndex.setText(stringbugindex);
         if ("Procedure".equals(this.Type))

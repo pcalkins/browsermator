@@ -160,7 +160,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
             
             STAppData.setHasStoredArray(true);
                              String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String stringbugindex = Integer.toString(thisBugView.index);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariable2.getText();
          String newname = bugdashactionindex;
@@ -185,8 +185,8 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
          
               }
         }
-         AV.JTextFieldVariable2.setText(newname);
-       //  AV.setJTextFieldVariableVARINDEX(newname);
+        AV.JTextFieldVariable2.setText(newname);
+   //     AV.setJTextFieldVariableVARINDEX(newname);
    //  updateStoredListsPulldownView(oldname, newname, STAppData.VarLists);
      
    //  STAppFrame.updatePlacedLoopVariables(oldname, newname);
@@ -195,7 +195,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
         {
               STAppData.setHasStoredVar(true);
                                       String stringactionindex = Integer.toString(actionindex+1);
-        String stringbugindex = Integer.toString(thisBugView.index+1);
+        String stringbugindex = Integer.toString(thisBugView.index);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariableVARINDEX.getText();
          String newname = bugdashactionindex;
@@ -256,14 +256,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
           }
       }
   }
- // public void setVarHashMap(HashMap<String, String> in_hashmap)
-//  {
-//      this.VarHashMap = in_hashmap;
-//  }
-//  public void setVarLists(HashMap<String, String[]> in_varlists)
-//  {
-//      this.VarLists = in_varlists;
-//  }
+
  public void setFilenames()
  {
      setShortFilename(STAppData.short_filename);
@@ -396,61 +389,8 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
           return ret_val;  
       }
   
-  //this is not used...
-    public void updatePlacedURLList(String to_updatename, String update_toname)
-    {
-       int bugindex = 0;
-    if (!"".equals(to_updatename))
-    {
-    for (ProcedureView BV : BugViewArray)
-      {
-            for (ActionView AV : BV.ActionsViewList )
-        {
-            String testing = AV.JTextFieldVariable1.getText();
-            
-            if (AV.JTextFieldVariable1.getText().contains("[stored_varname"))
-            {
-               AV.JTextFieldVariable1.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-           //    UpdateScrollPane(BV);
-               
-            }
-              if (AV.JTextFieldVariable2.getText().contains("[stored_varname"))
-            {
-               AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-           //    UpdateScrollPane(BV);
-            }
-            
-        }
-      } 
-    }    
-    }
-    public void updatePlacedVariables(String to_updatename, String update_toname)
-    {
-    int bugindex = 0;
-    if (!"".equals(to_updatename))
-    {
-    for (ProcedureView BV : BugViewArray)
-      {
-            for (ActionView AV : BV.ActionsViewList )
-        {
-            String testing = AV.JTextFieldVariable1.getText();
-            
-            if (AV.JTextFieldVariable1.getText().contains("[stored_varname"))
-            {
-               AV.JTextFieldVariable1.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-           //    UpdateScrollPane(BV);
-               
-            }
-              if (AV.JTextFieldVariable2.getText().contains("[stored_varname"))
-            {
-               AV.JTextFieldVariable2.setText("[stored_varname-start]" + update_toname + "[stored_varname-end]");
-           //    UpdateScrollPane(BV);
-            }
-            
-        }
-      } 
-    }
-    }
+
+
 public void addSelectedVariableNameView(String varname)
 {
     if(((DefaultComboBoxModel)jComboBoxStoredVariables.getModel()).getIndexOf(varname) == -1) {
@@ -590,7 +530,7 @@ public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int
      jButtonPlaceStoredVariable.setVisible(true);   
      jButtonPlaceStoredVariable.setEnabled(true); 
        
-            String stringactionindex = Integer.toString(actionindex+1);
+            String stringactionindex = Integer.toString(actionindex);
         String stringbugindex = Integer.toString(bugindex);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
      jButtonPlaceStoredVariable.setActionCommand(bugdashactionindex);
@@ -761,10 +701,20 @@ public int GetWaitTime()
  
 
    BugViewArray.remove(BugIndex);
+   ResetBugIndexes();
 
    ChangeURLListPulldowns(BugIndex);
    
  
+   }
+       public void ResetBugIndexes()
+   {
+       int newindex = 1;
+       for (ProcedureView procview: BugViewArray)
+       {
+           procview.SetIndex(newindex);
+           newindex++;
+       }
    }
      public void ChangeURLListPulldowns(int BugIndex)
      {
@@ -777,8 +727,8 @@ public int GetWaitTime()
            if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
         {
                  STAppData.setHasStoredArray(true);
-                             String stringactionindex = Integer.toString(AV.index+1);
-        String stringbugindex = Integer.toString(PV.index+1);
+                             String stringactionindex = Integer.toString(AV.index);
+        String stringbugindex = Integer.toString(PV.index);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariable2.getText();
          String newname = bugdashactionindex; 
@@ -1010,7 +960,7 @@ int bugindex = 0;
     for (ProcedureView BV : BugViewArray)
       {
 
-          BV.SetIndex(bugindex);
+          BV.SetIndex(bugindex+1);
        
           this.BugPanel.add(BV.JPanelBug);
      JPanel ActionAdderPanel = new JPanel();
@@ -1035,7 +985,7 @@ int bugindex = 0;
         {
 
        
-        AV.SetIndexes(bugindex, actionindex);
+        AV.SetIndexes(bugindex+1, actionindex+1);
     
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
@@ -1094,7 +1044,7 @@ bugindex++;
       for (ActionView AV : newbugview.ActionsViewList )
         {
        
-          AV.SetIndexes(newbugview.index, actionindex);
+          AV.SetIndexes(newbugview.index, actionindex+1);
        
       
          
@@ -1149,8 +1099,9 @@ bugindex++;
          newbugview.setType("Procedure");
       
          BugViewArray.add(newbugview);
-      
-         newbugview.index = BugViewArray.size();
+         int thissize = BugViewArray.size();
+          BugViewArray.get(thissize-1).SetIndex(thissize);
+       
     
 
         }
@@ -1188,7 +1139,8 @@ bugindex++;
      
       
           BugViewArray.add(newdataloopview);
-          newdataloopview.index = BugViewArray.size();
+          int thissize = BugViewArray.size();
+         BugViewArray.get(thissize-1).SetIndex(thissize);
         
      
         }
@@ -1252,7 +1204,7 @@ bugindex++;
 {
             newbugview.ActionsViewList.add(actionview);
                  
-          actionview.index = newbugview.ActionsViewList.size()-1;
+          actionview.index = newbugview.ActionsViewList.size();
         actionview.SetIndexes(newbugview.index, actionview.index);
         
                if ("StoreLinksAsURLListByXPATH".equals(actionview.ActionType))

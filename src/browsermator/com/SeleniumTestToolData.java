@@ -164,10 +164,18 @@ public HashMap<String, String[]> getVarLists()
    }
  
   BugArray.remove(BugIndex);
-  
+  ResetBugIndexes();
 changes=true;
    }
- 
+   public void ResetBugIndexes()
+   {
+       int newindex = 1;
+       for (Procedure proc: BugArray)
+       {
+           proc.setIndex(newindex);
+           newindex++;
+       }
+   }
    public void DeleteAction (Procedure thisBug, int atIndex)
    {
      String stringactionindex = Integer.toString(atIndex+1);
@@ -631,9 +639,9 @@ else
                   public void AddDataLoopProc(Procedure newdataloop)
         {
               BugArray.add(newdataloop);   
-       
-         newdataloop.index = BugArray.size();
-        
+       int thissize = BugArray.size();
+       BugArray.get(thissize-1).setIndex(thissize);
+      
       
         } 
        
@@ -643,8 +651,8 @@ else
          newbug.setType("Procedure");
    
          BugArray.add(newbug);
-      
-         newbug.index = BugArray.size(); 
+         int thissize = BugArray.size();
+        BugArray.get(thissize-1).setIndex(thissize);
 
         }
               public void AddNewDataLoopURLList(String in_listname)
