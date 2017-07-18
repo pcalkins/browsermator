@@ -378,11 +378,11 @@ options.setBinary(chrome_path);
  
 //timeouts still buggy... removed
 // int Timeout = SiteTest.getTimeout();
-  int Timeout = 5;
+//  int Timeout = 5;
   
- driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
- driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
+// driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
  

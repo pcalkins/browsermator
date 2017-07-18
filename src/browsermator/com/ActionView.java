@@ -504,7 +504,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
 
   STAppFrame.UpdateScrollPane(newbugview);
 
- // scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
                 }
@@ -518,12 +518,12 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
   STAppFrame.updateStoredURLListIndexes(newbugview);
   STAppFrame.UpdateScrollPane(newbugview);
 
-// scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
+ scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
  
  
      }
-  //   Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-  //     newbugview.ActionsViewList.get(action.index).JPanelAction.scrollRectToVisible(r);
+     Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+     newbugview.ActionsViewList.get(action.index).JPanelAction.scrollRectToVisible(r);
    
 	}
  

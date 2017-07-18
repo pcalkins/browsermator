@@ -151,7 +151,7 @@ public HashMap<String, String[]> getVarLists()
 }
  public void DeleteBug (int BugIndex)
    {
-   for (Action A: BugArray.get(BugIndex).ActionsList)
+   for (Action A: BugArray.get(BugIndex-1).ActionsList)
    {
        if ("Store Link as Variable by XPATH".equals(A.Type))
        {
@@ -163,7 +163,7 @@ public HashMap<String, String[]> getVarLists()
        }
    }
  
-  BugArray.remove(BugIndex);
+  BugArray.remove(BugIndex-1);
   ResetBugIndexes();
 changes=true;
    }

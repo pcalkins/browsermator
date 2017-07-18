@@ -700,7 +700,7 @@ public int GetWaitTime()
    {
  
 
-   BugViewArray.remove(BugIndex);
+   BugViewArray.remove(BugIndex-1);
    ResetBugIndexes();
 
    ChangeURLListPulldowns(BugIndex);
