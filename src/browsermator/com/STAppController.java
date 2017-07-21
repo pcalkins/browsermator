@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -51,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.26b";
+   public final String ProgramVersion = "1.1.27b";
    public String loginName;
    public String loginPassword;
 
@@ -312,6 +314,29 @@ mainAppFrame.initComponents();
   }
       }           
            });
+  mainAppFrame.addEditMenuUndoActionListener( new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                 
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
+                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
+                 STAppFrame.Undo();
+                 RefreshWindow (CurrentMDIWindowIndex);
+                 STAppFrame.UpdateDisplay();
+                 
+                    
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to undo. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+            
+           } 
+       });
   
   mainAppFrame.addFileMenuSaveActionListener(
       new ActionListener() {
@@ -2914,10 +2939,13 @@ File newfile = new File(path + ".js");
       {
           String[] blanklist = new String[0];
            newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
-        if ((e.getStateChange() == ItemEvent.SELECTED)) {
+     
+               if ((e.getStateChange() == ItemEvent.SELECTED)) {
          if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
                {
-             newbugview.setDataLoopSource("urllist");
+             STAppFrame.saveState();
+
+                   newbugview.setDataLoopSource("urllist");
           
           String selectedarraylist = newbugview.JComboBoxStoredArrayLists.getSelectedItem().toString(); 
       newbugview.setJTableSourceToURLList(blanklist, selectedarraylist);
@@ -2936,6 +2964,7 @@ File newfile = new File(path + ".js");
              File chosenCSVFile = STAppFrame.ChangeCSVFile();
    if (chosenCSVFile!=null)
    {
+  STAppFrame.saveState();
 
    newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
    newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
@@ -2957,17 +2986,22 @@ File newfile = new File(path + ".js");
 
         @Override
         public void stateChanged(ChangeEvent e) {
+      
+
         newbug.limit = (Integer) newbugview.JSpinnerLimit.getValue();
         }
     });
          newbugview.addJCheckBoxRandomActionListener((ActionEvent evt) -> {
-          newbug.random = newbugview.JCheckBoxRandom.isSelected();
+        STAppFrame.saveState();
+    
+             newbug.random = newbugview.JCheckBoxRandom.isSelected();
          });
          
              
          
           newbugview.addJButtonOKActionListener((ActionEvent evt) -> {
-           
+           STAppFrame.saveState();
+     
                String ACommand = evt.getActionCommand();
                if (ACommand.equals("Update"))
          {
@@ -2988,10 +3022,14 @@ File newfile = new File(path + ".js");
            });
          newbugview.addRightClickPanelListener(this, newbug, newbugview, STAppFrame, STAppData);
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, newbugview.index-1, -1);
+             STAppFrame.saveState();
+  
+             MoveProcedure(STAppFrame, newbugview.index-1, -1);
            });
          newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
-               MoveProcedure(STAppFrame, newbugview.index-1, 1);
+             STAppFrame.saveState();
+      
+             MoveProcedure(STAppFrame, newbugview.index-1, 1);
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                
@@ -3022,7 +3060,8 @@ File newfile = new File(path + ".js");
            
  newbugview.addJButtonDeleteBugActionListener((ActionEvent evt) -> {
       
-    
+    STAppFrame.saveState();
+
                STAppData.DeleteBug(newbugview.index);
                 STAppFrame.DeleteBugView(newbugview.index);
                     STAppFrame.UpdateDisplay();
@@ -3032,7 +3071,9 @@ File newfile = new File(path + ".js");
  
  
            newbugview.addJButtonGoActionActionListener((ActionEvent evt) -> {
-              GoAction thisActionToAdd = new GoAction("");
+            STAppFrame.saveState();
+
+               GoAction thisActionToAdd = new GoAction("");
                GoActionView thisActionViewToAdd = new GoActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -3044,7 +3085,9 @@ File newfile = new File(path + ".js");
             STAppData.changes=true;  
            });
             newbugview.addJButtonClickAtXPATHActionListener((ActionEvent evt) -> {
-              ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
+           STAppFrame.saveState();
+       
+                ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
               ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
              
@@ -3056,7 +3099,9 @@ File newfile = new File(path + ".js");
            STAppData.changes=true;  
            });
            newbugview.addJButtonTypeAtXPATHActionListener((ActionEvent evt) -> {
-              TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
+            STAppFrame.saveState();
+        
+               TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
               TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -3067,7 +3112,9 @@ File newfile = new File(path + ".js");
            STAppData.changes=true;  
            });
            newbugview.addJButtonFindXPATHPassFailListener((ActionEvent evt) -> {
-             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
+             STAppFrame.saveState();
+    
+               FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
              FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
            thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -3078,7 +3125,9 @@ File newfile = new File(path + ".js");
            STAppData.changes=true;  
            });
            newbugview.addJButtonDoNotFindXPATHPassFailListener((ActionEvent evt) -> {
-             FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
+             STAppFrame.saveState();
+      
+               FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
              NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -3089,7 +3138,9 @@ File newfile = new File(path + ".js");
            STAppData.changes=true;  
            });
                newbugview.addJButtonYesNoPromptPassFailListener((ActionEvent evt) -> {
-             YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
+           STAppFrame.saveState();
+      
+                   YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
              YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -3102,6 +3153,10 @@ File newfile = new File(path + ".js");
            
     newbugview.addDoActionItemListener((ItemEvent e) -> {
         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+          STAppFrame.saveState();
+      
+         
+          
             Object ActionType = e.getItem();
             String ActionToAdd = ActionType.toString();
             ActionsMaster newActionsMaster = new ActionsMaster();
@@ -3129,6 +3184,9 @@ File newfile = new File(path + ".js");
            });
      newbugview.addPassFailActionsItemListener((ItemEvent e) -> {
          if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            STAppFrame.saveState();
+      
+          
              Object PassFailActionType = e.getItem();
              String PassFailActionToAdd = PassFailActionType.toString();
              ActionsMaster newActionsMaster = new ActionsMaster();
@@ -3154,9 +3212,34 @@ File newfile = new File(path + ".js");
         
          }
            });
+     newbugview.addJTextBugTitleFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+             newbugview.fieldBugTitleOnFocus = newbug.BugTitle;
+           
+          
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            if (!newbug.BugTitle.equals(newbugview.fieldBugTitleOnFocus))
+            {
+                STAppFrame.saveState();
+          
+             
+                 
+            }
+           
+            }
+        });
      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
        STAppFrame.addjCheckBoxShowReportActionListener((ActionEvent e) -> {
-      STAppData.ShowReport = STAppFrame.getjCheckBoxShowReport();
+      STAppFrame.saveState();
+ 
+       
+           STAppData.ShowReport = STAppFrame.getjCheckBoxShowReport();
       
   if (STAppData.ShowReport==false)
   {
@@ -3177,26 +3260,31 @@ File newfile = new File(path + ".js");
         STAppFrame.addjSpinnerWaitTimeChangeListener(new ChangeListener(){
            @Override
         public void stateChanged(ChangeEvent e) {
-        STAppData.setWaitTime(STAppFrame.GetWaitTime());
+  
+            STAppData.setWaitTime(STAppFrame.GetWaitTime());
         }    
           });
             STAppFrame.addjSpinnerSessionsChangeListener(new ChangeListener(){
            @Override
         public void stateChanged(ChangeEvent e) {
-        STAppData.setSessions(STAppFrame.getSessions());
+    
+            STAppData.setSessions(STAppFrame.getSessions());
         }    
           });
         
  STAppFrame.addjCheckBoxIncludeScreenshotsActionListener((ActionEvent e) -> {
-         STAppData.IncludeScreenshots = STAppFrame.getIncludeScreenshots();
+     STAppFrame.saveState();   
+     STAppData.IncludeScreenshots = STAppFrame.getIncludeScreenshots();
           
        });
        STAppFrame.addjCheckBoxPromptToCloseActionListener((ActionEvent e) -> {
-         STAppData.PromptToClose = STAppFrame.getjCheckBoxPromptToClose();
+       STAppFrame.saveState();
+           STAppData.PromptToClose = STAppFrame.getjCheckBoxPromptToClose();
           
        });
          STAppFrame.addjCheckBoxExitAfterActionListener((ActionEvent e) -> {
-     STAppData.ExitAfter = STAppFrame.getjCheckBoxExitAfter();
+    STAppFrame.saveState();
+             STAppData.ExitAfter = STAppFrame.getjCheckBoxExitAfter();
   if (STAppData.ExitAfter)
   {
       STAppFrame.setjCheckBoxShowReportSelected(false);
@@ -3208,7 +3296,8 @@ File newfile = new File(path + ".js");
           
        });
          STAppFrame.addjRadioButtonUniquePerFileActionListener((ActionEvent e) -> {
-        if (STAppFrame.getjRadioButtonUniquePerFile())
+      STAppFrame.saveState();
+             if (STAppFrame.getjRadioButtonUniquePerFile())
       {
           STAppFrame.setjRadioButtonUniqueGlobalSelected(false);
            STAppData.UniqueOption = "file";
@@ -3220,7 +3309,8 @@ File newfile = new File(path + ".js");
       }        
        });   
          STAppFrame.addjRadioButtonUniqueGlobalActionListener((ActionEvent e) -> {
-          if (STAppFrame.getjRadioButtonUniqueGlobalSelected())
+          STAppFrame.saveState();
+             if (STAppFrame.getjRadioButtonUniqueGlobalSelected())
       {
           STAppFrame.setjRadioButtonUniquePerFileSelected(false);
           STAppData.UniqueOption = "global";
@@ -3233,7 +3323,8 @@ File newfile = new File(path + ".js");
              
        }); 
         STAppFrame.addjCheckBoxUniqueURLsActionListener((ActionEvent e) -> {
-       STAppData.UniqueList = STAppFrame.getjCheckBoxUniqueURLsSelected();
+       STAppFrame.saveState();
+            STAppData.UniqueList = STAppFrame.getjCheckBoxUniqueURLsSelected();
     
         STAppFrame.setjRadioButtonUniquePerFileEnabled(STAppData.UniqueList);
         STAppFrame.setjRadioButtonUniqueGlobalEnabled(STAppData.UniqueList);
@@ -3244,7 +3335,8 @@ File newfile = new File(path + ".js");
     
        });     
          STAppFrame.addjCheckBoxEmailReportActionListener((ActionEvent e) -> {
-      STAppData.EmailReport = STAppFrame.getjCheckBoxEmailReportSelected();
+      STAppFrame.saveState();
+             STAppData.EmailReport = STAppFrame.getjCheckBoxEmailReportSelected();
   if (STAppData.EmailReport==true)
   {
        STAppFrame.setjCheckBoxIncludeScreenshotsEnabled(false);
@@ -3259,7 +3351,8 @@ File newfile = new File(path + ".js");
        });     
         
           STAppFrame.addjCheckBoxEnableMultiSessionActionListener((ActionEvent e) -> {
-    if (STAppFrame.getjCheckBoxEnableMultiSessionSelected())
+   STAppFrame.saveState();
+              if (STAppFrame.getjCheckBoxEnableMultiSessionSelected())
     {
      STAppFrame.setjSpinnerSessionsEnabled(true);
      STAppData.MultiSession = true;
@@ -3273,7 +3366,8 @@ File newfile = new File(path + ".js");
     
        });      
               STAppFrame.addjCheckBoxEmailReportFailActionListener((ActionEvent e) -> {
-    STAppData.EmailReportFail = STAppFrame.getjCheckBoxEmailReportFailSelected();
+   STAppFrame.saveState();
+                  STAppData.EmailReportFail = STAppFrame.getjCheckBoxEmailReportFailSelected();
   if (STAppData.EmailReportFail==true)
   {
        STAppFrame.setjCheckBoxIncludeScreenshotsEnabled(false);
@@ -3287,7 +3381,7 @@ File newfile = new File(path + ".js");
     
        });  
                   STAppFrame.addjCheckBoxOSTypeWindows32ActionListener((ActionEvent e) -> {
-
+STAppFrame.saveState();
      if (STAppFrame.getjCheckBoxOSTypeWindows32Selected())
      {
          STAppData.OSType = "Windows32";
@@ -3299,7 +3393,8 @@ File newfile = new File(path + ".js");
        });     
    
       STAppFrame.addjCheckBoxOSTypeWindows64ActionListener((ActionEvent e) -> {
-  if (STAppFrame.getjCheckBoxOSTypeWindows64Selected())
+  STAppFrame.saveState();
+          if (STAppFrame.getjCheckBoxOSTypeWindows64Selected())
      {
      STAppData.OSType = "Windows64";
      STAppFrame.setjCheckBoxOSTypeWindows32Selected(false);
@@ -3311,7 +3406,8 @@ File newfile = new File(path + ".js");
        });     
                   
          STAppFrame.addjCheckBoxOSTypeMacActionListener((ActionEvent e) -> {
-     if (STAppFrame.getjCheckBoxOSTypeMacSelected())
+    STAppFrame.saveState();
+             if (STAppFrame.getjCheckBoxOSTypeMacSelected())
      {
         STAppData.OSType = "Mac";
      STAppFrame.setjCheckBoxOSTypeWindows32Selected(false);
@@ -3324,7 +3420,8 @@ File newfile = new File(path + ".js");
     
                        
          STAppFrame.addjCheckBoxOSTypeLinux32ActionListener((ActionEvent e) -> {
-      if (STAppFrame.getjCheckBoxOSTypeLinux32Selected())
+     STAppFrame.saveState();
+             if (STAppFrame.getjCheckBoxOSTypeLinux32Selected())
      {
          STAppData.OSType = "Linux32";
      STAppFrame.setjCheckBoxOSTypeMacSelected(false);
@@ -3336,7 +3433,8 @@ File newfile = new File(path + ".js");
        });   
     
              STAppFrame.addjCheckBoxOSTypeLinux64ActionListener((ActionEvent e) -> {
-       if (STAppFrame.getjCheckBoxOSTypeLinux64Selected())
+     STAppFrame.saveState();
+                 if (STAppFrame.getjCheckBoxOSTypeLinux64Selected())
      {
          STAppData.OSType = "Linux64";
      STAppFrame.setjCheckBoxOSTypeMacSelected(false);
@@ -3347,7 +3445,7 @@ File newfile = new File(path + ".js");
 
    
        });  
-         
+     
          
          
       }
@@ -3441,7 +3539,122 @@ File newfile = new File(path + ".js");
     REFSYNCH.execute();
  }
 
+ public void RefreshWindow (int MDI_INDEX)
+  {
+         File lastUndoFile = new File(MDIViewClasses.get(MDI_INDEX).undoTempFile);
+      if(lastUndoFile.exists())
+      {
+      SeleniumTestTool STAppFrame = MDIViewClasses.get(MDI_INDEX);
+ 
+      SeleniumTestToolData STAppData = STAppFrame.STAppData;
+STAppFrame.BugViewArray.clear();
+int bugindex = 0;
+for (Procedure PROC: STAppData.BugArray)
+    
+{
+   
+   
+   
+    if ("Dataloop".equals(PROC.Type))
+    {
+    
+           
+             
+      
+    
+        if ("file".equals(PROC.DataLoopSource))
+        {
+        File DataFile_file = new File(PROC.DataFile);
+       
+            STAppFrame.AddNewDataLoopFileView(DataFile_file);
 
+        }
+       if ("urllist".equals(PROC.DataLoopSource))
+        {
 
+             STAppFrame.AddNewDataLoopURLListView(PROC.URLListName);
+
+        }
+ 
+    }
+    else
+    {
+     STAppFrame.AddNewBugView();   
+   
+  
+    }
+    
+      int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+       
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers( STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.BugViewArray.get(bugindex).Type = PROC.Type;
+       STAppFrame.BugViewArray.get(bugindex).DataFile = PROC.DataFile;
+        STAppFrame.BugViewArray.get(bugindex).DataLoopSource = PROC.DataLoopSource;
+              if (PROC.DataFile.contains("\\"))
+                    {
+                         STAppFrame.BugViewArray.get(bugindex).DataLoopSource = "file";
+                    }
+
+   
+  
+    newbugview.setRandom(newbug.random);
+
+    newbugview.setLimit(newbug.limit);
+ 
+   
+    newbugview.setBugTitle(newbug.BugTitle);
+  
+  
+    for (int j = 0; j <newbug.ActionsList.size(); j++)
+    {
+ 
+    
+  
+  
+   ActionsMaster NewActionsMaster = new ActionsMaster();
+   
+  
+   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
+  
+   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
+    if (thisActionViewHashMap.containsKey(newbug.ActionsList.get(j).Type))
+           {
+             
+               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(newbug.ActionsList.get(j).Type);
+              
+               thisActionViewToAdd.SetVars(newbug.ActionsList.get(j).Variable1, newbug.ActionsList.get(j).Variable2, newbug.ActionsList.get(j).Password, newbug.ActionsList.get(j).BoolVal1, newbug.ActionsList.get(j).BoolVal2, newbug.ActionsList.get(j).Locked);
+               thisActionViewToAdd.AddListeners(newbug.ActionsList.get(j),MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(newbug.ActionsList.get(j), MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+              
+              MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
+               
+           }      
+ 
+     if (thisPassFailActionViewHashMap.containsKey(newbug.ActionsList.get(j).Type))
+             {
+               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(newbug.ActionsList.get(j).Type);
+              
+               thisActionViewToAdd.SetVars(newbug.ActionsList.get(j).Variable1, newbug.ActionsList.get(j).Variable2, newbug.ActionsList.get(j).Password, newbug.ActionsList.get(j).BoolVal1, newbug.ActionsList.get(j).BoolVal2, newbug.ActionsList.get(j).Locked);
+               thisActionViewToAdd.AddListeners(newbug.ActionsList.get(j),MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(newbug.ActionsList.get(j), MDIViewClasses.get(MDI_INDEX),MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
+              
+               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
+      
+             }
+            
+// MDIClasses.get(MDI_INDEX).UpdateDisplay();
+        }   
+  
+    }  
+ 
+   STAppFrame.UpdateDisplay();
+        JScrollBar vertical =  STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+ 
+  }
+  }
       
 }

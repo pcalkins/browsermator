@@ -262,12 +262,12 @@ String stringTimeout = String.valueOf(STAppData.getTimeout());
 STAppData.AllFieldValues.add(stringTimeout);
 String stringSessions = String.valueOf(STAppData.getSessions());
 STAppData.AllFieldValues.add(stringSessions);
-STAppData.AllFieldValues.add(STAppFrame.getSMTPHostname());
-STAppData.AllFieldValues.add(STAppFrame.getEmailFrom());
-STAppData.AllFieldValues.add(STAppFrame.getEmailLoginName());
-STAppData.AllFieldValues.add(STAppFrame.getEmailPassword());
-STAppData.AllFieldValues.add(STAppFrame.getEmailTo());
-STAppData.AllFieldValues.add(STAppFrame.getSubject());
+STAppData.AllFieldValues.add(STAppData.getSMTPHostname());
+STAppData.AllFieldValues.add(STAppData.getEmailFrom());
+STAppData.AllFieldValues.add(STAppData.getEmailLoginName());
+STAppData.AllFieldValues.add(STAppData.getEmailPassword());
+STAppData.AllFieldValues.add(STAppData.getEmailTo());
+STAppData.AllFieldValues.add(STAppData.getEmailSubject());
 
 String thisbool = "false";
 if (STAppData.getEmailReport())

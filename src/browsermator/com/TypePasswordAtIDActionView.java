@@ -32,14 +32,16 @@ public class TypePasswordAtIDActionView extends ActionView
  AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          STAppFrame.DeleteActionView(newbugview, action.index);
+                             STAppFrame.saveState();
+                            STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
                            STAppFrame.UpdateScrollPane(newbugview);
    });
   
 
  addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
-          action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
+          STAppFrame.saveState();   
+     action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
           
        });
   
@@ -65,7 +67,9 @@ public class TypePasswordAtIDActionView extends ActionView
                  );
 
      addJButtonOKActionActionListener((ActionEvent evt) -> {
-         String ACommand = evt.getActionCommand();
+        
+              STAppFrame.saveState();
+              String ACommand = evt.getActionCommand();
          
          if (ACommand.equals("Update"))
          {

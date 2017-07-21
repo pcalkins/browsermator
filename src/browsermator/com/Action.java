@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
@@ -7,10 +8,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class Action implements Initializable {
+
+public abstract class Action implements Initializable, Serializable {
   
   
     

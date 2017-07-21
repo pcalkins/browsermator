@@ -33,7 +33,8 @@ public class DragAndDropByActionView extends ActionView  {
  AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          STAppFrame.DeleteActionView(newbugview, action.index);
+                           STAppFrame.saveState();
+                            STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
                            STAppFrame.UpdateScrollPane(newbugview);
    });
@@ -60,6 +61,7 @@ public class DragAndDropByActionView extends ActionView  {
                  );
 
      addJButtonOKActionActionListener((ActionEvent evt) -> {
+             STAppFrame.saveState();
          String ACommand = evt.getActionCommand();
          
          if (ACommand.equals("Update"))

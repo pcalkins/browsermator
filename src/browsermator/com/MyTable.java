@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import com.opencsv.CSVReader;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
@@ -264,15 +265,15 @@ catch (Exception ex)
            
            DataTable = new JTable(tableModel);
         
-   
+      
         int number_of_rows = DataTable.getRowCount();
-        if (number_of_rows < 20)
+        if (number_of_rows < 10)
         {
-      DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
+      DataTable.setPreferredScrollableViewportSize(new Dimension (694, number_of_rows * DataTable.getRowHeight()));
         }
         else
         {
-       DataTable.setPreferredScrollableViewportSize(new Dimension (800,400));     
+       DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
         }
        
  
@@ -297,9 +298,10 @@ catch (Exception ex)
 
 
         DataTable = new JTable(tableModel);
+
      DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
-   DataTable.setPreferredScrollableViewportSize(new Dimension (700, 150));
-    DataTable.setPreferredSize(new Dimension (700,150));
+   DataTable.setPreferredScrollableViewportSize(new Dimension (694, 200));
+ //   DataTable.setPreferredSize(new Dimension (694,510));
 this.URLListRunTimeEntries = in_entries;
 
 }
@@ -324,14 +326,14 @@ this.URLListRunTimeEntries = in_entries;
         
    
         int number_of_rows = DataTable.getRowCount();
-         DataTable.getColumnModel().getColumn(0).setPreferredWidth(800);
-        if (number_of_rows < 20)
+         DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
+        if (number_of_rows < 10)
         {
-      DataTable.setPreferredScrollableViewportSize(new Dimension (800, number_of_rows * DataTable.getRowHeight()));
+      DataTable.setPreferredScrollableViewportSize(new Dimension (694, number_of_rows * DataTable.getRowHeight()));
         }
         else
         {
-       DataTable.setPreferredScrollableViewportSize(new Dimension (800,400));     
+       DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
         }
  }
      

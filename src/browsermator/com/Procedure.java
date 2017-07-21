@@ -3,11 +3,12 @@ package browsermator.com;
 
 import com.opencsv.CSVReader;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Procedure {
+public class Procedure implements Serializable {
   
   
 
@@ -22,7 +23,7 @@ String DataFile;
 String Type;
 Boolean Locked;
 int limit;
-CSVReader CSVFileReader;
+transient CSVReader CSVFileReader;
 int number_of_columns;
 int number_of_records;
 Boolean random;
@@ -33,7 +34,7 @@ String DataLoopSource;
 //  String[] URLListRunTimeEntries;
   
  
-   Procedure ()
+   Procedure () 
    {
        this.limit = 0;
        this.Locked = false;

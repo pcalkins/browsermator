@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import java.io.Serializable;
 import java.util.*;
 import javax.swing.*;
 
@@ -9,7 +10,7 @@ import javax.swing.*;
  *  Comparator can be used to customize the sort order.
  */
 //class SortedComboBoxModel extends DefaultComboBoxModel
-class SortedComboBoxModel<E> extends DefaultComboBoxModel<E>
+class SortedComboBoxModel<E> extends DefaultComboBoxModel<E> implements Serializable
 {
 	private Comparator comparator;
 

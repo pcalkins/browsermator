@@ -11,7 +11,7 @@ import java.awt.*;
   * Modifications by greearb and jzd
   */
 
- public class ModifiedFlowLayout extends FlowLayout {
+ public class ModifiedFlowLayout extends FlowLayout  {
        public ModifiedFlowLayout() {
               super();
            }

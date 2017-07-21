@@ -35,14 +35,16 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
      File jsFile = STAppFrame.BrowseForJSFileAction();
       if (jsFile!=null)
       {
-       action.setVariable1(jsFile.getAbsolutePath());
+         STAppFrame.saveState();
+          action.setVariable1(jsFile.getAbsolutePath());
        this.JTextFieldVariable1.setText(jsFile.getAbsolutePath());
       }
    });
    AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
 
                         addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          STAppFrame.DeleteActionView(newbugview, action.index);
+                           STAppFrame.saveState();
+                            STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
                            STAppFrame.UpdateScrollPane(newbugview);
    });

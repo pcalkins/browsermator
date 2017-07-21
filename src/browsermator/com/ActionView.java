@@ -52,6 +52,9 @@ public abstract class ActionView implements Listenable, Initializable{
    JButton JButtonDragIt;
    Boolean Locked;
 
+   String field1OnFocus;
+   String field2OnFocus;
+   String fieldPasswordOnFocus;
    ActionView()
    {
       this.Locked = false;
@@ -71,6 +74,9 @@ public abstract class ActionView implements Listenable, Initializable{
     this.JButtonDelete = new JButton("Remove");
    
 
+   this.field1OnFocus = "";
+   this.field2OnFocus = "";
+   this.fieldPasswordOnFocus = "";
 String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
@@ -152,7 +158,10 @@ String stringactionindex = Integer.toString(this.index+1);
          JTextFieldVariableVARINDEX.setText(in_index);
          
      }
-
+ public void addJTextPasswordFocusListener(FocusListener focuslistener)
+     {
+        JTextFieldPassword.addFocusListener(focuslistener);
+     }
      public void addJTextFieldFocusListener(FocusListener focuslistener)
      {
         JTextFieldVariable1.addFocusListener(focuslistener);
@@ -289,20 +298,45 @@ String stringactionindex = Integer.toString(this.index+1);
        }
        public void AddSetVarFocusListeners(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, Action action)
        {
+         addJTextPasswordFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+            
+            fieldPasswordOnFocus = action.Password;
+           
+           
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
           
+            if (!action.Password.equals(fieldPasswordOnFocus))
+            {
+              
+                STAppFrame.saveState();
+             
+            }
+            }
+        }); 
        addJTextFieldFocusListener(new FocusListener() {
 
             @Override
             public void focusGained(FocusEvent e) {
             
-            
+             field1OnFocus = action.Variable1;
            
              STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 1 );
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-          
+            if (!action.Variable1.equals(field1OnFocus))
+            {
+                STAppFrame.saveState();
+              
+                
+            }
               STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 1);
             }
         });
@@ -311,15 +345,19 @@ String stringactionindex = Integer.toString(this.index+1);
             @Override
             public void focusGained(FocusEvent e) {
             
-         
-          
+        
+            field2OnFocus = action.Variable2;
                STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 2 );
                 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
+            if (!action.Variable2.equals(field2OnFocus))
+            {
+                STAppFrame.saveState();
           
+            }
                STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 2);
             }
         });    
@@ -644,6 +682,7 @@ if (!potentialDrag) return;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
     if (thisActionHashMap.containsKey(ActionType))
            {
+               STAppFrame.saveState();
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
@@ -657,6 +696,7 @@ if (!potentialDrag) return;
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
+                 STAppFrame.saveState();
                Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
@@ -686,7 +726,8 @@ if (!potentialDrag) return;
     
     AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
                         this.addJButtonDeleteActionActionListener((ActionEvent evt) -> {
-                          STAppFrame.DeleteActionView(newbugview, action.index);
+                        STAppFrame.saveState();
+                            STAppFrame.DeleteActionView(newbugview, action.index);
                            STAppData.DeleteAction(newbug, action.index);
                          
                           
@@ -697,7 +738,8 @@ if (!potentialDrag) return;
               
                         
                          addJButtonOKActionActionListener((ActionEvent evt) -> {
-         String ACommand = evt.getActionCommand();
+       STAppFrame.saveState();
+                             String ACommand = evt.getActionCommand();
          
          if (ACommand.equals("Update"))
          {
@@ -721,10 +763,10 @@ if (!potentialDrag) return;
 
   public void AddLoopListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
-   if (STAppData.hasStoredVar)
-   {
+//   if (STAppData.hasStoredVar)
+//   {
    AddSetVarFocusListeners(STAppFrame, STAppData, newbug, action);
-   }
+//   }
 if (newbugview.myTable!=null)
 {
   

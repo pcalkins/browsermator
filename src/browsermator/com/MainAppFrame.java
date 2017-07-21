@@ -41,6 +41,8 @@ public class MainAppFrame extends JFrame {
 private ButtonGroup LookAndFeelGroup;
      private JMenuBar menuBar;
      private JMenu fileMenu;
+     private JMenu editMenu;
+     private JMenuItem undoMenuItem;
      private JMenuItem openMenuItem;
      private JMenuItem saveMenuItem;
      private JMenuItem exitMenuItem;
@@ -164,6 +166,8 @@ super.setSize(Width-300,Height-300);
    
       menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        editMenu = new javax.swing.JMenu();
+        undoMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -181,20 +185,25 @@ super.setSize(Width-300,Height-300);
         importMenuItem = new javax.swing.JMenuItem();
         newFileItem.setMnemonic('n');
         newFileItem.setText("New");
+        undoMenuItem.setText("Undo");
         openMenuItem.setMnemonic('o');
+        undoMenuItem.setMnemonic('Z');
         openMenuItem.setText("Open");
         closeMenuItem.setText("Close");
         importMenuItem.setMnemonic('i');
         importMenuItem.setText("Import");
+        editMenu.add(undoMenuItem);
         fileMenu.add(newFileItem);
         fileMenu.add(openMenuItem);
         fileMenu.add(importMenuItem);
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
+        editMenu.setText("Edit");
         saveAsMenuItem.setText("Save As");
         saveAsMenuItem.setMnemonic('a');
         browseCloudMenuItem.setText("BrowserMator File Cloud");
         uploadFileToCloudMenuItem.setText("Upload to BrowserMator Cloud");
+           undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));  
            saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));  
            openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); 
            closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));  
@@ -259,13 +268,13 @@ super.setSize(Width-300,Height-300);
         exitMenuItem.setText("Exit");
             fileMenu.add(exitMenuItem);
 
-        menuBar.add(fileMenu);
+       
         
             fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
- 
+        menuBar.add(editMenu);
 
       
         jMenuThemes.setText("Themes");
@@ -303,6 +312,10 @@ super.setSize(Width-300,Height-300);
    {
        newFileItem.addActionListener(listener);
    }
+    public void addEditMenuUndoActionListener (ActionListener listener) {
+       undoMenuItem.addActionListener(listener);
+   }
+   
     public void addFileMenuSaveActionListener (ActionListener listener) {
        saveMenuItem.addActionListener(listener);
    }

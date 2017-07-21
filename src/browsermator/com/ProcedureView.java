@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -118,6 +119,7 @@ JSpinner JSpinnerLimit = new JSpinner( new SpinnerNumberModel(0, //initial value
 String DataLoopSource;
 String URLListName; // values for DataLoopSource are 'urllist' or 'file'
 SortedComboBoxModel <String> sortmodel;
+String fieldBugTitleOnFocus;
    static final Comparator<String> URLLIST_ORDER = 
                                         new Comparator<String>() {
             public int compare(String list_item1, String list_item2) {
@@ -145,6 +147,7 @@ SortedComboBoxModel <String> sortmodel;
    
     ProcedureView()
      {
+         fieldBugTitleOnFocus = "";
          DataFile = "";
 URLListName = "";
  DataLoopSource = "none";
@@ -281,7 +284,10 @@ ActionScrollPane.setVisible(true);
  JButtonSubmitBug.setActionCommand("Update");
     
      }
-    
+     public void addJTextBugTitleFocusListener(FocusListener focuslistener)
+     {
+        JTextFieldBugTitle.addFocusListener(focuslistener);
+     }
     public void addJCheckBoxRandomActionListener(ActionListener listener)
     {
         JCheckBoxRandom.addActionListener(listener);
@@ -465,7 +471,8 @@ ActionScrollPane.setVisible(true);
       
         anItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-      cloneProcedure(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
+          STAppFrame.saveState();
+          cloneProcedure(mainAppController, this_bug, this_bugview, STAppFrame, STAppData);
       }
     });      
     }
@@ -480,6 +487,7 @@ ActionScrollPane.setVisible(true);
 
           public void cloneProcedure(STAppController mainAppController, Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
+         
           if ("Dataloop".equals(this_bug_in.Type))
           {
 
@@ -678,6 +686,7 @@ ActionScrollPane.setVisible(true);
   public void addDoActionItemListener(ItemListener listener) {
        JComboBoxDoActions.addItemListener(listener);
      
+     
    } 
     public void addPassFailActionsItemListener(ItemListener listener) {
        JComboBoxPassFailActions.addItemListener(listener);
@@ -801,14 +810,16 @@ ActionScrollPane.setVisible(true);
          myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      myTable.DataTable.getTableHeader().setReorderingAllowed(false);
 
-    myTable.DataTable.setFillsViewportHeight( true );
+  myTable.DataTable.setFillsViewportHeight( true );
 
     panelForTable.removeAll();
+  
    JTableScrollPane = new JScrollPane(myTable.DataTable, 
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-   
-  //    JTableScrollPane.setSize(new Dimension(600, 840));
+
+    
+   //   JTableScrollPane.setSize(new Dimension(700, 120));
      JTableScrollPane.setVisible(true);
      
   
@@ -825,14 +836,22 @@ ActionScrollPane.setVisible(true);
     panelForBrowseAndPulldown.add(JLabelSpinnerLimit);
     panelForBrowseAndPulldown.add(JSpinnerLimit);
     panelForBrowseAndPulldown.add(JCheckBoxRandom);
-    
+ 
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
-      
-    panelForTable.add(JTableScrollPane, BorderLayout.PAGE_END);
+    if (myTable.number_of_records<2)
+    {
+    panelForTable.setPreferredSize(new Dimension(700, 120));
+    }
+    else
+    {
+     panelForTable.setPreferredSize(new Dimension(700, 220));    
+    }
+  panelForTable.add(JTableScrollPane, BorderLayout.CENTER);
+
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
   
-    AddToGrid(panelForTable, 10, 1, 3, 8, 1, 1, GridBagConstraints.WEST);
+    AddToGrid(panelForTable, 10, 2, 3, 1, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {
