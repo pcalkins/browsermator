@@ -1,6 +1,7 @@
 
 package browsermator.com;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -25,11 +26,9 @@ import java.util.HashMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-
-
 
 public class SeleniumTestTool extends JInternalFrame {
 
@@ -39,8 +38,7 @@ String short_filename;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
 String undoTempFile;
-//  HashMap<String, String> VarHashMap = new HashMap();
-//  HashMap<String, String[]> VarLists = new HashMap();
+
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
   this.undoTempFile = "";
@@ -49,11 +47,10 @@ String undoTempFile;
   this.filename = STAppData.filename;
   
  this.short_filename = STAppData.short_filename;
- // this.VarHashMap = STAppData.getVarHashMap();
- // this.VarLists = STAppData.getVarLists();
-  this.BugViewArray = new ArrayList<ProcedureView>();
+  this.BugViewArray = new ArrayList<>();
  this.setIconifiable(true);
-   initComponents();
+ // initComponents();
+   initializeComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
@@ -89,8 +86,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       setOSTypeActive(true);
     
       }    
-//  setVarHashMap(STAppData.getVarHashMap());
-// setVarLists(STAppData.getVarLists());
+
  populateSelectURLListPulldowns();
   }
    public void refreshStoredArrayPulldown(ProcedureView PV)
@@ -1287,7 +1283,204 @@ bugindex++;
  }
   
 
- 
+ private void initializeComponents()
+ {
+     JPanel jPanelNorth = new JPanel();
+     JPanel jPanelSouth = new JPanel();
+     JPanel jPanelEast = new JPanel();
+     JPanel jPanelWest = new JPanel();
+        jButtonDoStuff = new javax.swing.JButton();
+        jButtonNewBug = new javax.swing.JButton();
+        MainScrollPane = new javax.swing.JScrollPane();
+        jLabelTHISSITEURL = new javax.swing.JLabel();
+        jSpinnerWaitTime = new javax.swing.JSpinner();
+        JLabel jLabelPauseTime = new javax.swing.JLabel();
+        jCheckBoxEmailReport = new javax.swing.JCheckBox();
+        JLabel jLabelSMTPHostname = new javax.swing.JLabel();
+        jTextFieldSMTPHostName = new javax.swing.JTextField();
+        JLabel jLabelEmailLoginName = new javax.swing.JLabel();
+        jTextFieldEmailLoginName = new javax.swing.JTextField();
+        JLabel jLabelEmailLoginPassword = new javax.swing.JLabel();
+        JLabel jLabelEmailTo = new javax.swing.JLabel();
+        jTextFieldEmailTo = new javax.swing.JTextField();
+        JLabel jLabelEmailFrom = new javax.swing.JLabel();
+        jTextFieldEmailFrom = new javax.swing.JTextField();
+        JLabel jLabelTitleSubject = new javax.swing.JLabel();
+        jTextFieldSubject = new javax.swing.JTextField();
+        jCheckBoxShowReport = new javax.swing.JCheckBox();
+        jCheckBoxExitAfter = new javax.swing.JCheckBox();
+        jTextFieldEmailPassword = new javax.swing.JPasswordField();
+        jCheckBoxEmailReportFail = new javax.swing.JCheckBox();
+        jCheckBoxPromptToClose = new javax.swing.JCheckBox();
+        JLabel jLabelTargetBrowser = new javax.swing.JLabel();
+        jComboBoxTargetBrowser = new javax.swing.JComboBox();
+        jCheckBoxOSTypeWindows32 = new javax.swing.JCheckBox();
+        jCheckBoxOSTypeMac = new javax.swing.JCheckBox();
+        jCheckBoxOSTypeLinux32 = new javax.swing.JCheckBox();
+        jCheckBoxOSTypeLinux64 = new javax.swing.JCheckBox();
+        jButtonClearEmailSettings = new javax.swing.JButton();
+        jButtonNewDataLoop = new javax.swing.JButton();
+        jButtonBrowseForFireFoxExe = new javax.swing.JButton();
+        jButtonFlattenFile = new javax.swing.JButton();
+        jButtonLoadEmailSettings = new javax.swing.JButton();
+        jButtonGutsView = new javax.swing.JButton();
+        jComboBoxStoredVariables = new javax.swing.JComboBox<>();
+        jButtonPlaceStoredVariable = new javax.swing.JButton();
+        jLabelStoredVariables = new javax.swing.JLabel();
+        jCheckBoxOSTypeWindows64 = new javax.swing.JCheckBox();
+        jCheckBoxIncludeScreenshots = new javax.swing.JCheckBox();
+        jSpinnerSessions = new javax.swing.JSpinner();
+        jLabelSessions = new javax.swing.JLabel();
+        jCheckBoxEnableMultiSession = new javax.swing.JCheckBox();
+        JLabel jLabelIENote = new javax.swing.JLabel();
+        jCheckBoxUniqueURLs = new javax.swing.JCheckBox();
+        jRadioButtonUniquePerFile = new javax.swing.JRadioButton();
+        jRadioButtonUniqueGlobal = new javax.swing.JRadioButton();
+        JTextFieldProgress = new javax.swing.JTextField();
+        jLabelTasks = new javax.swing.JLabel();
+        BorderLayout mainLayout = new BorderLayout();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1280, 800));
+
+        jButtonDoStuff.setText("Run All Procedures");
+        jButtonDoStuff.setActionCommand("AddAction");
+
+        jButtonNewBug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/browsermator/com/Resources/newFile.png"))); // NOI18N
+        jButtonNewBug.setText("Add Procedure ");
+   
+
+        MainScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        MainScrollPane.setName(""); // NOI18N
+
+        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
+        jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
+        jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
+
+        jLabelPauseTime.setText("Pause time (seconds)");
+
+        jCheckBoxEmailReport.setText("Email Report");
+
+        jLabelSMTPHostname.setText("SMTPHostname:");
+
+        jTextFieldSMTPHostName.setText("smtp.gmail.com");
+
+        jLabelEmailLoginName.setText("Email Login Name:");
+
+        jLabelEmailLoginPassword.setText("Email Login Password:");
+
+        jLabelEmailTo.setText("E-mail To:");
+
+        jLabelEmailFrom.setText("E-mail From:");
+
+        jLabelTitleSubject.setText("Title/Subject:");
+
+        jCheckBoxShowReport.setText("Show Report");
+
+        jCheckBoxExitAfter.setText("Exit After Running");
+
+        jTextFieldEmailPassword.setText("jPasswordField1");
+
+        jCheckBoxEmailReportFail.setText("Email Fail Report Only");
+        jCheckBoxEmailReportFail.setActionCommand("EmailReportIfFail");
+
+        jCheckBoxPromptToClose.setText("Prompt to Close WebDriver/Browser");
+
+        jLabelTargetBrowser.setText("Target Browser:");
+
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+
+        jCheckBoxOSTypeWindows32.setText("Windows - 32");
+        jCheckBoxOSTypeWindows32.setEnabled(false);
+
+        jCheckBoxOSTypeMac.setText("Mac");
+        jCheckBoxOSTypeMac.setEnabled(false);
+
+        jCheckBoxOSTypeLinux32.setText("Linux - 32");
+        jCheckBoxOSTypeLinux32.setEnabled(false);
+
+        jCheckBoxOSTypeLinux64.setText("Linux - 64");
+        jCheckBoxOSTypeLinux64.setEnabled(false);
+
+        jButtonClearEmailSettings.setText("Clear Email Settings");
+
+        jButtonNewDataLoop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/browsermator/com/Resources/newFile.png"))); // NOI18N
+        jButtonNewDataLoop.setText("Add Data Loop Procedure ");
+     
+
+        jButtonBrowseForFireFoxExe.setText("...");
+        jButtonBrowseForFireFoxExe.setEnabled(false);
+
+        jButtonFlattenFile.setText("Flatten to New File");
+        jButtonFlattenFile.setEnabled(false);
+
+        jButtonLoadEmailSettings.setText("Load Default Settings");
+
+        jButtonGutsView.setText("View Guts");
+
+        jComboBoxStoredVariables.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a stored variable" }));
+
+        jButtonPlaceStoredVariable.setText("Place Variable");
+
+        jLabelStoredVariables.setText("Stored Variables");
+
+        jCheckBoxOSTypeWindows64.setText("Windows - 64");
+        jCheckBoxOSTypeWindows64.setEnabled(false);
+
+        jCheckBoxIncludeScreenshots.setText("Include Screenshots");
+        jCheckBoxIncludeScreenshots.setEnabled(false);
+
+        jSpinnerSessions.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        jSpinnerSessions.setEnabled(false);
+
+        jLabelSessions.setText("Number of Sessions:");
+
+        jCheckBoxEnableMultiSession.setText("Enable Multi-Session");
+
+        jLabelIENote.setText("*To use Internet Explorer all security zones must have Enable Protected Mode checked.");
+
+        jCheckBoxUniqueURLs.setText("Unique Random URLs Only");
+        jCheckBoxUniqueURLs.setToolTipText("");
+
+        jRadioButtonUniquePerFile.setText("Per File");
+        jRadioButtonUniquePerFile.setEnabled(false);
+
+        jRadioButtonUniqueGlobal.setText("Global");
+        jRadioButtonUniqueGlobal.setEnabled(false);
+
+        jLabelTasks.setText("Running Tasks:");
+        setLayout(mainLayout);
+        
+       
+        jPanelNorth.add(jButtonNewBug);
+        jPanelNorth.add(jButtonNewDataLoop);
+        jPanelNorth.add(jLabelStoredVariables);
+        jPanelNorth.add(jComboBoxStoredVariables);
+        jPanelNorth.add(jButtonPlaceStoredVariable);
+        jPanelNorth.add(jButtonGutsView);
+       
+        
+        jPanelSouth.add(jButtonDoStuff);
+      //  jPanelSouth.add(jCheckBoxShowReport);
+     //   jPanelSouth.add(jCheckBoxIncludeScreenshots);
+     //   jPanelSouth.add(jCheckBoxEmailReport);
+        jPanelSouth.add(jLabelPauseTime);
+        jPanelSouth.add(jSpinnerWaitTime);
+        jPanelSouth.add(jLabelTargetBrowser);
+        jPanelSouth.add(jComboBoxTargetBrowser);
+        jPanelSouth.add(jButtonBrowseForFireFoxExe);
+    //    jPanelSouth.add(jCheckBoxOSTypeWindows32);
+    //    jPanelSouth.add(jCheckBoxOSTypeWindows64);
+    //    jPanelSouth.add(jCheckBoxOSTypeLinux32);
+    //    jPanelSouth.add(jCheckBoxOSTypeLinux64);
+    //    jPanelSouth.add(jCheckBoxOSTypeMac);
+    //    jPanelSouth.add(jButtonFlattenFile);
+         add(jPanelNorth, BorderLayout.NORTH);
+         add(MainScrollPane, BorderLayout.CENTER);
+         add(jPanelSouth, BorderLayout.SOUTH);
+        
+         
+ }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
