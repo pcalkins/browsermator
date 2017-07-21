@@ -44,8 +44,22 @@ public class TypeAtInputNameAction extends Action
 
 try
 {
-WebElement element = driver.findElement(By.name(this.Variable1));    
-element.sendKeys(this.Variable2);
+WebElement element = driver.findElement(By.name(this.Variable1));   
+char[] keys_to_type = this.Variable2.toCharArray();
+for(int i=0;i<keys_to_type.length;i++){
+    String sendkey = String.valueOf(keys_to_type[i]);
+  try
+  {
+Thread.sleep((long)(Math.random() * 100));
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping random: " + ex.toString());
+  }
+          
+element.sendKeys(sendkey);
+}
+
 if (this.BoolVal1.equals(true))
 {
     element.sendKeys(Keys.RETURN);

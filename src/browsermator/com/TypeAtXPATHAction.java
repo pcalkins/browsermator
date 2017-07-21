@@ -51,8 +51,21 @@ public class TypeAtXPATHAction extends Action
  {
         
         WebElement element = driver.findElement(By.xpath(this.Variable1));
+char[] keys_to_type = this.Variable2.toCharArray();
+for(int i=0;i<keys_to_type.length;i++){
+    String sendkey = String.valueOf(keys_to_type[i]);
+  try
+  {
+Thread.sleep((long)(Math.random() * 100));
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping random: " + ex.toString());
+  }
+          
+element.sendKeys(sendkey);
+}
 
-        element.sendKeys(this.Variable2);
 if (this.BoolVal1.equals(true))
 {
  
