@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -53,7 +54,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.28b-1";
+   public final String ProgramVersion = "1.1.29b";
    public String loginName;
    public String loginPassword;
 
@@ -323,9 +324,11 @@ mainAppFrame.initComponents();
                  {
                      SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
                   SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                 STAppFrame.Undo();
+                 Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                  STAppFrame.Undo();
                  RefreshWindow (CurrentMDIWindowIndex);
                  STAppFrame.UpdateDisplay();
+                   Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                  
                     
                  }
@@ -2943,7 +2946,7 @@ File newfile = new File(path + ".js");
                if ((e.getStateChange() == ItemEvent.SELECTED)) {
          if (newbugview.JComboBoxStoredArrayLists.getSelectedIndex()>0)
                {
-             STAppFrame.saveState();
+          
 
                    newbugview.setDataLoopSource("urllist");
           
@@ -3651,8 +3654,8 @@ for (Procedure PROC: STAppData.BugArray)
     }  
  
    STAppFrame.UpdateDisplay();
-        JScrollBar vertical =  STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+//        JScrollBar vertical =  STAppFrame.MainScrollPane.getVerticalScrollBar();
+// vertical.setValue( vertical.getMaximum() );
  
   }
   }

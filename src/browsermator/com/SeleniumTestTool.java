@@ -49,8 +49,8 @@ String undoTempFile;
  this.short_filename = STAppData.short_filename;
   this.BugViewArray = new ArrayList<>();
  this.setIconifiable(true);
- // initComponents();
-   initializeComponents();
+  initComponents();
+//   initializeComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
@@ -967,6 +967,7 @@ File newfile = new File(path + ".js");
 }
 public void Undo()
 { 
+  
     try
     {
         File lastUndoFile = new File(undoTempFile);
