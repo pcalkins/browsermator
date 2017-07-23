@@ -54,7 +54,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.29b";
+   public final String ProgramVersion = "1.1.30b";
    public String loginName;
    public String loginPassword;
 
@@ -315,31 +315,31 @@ mainAppFrame.initComponents();
   }
       }           
            });
-  mainAppFrame.addEditMenuUndoActionListener( new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                 
+ // mainAppFrame.addEditMenuUndoActionListener( new ActionListener() {
+   //        public void actionPerformed (ActionEvent evt) {
+       
+           //      CurrentMDIWindowIndex = GetCurrentWindow();
+           //      if (CurrentMDIWindowIndex !=-1)
+          //       {
+      
+               
          
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-                     SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
-                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                 Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                  STAppFrame.Undo();
-                 RefreshWindow (CurrentMDIWindowIndex);
-                 STAppFrame.UpdateDisplay();
-                   Navigator.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                 
+         //         MDIViewClasses.get(CurrentMDIWindowIndex).Undo();
+                  
+         //        RefreshWindow (CurrentMDIWindowIndex);
+   
+          //      MDIViewClasses.get(CurrentMDIWindowIndex).UpdateDisplay();
+                                
                     
-                 }
-                   else
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to undo. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
+         //        }
+         //          else
+  //{
+  //  JOptionPane.showMessageDialog (null, "No Active Window to undo. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+ // }
                  
             
-           } 
-       });
+     //      } 
+    //   });
   
   mainAppFrame.addFileMenuSaveActionListener(
       new ActionListener() {
@@ -590,6 +590,7 @@ STAppFrame.ShowStoredVarControls(false);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
+            STAppFrame.saveState();
     STAppData.AddNewBug();
    STAppFrame.AddNewBugView();  
    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
@@ -607,7 +608,7 @@ STAppFrame.ShowStoredVarControls(false);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-
+ STAppFrame.saveState();
      
    STAppFrame.AddNewDataLoopView();
    STAppData.AddNewDataLoop();
@@ -1041,6 +1042,7 @@ STAppFrame.ShowStoredVarControls(false);
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
+            STAppFrame.saveState();
     STAppData.AddNewBug();
    STAppFrame.AddNewBugView();  
    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
@@ -1059,7 +1061,7 @@ STAppFrame.ShowStoredVarControls(false);
         public void actionPerformed(ActionEvent evt)
         { 
 
-     
+      STAppFrame.saveState();
    STAppFrame.AddNewDataLoopView();
    STAppData.AddNewDataLoop();
     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
@@ -1464,6 +1466,7 @@ public void OpenBrowserMatorCloud()
   }
    public void SaveFile(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, boolean isSaveAs, boolean isFlatten, int calling_MDI_Index) throws IOException, XMLStreamException
     {
+        
     String old_filename = STAppData.filename;
       final JFileChooser fc = new JFileChooser(){
     @Override
@@ -2037,7 +2040,7 @@ xmlfile.writeEndElement();
             xmlfile.close();
             if (isFlatten)
             {
-
+  
      OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, calling_MDI_Index, true, false);
   OPENREF.execute();
   
@@ -2205,6 +2208,7 @@ STAppData.changes = false;
         
    if (!SHOWGUI)
    {
+       
       OpenFileThread OPENREF = new OpenFileThread(this, file, MDIDataClasses);
   OPENREF.execute();       
    }
@@ -3544,12 +3548,11 @@ STAppFrame.saveState();
 
  public void RefreshWindow (int MDI_INDEX)
   {
-         File lastUndoFile = new File(MDIViewClasses.get(MDI_INDEX).undoTempFile);
-      if(lastUndoFile.exists())
-      {
+   
       SeleniumTestTool STAppFrame = MDIViewClasses.get(MDI_INDEX);
  
       SeleniumTestToolData STAppData = STAppFrame.STAppData;
+  
 STAppFrame.BugViewArray.clear();
 int bugindex = 0;
 for (Procedure PROC: STAppData.BugArray)
@@ -3564,7 +3567,7 @@ for (Procedure PROC: STAppData.BugArray)
            
              
       
-    
+         
         if ("file".equals(PROC.DataLoopSource))
         {
         File DataFile_file = new File(PROC.DataFile);
@@ -3572,13 +3575,13 @@ for (Procedure PROC: STAppData.BugArray)
             STAppFrame.AddNewDataLoopFileView(DataFile_file);
 
         }
-       if ("urllist".equals(PROC.DataLoopSource))
+        else
         {
 
              STAppFrame.AddNewDataLoopURLListView(PROC.URLListName);
 
         }
- 
+      
     }
     else
     {
@@ -3590,6 +3593,7 @@ for (Procedure PROC: STAppData.BugArray)
       int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
        
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers( STAppFrame, STAppData, newbugview, newbug);
@@ -3614,8 +3618,7 @@ for (Procedure PROC: STAppData.BugArray)
     for (int j = 0; j <newbug.ActionsList.size(); j++)
     {
  
-    
-  
+
   
    ActionsMaster NewActionsMaster = new ActionsMaster();
    
@@ -3650,7 +3653,7 @@ for (Procedure PROC: STAppData.BugArray)
             
 // MDIClasses.get(MDI_INDEX).UpdateDisplay();
         }   
-  
+   STAppFrame.updateStoredURLListIndexes(newbugview); 
     }  
  
    STAppFrame.UpdateDisplay();
@@ -3658,6 +3661,6 @@ for (Procedure PROC: STAppData.BugArray)
 // vertical.setValue( vertical.getMaximum() );
  
   }
-  }
+  
       
 }

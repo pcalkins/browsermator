@@ -41,6 +41,9 @@ String CloudFile5;
    CloudFile5 = "";
    
     initComponents();
+    jTextFieldSMTPHostName.setText("");
+    jTextFieldEmailPassword.setText("");
+    
              Properties applicationProps = new Properties();
              Boolean file_exists = false;
               String userdir = System.getProperty("user.home");

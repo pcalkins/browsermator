@@ -1372,8 +1372,7 @@ while(thisContinuePrompt.isVisible() == true){
   else
   {
       int number_of_rows = 0;
-      if (!STAppData.BugArray.get(BugIndex).URLListData.equals(null))
-      {
+ 
       if ("urllist".equals(thisbug.DataLoopSource))
       {
  
@@ -1383,7 +1382,7 @@ while(thisContinuePrompt.isVisible() == true){
       {
           number_of_rows = STAppData.BugArray.get(BugIndex).RunTimeFileSet.size();
       }
-      }
+     
 if (number_of_rows==0)
 {
    int ActionIndex = 0;

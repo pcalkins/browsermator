@@ -45,7 +45,8 @@ public class TypePasswordAtInputNameActionView extends ActionView
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
+   STAppFrame.saveState();
+           action.setVariable1(JTextFieldVariable1.getText());
 
       }
 @Override
@@ -54,7 +55,8 @@ public class TypePasswordAtInputNameActionView extends ActionView
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+          action.setVariable1(JTextFieldVariable1.getText());
       }
       }
                  );
@@ -82,7 +84,8 @@ public class TypePasswordAtInputNameActionView extends ActionView
            {
 
        public void changedUpdate(DocumentEvent documentEvent) {
-      String Password="";
+  STAppFrame.saveState();
+           String Password="";
      char[] temp;
      temp = JTextFieldPassword.getPassword();
      for (int x = 0; x<temp.length; x++)
@@ -122,7 +125,8 @@ public class TypePasswordAtInputNameActionView extends ActionView
     //  }
       }
       public void removeUpdate(DocumentEvent documentEvent) {
-     String Password="";
+  STAppFrame.saveState();
+          String Password="";
      char[] temp;
      temp = JTextFieldPassword.getPassword();
        for (int x = 0; x<temp.length; x++)

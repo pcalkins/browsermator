@@ -41,24 +41,7 @@ public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTes
    
 
 
-     addJTextFieldVariable1DocListener(
-             new DocumentListener()
-           {
-@Override
-       public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
-      
-      }
-@Override
-      public void insertUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
-      }
-@Override
-      public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
-      }
-      }
-                 );
+ 
 
      addJButtonOKActionActionListener((ActionEvent evt) -> {
              STAppFrame.saveState();

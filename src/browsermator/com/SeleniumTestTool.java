@@ -23,10 +23,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -38,7 +41,7 @@ String short_filename;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
 String undoTempFile;
-
+Boolean openingFile = true;
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
   this.undoTempFile = "";
@@ -49,8 +52,8 @@ String undoTempFile;
  this.short_filename = STAppData.short_filename;
   this.BugViewArray = new ArrayList<>();
  this.setIconifiable(true);
-  initComponents();
-//   initializeComponents();
+//  initComponents();
+   initializeComponents();
       JTextFieldProgress.setVisible(false);
       jLabelTasks.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
@@ -127,7 +130,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
         }
         else
         {
-          
+  
             STAppData.VarLists.put(newname, new String[0]);
            
              int bugindex = 0;  
@@ -944,23 +947,32 @@ File newfile = new File(path + ".js");
 
  public void saveState() 
 {
-
-    try
-    {
-         File temp = File.createTempFile(short_filename+"-undo", ".tmp");
-      FileOutputStream fos = new FileOutputStream(temp);
-      ObjectOutputStream oos = new ObjectOutputStream(fos);  
-       oos.writeObject(STAppData.BugArray);
+if (!openingFile)
+{
+ //   System.out.println("SaveState");
+//   try
+//    {
+//        String tempDir = System.getProperty("java.io.tmpdir");
+//         File temp = new File(tempDir + short_filename+"-undo.tmp");
+  
+//         temp.createNewFile();
+//      FileOutputStream fos = new FileOutputStream(temp);
+//      ObjectOutputStream oos = new ObjectOutputStream(fos);  
+//       oos.writeObject(STAppData.BugArray);
     
-       undoTempFile = temp.getAbsolutePath();
-       temp.deleteOnExit();
-    }
-    catch (Exception ex)
-    {
-        System.out.println("Exception when writing undo file" + ex.toString());
-         ex.printStackTrace();
-    }
-            
+//       undoTempFile = temp.getAbsolutePath();
+//       temp.deleteOnExit();
+//       oos.close();
+//       fos.close();
+//   }
+//   catch (Exception ex)
+//   {
+//       System.out.println("Exception when writing undo file" + ex.toString());
+//        ex.printStackTrace();
+        
+ // }
+   
+}        
      
   
     
@@ -968,19 +980,26 @@ File newfile = new File(path + ".js");
 public void Undo()
 { 
   
-    try
+   try
     {
+        
         File lastUndoFile = new File(undoTempFile);
       if(lastUndoFile.exists())
       {
      FileInputStream fis = new FileInputStream(undoTempFile);
       ObjectInputStream ois = new ObjectInputStream(fis);
-
-     ArrayList<Procedure> loadedBugArray = (ArrayList<Procedure>)ois.readObject();
-   saveState();
- 
-    STAppData.BugArray = loadedBugArray;
+      ArrayList<Procedure> loadedBugArray = (ArrayList<Procedure>)ois.readObject();
       ois.close();
+      fis.close();
+      saveState();
+    
+     
+    STAppData.BugArray.clear();
+    for (Procedure PROC: loadedBugArray)
+    {
+    STAppData.BugArray.add(PROC);
+    }
+   
       }
     }
     catch (Exception ex)
@@ -1364,7 +1383,7 @@ bugindex++;
 
         jLabelSMTPHostname.setText("SMTPHostname:");
 
-        jTextFieldSMTPHostName.setText("smtp.gmail.com");
+    
 
         jLabelEmailLoginName.setText("Email Login Name:");
 
@@ -1380,7 +1399,7 @@ bugindex++;
 
         jCheckBoxExitAfter.setText("Exit After Running");
 
-        jTextFieldEmailPassword.setText("jPasswordField1");
+      
 
         jCheckBoxEmailReportFail.setText("Email Fail Report Only");
         jCheckBoxEmailReportFail.setActionCommand("EmailReportIfFail");
@@ -1448,39 +1467,107 @@ bugindex++;
 
         jRadioButtonUniqueGlobal.setText("Global");
         jRadioButtonUniqueGlobal.setEnabled(false);
-
+        JLabel jLabelOSType = new JLabel();
+        jLabelOSType.setText("Set OS:");
         jLabelTasks.setText("Running Tasks:");
-        setLayout(mainLayout);
-        
+     //   setLayout(mainLayout);
        
         jPanelNorth.add(jButtonNewBug);
         jPanelNorth.add(jButtonNewDataLoop);
         jPanelNorth.add(jLabelStoredVariables);
+       
         jPanelNorth.add(jComboBoxStoredVariables);
         jPanelNorth.add(jButtonPlaceStoredVariable);
         jPanelNorth.add(jButtonGutsView);
-       
-        
+      
         jPanelSouth.add(jButtonDoStuff);
-      //  jPanelSouth.add(jCheckBoxShowReport);
-     //   jPanelSouth.add(jCheckBoxIncludeScreenshots);
-     //   jPanelSouth.add(jCheckBoxEmailReport);
+   
         jPanelSouth.add(jLabelPauseTime);
         jPanelSouth.add(jSpinnerWaitTime);
         jPanelSouth.add(jLabelTargetBrowser);
         jPanelSouth.add(jComboBoxTargetBrowser);
         jPanelSouth.add(jButtonBrowseForFireFoxExe);
-    //    jPanelSouth.add(jCheckBoxOSTypeWindows32);
-    //    jPanelSouth.add(jCheckBoxOSTypeWindows64);
-    //    jPanelSouth.add(jCheckBoxOSTypeLinux32);
-    //    jPanelSouth.add(jCheckBoxOSTypeLinux64);
-    //    jPanelSouth.add(jCheckBoxOSTypeMac);
-    //    jPanelSouth.add(jButtonFlattenFile);
-         add(jPanelNorth, BorderLayout.NORTH);
-         add(MainScrollPane, BorderLayout.CENTER);
-         add(jPanelSouth, BorderLayout.SOUTH);
+        jPanelSouth.add(jCheckBoxPromptToClose);
+        JPanel jPanelSouth2 = new JPanel();
         
-         
+        jPanelSouth2.add(jLabelTasks);
+       
+        JTextFieldProgress.setPreferredSize(new Dimension(600, 20));
+        jPanelSouth2.add(JTextFieldProgress);
+        JPanel jPanelAllSouth = new JPanel();
+        jPanelAllSouth.setLayout(new BoxLayout( jPanelAllSouth , BoxLayout.Y_AXIS));
+         jPanelAllSouth.add(jPanelSouth);
+         jPanelAllSouth.add(jPanelSouth2);
+        
+    //    jPanelSouth.setPreferredSize(new Dimension(800, 240));
+     
+      //   add(jPanelNorth, BorderLayout.NORTH);
+         add(MainScrollPane, BorderLayout.CENTER);
+         add(jPanelAllSouth, BorderLayout.SOUTH);
+      
+        // jPanelEast.setLayout(new FlowLayout());
+        jPanelEast.setLayout(new BoxLayout(jPanelEast, BoxLayout.Y_AXIS));
+        jPanelEast.add(jCheckBoxShowReport);
+        jPanelEast.add(jCheckBoxIncludeScreenshots);
+
+   
+        
+                JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
+separator2.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
+           jPanelEast.add(separator2);
+        jPanelEast.add(jLabelOSType);
+        jPanelEast.add(jCheckBoxOSTypeWindows32);
+        jPanelEast.add(jCheckBoxOSTypeWindows64);
+        jPanelEast.add(jCheckBoxOSTypeLinux32);
+        jPanelEast.add(jCheckBoxOSTypeLinux64);
+        jPanelEast.add(jCheckBoxOSTypeMac);
+                JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
+separator3.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
+           jPanelEast.add(separator3);
+   
+        jPanelEast.add(jCheckBoxUniqueURLs);
+        jPanelEast.add(jRadioButtonUniquePerFile);
+        jPanelEast.add(jRadioButtonUniqueGlobal);
+             JSeparator separator30 = new JSeparator(SwingConstants.HORIZONTAL);
+separator30.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
+           jPanelEast.add(separator30);
+  //    jPanelWest.setLayout(new BoxLayout(jPanelWest, BoxLayout.Y_AXIS));
+        jPanelEast.add(jCheckBoxEmailReport);
+        jPanelEast.add(jCheckBoxEmailReportFail);
+       jPanelEast.add(jLabelSMTPHostname);
+      jTextFieldSMTPHostName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+       jTextFieldEmailLoginName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+        jTextFieldEmailPassword.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+          jTextFieldEmailTo.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+           jTextFieldEmailFrom.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+           jTextFieldSubject.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+               
+        jPanelEast.add(jTextFieldSMTPHostName);
+        jPanelEast.add(jLabelEmailLoginName);
+        jPanelEast.add(jTextFieldEmailLoginName);
+        jPanelEast.add(jLabelEmailLoginPassword);
+        jPanelEast.add(jTextFieldEmailPassword);
+        jPanelEast.add(jLabelEmailTo);
+        jPanelEast.add(jTextFieldEmailTo);
+        jPanelEast.add(jLabelEmailFrom);
+        jPanelEast.add(jTextFieldEmailFrom);
+        jPanelEast.add(jLabelTitleSubject);
+        jPanelEast.add(jTextFieldSubject);
+        jPanelEast.add(jButtonLoadEmailSettings);
+        jPanelEast.add(jButtonClearEmailSettings);
+
+ 
+             JSeparator separator4 = new JSeparator(SwingConstants.HORIZONTAL);
+separator4.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
+        jPanelEast.add(separator4);
+     
+        jPanelEast.add(jButtonFlattenFile);
+     add(jPanelEast, BorderLayout.EAST);
+         JSeparator separator5 = new JSeparator(SwingConstants.HORIZONTAL);
+separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
+     
+       add(jPanelNorth, BorderLayout.NORTH);
+         pack();
  }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1564,8 +1651,6 @@ bugindex++;
 
         jLabel11.setText("SMTPHostname:");
 
-        jTextFieldSMTPHostName.setText("smtp.gmail.com");
-
         jLabel4.setText("Email Login Name:");
 
         jLabel5.setText("Email Login Password:");
@@ -1579,8 +1664,6 @@ bugindex++;
         jCheckBoxShowReport.setText("Show Report");
 
         jCheckBoxExitAfter.setText("Exit After Running");
-
-        jTextFieldEmailPassword.setText("jPasswordField1");
 
         jCheckBoxEmailReportFail.setText("Email Fail Report Only");
         jCheckBoxEmailReportFail.setActionCommand("EmailReportIfFail");
@@ -1759,7 +1842,7 @@ bugindex++;
                                 .addComponent(jButtonClearEmailSettings)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonLoadEmailSettings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 1, Short.MAX_VALUE))
+                        .addGap(0, 109, Short.MAX_VALUE))
                     .addComponent(MainScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1795,7 +1878,7 @@ bugindex++;
                 .addComponent(jLabelTHISSITEURL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MainScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

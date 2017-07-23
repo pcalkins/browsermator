@@ -52,7 +52,8 @@ public class StoreLinkAsVarByXPATHActionView extends ActionView
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+           action.setVariable1(JTextFieldVariable1.getText());
 
       }
 @Override
@@ -61,7 +62,8 @@ public class StoreLinkAsVarByXPATHActionView extends ActionView
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
+  STAppFrame.saveState();
+          action.setVariable1(JTextFieldVariable1.getText());
       }
       }
                  );
@@ -70,14 +72,16 @@ public class StoreLinkAsVarByXPATHActionView extends ActionView
            {
 
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable2(JTextFieldVariableVARINDEX.getText());
+
+           action.setVariable2(JTextFieldVariableVARINDEX.getText());
       }
 
       public void insertUpdate(DocumentEvent documentEvent) {
       action.setVariable2(JTextFieldVariableVARINDEX.getText());
       }
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable2(JTextFieldVariableVARINDEX.getText());
+
+          action.setVariable2(JTextFieldVariableVARINDEX.getText());
       }
       }
                  );

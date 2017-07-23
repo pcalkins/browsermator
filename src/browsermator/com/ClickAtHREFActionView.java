@@ -57,19 +57,23 @@ public class ClickAtHREFActionView extends ActionView
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-  
+  STAppFrame.saveState();
            action.setVariable1(JTextFieldVariable1.getText());
+   
 
       }
+
 @Override
       public void insertUpdate(DocumentEvent documentEvent) {
 
           action.setVariable1(JTextFieldVariable1.getText());
+     
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-
+STAppFrame.saveState();
           action.setVariable1(JTextFieldVariable1.getText());
+       
       }
       }
                  );

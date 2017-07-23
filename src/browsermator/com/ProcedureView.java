@@ -340,10 +340,11 @@ ActionScrollPane.setVisible(true);
    public void setURLListName (String in_listname)
    {
        this.URLListName = in_listname;
-       this.JComboBoxStoredArrayLists.setSelectedItem(in_listname);
+      
        String[] blanklist = new String[0];
        if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname))
        {
+        
                  JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
          this.setJTableSourceToURLList(blanklist, in_listname);     
           
@@ -351,6 +352,7 @@ ActionScrollPane.setVisible(true);
        }
        else
        {
+           
         String[] splitter = in_listname.split("-");
          
                 String leftpart = splitter[0];
@@ -511,7 +513,7 @@ ActionScrollPane.setVisible(true);
         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
  vertical.setValue( vertical.getMaximum() );
         }
-       if ("urllist".equals(DataLoopSource))
+      else
         {
        
                 STAppFrame.AddNewDataLoopURLListView(DataFile);

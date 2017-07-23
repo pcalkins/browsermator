@@ -43,7 +43,8 @@ public class SetCookieActionView extends ActionView
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+           action.setVariable1(JTextFieldVariable1.getText());
 
       }
 @Override
@@ -52,7 +53,8 @@ public class SetCookieActionView extends ActionView
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
+   STAppFrame.saveState();
+          action.setVariable1(JTextFieldVariable1.getText());
       }
       }
                  );

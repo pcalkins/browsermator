@@ -52,9 +52,7 @@ public abstract class ActionView implements Listenable, Initializable{
    JButton JButtonDragIt;
    Boolean Locked;
 
-   String field1OnFocus;
-   String field2OnFocus;
-   String fieldPasswordOnFocus;
+
    ActionView()
    {
       this.Locked = false;
@@ -73,10 +71,6 @@ public abstract class ActionView implements Listenable, Initializable{
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
    
-
-   this.field1OnFocus = "";
-   this.field2OnFocus = "";
-   this.fieldPasswordOnFocus = "";
 String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
@@ -265,6 +259,7 @@ String stringactionindex = Integer.toString(this.index+1);
        {
          this.JTextFieldVariable1.setText(Variable1);
          this.JTextFieldVariable2.setText(Variable2);
+        
          this.JTextFieldPassword.setText(Password);
          this.Locked = LOCKED;
          
@@ -303,7 +298,7 @@ String stringactionindex = Integer.toString(this.index+1);
             @Override
             public void focusGained(FocusEvent e) {
             
-            fieldPasswordOnFocus = action.Password;
+        
            
            
             }
@@ -311,12 +306,7 @@ String stringactionindex = Integer.toString(this.index+1);
             @Override
             public void focusLost(FocusEvent e) {
           
-            if (!action.Password.equals(fieldPasswordOnFocus))
-            {
-              
-                STAppFrame.saveState();
-             
-            }
+         
             }
         }); 
        addJTextFieldFocusListener(new FocusListener() {
@@ -324,19 +314,14 @@ String stringactionindex = Integer.toString(this.index+1);
             @Override
             public void focusGained(FocusEvent e) {
             
-             field1OnFocus = action.Variable1;
+          
            
              STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 1 );
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-            if (!action.Variable1.equals(field1OnFocus))
-            {
-                STAppFrame.saveState();
-              
-                
-            }
+         
               STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 1);
             }
         });
@@ -346,18 +331,14 @@ String stringactionindex = Integer.toString(this.index+1);
             public void focusGained(FocusEvent e) {
             
         
-            field2OnFocus = action.Variable2;
+         
                STAppFrame.ShowPlaceStoredVariableButton(true, newbug.index, action.index, 2 );
                 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-            if (!action.Variable2.equals(field2OnFocus))
-            {
-                STAppFrame.saveState();
           
-            }
                STAppFrame.ShowPlaceStoredVariableButton(false, newbug.index, action.index, 2);
             }
         });    
@@ -767,7 +748,7 @@ if (!potentialDrag) return;
 //   {
    AddSetVarFocusListeners(STAppFrame, STAppData, newbug, action);
 //   }
-if (newbugview.myTable!=null)
+if (newbugview.Type.equals("Dataloop"))
 {
   
 

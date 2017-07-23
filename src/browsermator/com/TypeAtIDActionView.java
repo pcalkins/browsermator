@@ -51,7 +51,8 @@ public class TypeAtIDActionView extends ActionView
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+           action.setVariable1(JTextFieldVariable1.getText());
       
       }
 @Override
@@ -60,7 +61,8 @@ public class TypeAtIDActionView extends ActionView
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+          action.setVariable1(JTextFieldVariable1.getText());
       }
       }
                  );
@@ -87,14 +89,16 @@ public class TypeAtIDActionView extends ActionView
            {
 
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable2(JTextFieldVariable2.getText());
+   STAppFrame.saveState();
+           action.setVariable2(JTextFieldVariable2.getText());
       }
 
       public void insertUpdate(DocumentEvent documentEvent) {
       action.setVariable2(JTextFieldVariable2.getText());
       }
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable2(JTextFieldVariable2.getText());
+   STAppFrame.saveState();
+          action.setVariable2(JTextFieldVariable2.getText());
       }
       }
                  );

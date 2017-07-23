@@ -109,6 +109,7 @@ public String doInBackground()
 @Override
  protected void done()
  {
+     STAppFrame.openingFile=false;
      if (hasGUI)
      {
            int current_MDI_Index = mainAppController.GetCurrentWindow();
@@ -1091,7 +1092,7 @@ STAppFrame.addjButtonDoStuffActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
-    
+    STAppFrame.saveState();
    STAppFrame.AddNewBugView();  
    STAppData.AddNewBug();
    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
@@ -1111,7 +1112,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
     
-
+  STAppFrame.saveState();
    STAppData.AddNewDataLoop(); 
    STAppFrame.AddNewDataLoopView();
      int last_added_bug_index = STAppFrame.BugViewArray.size()-1;

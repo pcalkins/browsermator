@@ -46,7 +46,7 @@ for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
   try
   {
-Thread.sleep((long)(Math.random() * 100));
+Thread.sleep((long)(Math.random() * 200));
   }
   catch (Exception ex)
   {
@@ -56,7 +56,14 @@ Thread.sleep((long)(Math.random() * 100));
 element.sendKeys(sendkey);
 }
 if (this.BoolVal1.equals(true))
-{
+{  try
+  {
+Thread.sleep((long)(Math.random() * 200));
+  }
+  catch (Exception ex)
+  {
+      System.out.println ("Exception when sleeping random: " + ex.toString());
+  }
     element.sendKeys(Keys.RETURN);
 }
         this.Pass = true;

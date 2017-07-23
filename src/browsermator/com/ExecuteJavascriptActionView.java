@@ -56,7 +56,8 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
            {
 @Override
        public void changedUpdate(DocumentEvent documentEvent) {
-      action.setVariable1(JTextFieldVariable1.getText());
+     STAppFrame.saveState();
+           action.setVariable1(JTextFieldVariable1.getText());
 
       }
 @Override
@@ -65,7 +66,8 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
       }
 @Override
       public void removeUpdate(DocumentEvent documentEvent) {
-     action.setVariable1(JTextFieldVariable1.getText());
+    STAppFrame.saveState();
+          action.setVariable1(JTextFieldVariable1.getText());
       }
       }
                  );
