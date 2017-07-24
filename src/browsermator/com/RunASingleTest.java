@@ -8,8 +8,6 @@ package browsermator.com;
 import java.awt.Cursor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

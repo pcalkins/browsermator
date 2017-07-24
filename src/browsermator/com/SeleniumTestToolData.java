@@ -8,7 +8,6 @@ package browsermator.com;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -771,7 +770,7 @@ else
            public java.util.List<String[]> RandomizeAndLimitFileList(java.util.List<String[]> data_in, int limit, Boolean randval)
   {
     // first row is column names, remove it
-  
+  data_in.remove(0);
    java.util.List<String[]> ret_val = null;
              if (randval)
                 {
@@ -797,8 +796,9 @@ Collections.shuffle(data_in, new Random(seed));
   
      setUniqueFileOption(UniqueOption);
  }
-             public void RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
+             public String[] RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
   {
+      String[] currentlist = new String[0];
    if (VarLists.containsKey(URLListName))
             {
                       if (this.UniqueList)
@@ -823,7 +823,7 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 String file_path = file.getAbsolutePath();
 
 doc = builder.parse(file_path);
-   String[] currentlist = VarLists.get(URLListName);
+    currentlist = VarLists.get(URLListName);
    
 
  ArrayList<String> removeList = new ArrayList<String>();
@@ -861,8 +861,8 @@ int node_match_index = 0;
     convert_list.removeAll(removeList);
    currentlist =convert_list.stream().toArray(String[]::new);
 // VarLists.get(URLListName).clear();
-VarLists.replace(URLListName, currentlist);
-
+// VarLists.replace(URLListName, currentlist);
+  return currentlist;
 }
 catch (Exception ex)
 {
@@ -880,9 +880,9 @@ catch (Exception ex)
  
              
 Collections.shuffle(convert_list, new Random(seed));
-   String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
+   currentlist = convert_list.toArray(new String[convert_list.size()]);
 
- VarLists.replace(URLListName, currentlist);
+ 
                 }
                 if (limit>0)
                 {
@@ -892,16 +892,19 @@ Collections.shuffle(convert_list, new Random(seed));
  {
      convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
    convert_list.subList(limit, sizeofvarlist).clear();
-     String[] currentlist = convert_list.toArray(new String[convert_list.size()]);
-    VarLists.replace(URLListName, currentlist);
+  currentlist = convert_list.toArray(new String[convert_list.size()]);
+   return currentlist;
  }
 else
  {
-   
+  
+   return currentlist;
  }
  }
-            
-            }         
+   return currentlist;        
+            }   
+ 
+   return currentlist;
   }
  public void AddURLToUniqueFileList(String thisURL)
  {

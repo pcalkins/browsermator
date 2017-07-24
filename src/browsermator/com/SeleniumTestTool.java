@@ -1562,7 +1562,7 @@ separator4.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
         jPanelEast.add(separator4);
      
         jPanelEast.add(jButtonFlattenFile);
-     add(jPanelEast, BorderLayout.EAST);
+     add(jPanelEast, BorderLayout.WEST);
          JSeparator separator5 = new JSeparator(SwingConstants.HORIZONTAL);
 separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
      

@@ -829,19 +829,21 @@ else
      int number_of_rows = 0;
     if ("urllist".equals(thisbug.DataLoopSource))
     {
-        
+       String[] randomList = new String[0]; 
+       randomList = STAppData.VarLists.get(thisbug.URLListName);
       if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
+      randomList = STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
       }
-      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      
+      thisbug.setURLListData(randomList, thisbug.URLListName);
       if (RUNWITHGUI)
       {
             ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
     
       }
-      number_of_rows = STAppData.VarLists.get(thisbug.URLListName).length;
+      number_of_rows = randomList.length;
     }
     else
     {
@@ -2055,14 +2057,15 @@ else
      int number_of_rows = 0;
     if ("urllist".equals(thisbug.DataLoopSource))
     {
-        
+      String[] randomList = new String[0];  
+      randomList = STAppData.VarLists.get(thisbug.URLListName);
       if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
+      randomList = STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
       }
-      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbug.setURLListData(randomList, thisbug.URLListName);
      
-      number_of_rows = STAppData.VarLists.get(thisbug.URLListName).length;
+      number_of_rows = randomList.length;
     }
     else
     {

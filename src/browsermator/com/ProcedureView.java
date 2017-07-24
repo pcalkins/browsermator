@@ -495,9 +495,10 @@ ActionScrollPane.setVisible(true);
 
       
         String DataFile = "";
-  
+        
         if ("file".equals(DataLoopSource))
         {
+            DataFile = this_bug_in.DataFile;
         File DataFile_file = new File(DataFile);
        
    STAppFrame.AddNewDataLoopFileView(DataFile_file);
@@ -515,7 +516,7 @@ ActionScrollPane.setVisible(true);
         }
       else
         {
-       
+       DataFile = this_bug_in.URLListName;
                 STAppFrame.AddNewDataLoopURLListView(DataFile);
    STAppData.AddNewDataLoopURLList(DataFile);
   
