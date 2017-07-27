@@ -75,7 +75,6 @@ public class ProcedureView {
   JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
      GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints(); 
-     JPanel ActionScrollPanel = new JPanel();
        JLabel JLabelDoActions = new JLabel("Add Actions: ");
      JLabel JLabelPassFailActions = new JLabel("Add Pass/Fail Actions: ");
     JButton JButtonGoAction =              new JButton("Go To URL");
@@ -272,7 +271,7 @@ for (String passfailaction_name : passfailaction_keys)
 // ActionScrollPanel.setSize(new Dimension(920, 840));
  //   ActionScrollPanel.setLayout(ActionLayout); 
  
-     ActionScrollPane.setViewportView(ActionScrollPanel);
+ //    ActionScrollPane.setViewportView(ActionScrollPanel);
 
    
 //  ActionScrollPanel.setSize(920,480);

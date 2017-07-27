@@ -54,7 +54,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.31b";
+   public final String ProgramVersion = "1.1.33b";
    public String loginName;
    public String loginPassword;
 

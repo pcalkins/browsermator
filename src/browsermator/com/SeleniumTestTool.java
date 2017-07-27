@@ -1040,10 +1040,9 @@ int bugindex = 0;
    GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints();
          
-   JPanel ActionPanel = new JPanel();
-
+   ExtendedJPanel ActionPanel = new ExtendedJPanel();
             
-      ActionPanel.setLayout(ActionLayout); 
+  //    ActionPanel.setLayout(ActionLayout); 
       
    //  ActionConstraints.fill = GridBagConstraints.NONE;
      ActionConstraints.anchor = GridBagConstraints.WEST;
@@ -1061,8 +1060,9 @@ int bugindex = 0;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
          ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
-         ActionPanel.add(AV.JPanelAction);
-          BV.ActionScrollPane.setViewportView(ActionPanel);
+      //   ActionPanel.add(AV.JPanelAction);
+    
+        ActionPanel.AddToGrid( AV.JPanelAction, 0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST); 
          actionindex++;
 
         }

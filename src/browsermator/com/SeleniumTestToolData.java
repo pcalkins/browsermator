@@ -862,7 +862,7 @@ int node_match_index = 0;
    currentlist =convert_list.stream().toArray(String[]::new);
 // VarLists.get(URLListName).clear();
 // VarLists.replace(URLListName, currentlist);
-  return currentlist;
+
 }
 catch (Exception ex)
 {
