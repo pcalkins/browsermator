@@ -1,5 +1,6 @@
 package browsermator.com;
 
+
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -15,16 +16,18 @@ public class ClickAtHREFActionView extends ActionView
  
       
        this.JLabelVariable1 = new JLabel("Click on HREF:");
-       
- this.JPanelAction.add(this.JLabelVariable1);
-      this.JPanelAction.add(this.JTextFieldVariable1); 
+      
+  //     AddToGrid(this.JLabelVariable1, 0, 2, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
+
+  //       AddToGrid(this.JTextFieldVariable1, 0, 3, 1, 1, 1.0, 0, 300, GridBagConstraints.WEST);
                this.JCheckBoxBoolVal1 = new JCheckBox("Right Click");
                this.JCheckBoxBoolVal2 = new JCheckBox("Multi-Click");
-               this.JPanelAction.add(this.JCheckBoxBoolVal1);
-               this.JPanelAction.add(this.JCheckBoxBoolVal2);
-      this.JPanelAction.add(this.JButtonOK);
-       this.JPanelAction.add(this.JButtonDelete);
-       
+  //             AddToGrid(this.JCheckBoxBoolVal1, 0, 4, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
+  //             AddToGrid(this.JCheckBoxBoolVal2, 0, 5, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
+ // ActionPanelMiddle.add(JLabelVariable1);
+ //  ActionPanelMiddle.add(JCheckBoxBoolVal1);
+ //  ActionPanelMiddle.add(JCheckBoxBoolVal2);
+ //  ActionPanelMiddle.add(JTextFieldVariable1);   
    }
   @Override  
  public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)

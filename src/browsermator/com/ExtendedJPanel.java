@@ -28,6 +28,7 @@ public class ExtendedJPanel extends JPanel implements Scrollable{
 
    ExtLayout = new GridBagLayout();
    ExtLayoutConstraints = new GridBagConstraints();
+   this.setLayout(ExtLayout);
 //    ActionConstraints.gridx = 1;
 //         ActionConstraints.gridy = actionindex;
 //         ActionConstraints.gridwidth = 1;
@@ -38,6 +39,7 @@ public class ExtendedJPanel extends JPanel implements Scrollable{
  
    
     }
+ 
     public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int anchor_value)
      {
          ExtLayoutConstraints.gridx = column;

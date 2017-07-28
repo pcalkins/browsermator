@@ -11,9 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -1032,54 +1030,14 @@ int bugindex = 0;
           BV.SetIndex(bugindex+1);
        
           this.BugPanel.add(BV.JPanelBug);
-     JPanel ActionAdderPanel = new JPanel();
 
-     
-          this.BugPanel.add(ActionAdderPanel);
-  
-   GridBagLayout ActionLayout = new GridBagLayout();
-   GridBagConstraints ActionConstraints = new GridBagConstraints();
-         
-   ExtendedJPanel ActionPanel = new ExtendedJPanel();
-            
-  //    ActionPanel.setLayout(ActionLayout); 
-      
-   //  ActionConstraints.fill = GridBagConstraints.NONE;
-     ActionConstraints.anchor = GridBagConstraints.WEST;
- 
-      int actionindex = 0;
-     
-      for (ActionView AV : BV.ActionsViewList )
-        {
 
-       
-        AV.SetIndexes(bugindex+1, actionindex+1);
-    
-         ActionConstraints.gridx = 1;
-         ActionConstraints.gridy = actionindex;
-         ActionConstraints.gridwidth = 1;
-         ActionConstraints.gridheight = 1;
-         ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
-      //   ActionPanel.add(AV.JPanelAction);
-    
-        ActionPanel.AddToGrid( AV.JPanelAction, 0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST); 
-         actionindex++;
+    JPanel ActionPanel = new JPanel();
 
-        }
-      if (actionindex < 9)
-      {
-     BV.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));
-          }
-   else
-      {
-      BV.ActionScrollPane.setPreferredSize(new Dimension(950, 400));   
-      }
-BV.ActionScrollPane.setVisible(true);
-ActionPanel.setVisible(true);
 
        BV.ActionScrollPane.setViewportView(ActionPanel);
-       
- UpdateScrollPane(BV);  
+      UpdateScrollPane(BV); 
+
 bugindex++;
        
 
@@ -1090,8 +1048,8 @@ bugindex++;
 
      this.MainScrollPane.setVisible(true);
   this.revalidate();
-
  }
+
      public void setJTextFieldProgress(String value)
 {
     JTextFieldProgress.setText(value);
@@ -1104,9 +1062,10 @@ bugindex++;
             JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
             ActionPanel.removeAll();
               GridBagLayout ActionLayout = new GridBagLayout();
-      ActionPanel.setLayout(ActionLayout); 
       
-     ActionConstraints.fill = GridBagConstraints.NONE;
+              ActionPanel.setLayout(ActionLayout); 
+       ActionConstraints.insets = new java.awt.Insets(2,2,2,2);
+     ActionConstraints.fill = GridBagConstraints.NORTHWEST;
      ActionConstraints.anchor = GridBagConstraints.WEST;            
          int actionindex = 0;
 
@@ -1114,26 +1073,50 @@ bugindex++;
         {
        
           AV.SetIndexes(newbugview.index, actionindex+1);
-       
-      
-         
+     
+           ActionConstraints.fill = GridBagConstraints.NORTHWEST;
+         ActionConstraints.anchor = GridBagConstraints.WEST;
          ActionConstraints.gridx = 1;
          ActionConstraints.gridy = actionindex;
          ActionConstraints.gridwidth = 1;
          ActionConstraints.gridheight = 1;
+         ActionConstraints.weightx = 0;
+        ActionPanel.add(AV.JLabelIndex, ActionConstraints);
+       ActionConstraints.weightx = 0;
+         ActionConstraints.gridx = 2;
          
-         ActionLayout.setConstraints(AV.JPanelAction, ActionConstraints);
+         ActionPanel.add(AV.JButtonDragIt, ActionConstraints);
+                ActionConstraints.weightx = 0;
+         ActionConstraints.gridx = 3;
+         ActionPanel.add(AV.JLabelVariable1, ActionConstraints);
+                  ActionConstraints.weightx = 1.0;
+         ActionConstraints.gridx = 4;
+  ActionConstraints.fill = GridBagConstraints.HORIZONTAL;
+       ActionPanel.add(AV.JTextFieldVariable1, ActionConstraints);
+   
+                  ActionConstraints.weightx = 0;
+         ActionConstraints.gridx = 5;
+         ActionPanel.add(AV.JCheckBoxBoolVal1, ActionConstraints);
+                   ActionConstraints.weightx = 0;
+         ActionConstraints.gridx = 6;
+         ActionPanel.add(AV.JCheckBoxBoolVal2, ActionConstraints);
          
-         ActionPanel.add(AV.JPanelAction);
-    
+                   ActionConstraints.weightx = 0;
+         ActionConstraints.gridx = 7;
+         ActionPanel.add(AV.JButtonOK, ActionConstraints);
+         
+      
+         ActionConstraints.gridx = 8;
+         ActionConstraints.anchor = GridBagConstraints.EAST;
+         ActionPanel.add(AV.JButtonDelete, ActionConstraints);
+         
          actionindex++;
 
         }
    
       if (actionindex < 9)
       {
-        newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));    
- //   newbugview.ActionScrollPane.setSize(new Dimension(1024, 36*actionindex+40));
+        newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));  
    
           }
       else

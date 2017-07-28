@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -51,17 +53,24 @@ public abstract class ActionView implements Listenable, Initializable{
    JButton JButtonBrowseForFile;
    JButton JButtonDragIt;
    Boolean Locked;
-
+   GridBagConstraints ActionConstraints;
+   GridBagLayout ActionLayout;
+   JPanel ActionPanelLeft;
+   JPanel ActionPanelMiddle;
+   JPanel ActionPanelRight;
 
    ActionView()
    {
+   
+       ActionConstraints = new GridBagConstraints();
+       ActionLayout = new GridBagLayout();
       this.Locked = false;
       this.JButtonDragIt = new JButton("=");
-      this.JPanelAction = new JPanel();
+      this.JPanelAction = new JPanel(ActionLayout);
       this.JLabelPassFail = new JLabel("");
-      this.JTextFieldVariable1 =  new JTextField("", 15);
-      this.JTextFieldVariable2 = new JTextField("", 15);
-      this.JTextFieldVariableVARINDEX = new JTextField("", 15);
+      this.JTextFieldVariable1 =  new JTextField("");
+      this.JTextFieldVariable2 = new JTextField("",15);
+      this.JTextFieldVariableVARINDEX = new JTextField("",15);
       this.JTextFieldPassword = new JPasswordField("", 15);
       this.JLabelVariable1 = new JLabel("Generic");
       this.JLabelVariable2 = new JLabel("Generic");
@@ -75,9 +84,10 @@ String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
       this.JLabelIndex = new JLabel(bugdashactionindex);
-    
-      this.JPanelAction.add(this.JLabelIndex);
-      this.JPanelAction.add(this.JButtonDragIt);
+  //    AddToGrid(JLabelIndex, 0, 0, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
+  //    AddToGrid(JButtonDragIt, 0, 1, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
+  //    this.ActionPanelLeft.add(this.JLabelIndex);
+  //    this.ActionPanelLeft.add(this.JButtonDragIt);
    
 
  this.ActionType = "";
@@ -85,6 +95,21 @@ String stringactionindex = Integer.toString(this.index+1);
   
          
    }
+      public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int ipaddin, int anchor_value)
+     {
+         ActionConstraints.ipadx = ipaddin;
+         ActionConstraints.fill = GridBagConstraints.HORIZONTAL; 
+         ActionConstraints.gridx = column;
+         ActionConstraints.gridy = row;
+         ActionConstraints.gridwidth = width;
+         ActionConstraints.gridheight = height;
+         ActionConstraints.weightx = weightx;
+         ActionConstraints.weighty = weighty;
+         ActionConstraints.anchor = anchor_value;
+         ActionLayout.setConstraints(component, ActionConstraints);
+         JPanelAction.add(component);
+         JPanelAction.revalidate();
+     }
     public void setPassState(Boolean passvalue)
     {
    
@@ -585,8 +610,11 @@ else
 		}
 		else
 		{
-              
-			return source.getParent().getSize();
+               
+		//	return source.getSize();
+                Dimension temphack = new Dimension (40, 40);
+                return temphack;
+                        
 		}
 	}
 
