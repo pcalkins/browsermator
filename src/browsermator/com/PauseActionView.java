@@ -5,6 +5,7 @@
  */
 package browsermator.com;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
@@ -28,6 +29,12 @@ public class PauseActionView extends ActionView {
       this.JPanelAction.add(this.JTextFieldVariable2);
        this.JPanelAction.add(this.JButtonOK);
   this.JPanelAction.add(this.JButtonDelete);
+  theseActionSettings.add(new ActionSettings(JLabelVariable1, 2, 1, 0.0, GridBagConstraints.WEST));
+    theseActionSettings.add(new ActionSettings(JTextFieldVariable1, 3, 2, 0.5, GridBagConstraints.WEST));
+      theseActionSettings.add(new ActionSettings(JLabelVariable2, 5, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JTextFieldVariable2, 6, 2, 0.5, GridBagConstraints.WEST));
+  theseActionSettings.add(new ActionSettings(JButtonOK, 8, 1, 0.0, GridBagConstraints.WEST));
+   theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));
   
    }
  @Override  

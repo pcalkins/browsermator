@@ -1,6 +1,5 @@
 package browsermator.com;
 
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -54,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.34b";
+   public final String ProgramVersion = "1.1.35b";
    public String loginName;
    public String loginPassword;
 

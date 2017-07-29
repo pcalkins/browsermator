@@ -18,6 +18,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -58,15 +59,17 @@ public abstract class ActionView implements Listenable, Initializable{
    JPanel ActionPanelLeft;
    JPanel ActionPanelMiddle;
    JPanel ActionPanelRight;
-
+   ArrayList<ActionSettings> theseActionSettings;
+  
    ActionView()
    {
-   
+    theseActionSettings = new ArrayList<>();
        ActionConstraints = new GridBagConstraints();
        ActionLayout = new GridBagLayout();
       this.Locked = false;
       this.JButtonDragIt = new JButton("=");
       this.JPanelAction = new JPanel(ActionLayout);
+     JPanelAction.setAutoscrolls(false);
       this.JLabelPassFail = new JLabel("");
       this.JTextFieldVariable1 =  new JTextField("");
       this.JTextFieldVariable2 = new JTextField("",15);
@@ -79,7 +82,7 @@ public abstract class ActionView implements Listenable, Initializable{
     this.JButtonOK = new JButton("Disable");
   this.JButtonOK.setActionCommand("Update");
     this.JButtonDelete = new JButton("Remove");
-   
+ // this.JPanelAction.add(JButtonDragIt);
 String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex+1);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
@@ -88,28 +91,17 @@ String stringactionindex = Integer.toString(this.index+1);
   //    AddToGrid(JButtonDragIt, 0, 1, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
   //    this.ActionPanelLeft.add(this.JLabelIndex);
   //    this.ActionPanelLeft.add(this.JButtonDragIt);
-   
+    
+        theseActionSettings.add(new ActionSettings(JLabelIndex, 0, 1, 0.0, GridBagConstraints.WEST));
+       theseActionSettings.add(new ActionSettings(JButtonDragIt, 1, 1, 0.0, GridBagConstraints.WEST));
+  
 
  this.ActionType = "";
                 
   
          
    }
-      public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int ipaddin, int anchor_value)
-     {
-         ActionConstraints.ipadx = ipaddin;
-         ActionConstraints.fill = GridBagConstraints.HORIZONTAL; 
-         ActionConstraints.gridx = column;
-         ActionConstraints.gridy = row;
-         ActionConstraints.gridwidth = width;
-         ActionConstraints.gridheight = height;
-         ActionConstraints.weightx = weightx;
-         ActionConstraints.weighty = weighty;
-         ActionConstraints.anchor = anchor_value;
-         ActionLayout.setConstraints(component, ActionConstraints);
-         JPanelAction.add(component);
-         JPanelAction.revalidate();
-     }
+ 
     public void setPassState(Boolean passvalue)
     {
    
@@ -369,7 +361,7 @@ String stringactionindex = Integer.toString(this.index+1);
         });    
        }
    
-       public void AddDraggers(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+     public void AddDraggers(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
        {
          addActionPanelMouseListener(new MouseAdapter(){
     @Override
@@ -400,9 +392,9 @@ String stringactionindex = Integer.toString(this.index+1);
              this.addJButtonDragItMouseAdapter(new MouseAdapter() {
 
  
-     Insets dragInsets = new Insets(0, 0, 0, 0);
-	Dimension snapSize = new Dimension(380, 36);
-	 Insets edgeInsets = new Insets(0, 0, 0, 0);
+  //   Insets dragInsets = new Insets(2,2,2,2);
+	Dimension snapSize = new Dimension(1,2);
+//	 Insets edgeInsets = new Insets(0,0,0,0);
      boolean changeCursor = true;
      boolean autoLayout = true;
 
@@ -449,9 +441,12 @@ String stringactionindex = Integer.toString(this.index+1);
 		destinationComponent = newbugview.ActionsViewList.get(action.index).JPanelAction;
 	destination = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
             source = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
-		int width  = source.getSize().width  - dragInsets.left - dragInsets.right;
-		int height = source.getSize().height - dragInsets.top - dragInsets.bottom;
-		Rectangle r = new Rectangle(dragInsets.left, dragInsets.top, width, height);
+		int width  = source.getSize().width;
+                // - dragInsets.left - dragInsets.right;
+		int height = source.getSize().height;
+                // - dragInsets.top - dragInsets.bottom;
+		Rectangle r = new Rectangle(0,0, width, height);
+                        // dragInsets.left, dragInsets.top, width, height);
 
 		if (r.contains(e.getPoint()))
 			setupForDragging(e);
@@ -497,7 +492,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
 		{
 			JComponent jc = (JComponent)destination;
 			autoscrolls = jc.getAutoscrolls();
-			jc.setAutoscrolls( false );
+		//	jc.setAutoscrolls( false );
 		}
                 original_locationY = destination.getY();
 	}
@@ -508,7 +503,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
 	{
           //      newbugview.ActionScrollPanel.setAutoscrolls(false);
           //      newbugview.ActionScrollPane.setAutoscrolls(false);
-                newbugview.ActionsViewList.get(action.index).JPanelAction.setAutoscrolls(true);
+         //       newbugview.ActionsViewList.get(action.index).JPanelAction.setAutoscrolls(true);
           //      newbugview.ActionsViewList.get(action.index).JButtonDragIt.setAutoscrolls(false);
 		Point dragged = e.getLocationOnScreen();
 		int dragX = getDragDistance(dragged.x, pressed.x, snapSize.width);
@@ -516,30 +511,34 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
             
 		int locationX = location.x + dragX;
 		int locationY = location.y + dragY;
-		while (locationX < edgeInsets.left)
+		while (locationX < 0)
+                        // edgeInsets.left)
      	        locationX += snapSize.width;
 
-		while (locationY < edgeInsets.top)
+		while (locationY < 0)
+                        // edgeInsets.top)
 			locationY += snapSize.height;
 
 		Dimension d = getBoundingSize( newbugview.ActionsViewList.get(action.index).JPanelAction );
 
-		while (locationX + destination.getSize().width + edgeInsets.right > d.width)
+		while (locationX + destination.getSize().width + 0 >d.width) 
+                        //edgeInsets.right > d.width)
 			locationX -= snapSize.width;
 
-		while (locationY + destination.getSize().height + edgeInsets.bottom > d.height)
+		while (locationY + destination.getSize().height + 0 > d.height)
+                        // edgeInsets.bottom > d.height)
 			locationY -= snapSize.height;
                 
 		 newbugview.ActionsViewList.get(action.index).JPanelAction.setLocation(locationX, locationY);
           
                 int snapped_locationY = newbugview.ActionsViewList.get(action.index).JPanelAction.getY();
 
-                places_moved = (original_locationY - snapped_locationY)/36;
+                places_moved = (original_locationY - snapped_locationY)/26;
      
                 if (places_moved==1)
                 {
 
-                     STAppFrame.MoveActionView(newbugview, action.index, -1);
+                    STAppFrame.MoveActionView(newbugview, action.index, -1);
                      STAppData.MoveAction(newbug, action.index, -1);
                      
                      original_locationY = snapped_locationY;
@@ -548,7 +547,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
 
   STAppFrame.UpdateScrollPane(newbugview);
 
-scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
+//scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
      
 
                 }
@@ -556,13 +555,13 @@ scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");
                 if (places_moved==-1)
                 {
                          
-                   STAppFrame.MoveActionView(newbugview, action.index, 1); 
-                    STAppData.MoveAction(newbug, action.index, 1); 
+                STAppFrame.MoveActionView(newbugview, action.index, 1); 
+                 STAppData.MoveAction(newbug, action.index, 1); 
           original_locationY = snapped_locationY;
-  STAppFrame.updateStoredURLListIndexes(newbugview);
-  STAppFrame.UpdateScrollPane(newbugview);
+ STAppFrame.updateStoredURLListIndexes(newbugview);
+ STAppFrame.UpdateScrollPane(newbugview);
 
- scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
+// scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
  
  
      }
@@ -610,11 +609,8 @@ else
 		}
 		else
 		{
-               
-		//	return source.getSize();
-                Dimension temphack = new Dimension (40, 40);
-                return temphack;
-                        
+              
+			return source.getParent().getSize();
 		}
 	}
 

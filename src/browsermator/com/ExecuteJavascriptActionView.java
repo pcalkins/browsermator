@@ -5,6 +5,7 @@
  */
 package browsermator.com;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JButton;
@@ -27,6 +28,12 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
       this.JPanelAction.add(this.JButtonBrowseForFile);
       this.JPanelAction.add(this.JButtonOK);
         this.JPanelAction.add(this.JButtonDelete);
+        theseActionSettings.add(new ActionSettings(JLabelVariable1, 2, 1, 0.0, GridBagConstraints.WEST));
+         theseActionSettings.add(new ActionSettings(JTextFieldVariable1, 3, 1, 1.0, GridBagConstraints.WEST));
+          theseActionSettings.add(new ActionSettings(JButtonBrowseForFile, 4, 4, 0.0, GridBagConstraints.WEST));
+  theseActionSettings.add(new ActionSettings(JButtonOK, 8, 1, 0.0, GridBagConstraints.WEST));
+   theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));
+   
    }
    @Override  
  public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)

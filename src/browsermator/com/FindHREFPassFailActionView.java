@@ -1,6 +1,7 @@
 package browsermator.com;
 
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
@@ -14,11 +15,11 @@ public class FindHREFPassFailActionView extends ActionView
    {
             this.JLabelVariable1 = new JLabel("Find HREF:");
        
- this.JPanelAction.add(this.JLabelVariable1);
-      this.JPanelAction.add(this.JTextFieldVariable1); 
-       this.JPanelAction.add(this.JLabelPassFail);
-       this.JPanelAction.add(this.JButtonOK);
-         this.JPanelAction.add(this.JButtonDelete);
+
+        theseActionSettings.add(new ActionSettings(JLabelVariable1, 2, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JTextFieldVariable1, 3, 5, 1.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JButtonOK, 8, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));
    }
   @Override  
 public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)

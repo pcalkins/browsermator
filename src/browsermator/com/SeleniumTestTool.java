@@ -2,6 +2,7 @@
 package browsermator.com;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -437,7 +438,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
        }
    }
 
-  UpdateDisplay();
+ // UpdateDisplay();
 
    }
  
@@ -1056,60 +1057,44 @@ bugindex++;
 }
      public void UpdateScrollPane(ProcedureView newbugview)
      {
-                GridBagConstraints ActionConstraints = new GridBagConstraints();
-        
-          
+              
             JPanel ActionPanel = (JPanel)newbugview.ActionScrollPane.getViewport().getView();
+          
             ActionPanel.removeAll();
-              GridBagLayout ActionLayout = new GridBagLayout();
+           
+            GridBagLayout ActionLayout = new GridBagLayout();
       
               ActionPanel.setLayout(ActionLayout); 
-       ActionConstraints.insets = new java.awt.Insets(2,2,2,2);
-     ActionConstraints.fill = GridBagConstraints.NORTHWEST;
-     ActionConstraints.anchor = GridBagConstraints.WEST;            
+      
+  
+              
          int actionindex = 0;
-
+    GridBagConstraints ActionConstraints = new GridBagConstraints();
+     ActionConstraints.anchor = GridBagConstraints.WEST; 
+      
       for (ActionView AV : newbugview.ActionsViewList )
         {
-       
+        ActionConstraints.gridy = actionindex;
+        ActionConstraints.gridx = 0;
+      ActionConstraints.fill = GridBagConstraints.HORIZONTAL;
+      ActionConstraints.weightx = 1.0;
           AV.SetIndexes(newbugview.index, actionindex+1);
-     
-           ActionConstraints.fill = GridBagConstraints.NORTHWEST;
-         ActionConstraints.anchor = GridBagConstraints.WEST;
-         ActionConstraints.gridx = 1;
-         ActionConstraints.gridy = actionindex;
-         ActionConstraints.gridwidth = 1;
-         ActionConstraints.gridheight = 1;
-         ActionConstraints.weightx = 0;
-        ActionPanel.add(AV.JLabelIndex, ActionConstraints);
-       ActionConstraints.weightx = 0;
-         ActionConstraints.gridx = 2;
          
-         ActionPanel.add(AV.JButtonDragIt, ActionConstraints);
-                ActionConstraints.weightx = 0;
-         ActionConstraints.gridx = 3;
-         ActionPanel.add(AV.JLabelVariable1, ActionConstraints);
-                  ActionConstraints.weightx = 1.0;
-         ActionConstraints.gridx = 4;
-  ActionConstraints.fill = GridBagConstraints.HORIZONTAL;
-       ActionPanel.add(AV.JTextFieldVariable1, ActionConstraints);
-   
-                  ActionConstraints.weightx = 0;
-         ActionConstraints.gridx = 5;
-         ActionPanel.add(AV.JCheckBoxBoolVal1, ActionConstraints);
-                   ActionConstraints.weightx = 0;
-         ActionConstraints.gridx = 6;
-         ActionPanel.add(AV.JCheckBoxBoolVal2, ActionConstraints);
-         
-                   ActionConstraints.weightx = 0;
-         ActionConstraints.gridx = 7;
-         ActionPanel.add(AV.JButtonOK, ActionConstraints);
-         
-      
-         ActionConstraints.gridx = 8;
-         ActionConstraints.anchor = GridBagConstraints.EAST;
-         ActionPanel.add(AV.JButtonDelete, ActionConstraints);
-         
+          for (ActionSettings theseSettings: AV.theseActionSettings)
+          {
+                GridBagConstraints ActionPanelConstraints = new GridBagConstraints();
+        
+      ActionPanelConstraints.insets = new java.awt.Insets(2,2,2,2);
+       ActionPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
+       ActionConstraints.anchor = theseSettings.GridBagAnchor;
+      ActionPanelConstraints.gridx = theseSettings.gridx;
+      ActionPanelConstraints.gridy = actionindex;
+      ActionPanelConstraints.gridwidth = theseSettings.width;
+      ActionPanelConstraints.gridheight = 1;
+      ActionPanelConstraints.weightx = theseSettings.weightX;
+        AV.JPanelAction.add(theseSettings.comp,ActionPanelConstraints);
+        ActionPanel.add(AV.JPanelAction, ActionConstraints);
+          }
          actionindex++;
 
         }

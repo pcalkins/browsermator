@@ -1,6 +1,7 @@
 package browsermator.com;
 
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -17,17 +18,17 @@ public class ClickAtHREFActionView extends ActionView
       
        this.JLabelVariable1 = new JLabel("Click on HREF:");
       
-  //     AddToGrid(this.JLabelVariable1, 0, 2, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
-
-  //       AddToGrid(this.JTextFieldVariable1, 0, 3, 1, 1, 1.0, 0, 300, GridBagConstraints.WEST);
                this.JCheckBoxBoolVal1 = new JCheckBox("Right Click");
                this.JCheckBoxBoolVal2 = new JCheckBox("Multi-Click");
-  //             AddToGrid(this.JCheckBoxBoolVal1, 0, 4, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
-  //             AddToGrid(this.JCheckBoxBoolVal2, 0, 5, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
- // ActionPanelMiddle.add(JLabelVariable1);
- //  ActionPanelMiddle.add(JCheckBoxBoolVal1);
- //  ActionPanelMiddle.add(JCheckBoxBoolVal2);
- //  ActionPanelMiddle.add(JTextFieldVariable1);   
+        theseActionSettings.add(new ActionSettings(JLabelVariable1, 2, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JTextFieldVariable1, 3, 3, 1.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JCheckBoxBoolVal1, 6, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JCheckBoxBoolVal2, 7, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JButtonOK, 8, 1, 0.0, GridBagConstraints.WEST));
+        theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));
+               
+  
+   
    }
   @Override  
  public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
