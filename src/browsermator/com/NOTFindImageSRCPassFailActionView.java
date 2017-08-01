@@ -31,7 +31,7 @@ public class NOTFindImageSRCPassFailActionView extends ActionView implements Loo
                            STAppFrame.saveState();
                             STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
-                           STAppFrame.UpdateScrollPane(newbugview);
+             
    });
   
 

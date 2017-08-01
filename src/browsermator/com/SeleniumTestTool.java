@@ -2,6 +2,7 @@
 package browsermator.com;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -414,8 +415,8 @@ public void addSelectedVariableNameView(String varname)
 
 
   Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+  thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex+1);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex+1);
 
     
 
@@ -431,8 +432,8 @@ public void addSelectedVariableNameView(String varname)
     {
   
   Collections.swap(thisBugView.ActionsViewList, toMoveIndex, SwapIndex);
-thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex);
-  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex);
+thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMoveIndex+1);
+  thisBugView.ActionsViewList.get(SwapIndex).SetIndexes(thisBugView.index, SwapIndex+1);
  
 
        }
@@ -699,6 +700,7 @@ public int GetWaitTime()
      }
      }
  updateStoredURLListIndexes(thisBugView);
+ UpdateScrollPane(thisBugView);
    }
      public void DeleteBugView (int BugIndex)
    {
@@ -1013,28 +1015,34 @@ public void Undo()
  this.MainScrollPane.setVisible(false);
  
  this.BugPanel.setVisible(false);
- ModifiedFlowLayout layout = new ModifiedFlowLayout();
- layout.setAlignment(FlowLayout.CENTER);
+ GridBagLayout buglayout = new GridBagLayout();
+ GridBagConstraints bugConstraints = new GridBagConstraints();
+ bugConstraints.anchor = GridBagConstraints.NORTH;
+ bugConstraints.fill = GridBagConstraints.HORIZONTAL;
+ bugConstraints.gridx = 0;
+ bugConstraints.weightx = 1.0;
+ bugConstraints.weighty = 1.0;
+ //ModifiedFlowLayout layout = new ModifiedFlowLayout();
+ //layout.setAlignment(FlowLayout.CENTER);
 //     layout.setVgap(1);
  //  layout.setHgap(5);
 
 this.BugPanel.removeAll();
 
-this.BugPanel.setLayout(layout);
+
 
  populateSelectURLListPulldowns();
- 
+ this.BugPanel.setLayout(buglayout);
 int bugindex = 0;
     for (ProcedureView BV : BugViewArray)
       {
-
+      bugConstraints.gridy = bugindex;
           BV.SetIndex(bugindex+1);
        
-          this.BugPanel.add(BV.JPanelBug);
+          this.BugPanel.add(BV.JPanelBug, bugConstraints);
 
 
     JPanel ActionPanel = new JPanel();
-
 
        BV.ActionScrollPane.setViewportView(ActionPanel);
       UpdateScrollPane(BV); 
@@ -1064,20 +1072,23 @@ bugindex++;
            
             GridBagLayout ActionLayout = new GridBagLayout();
       
-              ActionPanel.setLayout(ActionLayout); 
+          
       
   
               
          int actionindex = 0;
     GridBagConstraints ActionConstraints = new GridBagConstraints();
-     ActionConstraints.anchor = GridBagConstraints.WEST; 
-      
+   
+         ActionConstraints.anchor = GridBagConstraints.WEST;
+              ActionConstraints.gridx = 0;
+      ActionConstraints.fill = GridBagConstraints.HORIZONTAL;
+      ActionConstraints.weightx = 1.0;
+    ActionPanel.setLayout(ActionLayout); 
       for (ActionView AV : newbugview.ActionsViewList )
         {
         ActionConstraints.gridy = actionindex;
-        ActionConstraints.gridx = 0;
-      ActionConstraints.fill = GridBagConstraints.HORIZONTAL;
-      ActionConstraints.weightx = 1.0;
+   
+   
           AV.SetIndexes(newbugview.index, actionindex+1);
          
           for (ActionSettings theseSettings: AV.theseActionSettings)
@@ -1086,7 +1097,7 @@ bugindex++;
         
       ActionPanelConstraints.insets = new java.awt.Insets(2,2,2,2);
        ActionPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
-       ActionConstraints.anchor = theseSettings.GridBagAnchor;
+       ActionPanelConstraints.anchor = theseSettings.GridBagAnchor;
       ActionPanelConstraints.gridx = theseSettings.gridx;
       ActionPanelConstraints.gridy = actionindex;
       ActionPanelConstraints.gridwidth = theseSettings.width;
@@ -1096,22 +1107,22 @@ bugindex++;
         ActionPanel.add(AV.JPanelAction, ActionConstraints);
           }
          actionindex++;
-
+        
         }
    
-      if (actionindex < 9)
+      if (actionindex < 8 )
       {
-        newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 36*actionindex+40));  
+   
+    newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, (36 * actionindex)+20));  
    
           }
       else
       {
-       newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 400));   
+     newbugview.ActionScrollPane.setPreferredSize(new Dimension(950, 236));   
       }
       
       newbugview.ActionScrollPane.setVisible(true);
-
-       newbugview.ActionScrollPane.setViewportView(ActionPanel);
+      newbugview.ActionScrollPane.setViewportView(ActionPanel);
 
 
      }
@@ -1257,7 +1268,7 @@ bugindex++;
              updateStoredVarPulldownView();
            }
             
-
+ UpdateScrollPane(newbugview);
 }
              public void ClearEmailSettings ()
  {

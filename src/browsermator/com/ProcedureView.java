@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -55,7 +56,7 @@ public class ProcedureView {
    JPanel LeftSideButtonsPanel;
    JLabel JLabelBugTitle = new JLabel ("Procedure");
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
-     JTextField JTextFieldBugTitle = new JTextField("", 25);
+     JTextField JTextFieldBugTitle = new JTextField();
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
  JComboBox JComboBoxStoredArrayLists;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
@@ -85,7 +86,7 @@ public class ProcedureView {
     JButton JButtonDoNotFindXPATHPassFail = new JButton ("Do Not Find XPATH");
    // JButton JButtonFindPageTitlePassFail = new JButton ("Find Page Title");
    // JButton JButtonDoNotFindPageTitlePassFail = new JButton ("Do Not Find Page Title");
-    JButton JButtonYesNoPromptPassFail = new JButton ("Yes/No Question (Yes Passes Test)");
+    JButton JButtonYesNoPromptPassFail = new JButton ("Yes/No Question");
     JLabel JLabelQuickActions = new JLabel ("Quick Select Actions:");
     JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Actions:");
   //  JLabel JLabelQuickActionsPassFail = new JLabel ("Quick Select Pass/Fail Action Buttons:");
@@ -201,8 +202,8 @@ for (String passfailaction_name : passfailaction_keys)
  //    BugConstraints.fill = GridBagConstraints.NONE;
 //     BugConstraints.anchor = GridBagConstraints.WEST;
 //     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
-     double global_weightx = 1/6;
-     double global_weighty = 1/4;
+     double global_weightx = 0.0;
+     double global_weighty = 0.0;
      JPanel ProcedurePlusIndex = new JPanel();
      ProcedurePlusIndex.add(JLabelBugTitle);
      ProcedurePlusIndex.add(JLabelBugIndex);
@@ -240,32 +241,34 @@ for (String passfailaction_name : passfailaction_keys)
      MoveButtonsPanel.add(JButtonMoveProcedureUp);
      MoveButtonsPanel.add(JButtonMoveProcedureDown);
      MoveButtonsPanel.add(JLabelPass);
-    AddToGrid(LeftSideButtonsPanel, 1, 0, 1, 3, 0.1, global_weighty, GridBagConstraints.WEST); 
-    
-     AddToGrid(ProcedurePlusIndex, 1, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
-     AddToGrid(JTextFieldBugTitle, 1, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST );
+     BugConstraints.insets = new Insets(10,10,10,10);
+     BugConstraints.fill = GridBagConstraints.HORIZONTAL;
+    AddToGrid(LeftSideButtonsPanel, 0, 0, 1, 3, 0.1, global_weighty, GridBagConstraints.WEST); 
+     BugConstraints.insets = new Insets(1,1,1,1);
+     AddToGrid(ProcedurePlusIndex, 0, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
+     AddToGrid(JTextFieldBugTitle, 0, 2, 1, 1, 1.0, global_weighty, GridBagConstraints.WEST );
      RemoveRunButtonsPanel.add(JButtonOK);
      RemoveRunButtonsPanel.add(JButtonDeleteBug);
      RemoveRunButtonsPanel.add(JButtonRunTest);
 
 
-   AddToGrid(RemoveRunButtonsPanel, 1, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
-   AddToGrid(MoveButtonsPanel, 1, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
+   AddToGrid(RemoveRunButtonsPanel, 0, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
+   AddToGrid(MoveButtonsPanel, 0, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
     JLabelPass.setVisible(false);
    
  //   BugConstraints.insets = new Insets(2,2,4,2);
  //   JPanel DoActionComboPanel = new JPanel();
  //   DoActionComboPanel.add(JLabelDoActions);
  //   DoActionComboPanel.add(JComboBoxDoActions);
-    AddToGrid(JLabelDoActions, 2, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
-    AddToGrid(JComboBoxDoActions, 2, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
+    AddToGrid(JLabelDoActions, 1, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
+    AddToGrid(JComboBoxDoActions, 1, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
     
   //  AddToGrid (DoActionComboPanel, 2, 1, 1, 1, global_weightx, global_weighty);
      
-    AddToGrid (JLabelPassFailActions, 2, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
-    AddToGrid (JComboBoxPassFailActions, 2, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST); 
+    AddToGrid (JLabelPassFailActions, 1, 3, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
+    AddToGrid (JComboBoxPassFailActions, 1, 4, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST); 
 
- //   BugConstraints.insets = new Insets(1,1,1,1);
+ 
 
 //  ActionScrollPane.setVisible(false);
 // ActionScrollPanel.setSize(new Dimension(920, 840));
@@ -276,7 +279,7 @@ for (String passfailaction_name : passfailaction_keys)
    
 //  ActionScrollPanel.setSize(920,480);
 ActionScrollPane.setVisible(true);
-    AddToGrid (ActionScrollPane, 3, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
+    AddToGrid (ActionScrollPane, 2, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
   
     
@@ -429,8 +432,8 @@ ActionScrollPane.setVisible(true);
          BugConstraints.weightx = weightx;
          BugConstraints.weighty = weighty;
          BugConstraints.anchor = anchor_value;
-         BugLayout.setConstraints(component, BugConstraints);
-         JPanelBug.add(component);
+       //  BugLayout.setConstraints(component, BugConstraints);
+         JPanelBug.add(component, BugConstraints);
          JPanelBug.revalidate();
      }
          public void Disable()
@@ -853,7 +856,7 @@ ActionScrollPane.setVisible(true);
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
   
-    AddToGrid(panelForTable, 10, 2, 3, 1, 1, 1, GridBagConstraints.WEST);
+    AddToGrid(panelForTable, 10, 1, 4, 1, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {

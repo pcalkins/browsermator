@@ -393,7 +393,7 @@ String stringactionindex = Integer.toString(this.index+1);
 
  
   //   Insets dragInsets = new Insets(2,2,2,2);
-	Dimension snapSize = new Dimension(1,2);
+	Dimension snapSize = new Dimension(1,13);
 //	 Insets edgeInsets = new Insets(0,0,0,0);
      boolean changeCursor = true;
      boolean autoLayout = true;
@@ -696,7 +696,7 @@ if (!potentialDrag) return;
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
              STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
               STAppData.AddActionToArray(thisActionToAdd, this_bug);
-              STAppFrame.UpdateDisplay();
+            
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -710,7 +710,7 @@ if (!potentialDrag) return;
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
               STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
               STAppData.AddActionToArray(thisActionToAdd, this_bug);
-              STAppFrame.UpdateDisplay();
+             
              }
       }
 }
@@ -735,8 +735,7 @@ if (!potentialDrag) return;
                             STAppFrame.DeleteActionView(newbugview, action.index);
                            STAppData.DeleteAction(newbug, action.index);
                          
-                          
-                           STAppFrame.UpdateDisplay();
+                        
                      
    
    });

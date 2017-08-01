@@ -29,7 +29,7 @@ public class FindPAGETITLEPassFailActionView extends ActionView
                             STAppFrame.saveState();
                             STAppFrame.DeleteActionView(newbugview, action.index);
                           STAppData.DeleteAction(newbug, action.index);
-                           STAppFrame.UpdateScrollPane(newbugview);
+           
    });
    
 

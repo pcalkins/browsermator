@@ -48,7 +48,7 @@ public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTes
                           STAppData.DeleteAction(newbug, action.index);
 // why was this here?                      
 //        STAppFrame.updateStoredURLListIndexes(newbugview);
-                           STAppFrame.UpdateScrollPane(newbugview);
+                    
    });
    
 
