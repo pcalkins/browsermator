@@ -25,7 +25,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -798,9 +797,11 @@ Collections.shuffle(data_in, new Random(seed));
  }
              public String[] RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
   {
+       ArrayList<String> convert_list = new ArrayList<String>();
       String[] currentlist = new String[0];
    if (VarLists.containsKey(URLListName))
             {
+          currentlist = VarLists.get(URLListName);
                       if (this.UniqueList)
 {
    String userdir = System.getProperty("user.home");
@@ -823,7 +824,7 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 String file_path = file.getAbsolutePath();
 
 doc = builder.parse(file_path);
-    currentlist = VarLists.get(URLListName);
+ 
    
 
  ArrayList<String> removeList = new ArrayList<String>();
@@ -833,7 +834,7 @@ for (String grabbedURL: currentlist)
      
     
     
-    NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
+    NodeList theseElements = doc.getElementsByTagName("URLsVisited");
    NodeList SettingsNodes = theseElements.item(0).getChildNodes();
 String URL_FROM_FILE="";
 Boolean hasValue = false;
@@ -856,7 +857,7 @@ int node_match_index = 0;
  
   
 
-  ArrayList<String> convert_list = new ArrayList(Arrays.asList(currentlist));
+  convert_list = new ArrayList(Arrays.asList(currentlist));
 
     convert_list.removeAll(removeList);
    currentlist =convert_list.stream().toArray(String[]::new);
@@ -870,15 +871,13 @@ catch (Exception ex)
 }
          }
 }
-      
-                       ArrayList<String> convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
-                   
+       
                 if (randval)
                 {
              long seed = System.nanoTime();
              
  
-             
+        convert_list = new ArrayList(Arrays.asList(currentlist));      
 Collections.shuffle(convert_list, new Random(seed));
    currentlist = convert_list.toArray(new String[convert_list.size()]);
 
@@ -886,12 +885,19 @@ Collections.shuffle(convert_list, new Random(seed));
                 }
                 if (limit>0)
                 {
-                    int sizeofvarlist = VarLists.get(URLListName).length;
+                    int sizeofvarlist = currentlist.length;
 
  if (limit<sizeofvarlist)
  {
-     convert_list = new ArrayList(Arrays.asList(VarLists.get(URLListName)));
-   convert_list.subList(limit, sizeofvarlist).clear();
+     convert_list = new ArrayList(Arrays.asList(currentlist));
+   if (convert_list.size()<limit)
+   {
+    
+   }
+   else
+   {
+     convert_list.subList(limit, sizeofvarlist).clear();
+   }
   currentlist = convert_list.toArray(new String[convert_list.size()]);
    return currentlist;
  }
@@ -900,6 +906,7 @@ else
   
    return currentlist;
  }
+
  }
    return currentlist;        
             }   
@@ -941,7 +948,7 @@ for (int x=0; x<Visitted_URL_List.size(); x++)
  {
      String URL_To_Store = Visitted_URL_List.get(x);
      
-NodeList theseElements = doc.getElementsByTagName("URLsVisitted");
+NodeList theseElements = doc.getElementsByTagName("URLsVisited");
    NodeList SettingsNodes = theseElements.item(0).getChildNodes();
 
 String URL_FROM_FILE="";
@@ -952,7 +959,7 @@ int node_match_index = 0;
   
    URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
  
-      NamedNodeMap Times = doc.getElementsByTagName("URL").item(0).getAttributes(); 
+    
    
    if (URL_To_Store.equals(URL_FROM_FILE))
    {
@@ -960,19 +967,9 @@ int node_match_index = 0;
     node_match_index = k;
    }
 }
-    if (hasValue)
-    {
-                 
-     String visits = SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").getNodeValue();
-     int visit_int = Integer.parseInt(visits);
-     visit_int++;
-     String visits_to_write = String.valueOf(visit_int);
-     SettingsNodes.item(node_match_index).getAttributes().getNamedItem("Visits").setNodeValue(visits_to_write);
-     
-    }
-    else
-    {
-      if (URL_To_Store!="")
+ if (!hasValue)
+ {
+      if (!"".equals(URL_To_Store))
       {
   Node root = doc.getFirstChild();
 
@@ -981,8 +978,8 @@ new_url.setTextContent(URL_To_Store);
 root.appendChild(new_url);
 
       }
-    }
-    
+   
+ }
  }
             try
              {
@@ -990,27 +987,17 @@ root.appendChild(new_url);
                         new FileOutputStream(file)));
      
              try {
-xmlfile.writeStartElement("URLsVisitted");
-xmlfile.writeAttribute("Filename",file.getName());
+xmlfile.writeStartElement("URLsVisited");
 NodeList urls_to_write = doc.getElementsByTagName("URL");
 
     for (int k = 0; k<urls_to_write.getLength(); k++)
     {
 
-  
-     String visits_to_write = "1";
-       LocalDateTime stringtime =  LocalDateTime.now();
- 
+      
    String thisSettingsNodeValue = urls_to_write.item(k).getTextContent();
-   if (urls_to_write.item(k).getAttributes().getLength()>0)
-   {
-      visits_to_write = urls_to_write.item(k).getAttributes().getNamedItem("Visits").getTextContent();
-       
-   }
-          xmlfile.writeStartElement("URL");
-      xmlfile.writeAttribute("Visits", visits_to_write);
-      xmlfile.writeAttribute("Time", stringtime.toString());
 
+          xmlfile.writeStartElement("URL");
+      
     xmlfile.writeCharacters(thisSettingsNodeValue);
   
     xmlfile.writeEndElement();
@@ -1032,7 +1019,8 @@ NodeList urls_to_write = doc.getElementsByTagName("URL");
 }
 catch (Exception e)
 {
-    System.out.println("DocumentBuilder error(seleniumtesttoolline2990):" + e.toString());
+    System.out.println("DocumentBuilder error(seleniumtesttoolline1039):" + e.toString());
+    e.printStackTrace();
    
 }
          }
@@ -1044,14 +1032,12 @@ catch (Exception e)
                         new FileOutputStream(file)));
      
              try {
-xmlfile.writeStartElement("URLsVisitted");
-xmlfile.writeAttribute("Filename",file.getName());
+xmlfile.writeStartElement("URLsVisited");
+
  for (String URL_To_Store: Visitted_URL_List)
  {
         xmlfile.writeStartElement("URL");
-      xmlfile.writeAttribute("Visits", "1");
-         LocalDateTime stringtime =  LocalDateTime.now();
-        xmlfile.writeAttribute("Time", stringtime.toString());  
+ 
     xmlfile.writeCharacters(URL_To_Store);
   
     xmlfile.writeEndElement();

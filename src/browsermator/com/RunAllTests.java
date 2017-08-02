@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -39,6 +38,7 @@ Boolean RUNWITHGUI;
  {
          STAppFrame.RefreshViewData();
   STAppData.RefreshData();
+  STAppFrame.UpdateDisplay();
   RUNWITHGUI = true;
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
@@ -216,7 +216,7 @@ public String doInBackground()
              FillReport();
              if (RUNWITHGUI)
              {
-    STAppFrame.UpdateDisplay(); 
+  //  STAppFrame.UpdateDisplay(); 
              }
      BrowserMatorReport = new BrowserMatorReport(STAppData);
       if (STAppData.getShowReport())

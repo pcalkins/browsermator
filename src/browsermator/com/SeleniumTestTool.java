@@ -887,15 +887,18 @@ public int GetWaitTime()
      {
          if ("Dataloop".equals(procview.Type))
          {
-             if ("file".equals(procview.DataLoopSource))
-             {
-         procview.myTable.refreshRuntimeEntriesFile();
-             }
-             else
-             {
+        
+      
            procview.myTable.refreshURLListRunTimeEntries();  
-    
+         
              }
+       
+     }
+     for (Procedure PROC: this.STAppData.BugArray)
+     {
+         if ("file".equals(PROC.Type))
+         {
+             PROC.RunTimeFileSet.clear();
          }
      }
   

@@ -299,8 +299,8 @@ catch (Exception ex)
 
         DataTable = new JTable(tableModel);
 
-     DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
-   DataTable.setPreferredScrollableViewportSize(new Dimension (694, 200));
+  DataTable.getColumnModel().getColumn(0).setPreferredWidth(946);
+   DataTable.setPreferredScrollableViewportSize(new Dimension (950, 200));
  //   DataTable.setPreferredSize(new Dimension (694,510));
 this.URLListRunTimeEntries = in_entries;
 
@@ -326,34 +326,22 @@ this.URLListRunTimeEntries = in_entries;
         
    
         int number_of_rows = DataTable.getRowCount();
-         DataTable.getColumnModel().getColumn(0).setPreferredWidth(694);
+    //     DataTable.getColumnModel().getColumn(0).setPreferredWidth(950);
         if (number_of_rows < 10)
         {
-      DataTable.setPreferredScrollableViewportSize(new Dimension (694, number_of_rows * DataTable.getRowHeight()));
+      DataTable.setPreferredScrollableViewportSize(new Dimension (950, number_of_rows * DataTable.getRowHeight()));
         }
         else
         {
-       DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
+       DataTable.setPreferredScrollableViewportSize(new Dimension (950,400));     
         }
  }
-     
- public void refreshRuntimeEntriesFile()
+ public void setColumnWidth(int in_width)
  {
-   //  if (runtimeEntries.size()>0)
-   //  {
-   //  runtimeEntries.clear();
- //    try
- //    {
- //     CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
- //             myEntries = CSVFileReader.readAll();   
- //             runtimeEntries = CSVFileReader.readAll();
- //    }
- //    catch(Exception ex)
- //    {
- //        System.out.println("Exception reading csv file: 311 mytable" + ex.toString());
- //    }
-  //   }
+     DataTable.getColumnModel().getColumn(0).setPreferredWidth(in_width);
+     
  }
+
  public void refreshURLListRunTimeEntries()
  {
      URLListRunTimeEntries = new String[0];

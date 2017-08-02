@@ -243,7 +243,7 @@ for (String passfailaction_name : passfailaction_keys)
      MoveButtonsPanel.add(JLabelPass);
      BugConstraints.insets = new Insets(10,10,10,10);
      BugConstraints.fill = GridBagConstraints.HORIZONTAL;
-    AddToGrid(LeftSideButtonsPanel, 0, 0, 1, 3, 0.1, global_weighty, GridBagConstraints.WEST); 
+    AddToGrid(LeftSideButtonsPanel, 0, 0, 1, 3, 0.0, 0.0, GridBagConstraints.WEST); 
      BugConstraints.insets = new Insets(1,1,1,1);
      AddToGrid(ProcedurePlusIndex, 0, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
      AddToGrid(JTextFieldBugTitle, 0, 2, 1, 1, 1.0, global_weighty, GridBagConstraints.WEST );
@@ -812,7 +812,7 @@ ActionScrollPane.setVisible(true);
      }
     public void AddTableToGrid()
     {
-         myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+  //       myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
      myTable.DataTable.getTableHeader().setReorderingAllowed(false);
 
   myTable.DataTable.setFillsViewportHeight( true );
@@ -841,7 +841,7 @@ ActionScrollPane.setVisible(true);
     panelForBrowseAndPulldown.add(JLabelSpinnerLimit);
     panelForBrowseAndPulldown.add(JSpinnerLimit);
     panelForBrowseAndPulldown.add(JCheckBoxRandom);
- 
+ //   myTable.setColumnWidth(panelForTable.getWidth()-4);
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
     if (myTable.number_of_records<2)
     {
@@ -852,7 +852,7 @@ ActionScrollPane.setVisible(true);
      panelForTable.setPreferredSize(new Dimension(700, 220));    
     }
   panelForTable.add(JTableScrollPane, BorderLayout.CENTER);
-
+  
    // JLabelAddFieldInstructions.setVisible(false);
    AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
   
