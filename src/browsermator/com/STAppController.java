@@ -53,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.37b";
+   public final String ProgramVersion = "1.1.38b";
    public String loginName;
    public String loginPassword;
 
@@ -2890,6 +2890,8 @@ File newfile = new File(path + ".js");
    {
      
      int SwapIndex = toMoveIndex + Direction;
+     SwapIndex--;
+     toMoveIndex--;
     if (Direction == 1)
        {
       if (SwapIndex<STAppFrame.STAppData.BugArray.size())
@@ -2897,9 +2899,8 @@ File newfile = new File(path + ".js");
     Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
   STAppFrame.ResetBugIndexes();
-
   
-    STAppFrame.ChangeURLListPulldowns(SwapIndex);
+    STAppFrame.ChangeURLListPulldowns(SwapIndex+1);
       }
        }  
     if (Direction == -1)
@@ -2909,7 +2910,7 @@ File newfile = new File(path + ".js");
     Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
  STAppFrame.ResetBugIndexes();
-  STAppFrame.ChangeURLListPulldowns(SwapIndex);
+  STAppFrame.ChangeURLListPulldowns(SwapIndex+1);
         }
     }
 
@@ -3030,12 +3031,12 @@ File newfile = new File(path + ".js");
          newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
              STAppFrame.saveState();
   
-             MoveProcedure(STAppFrame, newbugview.index-1, -1);
+             MoveProcedure(STAppFrame, newbugview.index, -1);
            });
          newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
              STAppFrame.saveState();
       
-             MoveProcedure(STAppFrame, newbugview.index-1, 1);
+             MoveProcedure(STAppFrame, newbugview.index, 1);
            });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                

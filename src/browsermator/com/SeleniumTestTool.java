@@ -721,13 +721,18 @@ public int GetWaitTime()
            procview.SetIndex(newindex);
            newindex++;
        }
+       newindex = 1;
+       for (Procedure PROC: STAppData.BugArray)
+       {
+           PROC.setIndex(newindex);
+           newindex++;
+       }
    }
      public void ChangeURLListPulldowns(int BugIndex)
      {
             for (ProcedureView PV: BugViewArray)
    {
-       if (PV.index>=BugIndex)
-       {
+   
            for (ActionView AV: PV.ActionsViewList)
            {
            if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
@@ -738,12 +743,15 @@ public int GetWaitTime()
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
         String oldname = AV.JTextFieldVariable2.getText();
          String newname = bugdashactionindex; 
-             updateSelectedArrayName(oldname, newname);   
+         if (!oldname.equals(newname))
+         {
+             updateSelectedArrayName(oldname, newname); 
+         }
         }
            }
    
     updateStoredURLListIndexes(PV);
-       }
+       
     
    }
              RemoveUpdateStoredPulldowns();
