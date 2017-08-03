@@ -53,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.38b";
+   public final String ProgramVersion = "1.1.39b";
    public String loginName;
    public String loginPassword;
 
@@ -314,31 +314,7 @@ mainAppFrame.initComponents();
   }
       }           
            });
- // mainAppFrame.addEditMenuUndoActionListener( new ActionListener() {
-   //        public void actionPerformed (ActionEvent evt) {
-       
-           //      CurrentMDIWindowIndex = GetCurrentWindow();
-           //      if (CurrentMDIWindowIndex !=-1)
-          //       {
-      
-               
-         
-         //         MDIViewClasses.get(CurrentMDIWindowIndex).Undo();
-                  
-         //        RefreshWindow (CurrentMDIWindowIndex);
-   
-          //      MDIViewClasses.get(CurrentMDIWindowIndex).UpdateDisplay();
-                                
-                    
-         //        }
-         //          else
-  //{
-  //  JOptionPane.showMessageDialog (null, "No Active Window to undo. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
- // }
-                 
-            
-     //      } 
-    //   });
+
   
   mainAppFrame.addFileMenuSaveActionListener(
       new ActionListener() {
@@ -590,9 +566,11 @@ STAppFrame.ShowStoredVarControls(false);
         public void actionPerformed(ActionEvent evt)
         { 
             STAppFrame.saveState();
-    STAppData.AddNewBug();
-   STAppFrame.AddNewBugView();  
-   int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+          int insertionPoint = STAppFrame.getInsertionPoint();
+     
+          STAppData.AddNewBug(insertionPoint);
+              STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
@@ -608,10 +586,10 @@ STAppFrame.ShowStoredVarControls(false);
         public void actionPerformed(ActionEvent evt)
         { 
  STAppFrame.saveState();
-     
-   STAppFrame.AddNewDataLoopView();
-   STAppData.AddNewDataLoop();
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+   int insertionPoint = STAppFrame.getInsertionPoint();
+   STAppData.AddNewDataLoop(insertionPoint); 
+   STAppFrame.AddNewDataLoopView(insertionPoint);
+     int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
@@ -1042,9 +1020,11 @@ STAppFrame.ShowStoredVarControls(false);
         public void actionPerformed(ActionEvent evt)
         { 
             STAppFrame.saveState();
-    STAppData.AddNewBug();
-   STAppFrame.AddNewBugView();  
-   int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+          int insertionPoint = STAppFrame.getInsertionPoint();
+     
+          STAppData.AddNewBug(insertionPoint);
+              STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
@@ -1061,9 +1041,10 @@ STAppFrame.ShowStoredVarControls(false);
         { 
 
       STAppFrame.saveState();
-   STAppFrame.AddNewDataLoopView();
-   STAppData.AddNewDataLoop();
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+  int insertionPoint = STAppFrame.getInsertionPoint();
+   STAppData.AddNewDataLoop(insertionPoint); 
+   STAppFrame.AddNewDataLoopView(insertionPoint);
+     int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
@@ -2913,13 +2894,17 @@ File newfile = new File(path + ".js");
   STAppFrame.ChangeURLListPulldowns(SwapIndex+1);
         }
     }
-
+ if (SwapIndex<STAppFrame.STAppData.BugArray.size() && SwapIndex>=0)
+      {
+        
+     
       STAppFrame.UpdateDisplay();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
+   
+        Rectangle bounds =  STAppFrame.BugViewArray.get(SwapIndex).JPanelBug.getBounds();
 
-        Rectangle bounds =  STAppFrame.BugViewArray.get(toMoveIndex).JPanelBug.getBounds();
-     bounds.height = 50;
       component.scrollRectToVisible(bounds);
+       }
       
     
    }
@@ -3545,122 +3530,6 @@ STAppFrame.saveState();
       RunASingleTest REFSYNCH = new RunASingleTest(STAppFrame, STAppData, bugtorun, thisbugview, STAppData.getTargetBrowser(), STAppData.getOSType());
     REFSYNCH.execute();
  }
-
- public void RefreshWindow (int MDI_INDEX)
-  {
-   
-      SeleniumTestTool STAppFrame = MDIViewClasses.get(MDI_INDEX);
  
-      SeleniumTestToolData STAppData = STAppFrame.STAppData;
-  
-STAppFrame.BugViewArray.clear();
-int bugindex = 0;
-for (Procedure PROC: STAppData.BugArray)
-    
-{
-   
-   
-   
-    if ("Dataloop".equals(PROC.Type))
-    {
-    
-           
-             
-      
-         
-        if ("file".equals(PROC.DataLoopSource))
-        {
-        File DataFile_file = new File(PROC.DataFile);
-       
-            STAppFrame.AddNewDataLoopFileView(DataFile_file);
-
-        }
-        else
-        {
-
-             STAppFrame.AddNewDataLoopURLListView(PROC.URLListName);
-
-        }
-      
-    }
-    else
-    {
-     STAppFrame.AddNewBugView();   
-   
-  
-    }
-    
-      int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-       
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   
-   newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers( STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.BugViewArray.get(bugindex).Type = PROC.Type;
-       STAppFrame.BugViewArray.get(bugindex).DataFile = PROC.DataFile;
-        STAppFrame.BugViewArray.get(bugindex).DataLoopSource = PROC.DataLoopSource;
-              if (PROC.DataFile.contains("\\"))
-                    {
-                         STAppFrame.BugViewArray.get(bugindex).DataLoopSource = "file";
-                    }
-
-   
-  
-    newbugview.setRandom(newbug.random);
-
-    newbugview.setLimit(newbug.limit);
- 
-   
-    newbugview.setBugTitle(newbug.BugTitle);
-  
-  
-    for (int j = 0; j <newbug.ActionsList.size(); j++)
-    {
- 
-
-  
-   ActionsMaster NewActionsMaster = new ActionsMaster();
-   
-  
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-  
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionViewHashMap.containsKey(newbug.ActionsList.get(j).Type))
-           {
-             
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(newbug.ActionsList.get(j).Type);
-              
-               thisActionViewToAdd.SetVars(newbug.ActionsList.get(j).Variable1, newbug.ActionsList.get(j).Variable2, newbug.ActionsList.get(j).Password, newbug.ActionsList.get(j).BoolVal1, newbug.ActionsList.get(j).BoolVal2, newbug.ActionsList.get(j).Locked);
-               thisActionViewToAdd.AddListeners(newbug.ActionsList.get(j),MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(newbug.ActionsList.get(j), MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-              
-              MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
-               
-           }      
- 
-     if (thisPassFailActionViewHashMap.containsKey(newbug.ActionsList.get(j).Type))
-             {
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(newbug.ActionsList.get(j).Type);
-              
-               thisActionViewToAdd.SetVars(newbug.ActionsList.get(j).Variable1, newbug.ActionsList.get(j).Variable2, newbug.ActionsList.get(j).Password, newbug.ActionsList.get(j).BoolVal1, newbug.ActionsList.get(j).BoolVal2, newbug.ActionsList.get(j).Locked);
-               thisActionViewToAdd.AddListeners(newbug.ActionsList.get(j),MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(newbug.ActionsList.get(j), MDIViewClasses.get(MDI_INDEX),MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-              
-               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
-      
-             }
-            
-// MDIClasses.get(MDI_INDEX).UpdateDisplay();
-        }   
-   STAppFrame.updateStoredURLListIndexes(newbugview); 
-    }  
- 
-   STAppFrame.UpdateDisplay();
-//        JScrollBar vertical =  STAppFrame.MainScrollPane.getVerticalScrollBar();
-// vertical.setValue( vertical.getMaximum() );
- 
-  }
-  
       
 }

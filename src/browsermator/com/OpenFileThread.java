@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import java.awt.Cursor;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -17,6 +18,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -1093,15 +1095,20 @@ STAppFrame.addjButtonDoStuffActionListener(
         public void actionPerformed(ActionEvent evt)
         { 
     STAppFrame.saveState();
-   STAppFrame.AddNewBugView();  
-   STAppData.AddNewBug();
-   int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+     int insertionPoint = STAppFrame.getInsertionPoint();
+     
+          STAppData.AddNewBug(insertionPoint);
+              STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+           JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
+           
+    Rectangle bounds =  STAppFrame.BugViewArray.get(last_added_bug_index).JPanelBug.getBounds();
+   
+      component.scrollRectToVisible(bounds);
  
   }
                                           
@@ -1113,16 +1120,20 @@ STAppFrame.addjButtonDoStuffActionListener(
         { 
     
   STAppFrame.saveState();
-   STAppData.AddNewDataLoop(); 
-   STAppFrame.AddNewDataLoopView();
-     int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+  int insertionPoint = STAppFrame.getInsertionPoint();
+   STAppData.AddNewDataLoop(insertionPoint); 
+   STAppFrame.AddNewDataLoopView(insertionPoint);
+     int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
     
   STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+        JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
+           
+    Rectangle bounds =  STAppFrame.BugViewArray.get(last_added_bug_index).JPanelBug.getBounds();
+   
+      component.scrollRectToVisible(bounds);
   }
                                           
       }

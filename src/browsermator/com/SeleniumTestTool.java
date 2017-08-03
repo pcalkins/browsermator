@@ -2,12 +2,10 @@
 package browsermator.com;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -26,6 +24,7 @@ import java.util.HashMap;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -34,21 +33,23 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SeleniumTestTool extends JInternalFrame {
-
+   JLabel jLabelInsertionPoint;
+      JComboBox jComboBoxAtIndex;
 String filename;
 String short_filename;
   JPanel BugPanel;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
 String undoTempFile;
-Boolean openingFile = true;
+Boolean openingFile;
+   
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
   this.undoTempFile = "";
   this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
   this.filename = STAppData.filename;
-  
+  this.openingFile = false;
  this.short_filename = STAppData.short_filename;
   this.BugViewArray = new ArrayList<>();
  this.setIconifiable(true);
@@ -59,8 +60,31 @@ Boolean openingFile = true;
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
 
+  
 }
-
+ public void refreshjComboBoxAtIndex()
+ {
+     int bugindex = 0;
+     jComboBoxAtIndex.removeAllItems();
+     for (ProcedureView PV: BugViewArray)
+     {
+          bugindex++;
+      jComboBoxAtIndex.addItem(bugindex);
+    
+     }
+     jComboBoxAtIndex.addItem(bugindex+1);
+     jComboBoxAtIndex.setSelectedItem(bugindex+1);
+     
+ }
+ public int getInsertionPoint()
+ {
+     int ret_val = 1;
+     if (jComboBoxAtIndex.getItemCount()>0)
+     {
+   ret_val = (Integer)jComboBoxAtIndex.getSelectedItem();
+     }
+     return ret_val;
+ }
   public void initializeDisplay()
   {
       setOSType(STAppData.getOSType());
@@ -754,7 +778,7 @@ public int GetWaitTime()
        
     
    }
-             RemoveUpdateStoredPulldowns();
+          RemoveUpdateStoredPulldowns();
      }
      public void RemoveUpdateStoredPulldowns()
      {
@@ -1033,10 +1057,6 @@ public void Undo()
  bugConstraints.gridx = 0;
  bugConstraints.weightx = 1.0;
  bugConstraints.weighty = 1.0;
- //ModifiedFlowLayout layout = new ModifiedFlowLayout();
- //layout.setAlignment(FlowLayout.CENTER);
-//     layout.setVgap(1);
- //  layout.setHgap(5);
 
 this.BugPanel.removeAll();
 
@@ -1067,7 +1087,10 @@ bugindex++;
      this.MainScrollPane.setViewportView(this.BugPanel);
 
      this.MainScrollPane.setVisible(true);
-  this.revalidate();
+    // this.setResizable(false);
+ // this.pack();
+    this.validate();
+ // this.revalidate();
  }
 
      public void setJTextFieldProgress(String value)
@@ -1161,9 +1184,22 @@ bugindex++;
          int thissize = BugViewArray.size();
           BugViewArray.get(thissize-1).SetIndex(thissize);
        
-    
+    refreshjComboBoxAtIndex();
 
         }
+         public void AddNewBugView(int atindex)
+         {
+             atindex--;
+           ProcedureView newbugview = new ProcedureView();
+       
+         newbugview.setType("Procedure");
+      
+         BugViewArray.add(atindex, newbugview);
+         ResetBugIndexes();
+       refreshjComboBoxAtIndex();
+       ChangeURLListPulldowns(atindex+1);
+  
+         }
                   public void AddNewDataLoopView()
         {
         ProcedureView newdataloopview = new ProcedureView();
@@ -1174,7 +1210,16 @@ bugindex++;
        AddDataLoopProcView(newdataloopview);
     
         }
-               public void AddDataLoopProcView(ProcedureView newdataloopview)
+            public void AddNewDataLoopView(int atindex)
+            {
+            ProcedureView newdataloopview = new ProcedureView();
+      
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("none");
+     
+       AddDataLoopProcView(newdataloopview, atindex);     
+            }
+                         public void AddDataLoopProcView(ProcedureView newdataloopview)
         {
            
         String dataLoopSource = newdataloopview.DataLoopSource;
@@ -1200,8 +1245,36 @@ bugindex++;
           BugViewArray.add(newdataloopview);
           int thissize = BugViewArray.size();
          BugViewArray.get(thissize-1).SetIndex(thissize);
-        
+        refreshjComboBoxAtIndex();
      
+        }
+               public void AddDataLoopProcView(ProcedureView newdataloopview, int atindex)
+        {
+           atindex--;
+        String dataLoopSource = newdataloopview.DataLoopSource;
+         
+        switch (dataLoopSource)
+        {
+         
+            case "urllist":
+                String[] blanklist = new String[0];
+              newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
+              break;
+            case "file":
+                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                break;
+            default:
+                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                break;
+                    
+        }
+         
+     
+      
+          BugViewArray.add(atindex, newdataloopview);
+       ResetBugIndexes();
+        refreshjComboBoxAtIndex();
+       ChangeURLListPulldowns(atindex+1);
         }
         public void AddNewDataLoopURLListView(String in_listname)
         {
@@ -1295,12 +1368,17 @@ bugindex++;
 
  private void initializeComponents()
  {
+    
      JPanel jPanelNorth = new JPanel();
      JPanel jPanelSouth = new JPanel();
      JPanel jPanelEast = new JPanel();
      JPanel jPanelWest = new JPanel();
         jButtonDoStuff = new javax.swing.JButton();
         jButtonNewBug = new javax.swing.JButton();
+   
+      
+        jLabelInsertionPoint = new JLabel("Add at position: ");
+  jComboBoxAtIndex = new javax.swing.JComboBox();
         MainScrollPane = new javax.swing.JScrollPane();
         jLabelTHISSITEURL = new javax.swing.JLabel();
         jSpinnerWaitTime = new javax.swing.JSpinner();
@@ -1357,7 +1435,7 @@ bugindex++;
 
         jButtonNewBug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/browsermator/com/Resources/newFile.png"))); // NOI18N
         jButtonNewBug.setText("Add Procedure ");
-   
+      
 
         MainScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -1397,6 +1475,9 @@ bugindex++;
         jCheckBoxPromptToClose.setText("Prompt to Close WebDriver/Browser");
 
         jLabelTargetBrowser.setText("Target Browser:");
+        String[] BugIndexes = new String[0];
+        
+      
 
         jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
@@ -1464,6 +1545,8 @@ bugindex++;
        
         jPanelNorth.add(jButtonNewBug);
         jPanelNorth.add(jButtonNewDataLoop);
+        jPanelNorth.add(jLabelInsertionPoint);
+        jPanelNorth.add(jComboBoxAtIndex);
         jPanelNorth.add(jLabelStoredVariables);
        
         jPanelNorth.add(jComboBoxStoredVariables);
@@ -2555,7 +2638,6 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    
     return checked;  
  }
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

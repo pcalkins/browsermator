@@ -643,6 +643,13 @@ else
       
       
         } 
+                                public void AddDataLoopProc(Procedure newdataloop, int atindex)
+        {
+            atindex--;
+              BugArray.add(atindex, newdataloop);   
+       ResetBugIndexes();
+
+        } 
        
          public void AddNewBug()
         {
@@ -653,6 +660,14 @@ else
          int thissize = BugArray.size();
         BugArray.get(thissize-1).setIndex(thissize);
 
+        }
+        public void AddNewBug(int atindex)
+        {
+            atindex--;
+             Procedure newbug = new Procedure();
+         newbug.setType("Procedure");
+          BugArray.add(atindex, newbug);
+        ResetBugIndexes();
         }
               public void AddNewDataLoopURLList(String in_listname)
         {
@@ -673,7 +688,7 @@ else
    
      
    AddDataLoopProc(newdataloop);
-        }
+        }    
            public void AddNewDataLoopFile(File CSVFile)
         {
         Procedure newdataloop = new Procedure();
@@ -707,6 +722,16 @@ else
         newdataloop.setDataLoopSource("none");
            
             AddDataLoopProc(newdataloop); 
+
+        }
+                public void AddNewDataLoop(int atindex)
+        {
+            
+       Procedure newdataloop = new Procedure();
+        newdataloop.setType("Dataloop");
+        newdataloop.setDataLoopSource("none");
+           
+            AddDataLoopProc(newdataloop, atindex); 
 
         }
              public void AddActionToArray (Action action, Procedure newbug)

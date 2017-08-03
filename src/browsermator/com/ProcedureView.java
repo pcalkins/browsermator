@@ -540,9 +540,11 @@ ActionScrollPane.setVisible(true);
           }
           else
           {
-         STAppFrame.AddNewBugView();
-          STAppData.AddNewBug();
-               int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+              int insertionPoint = STAppFrame.getInsertionPoint();
+        
+          STAppData.AddNewBug(insertionPoint);
+           STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
