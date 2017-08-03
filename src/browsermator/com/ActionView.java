@@ -84,7 +84,7 @@ public abstract class ActionView implements Listenable, Initializable{
     this.JButtonDelete = new JButton("Remove");
  // this.JPanelAction.add(JButtonDragIt);
 String stringactionindex = Integer.toString(this.index+1);
-        String stringbugindex = Integer.toString(this.bugindex+1);
+        String stringbugindex = Integer.toString(this.bugindex);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
       this.JLabelIndex = new JLabel(bugdashactionindex);
   //    AddToGrid(JLabelIndex, 0, 0, 1, 1, 0, 0, 0, GridBagConstraints.WEST);

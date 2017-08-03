@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -269,7 +268,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
  if (!"".equals(leftpart))
  {
  int bugindex = Integer.parseInt(leftpart);
- if (bugindex<BV.index+1)
+ if (bugindex<BV.index)
  {       
            BV.JComboBoxStoredArrayLists.addItem(keyname);
  }
@@ -713,9 +712,21 @@ public int GetWaitTime()
  }
     public void DeleteActionView (ProcedureView thisBugView, int atIndex)
    {
-    
+ String stringactionindex = Integer.toString(atIndex+1);
+        String stringbugindex = Integer.toString(thisBugView.index);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+        if (STAppData.VarHashMap.containsKey(bugdashactionindex))
+        {
+            STAppData.VarHashMap.remove(bugdashactionindex);
+          
+        }
+        if (STAppData.VarLists.containsKey(bugdashactionindex))
+        {
+           STAppData.VarLists.remove(bugdashactionindex);
+           
+        }
     thisBugView.ActionsViewList.remove(atIndex);
-
+    
   for(int BugViewIndex=0; BugViewIndex<thisBugView.ActionsViewList.size(); BugViewIndex++)
      {
      if (BugViewIndex>=atIndex)
@@ -723,6 +734,7 @@ public int GetWaitTime()
      thisBugView.ActionsViewList.get(BugViewIndex).index--;
      }
      }
+   ChangeURLListPulldowns();
  updateStoredURLListIndexes(thisBugView);
  UpdateScrollPane(thisBugView);
    }
@@ -733,7 +745,7 @@ public int GetWaitTime()
    BugViewArray.remove(BugIndex-1);
    ResetBugIndexes();
 
-   ChangeURLListPulldowns(BugIndex);
+   ChangeURLListPulldowns();
    
  
    }
@@ -752,7 +764,7 @@ public int GetWaitTime()
            newindex++;
        }
    }
-     public void ChangeURLListPulldowns(int BugIndex)
+     public void ChangeURLListPulldowns()
      {
             for (ProcedureView PV: BugViewArray)
    {
@@ -1197,7 +1209,7 @@ bugindex++;
          BugViewArray.add(atindex, newbugview);
          ResetBugIndexes();
        refreshjComboBoxAtIndex();
-       ChangeURLListPulldowns(atindex+1);
+       ChangeURLListPulldowns();
   
          }
                   public void AddNewDataLoopView()
@@ -1274,7 +1286,7 @@ bugindex++;
           BugViewArray.add(atindex, newdataloopview);
        ResetBugIndexes();
         refreshjComboBoxAtIndex();
-       ChangeURLListPulldowns(atindex+1);
+       ChangeURLListPulldowns();
         }
         public void AddNewDataLoopURLListView(String in_listname)
         {

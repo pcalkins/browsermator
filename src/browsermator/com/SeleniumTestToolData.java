@@ -177,19 +177,7 @@ changes=true;
    }
    public void DeleteAction (Procedure thisBug, int atIndex)
    {
-     String stringactionindex = Integer.toString(atIndex+1);
-        String stringbugindex = Integer.toString(thisBug.index+1);
-        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        if (VarHashMap.containsKey(bugdashactionindex))
-        {
-            VarHashMap.remove(bugdashactionindex);
-          
-        }
-        if (VarLists.containsKey(bugdashactionindex))
-        {
-           VarLists.remove(bugdashactionindex);
-           
-        }
+    
     thisBug.ActionsList.remove(atIndex);
    
 

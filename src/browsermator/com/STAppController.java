@@ -53,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.39b";
+   public final String ProgramVersion = "1.1.40b";
    public String loginName;
    public String loginPassword;
 
@@ -2881,7 +2881,7 @@ File newfile = new File(path + ".js");
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
   STAppFrame.ResetBugIndexes();
   
-    STAppFrame.ChangeURLListPulldowns(SwapIndex+1);
+    STAppFrame.ChangeURLListPulldowns();
       }
        }  
     if (Direction == -1)
@@ -2891,7 +2891,7 @@ File newfile = new File(path + ".js");
     Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
   Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
  STAppFrame.ResetBugIndexes();
-  STAppFrame.ChangeURLListPulldowns(SwapIndex+1);
+  STAppFrame.ChangeURLListPulldowns();
         }
     }
  if (SwapIndex<STAppFrame.STAppData.BugArray.size() && SwapIndex>=0)
