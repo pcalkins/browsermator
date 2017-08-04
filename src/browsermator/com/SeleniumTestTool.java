@@ -776,7 +776,7 @@ public int GetWaitTime()
 
    BugViewArray.remove(BugIndex-1);
    ResetBugIndexes();
-
+  
    ChangeURLListPulldowns();
    
  
@@ -795,6 +795,8 @@ public int GetWaitTime()
            PROC.setIndex(newindex);
            newindex++;
        }
+       refreshjComboBoxAtIndex();
+       refreshjComboBoxMoveToIndex();
    }
      public void ChangeURLListPulldowns()
      {
@@ -1240,8 +1242,7 @@ refreshjComboBoxMoveToIndex();
       
          BugViewArray.add(atindex, newbugview);
          ResetBugIndexes();
-       refreshjComboBoxAtIndex();
-       refreshjComboBoxMoveToIndex();
+     
        ChangeURLListPulldowns();
   
          }
@@ -1290,8 +1291,8 @@ refreshjComboBoxMoveToIndex();
           BugViewArray.add(newdataloopview);
           int thissize = BugViewArray.size();
          BugViewArray.get(thissize-1).SetIndex(thissize);
-        refreshjComboBoxAtIndex();
-        refreshjComboBoxMoveToIndex();
+       
+       ResetBugIndexes();
      
         }
                public void AddDataLoopProcView(ProcedureView newdataloopview, int atindex)
@@ -1319,8 +1320,7 @@ refreshjComboBoxMoveToIndex();
       
           BugViewArray.add(atindex, newdataloopview);
        ResetBugIndexes();
-        refreshjComboBoxAtIndex();
-        refreshjComboBoxMoveToIndex();
+      
        ChangeURLListPulldowns();
         }
         public void AddNewDataLoopURLListView(String in_listname)

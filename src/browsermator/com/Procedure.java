@@ -2,6 +2,7 @@ package browsermator.com;
 
 
 import com.opencsv.CSVReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -112,15 +113,19 @@ this.URLListData = new String[0];
     public List<String[]> CreateArrayListFromFile(String in_file)
     {
       List<String[]> return_array = new ArrayList();
-         try
+      File checkPath = new File(DataFile);
+      if (checkPath.exists())
+      {
+      try
      {
       CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
              return_array = CSVFileReader.readAll();   
      }
      catch(Exception ex)
      {
-         System.out.println("Exception reading csv file: 102 procedure" + ex.toString());
+         System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
      }
+      }
        return return_array;
     }
    public void setRunTimeFileSet(List<String[]> in_set)

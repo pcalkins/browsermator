@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -29,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentListener;
 
 public abstract class ActionView implements Listenable, Initializable{
@@ -439,6 +439,7 @@ String stringactionindex = Integer.toString(this.index+1);
 	public void mousePressed(MouseEvent e)
 	{
 		destinationComponent = newbugview.ActionsViewList.get(action.index).JPanelAction;
+                destinationComponent.setBackground(Color.LIGHT_GRAY);
 	destination = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
             source = newbugview.ActionsViewList.get(action.index).JButtonDragIt;
 		int width  = source.getSize().width;
@@ -618,7 +619,8 @@ else
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-              
+            Color color = UIManager.getColor ( "Panel.background" );
+       destination.setBackground(color);
 if (!potentialDrag) return;
 
 		source.removeMouseMotionListener( this );

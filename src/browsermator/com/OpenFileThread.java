@@ -120,8 +120,7 @@ public String doInBackground()
   if (last_index>-1)
   {
      MDIViewClasses.get(last_index).UpdateDisplay();
-  JScrollBar vertical =  MDIViewClasses.get(last_index).MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+ 
   }
   if (isFlatten)
   {
@@ -715,8 +714,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
       STAppFrame.UpdateDisplay();
-         JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+ 
     }
   
 
@@ -737,8 +735,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
                       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
                        STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+   
          }
   
   
@@ -786,8 +783,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
      ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
        STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
+
     }
        
       
