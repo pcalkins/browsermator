@@ -63,7 +63,7 @@ jComboBoxStoredVariables.setFocusable(false);
 }
  public void refreshjComboBoxAtIndex()
  {
-     int bugindex = 0;
+    int bugindex = 0;
      jComboBoxAtIndex.removeAllItems();
      for (ProcedureView PV: BugViewArray)
      {
@@ -74,6 +74,38 @@ jComboBoxStoredVariables.setFocusable(false);
      jComboBoxAtIndex.addItem(bugindex+1);
      jComboBoxAtIndex.setSelectedItem(bugindex+1);
      
+ }
+ public void refreshjComboBoxMoveToIndex()
+ {
+      int bugindex = 0;
+      int bugviewarraysize = BugViewArray.size();
+      if (bugviewarraysize>0)
+      {
+     int[] indexes = new int[bugviewarraysize];
+     for (int x=0; x<bugviewarraysize; x++)
+     {
+         indexes[x] = 0;
+     }
+     for (ProcedureView PV: BugViewArray)
+     {
+         indexes[bugindex] = PV.index;
+         bugindex++;
+     }
+     for (ProcedureView PV: BugViewArray)
+     {
+     PV.jComboBoxMoveToIndex.removeAllItems();
+     
+     PV.jComboBoxMoveToIndex.addItem("Move To Index:");
+     for (int thisindex: indexes)
+     {
+         if (PV.index!=thisindex && thisindex!=0)
+         {
+         PV.jComboBoxMoveToIndex.addItem(thisindex);
+         }
+     }
+     
+     }
+      }
  }
  public int getInsertionPoint()
  {
@@ -1197,7 +1229,7 @@ bugindex++;
           BugViewArray.get(thissize-1).SetIndex(thissize);
        
     refreshjComboBoxAtIndex();
-
+refreshjComboBoxMoveToIndex();
         }
          public void AddNewBugView(int atindex)
          {
@@ -1209,6 +1241,7 @@ bugindex++;
          BugViewArray.add(atindex, newbugview);
          ResetBugIndexes();
        refreshjComboBoxAtIndex();
+       refreshjComboBoxMoveToIndex();
        ChangeURLListPulldowns();
   
          }
@@ -1258,6 +1291,7 @@ bugindex++;
           int thissize = BugViewArray.size();
          BugViewArray.get(thissize-1).SetIndex(thissize);
         refreshjComboBoxAtIndex();
+        refreshjComboBoxMoveToIndex();
      
         }
                public void AddDataLoopProcView(ProcedureView newdataloopview, int atindex)
@@ -1286,6 +1320,7 @@ bugindex++;
           BugViewArray.add(atindex, newdataloopview);
        ResetBugIndexes();
         refreshjComboBoxAtIndex();
+        refreshjComboBoxMoveToIndex();
        ChangeURLListPulldowns();
         }
         public void AddNewDataLoopURLListView(String in_listname)

@@ -53,7 +53,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.40b";
+   public final String ProgramVersion = "1.1.41b";
    public String loginName;
    public String loginPassword;
 
@@ -567,7 +567,6 @@ STAppFrame.ShowStoredVarControls(false);
         { 
             STAppFrame.saveState();
           int insertionPoint = STAppFrame.getInsertionPoint();
-     
           STAppData.AddNewBug(insertionPoint);
               STAppFrame.AddNewBugView(insertionPoint);
             int last_added_bug_index = insertionPoint-1;
@@ -1020,8 +1019,7 @@ STAppFrame.ShowStoredVarControls(false);
         public void actionPerformed(ActionEvent evt)
         { 
             STAppFrame.saveState();
-          int insertionPoint = STAppFrame.getInsertionPoint();
-     
+          int insertionPoint = STAppFrame.getInsertionPoint();     
           STAppData.AddNewBug(insertionPoint);
               STAppFrame.AddNewBugView(insertionPoint);
             int last_added_bug_index = insertionPoint-1;
@@ -2867,6 +2865,27 @@ File newfile = new File(path + ".js");
             return null;
             }   
    }
+   public void MoveProcedureToIndex (SeleniumTestTool STAppFrame, int current_index, int move_to_index)
+   {
+       
+       Procedure proc_to_move = STAppFrame.STAppData.BugArray.get(current_index-1);
+       STAppFrame.STAppData.BugArray.remove(current_index-1);
+       STAppFrame.STAppData.BugArray.add(move_to_index-1, proc_to_move);
+       ProcedureView procview_to_move = STAppFrame.BugViewArray.get(current_index-1);
+       STAppFrame.BugViewArray.remove(current_index-1);
+       STAppFrame.BugViewArray.add(move_to_index-1, procview_to_move);
+      
+       STAppFrame.ResetBugIndexes();
+  
+    STAppFrame.ChangeURLListPulldowns();        
+     STAppFrame.UpdateDisplay();
+     STAppFrame.refreshjComboBoxMoveToIndex();
+         JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
+   
+        Rectangle bounds =  STAppFrame.BugViewArray.get(move_to_index-1).JPanelBug.getBounds();
+
+      component.scrollRectToVisible(bounds);   
+   }
    public void MoveProcedure (SeleniumTestTool STAppFrame, int toMoveIndex, int Direction)
    {
      
@@ -3013,16 +3032,29 @@ File newfile = new File(path + ".js");
           
            });
          newbugview.addRightClickPanelListener(this, newbug, newbugview, STAppFrame, STAppData);
-         newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
-             STAppFrame.saveState();
+       
+         newbugview.addJComboBoxMoveToIndex((ItemEvent e) -> {
+                  if ((e.getStateChange() == ItemEvent.SELECTED)) {
+         if (newbugview.jComboBoxMoveToIndex.getSelectedIndex()>0)
+               {
+          
+
+              MoveProcedureToIndex (STAppFrame, newbugview.index, (int)newbugview.jComboBoxMoveToIndex.getSelectedItem());
+              
+
+               }
+                  }
+         });
+    //     newbugview.addJButtonMoveProcedureUpActionListener((ActionEvent evt) -> {
+   //          STAppFrame.saveState();
   
-             MoveProcedure(STAppFrame, newbugview.index, -1);
-           });
-         newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
-             STAppFrame.saveState();
+//             MoveProcedure(STAppFrame, newbugview.index, -1);
+//           });
+//         newbugview.addJButtonMoveProcedureDownActionListener((ActionEvent evt) -> {
+ //            STAppFrame.saveState();
       
-             MoveProcedure(STAppFrame, newbugview.index, 1);
-           });  
+//             MoveProcedure(STAppFrame, newbugview.index, 1);
+//           });  
            newbugview.addJButtonRunTestActionListener((ActionEvent evt) -> {
                
             RunSingleTest(newbug, newbugview, STAppFrame, STAppData);

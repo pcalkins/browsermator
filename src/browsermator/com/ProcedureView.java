@@ -94,8 +94,8 @@ public class ProcedureView {
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
     int last_selected_jtextfield_variable_number = 0;
-      JButton JButtonMoveProcedureUp = new JButton("/\\");
-      JButton JButtonMoveProcedureDown = new JButton ("\\/");
+  //    JButton JButtonMoveProcedureUp = new JButton("/\\");
+ //     JButton JButtonMoveProcedureDown = new JButton ("\\/");
       JPanel MoveButtonsPanel = new JPanel();
       JPanel RemoveRunButtonsPanel = new JPanel();
         JTextField JTextFieldDataFile;
@@ -120,6 +120,8 @@ String DataLoopSource;
 String URLListName; // values for DataLoopSource are 'urllist' or 'file'
 SortedComboBoxModel <String> sortmodel;
 String fieldBugTitleOnFocus;
+JComboBox jComboBoxMoveToIndex;
+
    static final Comparator<String> URLLIST_ORDER = 
                                         new Comparator<String>() {
             public int compare(String list_item1, String list_item2) {
@@ -147,6 +149,8 @@ String fieldBugTitleOnFocus;
    
     ProcedureView()
      {
+         jComboBoxMoveToIndex = new JComboBox();
+        
          fieldBugTitleOnFocus = "";
          DataFile = "";
 URLListName = "";
@@ -236,10 +240,11 @@ for (String passfailaction_name : passfailaction_keys)
      LeftSideButtonsPanel.add(JButtonYesNoPromptPassFail);
      LeftSideButtonsPanel.add(Box.createRigidArea(new Dimension (0, 5)));
      
-  
+   
      LeftSideButtonsPanel.setLayout(LeftSideButtonsLayout);
-     MoveButtonsPanel.add(JButtonMoveProcedureUp);
-     MoveButtonsPanel.add(JButtonMoveProcedureDown);
+ //    MoveButtonsPanel.add(JButtonMoveProcedureUp);
+     MoveButtonsPanel.add(jComboBoxMoveToIndex);
+ //    MoveButtonsPanel.add(JButtonMoveProcedureDown);
      MoveButtonsPanel.add(JLabelPass);
      BugConstraints.insets = new Insets(10,10,10,10);
      BugConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -270,14 +275,6 @@ for (String passfailaction_name : passfailaction_keys)
 
  
 
-//  ActionScrollPane.setVisible(false);
-// ActionScrollPanel.setSize(new Dimension(920, 840));
- //   ActionScrollPanel.setLayout(ActionLayout); 
- 
- //    ActionScrollPane.setViewportView(ActionScrollPanel);
-
-   
-//  ActionScrollPanel.setSize(920,480);
 ActionScrollPane.setVisible(true);
     AddToGrid (ActionScrollPane, 2, 1, 6, 4, global_weightx, global_weighty, GridBagConstraints.WEST);
  
@@ -624,15 +621,15 @@ ActionScrollPane.setVisible(true);
                 }
              });
                      }
-         public void addJButtonMoveProcedureUpActionListener(ActionListener listener)
-       {
-       JButtonMoveProcedureUp.addActionListener(listener);
+ //        public void addJButtonMoveProcedureUpActionListener(ActionListener listener)
+ //      {
+ //      JButtonMoveProcedureUp.addActionListener(listener);
            
-       }
-         public void addJButtonMoveProcedureDownActionListener(ActionListener listener)
-         {
-         JButtonMoveProcedureDown.addActionListener(listener);    
-         }
+ //      }
+//         public void addJButtonMoveProcedureDownActionListener(ActionListener listener)
+//         {
+//         JButtonMoveProcedureDown.addActionListener(listener);    
+//         }
      public void addJButtonRunTestActionListener(ActionListener listener)
      {
          JButtonRunTest.addActionListener(listener);
@@ -685,6 +682,10 @@ ActionScrollPane.setVisible(true);
   public String getStoredArrayListName()
   {
       return URLListName;
+  }
+  public void addJComboBoxMoveToIndex(ItemListener listener)
+  {
+      jComboBoxMoveToIndex.addItemListener(listener);
   }
   public void addJComboBoxStoredArrayListsItemListener(ItemListener listener)
   {

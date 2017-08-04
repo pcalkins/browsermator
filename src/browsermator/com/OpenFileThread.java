@@ -993,7 +993,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
 catch (Exception e)
         {
             System.out.println("Exception parsing procedure node" + e.toString());
-          
+          e.printStackTrace();
         }
  
      if (hasGUI)
