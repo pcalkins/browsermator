@@ -36,7 +36,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
@@ -121,6 +120,8 @@ String URLListName; // values for DataLoopSource are 'urllist' or 'file'
 SortedComboBoxModel <String> sortmodel;
 String fieldBugTitleOnFocus;
 JComboBox jComboBoxMoveToIndex;
+JLabel jLabelAddAtPosition;
+JComboBox jComboBoxAddAtPosition;
 
    static final Comparator<String> URLLIST_ORDER = 
                                         new Comparator<String>() {
@@ -265,12 +266,17 @@ for (String passfailaction_name : passfailaction_keys)
  //   JPanel DoActionComboPanel = new JPanel();
  //   DoActionComboPanel.add(JLabelDoActions);
  //   DoActionComboPanel.add(JComboBoxDoActions);
- 
+jLabelAddAtPosition = new JLabel ("Add at Position:");
+jComboBoxAddAtPosition = new JComboBox();
+
  JPanel AddActionsPanel = new JPanel();
      AddActionsPanel.add(JLabelDoActions);
      AddActionsPanel.add(JComboBoxDoActions);
      AddActionsPanel.add(JLabelPassFailActions);
      AddActionsPanel.add(JComboBoxPassFailActions);
+     AddActionsPanel.add(jLabelAddAtPosition);
+     AddActionsPanel.add(jComboBoxAddAtPosition);
+     
      AddToGrid (AddActionsPanel, 1, 1, 4, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
   //  AddToGrid(JLabelDoActions, 1, 1, 1, 1, global_weightx, global_weighty, GridBagConstraints.EAST);
   //  AddToGrid(JComboBoxDoActions, 1, 2, 1, 1, global_weightx, global_weighty, GridBagConstraints.WEST);
@@ -291,6 +297,30 @@ ActionScrollPane.setVisible(true);
   
     JPanelBug.validate();
      }
+    public void refreshjComboBoxAddAtPosition()
+    {
+        jComboBoxAddAtPosition.removeAllItems();
+        int act_index = 1;
+        for (ActionView AV: ActionsViewList)
+        {
+            jComboBoxAddAtPosition.addItem(AV.index);
+            act_index++;
+        }
+        jComboBoxAddAtPosition.addItem(act_index);     
+       jComboBoxAddAtPosition.setSelectedItem(act_index);
+       
+        
+    }
+     public int getJComboBoxAddAtPosition()
+  {
+     int ret_val = 1;
+     if (jComboBoxAddAtPosition.getItemCount()>0)
+     {
+     ret_val = (Integer)jComboBoxAddAtPosition.getSelectedItem();
+     }
+   
+     return ret_val;  
+  }
      public void addJTextBugTitleFocusListener(FocusListener focuslistener)
      {
         JTextFieldBugTitle.addFocusListener(focuslistener);
@@ -496,7 +526,8 @@ ActionScrollPane.setVisible(true);
 
           public void cloneProcedure(STAppController mainAppController, Procedure this_bug_in, ProcedureView this_bugview_in, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
-         
+           int insertionPoint = STAppFrame.getInsertionPoint(); 
+           int last_added_bug_index = insertionPoint-1;
           if ("Dataloop".equals(this_bug_in.Type))
           {
 
@@ -512,7 +543,7 @@ ActionScrollPane.setVisible(true);
         
    STAppData.AddNewDataLoopFile(DataFile_file);
 
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+  
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
@@ -527,7 +558,7 @@ ActionScrollPane.setVisible(true);
                 STAppFrame.AddNewDataLoopURLListView(DataFile);
    STAppData.AddNewDataLoopURLList(DataFile);
   
-    int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
+  
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
   
@@ -545,11 +576,11 @@ ActionScrollPane.setVisible(true);
           }
           else
           {
-              int insertionPoint = STAppFrame.getInsertionPoint();
+           
         
           STAppData.AddNewBug(insertionPoint);
            STAppFrame.AddNewBugView(insertionPoint);
-            int last_added_bug_index = insertionPoint-1;
+          
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
@@ -558,17 +589,18 @@ ActionScrollPane.setVisible(true);
  vertical.setValue( vertical.getMaximum() );
           
           }
+        
+           
           
+          STAppFrame.BugViewArray.get(last_added_bug_index).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+        STAppData.BugArray.get(last_added_bug_index).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
+          STAppFrame.BugViewArray.get(last_added_bug_index).setLimit(this_bugview_in.getLimit());
+            STAppData.BugArray.get(last_added_bug_index).setLimit(this_bug_in.getLimit());
+          STAppFrame.BugViewArray.get(last_added_bug_index).setRandom(this_bugview_in.getRandom());
+          STAppData.BugArray.get(last_added_bug_index).setRandom(this_bug_in.getRandom());
+          Procedure this_bug = STAppData.BugArray.get(last_added_bug_index);
           
-          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
-        STAppData.BugArray.get(STAppData.BugArray.size()-1).setBugTitle(this_bug_in.getBugTitle() + "-CLONE" );
-          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setLimit(this_bugview_in.getLimit());
-            STAppData.BugArray.get(STAppData.BugArray.size()-1).setLimit(this_bug_in.getLimit());
-          STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1).setRandom(this_bugview_in.getRandom());
-          STAppData.BugArray.get(STAppData.BugArray.size()-1).setRandom(this_bug_in.getRandom());
-          Procedure this_bug = STAppData.BugArray.get(STAppData.BugArray.size()-1);
-          
-          ProcedureView this_bugview = STAppFrame.BugViewArray.get(STAppFrame.BugViewArray.size()-1);
+          ProcedureView this_bugview = STAppFrame.BugViewArray.get(last_added_bug_index);
           for (Action ACT: this_bug_in.ActionsList)
           {
       String ActionType = ACT.Type;
@@ -588,8 +620,10 @@ ActionScrollPane.setVisible(true);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
-               STAppData.AddActionToArray (thisActionToAdd, this_bug);
+              
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
+                STAppData.AddActionToArray (thisActionToAdd, this_bug, this_bugview);
+                this_bugview.refreshjComboBoxAddAtPosition();
           //    window.UpdateDisplay();
            }      
  
@@ -601,9 +635,11 @@ ActionScrollPane.setVisible(true);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
-             STAppData.AddActionToArray (thisActionToAdd, this_bug);
+           
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, this_bugview);
+            STAppData.AddActionToArray (thisActionToAdd, this_bug, this_bugview);
           //    window.UpdateDisplay();
+          this_bugview.refreshjComboBoxAddAtPosition();
              }
       }
                 STAppFrame.UpdateDisplay();

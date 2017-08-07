@@ -697,8 +697,8 @@ if (!potentialDrag) return;
                 thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
              STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
-              STAppData.AddActionToArray(thisActionToAdd, this_bug);
-            
+              STAppData.AddActionToArray(thisActionToAdd, this_bug, this_bugview);
+             this_bugview.refreshjComboBoxAddAtPosition();
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -711,8 +711,8 @@ if (!potentialDrag) return;
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
               STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
-              STAppData.AddActionToArray(thisActionToAdd, this_bug);
-             
+              STAppData.AddActionToArray(thisActionToAdd, this_bug, this_bugview);
+             this_bugview.refreshjComboBoxAddAtPosition();
              }
       }
 }
@@ -736,7 +736,7 @@ if (!potentialDrag) return;
                         STAppFrame.saveState();
                             STAppFrame.DeleteActionView(newbugview, action.index);
                            STAppData.DeleteAction(newbug, action.index);
-                         
+                       
                         
                      
    

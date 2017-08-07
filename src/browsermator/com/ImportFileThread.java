@@ -314,8 +314,10 @@ rightpart = parts[1];
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+            
                MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
+                  MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+             
                
            }      
  
@@ -327,8 +329,10 @@ rightpart = parts[1];
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+            
                MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
+                  MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
+               
              }
             
 // MDIClasses.get(MDI_INDEX).UpdateDisplay();

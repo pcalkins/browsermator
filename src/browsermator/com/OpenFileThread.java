@@ -923,8 +923,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
                STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
-              
+               STAppData.AddActionToArray(thisActionToAdd, NewProcedure, NewProcedureView);
+              NewProcedureView.refreshjComboBoxAddAtPosition();
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
@@ -936,8 +936,8 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
                STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
-               
+               STAppData.AddActionToArray(thisActionToAdd, NewProcedure, NewProcedureView);
+              NewProcedureView.refreshjComboBoxAddAtPosition(); 
              }
     }
       else

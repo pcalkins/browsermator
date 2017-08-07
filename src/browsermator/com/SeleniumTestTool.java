@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -769,6 +770,7 @@ public int GetWaitTime()
    ChangeURLListPulldowns();
  updateStoredURLListIndexes(thisBugView);
  UpdateScrollPane(thisBugView);
+   thisBugView.refreshjComboBoxAddAtPosition();
    }
      public void DeleteBugView (int BugIndex)
    {
@@ -1375,14 +1377,28 @@ refreshjComboBoxMoveToIndex();
   
        public void ScrollActionPaneDown(ProcedureView bugview)
  {
-  
-        JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
- action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
- }       
+     
+           JComponent component = (JComponent)bugview.ActionScrollPane.getViewport().getView();
+           int last_added_action_index = bugview.getJComboBoxAddAtPosition();
+           if (last_added_action_index>0) { last_added_action_index--;}
+    Rectangle bounds =  bugview.ActionsViewList.get(last_added_action_index).JPanelAction.getBounds();
+   
+      component.scrollRectToVisible(bounds); 
+     
+  //      JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
+ // action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
+ } 
+
       public void AddActionViewToArray (ActionView actionview, ProcedureView newbugview)
 {
-            newbugview.ActionsViewList.add(actionview);
-                 
+    int at_index = newbugview.getJComboBoxAddAtPosition();
+    if (at_index>0) {at_index--;
+            newbugview.ActionsViewList.add(at_index, actionview);
+                }
+    else
+    {
+        newbugview.ActionsViewList.add(actionview);
+    }
           actionview.index = newbugview.ActionsViewList.size();
         actionview.SetIndexes(newbugview.index, actionview.index);
         
@@ -1398,8 +1414,10 @@ refreshjComboBoxMoveToIndex();
               
              updateStoredVarPulldownView();
            }
-            
+
  UpdateScrollPane(newbugview);
+
+
 }
              public void ClearEmailSettings ()
  {

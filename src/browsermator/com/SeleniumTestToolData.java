@@ -722,9 +722,33 @@ else
             AddDataLoopProc(newdataloop, atindex); 
 
         }
+           public void AddActionToArray(Action action, Procedure newbug, ProcedureView newbugview)
+           {
+                        int at_index = newbugview.getJComboBoxAddAtPosition();
+             if (at_index>0) {at_index--;}
+           newbug.ActionsList.add(at_index, action);
+            action.index = newbug.ActionsList.size()-1;
+               if ("Store Links as URL List by XPATH".equals(action.Type))
+           {
+                    String stringactionindex = Integer.toString(action.index+1);
+        String stringbugindex = Integer.toString(newbug.index);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+              addSelectedArrayName(bugdashactionindex);
+           
+           }
+                        if ("Store Link as Variable by XPATH".equals(action.Type))
+           {
+                    String stringactionindex = Integer.toString(action.index+1);
+        String stringbugindex = Integer.toString(newbug.index);
+        String bugdashactionindex = stringbugindex + "-" + stringactionindex;
+             addSelectedVariableName(bugdashactionindex);
+           
+           }   
+            
+           }
              public void AddActionToArray (Action action, Procedure newbug)
 {
-           
+   
             newbug.ActionsList.add(action);
            
             action.index = newbug.ActionsList.size()-1;
