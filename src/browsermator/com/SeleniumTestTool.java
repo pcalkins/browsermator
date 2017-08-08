@@ -41,7 +41,7 @@ String short_filename;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
 String undoTempFile;
-Boolean openingFile;
+
    
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
@@ -49,7 +49,7 @@ Boolean openingFile;
   this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
   this.filename = STAppData.filename;
-  this.openingFile = false;
+ 
  this.short_filename = STAppData.short_filename;
   this.BugViewArray = new ArrayList<>();
  this.setIconifiable(true);
@@ -1031,8 +1031,7 @@ File newfile = new File(path + ".js");
 
  public void saveState() 
 {
-if (!openingFile)
-{
+
  //   System.out.println("SaveState");
 //   try
 //    {
@@ -1056,7 +1055,7 @@ if (!openingFile)
         
  // }
    
-}        
+     
      
   
     

@@ -111,7 +111,7 @@ public String doInBackground()
 @Override
  protected void done()
  {
-     STAppFrame.openingFile=false;
+   
      if (hasGUI)
      {
            int current_MDI_Index = mainAppController.GetCurrentWindow();
