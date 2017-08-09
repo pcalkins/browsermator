@@ -172,12 +172,16 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
             for (Procedure PROC: STAppData.BugArray)
       {
           if (oldname.equals(PROC.URLListName))
-          {
+          {   
+              if ("urllist".equals(STAppData.BugArray.get(bugindex).DataLoopSource))
+      {
       PROC.setURLListName(newname);
       refreshStoredArrayPulldown(BugViewArray.get(bugindex));
+  
+         
       STAppData.BugArray.get(bugindex).setURLListName(newname);
       BugViewArray.get(bugindex).setURLListName(newname);
-     
+      }
       
           }
           
@@ -195,13 +199,14 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
           if (oldname.equals(PROC.URLListName))
           {
      
-      
+            if ("urllist".equals(STAppData.BugArray.get(bugindex).DataLoopSource))
+      {
      PROC.setURLListName(newname);
       refreshStoredArrayPulldown(BugViewArray.get(bugindex));
       STAppData.BugArray.get(bugindex).setURLListName(newname);
       BugViewArray.get(bugindex).setURLListName(newname);
  BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
-
+      }
           }
           bugindex++;
       }
