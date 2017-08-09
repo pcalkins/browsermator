@@ -268,7 +268,7 @@ for (String passfailaction_name : passfailaction_keys)
  //   DoActionComboPanel.add(JComboBoxDoActions);
 jLabelAddAtPosition = new JLabel ("Add at Position:");
 jComboBoxAddAtPosition = new JComboBox();
-
+jComboBoxAddAtPosition.addItem(1);
  JPanel AddActionsPanel = new JPanel();
      AddActionsPanel.add(JLabelDoActions);
      AddActionsPanel.add(JComboBoxDoActions);
@@ -539,10 +539,10 @@ ActionScrollPane.setVisible(true);
             DataFile = this_bug_in.DataFile;
         File DataFile_file = new File(DataFile);
        
-   STAppFrame.AddNewDataLoopFileView(DataFile_file);
+  
         
-   STAppData.AddNewDataLoopFile(DataFile_file);
-
+   STAppData.AddNewDataLoopFile(DataFile_file, insertionPoint);
+ STAppFrame.AddNewDataLoopFileView(DataFile_file, insertionPoint);
   
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
@@ -555,8 +555,9 @@ ActionScrollPane.setVisible(true);
       else
         {
        DataFile = this_bug_in.URLListName;
-                STAppFrame.AddNewDataLoopURLListView(DataFile);
+           
    STAppData.AddNewDataLoopURLList(DataFile);
+        STAppFrame.AddNewDataLoopURLListView(DataFile);
   
   
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);

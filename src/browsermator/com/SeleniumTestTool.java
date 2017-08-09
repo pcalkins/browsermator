@@ -171,7 +171,9 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
        int bugindex = 0;  
             for (Procedure PROC: STAppData.BugArray)
       {
-          if (oldname.equals(PROC.URLListName))
+          if ("Dataloop".equals(PROC.Type))
+          {
+          if (PROC.URLListName.equals(oldname))
           {   
               if ("urllist".equals(STAppData.BugArray.get(bugindex).DataLoopSource))
       {
@@ -185,7 +187,9 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       
           }
           
-          bugindex++;
+      
+      }
+              bugindex++;
       }
         }
         else
@@ -196,17 +200,20 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
              int bugindex = 0;  
             for (Procedure PROC: STAppData.BugArray)
       {
-          if (oldname.equals(PROC.URLListName))
+        if ("Dataloop".equals(PROC.Type))
           {
-     
-            if ("urllist".equals(STAppData.BugArray.get(bugindex).DataLoopSource))
+          if (PROC.URLListName.equals(oldname))
+          {   
+              if ("urllist".equals(STAppData.BugArray.get(bugindex).DataLoopSource))
       {
+      
      PROC.setURLListName(newname);
       refreshStoredArrayPulldown(BugViewArray.get(bugindex));
       STAppData.BugArray.get(bugindex).setURLListName(newname);
       BugViewArray.get(bugindex).setURLListName(newname);
  BugViewArray.get(bugindex).JComboBoxStoredArrayLists.removeItem(oldname);
       }
+          }
           }
           bugindex++;
       }
@@ -1271,7 +1278,7 @@ refreshjComboBoxMoveToIndex();
      
        AddDataLoopProcView(newdataloopview, atindex);     
             }
-                         public void AddDataLoopProcView(ProcedureView newdataloopview)
+         public void AddDataLoopProcView(ProcedureView newdataloopview)
         {
            
         String dataLoopSource = newdataloopview.DataLoopSource;
@@ -1346,6 +1353,23 @@ refreshjComboBoxMoveToIndex();
      
    AddDataLoopProcView(newdataloopview);
         }
+          public void AddNewDataLoopURLListView(String in_listname, int at_index)
+        {
+          
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("urllist");
+       
+    
+        newdataloopview.setURLListName(in_listname);
+        String[] blanklist = new String[0];
+//  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
+  
+     
+     
+     
+   AddDataLoopProcView(newdataloopview, at_index);
+        }
            public void AddNewDataLoopFileView(File CSVFile)
         {
      
@@ -1361,6 +1385,22 @@ refreshjComboBoxMoveToIndex();
         }
   
    AddDataLoopProcView(newdataloopview);
+        }
+                      public void AddNewDataLoopFileView(File CSVFile, int at_index)
+        {
+     
+      
+      
+        ProcedureView newdataloopview = new ProcedureView();
+        newdataloopview.setType("Dataloop");
+        newdataloopview.setDataLoopSource("file");
+        if (CSVFile.exists())
+        {
+            
+         newdataloopview.setDataFile(CSVFile.getAbsolutePath());
+        }
+  
+   AddDataLoopProcView(newdataloopview, at_index);
         }
   
 

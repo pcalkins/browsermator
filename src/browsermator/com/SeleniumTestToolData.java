@@ -622,8 +622,7 @@ else
           
          
         }
-   
-                  public void AddDataLoopProc(Procedure newdataloop)
+          public void AddDataLoopProc(Procedure newdataloop)
         {
               BugArray.add(newdataloop);   
        int thissize = BugArray.size();
@@ -631,7 +630,7 @@ else
       
       
         } 
-                                public void AddDataLoopProc(Procedure newdataloop, int atindex)
+       public void AddDataLoopProc(Procedure newdataloop, int atindex)
         {
             atindex--;
               BugArray.add(atindex, newdataloop);   
@@ -677,6 +676,26 @@ else
      
    AddDataLoopProc(newdataloop);
         }    
+                      public void AddNewDataLoopURLList(String in_listname, int at_index)
+        {
+            Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         
+     
+      
+        newdataloop.setDataLoopSource("urllist");
+  
+        String[] blanklist = new String[0];
+  
+  
+       
+        newdataloop.setURLListData(blanklist, in_listname);
+        VarLists.put(in_listname, blanklist);
+   
+     
+   AddDataLoopProc(newdataloop, at_index);
+        }    
            public void AddNewDataLoopFile(File CSVFile)
         {
         Procedure newdataloop = new Procedure();
@@ -698,6 +717,28 @@ else
          
          }
    AddDataLoopProc(newdataloop);
+        }
+                   public void AddNewDataLoopFile(File CSVFile, int at_index)
+        {
+        Procedure newdataloop = new Procedure();
+      
+         newdataloop.setType("Dataloop");
+         newdataloop.setDataLoopSource("file");
+     
+        if (CSVFile.exists())
+         {
+       
+         newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         
+         }
+         else
+         {
+       
+         newdataloop.setDataFile("");  
+        
+         
+         }
+   AddDataLoopProc(newdataloop, at_index);
         }
         public String getOSType()
         {

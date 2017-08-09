@@ -119,8 +119,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         {
         File DataFile_file = new File(DataFile);
        
-            STAppFrame.AddNewDataLoopFileView(DataFile_file);
+        
             STAppData.AddNewDataLoopFile(DataFile_file);
+                STAppFrame.AddNewDataLoopFileView(DataFile_file);
   
    
         }
@@ -147,9 +148,9 @@ rightpart = parts[1];
     
  String combinedDataFile = leftpart + "-" + rightpart;
 
-            STAppFrame.AddNewDataLoopURLListView(combinedDataFile);
+         
             STAppData.AddNewDataLoopURLList(combinedDataFile);
-            
+               STAppFrame.AddNewDataLoopURLListView(combinedDataFile);
          
             
 
