@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
-import javax.swing.JScrollBar;
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -50,6 +49,20 @@ boolean isFlatten;
 boolean RunIt;
 boolean fromCloud=false;
 boolean hasGUI = true;
+List<String[]> theseMapEntries;
+boolean hasMap = false;
+public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayList<SeleniumTestToolData> in_MDIDataClasses,List<String[]> mapEntries )
+{
+  hasGUI = false;
+   mainAppController = in_mainAppController;
+   MDIDataClasses = in_MDIDataClasses;
+   RunIt = true;
+   file = in_file;
+   hasMap = true;
+  theseMapEntries = mapEntries;
+  
+}
+
 public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayList<SeleniumTestToolData> in_MDIDataClasses)
 {
    hasGUI = false;
@@ -58,6 +71,19 @@ public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayL
    RunIt = true;
    file = in_file;
  
+}
+   public OpenFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, List<String[]> mapEntries)
+{
+  this.isFlatten = isFlatten;
+  this.mainAppFrame = in_mainAppFrame;
+  this.mainAppController = in_mainAppController;
+  this.file = file;
+  this.MDIViewClasses = MDIViewClasses;
+  this.MDIDataClasses = MDIDataClasses;
+  this.calling_MDI_Index = calling_MDI_Index;
+  this.RunIt = RunIt;
+    hasMap = true;
+  theseMapEntries = mapEntries;
 }
     public OpenFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt)
 {
@@ -69,6 +95,20 @@ public OpenFileThread(STAppController in_mainAppController, File in_file, ArrayL
   this.MDIDataClasses = MDIDataClasses;
   this.calling_MDI_Index = calling_MDI_Index;
   this.RunIt = RunIt;
+}
+   public OpenFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, boolean fromCloud, List<String[]> mapEntries)
+{
+    this.fromCloud = fromCloud;
+  this.isFlatten = isFlatten;
+  this.mainAppFrame = in_mainAppFrame;
+   this.mainAppController = in_mainAppController;
+  this.file = file;
+  this.MDIViewClasses = MDIViewClasses;
+  this.MDIDataClasses = MDIDataClasses;
+  this.calling_MDI_Index = calling_MDI_Index;
+  this.RunIt = RunIt;
+    hasMap = true;
+  theseMapEntries = mapEntries;
 }
       public OpenFileThread(STAppController in_mainAppController, MainAppFrame in_mainAppFrame, File file, ArrayList<SeleniumTestTool> MDIViewClasses, ArrayList<SeleniumTestToolData> MDIDataClasses, int calling_MDI_Index, boolean isFlatten, boolean RunIt, boolean fromCloud)
 {
@@ -111,14 +151,25 @@ public String doInBackground()
 @Override
  protected void done()
  {
+  
+   
+   int last_index = mainAppController.MDIDataClasses.size()-1;
    
      if (hasGUI)
      {
-           int current_MDI_Index = mainAppController.GetCurrentWindow();
+       
   mainAppController.Navigator.setCursor(Cursor.getDefaultCursor()); 
-  int last_index = mainAppController.MDIViewClasses.size()-1;
+   
+ 
   if (last_index>-1)
   {
+       if (hasMap)
+    {
+  
+   
+        mainAppController.ApplyMap(theseMapEntries, MDIViewClasses.get(last_index), MDIDataClasses.get(last_index));
+   
+    }
      MDIViewClasses.get(last_index).UpdateDisplay();
  
   }
@@ -128,7 +179,7 @@ public String doInBackground()
   }
    if (fromCloud)
    {
-    MDIDataClasses.get(current_MDI_Index).setIsTemplateOrNew(true);   
+    MDIDataClasses.get(last_index).setIsTemplateOrNew(true);   
    }
  
      } 
@@ -136,15 +187,28 @@ public String doInBackground()
   {
       if (hasGUI)
       {
+      if (hasMap)
+    {
+  
+    if (last_index>-1) {  
+        mainAppController.ApplyMap(theseMapEntries, MDIViewClasses.get(last_index), MDIDataClasses.get(last_index));
+    }
+    }
  
-  int current_MDI_Index = mainAppController.GetCurrentWindow();
-    if (current_MDI_Index>=0) {    mainAppController.RunActions(MDIViewClasses.get(current_MDI_Index), MDIDataClasses.get(current_MDI_Index));
+    if (last_index>-1) {    mainAppController.RunActions(MDIViewClasses.get(last_index), MDIDataClasses.get(last_index));
     }
       }
     else
     {
-        mainAppController.RunActions(MDIDataClasses.get(0));
+         if (last_index>-1)
+  {
+            if (hasMap)
+    {
+        mainAppController.ApplyMap(theseMapEntries, MDIDataClasses.get(last_index));
+    }
+        mainAppController.RunActions(MDIDataClasses.get(last_index));
     } 
+    }
   } 
  }
  @Override

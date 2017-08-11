@@ -99,6 +99,10 @@ private ButtonGroup LookAndFeelGroup;
  {
     exitMenuItem.addActionListener(listener);
  }
+ public void addAboutMenuItemActionListener(ActionListener listener)
+ {
+     aboutMenuItem.addActionListener(listener);
+ }
   public void setWindowProps(FileInputStream input)
           {
               try

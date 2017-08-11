@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import com.opencsv.CSVReader;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -24,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -53,7 +56,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.47";
+   public final String ProgramVersion = "1.1.48";
    public String loginName;
    public String loginPassword;
 
@@ -289,344 +292,7 @@ mainAppFrame.initComponents();
   mainAppFrame.setSaveMenuItemEnabled(false);
   }
   
-  mainAppFrame.addFileMenuImportActionListener(
-      new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-            
-       
-         
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-              File[] newfiles = BrowseForFile();
- if (newfiles !=null)
- {
- 
-    ImportFileFunct(newfiles, CurrentMDIWindowIndex);
-
-   }    
- }     
-
-                 else
-                  
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to import into. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
-      }           
-           });
-
-  
-  mainAppFrame.addFileMenuSaveActionListener(
-      new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                 
-         
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-                     SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
-                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                    ThreadSaveFile(mainAppFrame,STAppFrame, STAppData, false, false);
-                    
-                 }
-                   else
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
-                 
-            
-           } 
-       });
-  
-  mainAppFrame.addFileMenuCloseActionListener( new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                  
-         
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-                     SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                 SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
-                  int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
-        if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else
-      {
-      // RemoveWindow(MDIClasses.size()-1);
-         int thisMDIIndex = GetCurrentWindow();
-          
-      RemoveWindow(thisMDIIndex);
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-       STAppFrame.dispose();
-      }    
-    
- 
-      }
-                    
-              
-                   else
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to close. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
-                 
-              
-            
-           } 
-       });
-  mainAppFrame.addFileMenuBrowseCloudMenuItemActionListener(
- new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                  
-         
-               OpenBrowserMatorCloud();
-                 
-              
-            
-           } 
-       });
-  mainAppFrame.addFileMenuuploadFileToCloudMenuItemActionListener(
- new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                  
-         
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-                     SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                  SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
-                 
-                   UploadFile(STAppFrame, STAppData, true, false);
-                    
-                 }
-                   else
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
-                 
-              
-            
-           } 
-       });
-  mainAppFrame.addFileMenuSaveAsActionListener(
-      new ActionListener() {
-           public void actionPerformed (ActionEvent evt) {
-                  
-         
-                 CurrentMDIWindowIndex = GetCurrentWindow();
-                 if (CurrentMDIWindowIndex !=-1)
-                 {
-                      SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
-                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
-                    ThreadSaveFile(mainAppFrame, STAppFrame, STAppData, true, false);
-                    
-                 }
-                   else
-  {
-    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
-  }
-                 
-              
-            
-           } 
-       });
-  
- mainAppFrame.addFileMenuNewActionListener(
-  
-         new ActionListener()
-  {
-  public void actionPerformed (ActionEvent evt)
-  {
-      String filename = "";
-     if (MDIViewClasses.size() == 0) 
-           {
-          filename = "untitled";
-           }
-           else
-           {
-          filename = "untitled" + MDIViewClasses.size();
-           }
-  
- 
-  ArrayList<ProcedureView> blankprocviews = new ArrayList<ProcedureView>();
-  ArrayList<Procedure> blankprocs = new ArrayList<Procedure>();
- 
-  SeleniumTestToolData STAppData = new SeleniumTestToolData(blankprocs);
- STAppData.setFilenames(filename);
- 
- 
- STAppData.setTargetBrowser("Chrome");
-  
-    STAppData.setTargetBrowser("Chrome");
-
-  STAppData.setOSType("Windows32");
-  STAppData.setIsTemplateOrNew(true);
- SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);   
-STAppFrame.setFilename(filename);
-STAppFrame.ShowStoredVarControls(false);
-  STAppFrame.setClosable(true);
- 
-  STAppFrame.setMaximizable(true);
-
-  STAppFrame.setResizable(true);
-  
-  MDIViewClasses.add(STAppFrame);
-  MDIDataClasses.add(STAppData);
-    DisplayWindow (MDIViewClasses.size()-1);
-
-  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-     @Override 
-     public void internalFrameClosing(InternalFrameEvent e) {
-                    int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
-           
-      if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else
-      {
-            int thisMDIIndex = GetCurrentWindow();
-          
-      RemoveWindow(thisMDIIndex);
-     //  RemoveWindow(MDIClasses.size()-1); 
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      }
-        
-     
-      }
-    });
- 
- 
-    STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-
- RunActions(STAppFrame, STAppData); 
- 
-  
-        }
-      }
-    );
-      STAppFrame.addjButtonClearEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.ClearEmailSettings(); 
-  STAppData.ClearEmailSettings();
-  
-        }
-      }
-    );
-          STAppFrame.addjButtonLoadEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- try
- {
-  STAppData.loadGlobalEmailSettings();
-  STAppFrame.setEmailSettings(STAppData);
- }
- catch (Exception ex)
- {
-     System.out.println ("Exception loading global email settings: " + ex.toString());
- }
-  
-        }
-      }
-    );
-  STAppFrame.addTargetBrowserItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowserView(TargetBrowser);
-           STAppData.changes = true;
-          
-         }
-        }
-        
-        }); 
-    STAppFrame.addjButtonGutsViewActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-        showGuts(STAppFrame, STAppData);
-        }
-                                          
-      }
-    );
-     STAppFrame.addjButtonNewBugActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-            STAppFrame.saveState();
-          int insertionPoint = STAppFrame.getInsertionPoint();
-          STAppData.AddNewBug(insertionPoint);
-              STAppFrame.AddNewBugView(insertionPoint);
-            int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
-      STAppFrame.addjButtonNewDataLoopActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- STAppFrame.saveState();
-   int insertionPoint = STAppFrame.getInsertionPoint();
-   STAppData.AddNewDataLoop(insertionPoint); 
-   STAppFrame.AddNewDataLoopView(insertionPoint);
-     int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
-  
-
-  }
-  }
-    ); 
-   
-  mainAppFrame.addFileMenuOpenActionListener(
-  new ActionListener()
-          {
-          public void actionPerformed (ActionEvent evt)
-          {
-          
- 
-   File[] newfiles = BrowseForFile();
- if (newfiles !=null)
- {
-     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
-     {
-    OpenFile(newfiles[fileindex], false);
-     
-    
-   }    
- }     
-
-  
-          
-          }  });
+ AddMainAppListeners();
             
   Navigator.addRecentFile1MouseListener(
   new MouseListener()
@@ -1282,8 +948,22 @@ return 1;
       return 0;
   }
   }
-      private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
-     int closure = 0;
+
+
+
+
+      public void AddMainAppListeners()
+      {
+        mainAppFrame.addAboutMenuItemActionListener(new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+           new AboutBox(ProgramVersion);
+           }
+        });
+           
+        mainAppFrame.addExitMenuActionListener(new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+            
+                int closure = 0;
      int number_of_windows_to_close = 0;
    
     
@@ -1349,21 +1029,347 @@ return 1;
       System.exit(0);
     } 
    
-    
-} 
-
-
-
-      public void AddMainAppListeners()
-      {
-
-        mainAppFrame.addExitMenuActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-           exitMenuItemActionPerformed(evt);
             }
         });
+       
+      mainAppFrame.addFileMenuImportActionListener(
+      new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+            
+       
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+              File[] newfiles = BrowseForFile();
+ if (newfiles !=null)
+ {
+ 
+    ImportFileFunct(newfiles, CurrentMDIWindowIndex);
 
+   }    
+ }     
+
+                 else
+                  
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to import into. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+      }           
+           });
+
+  
+  mainAppFrame.addFileMenuSaveActionListener(
+      new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                 
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
+                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
+                    ThreadSaveFile(mainAppFrame,STAppFrame, STAppData, false, false);
+                    
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+            
+           } 
+       });
+  
+  mainAppFrame.addFileMenuCloseActionListener( new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
+                 SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
+                  int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
+        if (closed==1)
+      {
+      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      }
+      else
+      {
+      // RemoveWindow(MDIClasses.size()-1);
+         int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
+       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+       STAppFrame.dispose();
+      }    
+    
+ 
+      }
+                    
+              
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to close. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+              
+            
+           } 
+       });
+  mainAppFrame.addFileMenuBrowseCloudMenuItemActionListener(
+ new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+               OpenBrowserMatorCloud();
+                 
+              
+            
+           } 
+       });
+  mainAppFrame.addFileMenuuploadFileToCloudMenuItemActionListener(
+ new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                     SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
+                  SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
+                 
+                   UploadFile(STAppFrame, STAppData, true, false);
+                    
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+              
+            
+           } 
+       });
+  mainAppFrame.addFileMenuSaveAsActionListener(
+      new ActionListener() {
+           public void actionPerformed (ActionEvent evt) {
+                  
+         
+                 CurrentMDIWindowIndex = GetCurrentWindow();
+                 if (CurrentMDIWindowIndex !=-1)
+                 {
+                      SeleniumTestToolData STAppData = MDIDataClasses.get(CurrentMDIWindowIndex);
+                  SeleniumTestTool STAppFrame = MDIViewClasses.get(CurrentMDIWindowIndex);
+                    ThreadSaveFile(mainAppFrame, STAppFrame, STAppData, true, false);
+                    
+                 }
+                   else
+  {
+    JOptionPane.showMessageDialog (null, "No Active Window to save. Click to select a Window.", "No Selected Window", JOptionPane.INFORMATION_MESSAGE);   
+  }
+                 
+              
+            
+           } 
+       });
+  
+ mainAppFrame.addFileMenuNewActionListener(
+  
+         new ActionListener()
+  {
+  public void actionPerformed (ActionEvent evt)
+  {
+      String filename = "";
+     if (MDIViewClasses.size() == 0) 
+           {
+          filename = "untitled";
+           }
+           else
+           {
+          filename = "untitled" + MDIViewClasses.size();
+           }
+  
+ 
+  ArrayList<ProcedureView> blankprocviews = new ArrayList<ProcedureView>();
+  ArrayList<Procedure> blankprocs = new ArrayList<Procedure>();
+ 
+  SeleniumTestToolData STAppData = new SeleniumTestToolData(blankprocs);
+ STAppData.setFilenames(filename);
+ 
+ 
+ STAppData.setTargetBrowser("Chrome");
+  
+    STAppData.setTargetBrowser("Chrome");
+
+  STAppData.setOSType("Windows32");
+  STAppData.setIsTemplateOrNew(true);
+ SeleniumTestTool STAppFrame = new SeleniumTestTool(STAppData);   
+STAppFrame.setFilename(filename);
+STAppFrame.ShowStoredVarControls(false);
+  STAppFrame.setClosable(true);
+ 
+  STAppFrame.setMaximizable(true);
+
+  STAppFrame.setResizable(true);
+  
+  MDIViewClasses.add(STAppFrame);
+  MDIDataClasses.add(STAppData);
+    DisplayWindow (MDIViewClasses.size()-1);
+
+  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+     @Override 
+     public void internalFrameClosing(InternalFrameEvent e) {
+                    int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
+           
+      if (closed==1)
+      {
+      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      }
+      else
+      {
+            int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
+     //  RemoveWindow(MDIClasses.size()-1); 
+       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      }
         
+     
+      }
+    });
+ 
+ 
+    STAppFrame.addjButtonDoStuffActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+
+ RunActions(STAppFrame, STAppData); 
+ 
+  
+        }
+      }
+    );
+      STAppFrame.addjButtonClearEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+ STAppFrame.ClearEmailSettings(); 
+  STAppData.ClearEmailSettings();
+  
+        }
+      }
+    );
+          STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+  STAppData.loadGlobalEmailSettings();
+  STAppFrame.setEmailSettings(STAppData);
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
+  
+        }
+      }
+    );
+  STAppFrame.addTargetBrowserItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String TargetBrowser = ActionType.toString();
+           STAppFrame.setTargetBrowserView(TargetBrowser);
+           STAppData.changes = true;
+          
+         }
+        }
+        
+        }); 
+    STAppFrame.addjButtonGutsViewActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+    
+        showGuts(STAppFrame, STAppData);
+        }
+                                          
+      }
+    );
+     STAppFrame.addjButtonNewBugActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+            STAppFrame.saveState();
+          int insertionPoint = STAppFrame.getInsertionPoint();
+          STAppData.AddNewBug(insertionPoint);
+              STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+  }
+                                          
+      }
+    );
+      STAppFrame.addjButtonNewDataLoopActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ STAppFrame.saveState();
+   int insertionPoint = STAppFrame.getInsertionPoint();
+   STAppData.AddNewDataLoop(insertionPoint); 
+   STAppFrame.AddNewDataLoopView(insertionPoint);
+     int last_added_bug_index = insertionPoint-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+  }
+                                          
+      }
+    );
+  
+
+  }
+  }
+    ); 
+   
+  mainAppFrame.addFileMenuOpenActionListener(
+  new ActionListener()
+          {
+          public void actionPerformed (ActionEvent evt)
+          {
+          
+ 
+   File[] newfiles = BrowseForFile();
+ if (newfiles !=null)
+ {
+     for (int fileindex = 0; fileindex<newfiles.length; fileindex++)
+     {
+    OpenFile(newfiles[fileindex], false);
+     
+    
+   }    
+ }     
+
+  
+          
+          }  });   
     }  
          public void showGuts(SeleniumTestTool in_sitetestview, SeleniumTestToolData in_sitetestdata)
    {
@@ -2180,7 +2186,241 @@ STAppData.changes = false;
      SaveFileThread SAVEREF = new SaveFileThread(this, mainAppFrame, STAppFrame, STAppData, isSaveAs, isFlatten, current_MDI_Index);
   SAVEREF.execute();  
   }
-  
+  public void ApplyMap(List<String[]> mapEntries, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+  {
+      for(String[] ROW: mapEntries)
+      {
+          int bugindex = -1;
+          int actionindex = -1;
+          int fieldNumber = -1;
+          String newValue = "";
+          if (ROW[0].contains("-"))
+          {
+ String[] parts = ROW[0].split("-");
+bugindex = Integer.parseInt(parts[0])-1;
+actionindex = Integer.parseInt(parts[1])-1;
+          }
+          else
+          {
+              try
+              {
+              bugindex = Integer.parseInt(ROW[0])-1;
+              }
+              catch (Exception ex)
+              {
+                  bugindex = -1;
+              }
+          }
+       String commandText = ROW[1];
+       try
+       {
+      fieldNumber = Integer.parseInt(ROW[2]);
+       }
+       catch (Exception ex)
+       {
+           fieldNumber = 0;
+       }
+      newValue = ROW[3];
+         if (bugindex > -1)
+         {
+       switch(commandText)
+            {
+            
+             case "disable":
+                 if (actionindex>-1)
+                 {
+                STAppFrame.BugViewArray.get(bugindex).ActionsViewList.get(actionindex).UpdateActionView();
+                STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Locked=true;
+                 }
+                 else
+                 {
+                     STAppFrame.BugViewArray.get(bugindex).setLocked(true);
+                     STAppData.BugArray.get(bugindex).setLocked(true);
+                 }
+                 break;
+             case "enable":
+                 if (actionindex>-1)
+                 {
+                  STAppFrame.BugViewArray.get(bugindex).ActionsViewList.get(actionindex).EditActionView();
+                STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Locked=false;
+                 }
+                 else
+                 {
+                   STAppFrame.BugViewArray.get(bugindex).setLocked(false);
+                     STAppData.BugArray.get(bugindex).setLocked(false);   
+                 }
+                 break;
+             case "changefield":
+                 if (fieldNumber==1)
+                 {
+                 STAppFrame.BugViewArray.get(bugindex).ActionsViewList.get(actionindex).JTextFieldVariable1.setText(newValue);
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable1 = newValue;
+                 }
+                 if (fieldNumber==2)
+                 {
+                  STAppFrame.BugViewArray.get(bugindex).ActionsViewList.get(actionindex).JTextFieldVariable2.setText(newValue);
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable2 = newValue;
+                 }
+                 if (fieldNumber==3)
+                 {
+                     try
+                     {
+                     newValue = Protector.decrypt(newValue);
+                     }
+                     catch (Exception ex)
+                     {
+                         
+                     }
+                   STAppFrame.BugViewArray.get(bugindex).ActionsViewList.get(actionindex).JTextFieldPassword.setText(newValue);
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable2 = newValue;    
+                 }
+                 break;
+             case "setdatafile":
+                 STAppFrame.BugViewArray.get(bugindex).setDataFile(newValue);
+                 STAppData.BugArray.get(bugindex).setDataFile(newValue);
+                 break;
+                   
+                 
+                     
+       }
+         }
+      }
+  }
+  public void ApplyMap(List<String[]> mapEntries, SeleniumTestToolData STAppData)
+  {
+       for(String[] ROW: mapEntries)
+      {
+          int bugindex = -1;
+          int actionindex = -1;
+          int fieldNumber = -1;
+          String newValue = "";
+          if (ROW[0].contains("-"))
+          {
+ String[] parts = ROW[0].split("-");
+bugindex = Integer.parseInt(parts[0])-1;
+actionindex = Integer.parseInt(parts[1])-1;
+          }
+          else
+          {
+              try
+              {
+              bugindex = Integer.parseInt(ROW[0])-1;
+              }
+              catch (Exception ex)
+              {
+                  bugindex = -1;
+              }
+          }
+       String commandText = ROW[1];
+       try
+       {
+      fieldNumber = Integer.parseInt(ROW[2]);
+       }
+       catch (Exception ex)
+       {
+           fieldNumber = 0;
+       }
+      newValue = ROW[3];
+         if (bugindex > -1)
+         {
+       switch(commandText)
+            {
+            
+             case "disable":
+                 if (actionindex>-1)
+                 {
+             
+                STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Locked=true;
+                 }
+                 else
+                 {
+               
+                     STAppData.BugArray.get(bugindex).setLocked(true);
+                 }
+                 break;
+             case "enable":
+                 if (actionindex>-1)
+                 {
+             
+                STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Locked=false;
+                 }
+                 else
+                 {
+                 
+                     STAppData.BugArray.get(bugindex).setLocked(false);   
+                 }
+                 break;
+             case "changefield":
+                 if (fieldNumber==1)
+                 {
+               
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable1 = newValue;
+                 }
+                 if (fieldNumber==2)
+                 {
+               
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable2 = newValue;
+                 }
+                 if (fieldNumber==3)
+                 {
+                     try
+                     {
+                     newValue = Protector.decrypt(newValue);
+                     }
+                     catch (Exception ex)
+                     {
+                         
+                     }
+                
+                 STAppData.BugArray.get(bugindex).ActionsList.get(actionindex).Variable2 = newValue;    
+                 }
+                 break;
+             case "setdatafile":
+               
+                 STAppData.BugArray.get(bugindex).setDataFile(newValue);
+                 break;
+                   
+                 
+                     
+       }
+         }
+      }
+  }
+  public void OpenFile(File file, boolean RunIt, String mapFile)
+  {
+      List<String[]> mapEntries;
+            try {
+                 CSVReader Reader = new CSVReader(new FileReader(mapFile), ',', '"', '\0');
+              mapEntries = Reader.readAll();   
+                     }
+                     catch(Exception e)
+                             {
+                          mapEntries = new ArrayList<String[]>();       
+                             }
+       
+     if (!SHOWGUI)
+   {
+       
+      OpenFileThread OPENREF = new OpenFileThread(this, file, MDIDataClasses, mapEntries);
+  OPENREF.execute();       
+   }
+   else
+   {
+    if (RunIt)
+    {
+         int current_MDI_Index = GetCurrentWindow();
+      OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt, mapEntries);
+  OPENREF.execute();    
+    }
+    else
+    {
+          int current_MDI_Index = GetCurrentWindow();
+  OpenFileThread OPENREF = new OpenFileThread(this, mainAppFrame, file, MDIViewClasses, MDIDataClasses, current_MDI_Index, false, RunIt, mapEntries);
+  OPENREF.execute();
+    }
+ 
+   }   
+  }
      public void OpenFile (File file, boolean RunIt) 
     {
         
@@ -2244,13 +2484,28 @@ STAppData.changes = false;
   }
   public void CheckArgs(String[] args)
   {
-
+      Boolean hasMap = false;
+     String mapfile = "";
+     if (args.length>2)
+     {
+       File mapfilecheck = new File(args[2]);  
+       if (mapfilecheck.exists())
+       {
+       hasMap = true;
+       mapfile = args[2];
+       }
+     }
       if (args[0].equals("open"))
      {
      File file_to_open = new File(args[1]);
-   
+     if (hasMap)
+     {
+      OpenFile(file_to_open, false, mapfile);   
+     }
+     else
+     {
      OpenFile(file_to_open, false);
-   
+     }
      }
   
     if (args[0].equals("runsilent"))
@@ -2258,16 +2513,29 @@ STAppData.changes = false;
        SHOWGUI=false;
  
    File file_to_open = new File(args[1]);
-   
+    if (hasMap)
+    {
+    OpenFile(file_to_open, true, mapfile);
+    }
+    else
+    {
     OpenFile(file_to_open, true);
-  
+    }
    
     }
       if (args[0].equals("run"))
     {
       
    File file_to_open = new File(args[1]);
+   
+     if (hasMap)
+    {
+    OpenFile(file_to_open, true, mapfile);
+    }
+    else
+    {
     OpenFile(file_to_open, true);
+    }
   
    
     }
@@ -2608,6 +2876,7 @@ public void addJMenuViewItem (JMenuItem item_to_add)
 {
     mainAppFrame.addjMenuViewItem(item_to_add);
 }
+
    public void LoadNameAndPassword()
   {
    

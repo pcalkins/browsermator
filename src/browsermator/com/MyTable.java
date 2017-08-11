@@ -6,7 +6,6 @@
 package browsermator.com;
 
 import com.opencsv.CSVReader;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
