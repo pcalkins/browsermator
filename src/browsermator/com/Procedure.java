@@ -5,6 +5,8 @@ import com.opencsv.CSVReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,13 +105,58 @@ this.URLListData = new String[0];
     public void setDataFile(String dataFile)
    {
        DataFile = dataFile;
-       
+     
        if (!"placeholder".equals(DataFile))
-       {   DataLoopSource = "file";
+       {  
+             if (dataFile.contains("http")&& dataFile.contains("//"))
+       {
+         DataLoopSource = "file";
+         DataSet = CreateArrayListFromURL(DataFile);
+       }
+             else
+             {
+           DataLoopSource = "file";
            DataSet = CreateArrayListFromFile(DataFile);
+             }
           }
            
    }
+    public List<String[]> CreateArrayListFromURL(String fileURL)
+    {
+     List<String[]> return_array = new ArrayList();
+     
+      String[] filename_parse = fileURL.split("=");
+      String filename = filename_parse[filename_parse.length-1];
+      
+  File thisFile = new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename);
+  
+    //         if (thisFile.exists())
+    //         {
+    //         Boolean checkdate = CheckIfFileIsNew(file_date, file_id);
+    //         if (checkdate)
+    //         {
+               try {
+          
+         
+    org.apache.commons.io.FileUtils.copyURLToFile(new URL(fileURL), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename));
+   DataFile = System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename;
+  
+} catch (Exception x) { System.out.println ("Exception downloading CSV file" + x.toString()); }
+       try
+     {
+      CSVFileReader = new CSVReader(new FileReader(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename), ',', '"', '\0');
+             return_array = CSVFileReader.readAll();   
+     }
+     catch(Exception ex)
+     {
+         System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
+     }
+                
+    
+     
+     return return_array;
+     
+    }
     public List<String[]> CreateArrayListFromFile(String in_file)
     {
       List<String[]> return_array = new ArrayList();

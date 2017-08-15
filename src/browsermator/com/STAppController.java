@@ -56,7 +56,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.48";
+   public final String ProgramVersion = "1.1.49";
    public String loginName;
    public String loginPassword;
 
@@ -2276,15 +2276,19 @@ actionindex = Integer.parseInt(parts[1])-1;
                  }
                  break;
              case "setdatafile":
-                 STAppFrame.BugViewArray.get(bugindex).setDataFile(newValue);
+               
                  STAppData.BugArray.get(bugindex).setDataFile(newValue);
-                 break;
+             //    STAppFrame.BugViewArray.get(bugindex).setDataFile(newValue);
+               STAppFrame.BugViewArray.get(bugindex).setDataFile( STAppData.BugArray.get(bugindex).DataFile);
+             STAppFrame.BugViewArray.get(bugindex).setJTableSourceToFile(STAppData.BugArray.get(bugindex).DataFile);
+                   break;
                    
                  
                      
        }
          }
       }
+  
   }
   public void ApplyMap(List<String[]> mapEntries, SeleniumTestToolData STAppData)
   {

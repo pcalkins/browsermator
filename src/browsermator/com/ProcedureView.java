@@ -927,7 +927,7 @@ ActionScrollPane.setVisible(true);
     JPanelBug.validate();         
     }
      public void setDataFile (String data_file)
-     {
+     { 
          DataFile = data_file;
      }
      public void setJTableSourceToFile (String sourceCSVfile)
