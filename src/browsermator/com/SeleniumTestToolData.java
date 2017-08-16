@@ -71,6 +71,7 @@ String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
 
+
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
