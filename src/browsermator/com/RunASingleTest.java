@@ -12,6 +12,7 @@ import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -366,7 +367,20 @@ options.setBinary(chrome_path);
       FallbackDriver("HTMLUnit");
    }
      break;
-         
+      case "Edge":
+     System.setProperty("webdriver.edge.driver", "lib\\edgedriver\\MicrosoftWebDriver.exe");
+     try
+     {
+   driver = new EdgeDriver(); 
+     }  
+   catch (Exception ex)
+   {
+       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the EdgeDriver driver, will fallback to HTMLUnitDriver", false,0, 0);
+      FallbackDriver("HTMLUnit");
+   }
+       break;
+       
          default: 
             driver = new ChromeDriver();
                      break;
