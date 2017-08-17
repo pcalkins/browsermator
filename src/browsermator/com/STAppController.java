@@ -3805,9 +3805,7 @@ STAppFrame.saveState();
   }
     public void RunActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
-   if ("Run All Procedures".equals(STAppFrame.getRunActionsButtonName()))
-     {
-         
+           
           int sessions = 1;
          if (STAppData.MultiSession)
          {
@@ -3841,11 +3839,8 @@ STAppFrame.saveState();
     REFSYNCH.execute();      
  }     
       }
-     }
-  //   else
-  //   {
- //        this.cancelled = true;
- //    }
+   
+
  
  }
 

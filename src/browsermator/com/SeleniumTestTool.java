@@ -15,7 +15,6 @@ import java.io.ObjectInputStream;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JSpinner.DefaultEditor;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -41,7 +40,11 @@ String short_filename;
 SeleniumTestToolData STAppData;
 ArrayList<ProcedureView> BugViewArray;
 String undoTempFile;
-
+    JButton jButtonPause;
+    JButton jButtonContinue;
+    JButton jButtonCancel;
+  
+    JPanel SouthButtonPanel;
    
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
@@ -56,12 +59,36 @@ String undoTempFile;
 //  initComponents();
    initializeComponents();
       JTextFieldProgress.setVisible(false);
-      jLabelTasks.setVisible(false);
+   jLabelTasks.setVisible(false);
+  SouthButtonPanel.setVisible(false);
 jButtonPlaceStoredVariable.setFocusable(false);
 jComboBoxStoredVariables.setFocusable(false);
 
   
 }
+  public void addJButtonCancelActionListener(ActionListener listener)
+  {
+      jButtonCancel.addActionListener(listener);
+  }
+   public void addJButtonPauseActionListener(ActionListener listener)
+  {
+      jButtonPause.addActionListener(listener);
+  }
+    public void addJButtonContinueActionListener(ActionListener listener)
+  {
+      jButtonContinue.addActionListener(listener);
+  }
+  
+  public void Pause()
+  {
+   jButtonPause.setEnabled(false);
+       jButtonContinue.setEnabled(true);
+  }
+  public void Continue()
+  {
+       jButtonPause.setEnabled(true);
+       jButtonContinue.setEnabled(false);
+  }
  public void refreshjComboBoxAtIndex()
  {
     int bugindex = 0;
@@ -436,12 +463,13 @@ public void hideTaskGUI()
 {
  jLabelTasks.setVisible(false);
  JTextFieldProgress.setVisible(false);
- 
+ SouthButtonPanel.setVisible(false);
 }
 public void showTaskGUI()
 {
   jLabelTasks.setVisible(true);
- JTextFieldProgress.setVisible(true);   
+ JTextFieldProgress.setVisible(true); 
+ SouthButtonPanel.setVisible(true);
 }
 public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fieldnum)
 {
@@ -960,14 +988,11 @@ public int GetWaitTime()
            TAV.JButtonDragIt.setBackground(new JButton().getBackground());
        }
  }
- public void setRunActionsButtonName(String newtext)
+ public void setRunButtonEnabled(Boolean enabled_value)
  {
-     jButtonDoStuff.setText(newtext);
+    this.jButtonDoStuff.setEnabled(enabled_value);
  }
- public String getRunActionsButtonName()
- {
-     return jButtonDoStuff.getText();
- }
+
  public void setFlattenFileButtonName (String newtext)
  {
      jButtonFlattenFile.setText(newtext);
@@ -1481,7 +1506,7 @@ refreshjComboBoxMoveToIndex();
      JPanel jPanelNorth = new JPanel();
      JPanel jPanelSouth = new JPanel();
      JPanel jPanelEast = new JPanel();
-     JPanel jPanelWest = new JPanel();
+  //   JPanel jPanelWest = new JPanel();
         jButtonDoStuff = new javax.swing.JButton();
         jButtonNewBug = new javax.swing.JButton();
    
@@ -1673,14 +1698,25 @@ refreshjComboBoxMoveToIndex();
         JPanel jPanelSouth2 = new JPanel();
         
         jPanelSouth2.add(jLabelTasks);
-       
+   
+  jButtonPause = new JButton("Pause");
+        jButtonContinue = new JButton("Continue");
+        jButtonContinue.setEnabled(false);
+        jButtonCancel = new JButton("Cancel");
+ 
+  
+     SouthButtonPanel = new JPanel();
+        SouthButtonPanel.add(jButtonContinue);
+        SouthButtonPanel.add(jButtonPause);
+        SouthButtonPanel.add(jButtonCancel);
         JTextFieldProgress.setPreferredSize(new Dimension(600, 20));
         jPanelSouth2.add(JTextFieldProgress);
         JPanel jPanelAllSouth = new JPanel();
         jPanelAllSouth.setLayout(new BoxLayout( jPanelAllSouth , BoxLayout.Y_AXIS));
          jPanelAllSouth.add(jPanelSouth);
          jPanelAllSouth.add(jPanelSouth2);
-        
+         jPanelAllSouth.add(SouthButtonPanel);
+       
     //    jPanelSouth.setPreferredSize(new Dimension(800, 240));
      
       //   add(jPanelNorth, BorderLayout.NORTH);

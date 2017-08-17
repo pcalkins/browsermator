@@ -34,7 +34,7 @@ String chrome_path;
 FireFoxProperties FFprops;
 BrowserMatorReport BrowserMatorReport;
 Boolean RUNWITHGUI;
- ProgressWindow ProgressWin;
+
 Boolean paused = false;
   
  public RunAllTests (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
@@ -52,8 +52,8 @@ Boolean paused = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.OSType = STAppData.OSType;
   STAppFrame.showTaskGUI();
- ProgressWin = new ProgressWindow(STAppData.short_filename);
- setProgressWinListeners();
+
+ setProgressListeners();
   
  
     
@@ -71,18 +71,16 @@ Boolean paused = false;
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
-  // SiteTest.showTaskGUI();
- // STAppData.VarHashMap.clear();
-//  STAppData.VarLists.clear();
+
 
       
  }
  public synchronized void Pause() {
-        ProgressWin.Pause();
+       STAppFrame.Pause();
         this.paused = true;
     }
   public synchronized void Continue() {
-      ProgressWin.Continue();
+      STAppFrame.Continue();
         this.paused = false;
          synchronized(this) {
             this.notifyAll();
@@ -102,9 +100,9 @@ Boolean paused = false;
  }
  
 
-public void setProgressWinListeners()
+public void setProgressListeners()
  {
-   ProgressWin.addJButtonCancelActionListener(new ActionListener() {
+   STAppFrame.addJButtonCancelActionListener(new ActionListener() {
     public void actionPerformed (ActionEvent evt) {
 
      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
@@ -120,7 +118,7 @@ public void setProgressWinListeners()
             @Override
             protected void process(List<String> chunks) {
              STAppData.cancelled = true;
-             ProgressWin.jButtonCancel.setText("Cancelling...");
+             STAppFrame.jButtonCancel.setText("Cancelling...");
              
             STAppFrame.enablejButtonDoStuff(false);
            }
@@ -128,7 +126,7 @@ public void setProgressWinListeners()
        
    }    
  });
-   ProgressWin.addJButtonContinueActionListener(new ActionListener() {
+   STAppFrame.addJButtonContinueActionListener(new ActionListener() {
     public void actionPerformed (ActionEvent evt) {
 
 
@@ -151,7 +149,7 @@ public void setProgressWinListeners()
        }).execute(); 
    }    
  });
-     ProgressWin.addJButtonPauseActionListener(new ActionListener() {
+     STAppFrame.addJButtonPauseActionListener(new ActionListener() {
     public void actionPerformed (ActionEvent evt) {
 
     LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
@@ -185,34 +183,8 @@ public String doInBackground()
      STAppFrame.disableAdds();
      STAppFrame.disableRemoves();
      STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    STAppFrame.setRunActionsButtonName("Running...(Click to Cancel)");
-        STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-            if ("Running...(Click to Cancel)".equals(STAppFrame.getRunActionsButtonName()))
-            {
-          
-      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
-            @Override
-            public Void call() throws Exception {
-            shoutOut("cancel");
-                    Thread.sleep(100);
-                    return null;
-                      }
-        };
-      
-       (new ListenerTask<Void, String>(procMethod) {
-            @Override
-            protected void process(List<String> chunks) {
-             STAppData.cancelled = true;
-            STAppFrame.enablejButtonDoStuff(false);
-           }
-       }).execute();
-            }
-      }
-      }
-    );
+     STAppFrame.setRunButtonEnabled(false);
+    
     }
      STAppData.testRunning = true;
      
@@ -247,7 +219,7 @@ public String doInBackground()
     STAppFrame.hideTaskGUI();
     STAppFrame.resetRunButtons();
     STAppFrame.setJTextFieldProgress("");
-    ProgressWin.dispose();
+  STAppFrame.jButtonCancel.setText("Cancel");
      }
  
    STAppData.testRunning = false; 
@@ -258,14 +230,14 @@ public String doInBackground()
     {
      
        STAppFrame.setCursor(Cursor.getDefaultCursor());   
-    STAppFrame.setRunActionsButtonName("Run All Procedures");
+    STAppFrame.setRunButtonEnabled(true);
 
   
     }
     catch (Exception ex)
     {
       System.out.println("exception setting cursor: " + ex.toString());
-        STAppFrame.setRunActionsButtonName("Run All Procedures");
+       STAppFrame.setRunButtonEnabled(true);
     }
      }
 
@@ -314,10 +286,7 @@ public String doInBackground()
  
     
              FillReport();
-             if (RUNWITHGUI)
-             {
-  //  STAppFrame.UpdateDisplay(); 
-             }
+    
      BrowserMatorReport = new BrowserMatorReport(STAppData);
       if (STAppData.getShowReport())
        {
@@ -731,12 +700,12 @@ options.setBinary(chrome_path);
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-             ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+            
              }
         }).execute();
 
-                    
-          STAppFrame.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
+                   STAppFrame.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");           
+      
        }
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
@@ -781,7 +750,7 @@ if (!"Dataloop".equals(thisbug.Type))
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-            ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+          
             }
         }).execute();
        }
@@ -848,7 +817,7 @@ if (!"Dataloop".equals(thisbug.Type))
        {
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-         ProgressWin.setVisible(false);
+      
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
@@ -860,7 +829,7 @@ if (!"Dataloop".equals(thisbug.Type))
                      ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
                   thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
                  }
-                 ProgressWin.setVisible(true);
+              
        }
        
   
@@ -1010,7 +979,7 @@ else
     {
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-             ProgressWin.setVisible(false);
+           
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
         changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
@@ -1025,7 +994,7 @@ else
            {
              ThisAction.loop_ScreenshotsBase64[x] = "";
            }
-            ProgressWin.setVisible(true);
+          
         }
        else
         {
@@ -1084,7 +1053,7 @@ else
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-            ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+        
             }
         }).execute();
         }
@@ -1120,7 +1089,7 @@ else
             @Override
             protected void process(List<String> chunks) {
             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+        
             }
         }).execute();
          }
@@ -1149,7 +1118,7 @@ else
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-            ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+          
             }
         }).execute();   
            }
@@ -1280,7 +1249,7 @@ else
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-            ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+          
             }
         }).execute();   
                  }
@@ -2015,7 +1984,7 @@ options.setBinary(chrome_path);
             @Override
             protected void process(List<String> chunks) {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-            ProgressWin.setjTextFieldProgress(chunks.get(chunks.size() -1 ));
+          
             }
         }).execute();
      
