@@ -214,6 +214,10 @@ public String doInBackground()
     
       if (RUNWITHGUI)
      {
+     if (STAppFrame.getjCheckBoxUniqueURLsSelected())
+     {
+      STAppFrame.jButtonClearUniqueList.setEnabled(true);
+     }
           STAppFrame.enablejButtonDoStuff(true);
     STAppFrame.enableAdds();
     STAppFrame.enableRemoves();
@@ -278,15 +282,14 @@ public String doInBackground()
   
  }
  
-  
-    
+
+     
     if (STAppData.getExitAfter())
     {
     System.exit(0);
     }
- 
-    
-             FillReport();
+  
+      FillReport();      
     
      BrowserMatorReport = new BrowserMatorReport(STAppData);
       if (STAppData.getShowReport())

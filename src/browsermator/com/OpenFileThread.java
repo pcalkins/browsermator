@@ -1041,7 +1041,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
  
     }
 
-    if (hasDataloop && !hasURLList)
+    if (hasDataloop)
  {
         if (hasGUI)
      {

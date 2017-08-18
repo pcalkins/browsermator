@@ -43,8 +43,9 @@ String undoTempFile;
     JButton jButtonPause;
     JButton jButtonContinue;
     JButton jButtonCancel;
-  
+    JButton jButtonClearUniqueList;
     JPanel SouthButtonPanel;
+
    
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
@@ -1703,7 +1704,7 @@ refreshjComboBoxMoveToIndex();
         jButtonContinue = new JButton("Continue");
         jButtonContinue.setEnabled(false);
         jButtonCancel = new JButton("Cancel");
- 
+     jButtonClearUniqueList = new JButton("Clear Unique List");
   
      SouthButtonPanel = new JPanel();
         SouthButtonPanel.add(jButtonContinue);
@@ -1746,6 +1747,9 @@ separator3.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
         jPanelEast.add(jCheckBoxUniqueURLs);
         jPanelEast.add(jRadioButtonUniquePerFile);
         jPanelEast.add(jRadioButtonUniqueGlobal);
+        jPanelEast.add(jButtonClearUniqueList);
+   
+        
              JSeparator separator30 = new JSeparator(SwingConstants.HORIZONTAL);
 separator30.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
            jPanelEast.add(separator30);
@@ -1786,6 +1790,13 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
      
        add(jPanelNorth, BorderLayout.NORTH);
          pack();
+     String userdir = System.getProperty("user.home");
+        String visited_list_file_path = userdir + File.separator + "browsermator_" + STAppData.short_filename + "_visited_url_log.xml";
+       File fileCheck = new File(visited_list_file_path);
+       if (!fileCheck.exists())
+       {
+      jButtonClearUniqueList.setEnabled(false);
+       }
  }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2470,7 +2481,11 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    {
        jSpinnerSessions.addChangeListener(listener);
    }
-   
+ public void addjButtonClearUniqueListActionListener(ActionListener listener)
+{
+    jButtonClearUniqueList.addActionListener(listener);
+}
+  
  public void clearEmailSettings()
  {
      setSMTPHostname("");

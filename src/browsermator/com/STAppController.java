@@ -548,7 +548,27 @@ mainAppFrame.initComponents();
         
       
 
-     
+//  Navigator.addjButtonClearGlobalUniqueListActionListener(
+//  new ActionListener()
+//  {
+//  public void actionPerformed (ActionEvent evt)
+//  {
+//     String userdir = System.getProperty("user.home");
+//        String visited_list_file_path = userdir + File.separator + "browsermator_global_visited_url_log.xml";
+//       File fileCheck = new File(visited_list_file_path);
+//       if (!fileCheck.exists())
+//       {
+//       if (fileCheck.canWrite())
+//           {
+//               fileCheck.delete();
+//          //     Navigator.setjButtonClearGlobalUniqueListEnabled(false);
+//               Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Global Unique File List has been cleared.", false, 0,0);
+//           }
+//       }    
+//  }   
+//  
+//          });
+          
 
   Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
@@ -624,6 +644,56 @@ mainAppFrame.initComponents();
         }
       }
     );
+             STAppFrame.addjButtonClearUniqueListActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+          String userdir = System.getProperty("user.home");
+         String visited_list_file_path = userdir + File.separator + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+       File fileCheck = new File(visited_list_file_path);
+       if (fileCheck.exists())
+       {
+           if (fileCheck.canWrite())
+           {
+               fileCheck.delete();
+               STAppFrame.jButtonClearUniqueList.setEnabled(false);
+                Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
+           }
+    
+      
+       }
+     
+     
+  
+        }
+      }
+    );  
+          STAppFrame.addjButtonClearUniqueListActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+          String userdir = System.getProperty("user.home");
+         String visited_list_file_path = userdir + File.separator + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+       File fileCheck = new File(visited_list_file_path);
+       if (fileCheck.exists())
+       {
+           if (fileCheck.canWrite())
+           {
+               fileCheck.delete();
+               STAppFrame.jButtonClearUniqueList.setEnabled(false);
+                Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
+           }
+    
+      
+       }
+     
+     
+  
+        }
+      }
+    );  
       STAppFrame.addjButtonClearEmailSettingsListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -1716,14 +1786,11 @@ xmlfile.writeAttribute("Random", randstring);
        int number_of_rows = 0;
          if ("urllist".equals(thisbug.DataLoopSource))
     {
-       //cannot flatten urllist (this would require a run) 
-   //   if (thisbugview.getLimit()>0 || thisbugview.getRandom())
-   //   {
-   //   STAppFrame.RandomizeAndLimitURLList(thisbug.URLListName,thisbugview.getLimit(), thisbugview.getRandom());
-   //   }
-   //   thisbug.setURLListData(STAppFrame.VarLists.get(thisbug.URLListName), thisbug.URLListName);
-   //   thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-   //   number_of_rows = STAppFrame.VarLists.get(thisbug.URLListName).length;
+ 
+   
+    
+      thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+      number_of_rows = thisbug.URLListData.length;
     }
     else
     {
@@ -1733,6 +1800,10 @@ xmlfile.writeAttribute("Random", randstring);
        {
          thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
         }
+       else
+       {
+           thisbug.setRunTimeFileSet(thisbug.DataSet);
+       }
          number_of_rows = thisbug.RunTimeFileSet.size();
     }  
     }   
@@ -1863,7 +1934,17 @@ int action_index_for_flatten = 0;
     xmlfile.writeEndElement();
     
     xmlfile.writeStartElement("Variable1");
-    
+    if (var1Parser.hasDataLoopVar)
+    {
+    if ("file".equals(thisbug.DataLoopSource))
+    {
+        thisaction.Variable1 = var1Parser.GetFullValueFromFile(x, thisbug.DataSet);
+    }
+    else
+    {
+      thisaction.Variable1 = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+    }
+    }
     xmlfile.writeCharacters(thisaction.Variable1);
     xmlfile.writeEndElement();
     if (thisaction.Type.contains("Password"))
@@ -1888,6 +1969,17 @@ int action_index_for_flatten = 0;
     }
     else
     {
+         if (var2Parser.hasDataLoopVar)
+    {
+    if ("file".equals(thisbug.DataLoopSource))
+    {
+        thisaction.Variable2 = var2Parser.GetFullValueFromFile(x, thisbug.DataSet);
+    }
+    else
+    {
+      thisaction.Variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+    }
+    }
     xmlfile.writeStartElement("Variable2");
     xmlfile.writeCharacters(thisaction.Variable2);
     xmlfile.writeEndElement();
@@ -3573,6 +3665,31 @@ File newfile = new File(path + ".js");
   }
           
        });
+                STAppFrame.addjButtonClearUniqueListActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+          String userdir = System.getProperty("user.home");
+         String visited_list_file_path = userdir + File.separator + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+       File fileCheck = new File(visited_list_file_path);
+       if (fileCheck.exists())
+       {
+           if (fileCheck.canWrite())
+           {
+               fileCheck.delete();
+               STAppFrame.jButtonClearUniqueList.setEnabled(false);
+               Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
+           }
+    
+      
+       }
+     
+     
+  
+        }
+      }
+    );  
         STAppFrame.addjSpinnerWaitTimeChangeListener(new ChangeListener(){
            @Override
         public void stateChanged(ChangeEvent e) {
@@ -3587,7 +3704,7 @@ File newfile = new File(path + ".js");
             STAppData.setSessions(STAppFrame.getSessions());
         }    
           });
-        
+
  STAppFrame.addjCheckBoxIncludeScreenshotsActionListener((ActionEvent e) -> {
      STAppFrame.saveState();   
      STAppData.IncludeScreenshots = STAppFrame.getIncludeScreenshots();
