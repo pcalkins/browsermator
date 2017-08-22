@@ -25,7 +25,7 @@ public class ActionsMaster {
        
     PassFailActionHashMap = new <String, Action>HashMap();
     PassFailActionViewHashMap = new <String, ActionView>HashMap();
-   ActionViewHashMap.put("Back Button", new BackActionView());
+    ActionViewHashMap.put("Back Button", new BackActionView());
     ActionViewHashMap.put("Click at HREF", new ClickAtHREFActionView());
     ActionViewHashMap.put("Click at ID", new ClickAtIDActionView());
     ActionViewHashMap.put("Click at Image SRC", new ClickAtImageSRCActionView());
@@ -64,9 +64,9 @@ public class ActionsMaster {
     ActionViewHashMap.put("Up Arrow Key", new UpArrowKeyActionView());
  
   ActionHashMap.put("Back Button", new BackAction());
-    ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false, false));
+  ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false, false));
   ActionHashMap.put("Click at ID", new ClickAtIDAction("", false, false));
- ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false, false));
+  ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false, false));
   ActionHashMap.put("Click at Link Text", new ClickAtLinkTextAction("", false, false));
   ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false, false));
   ActionHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowAction());
@@ -81,7 +81,7 @@ public class ActionsMaster {
   ActionHashMap.put("Left Arrow Key", new LeftArrowKeyAction());
   ActionHashMap.put("Next Tab", new NextTabAction());
   ActionHashMap.put("Open New Tab", new OpenNewTabAction());
- ActionHashMap.put("Pause", new PauseAction("", ""));
+  ActionHashMap.put("Pause", new PauseAction("", ""));
   ActionHashMap.put("Pause with Continue Button", new PauseContinueAction());
   ActionHashMap.put("Right Arrow Key", new RightArrowKeyAction());
   ActionHashMap.put("Right-Click", new RightClickAction());
@@ -92,7 +92,7 @@ public class ActionsMaster {
   ActionHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowAction(""));
   //legacy support for Type at ID
   ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));
-ActionHashMap.put("Type at Input ID", new TypeAtIDAction("", "", false));
+  ActionHashMap.put("Type at Input ID", new TypeAtIDAction("", "", false));
   ActionHashMap.put("Type at Input Name", new TypeAtInputNameAction("","", false));
   ActionHashMap.put("Type at XPATH", new TypeAtXPATHAction("", "", false));
   ActionHashMap.put("Type Password at ID", new TypePasswordAtIDAction("", "", false));

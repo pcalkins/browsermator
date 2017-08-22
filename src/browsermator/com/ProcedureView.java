@@ -58,6 +58,7 @@ public class ProcedureView {
      JTextField JTextFieldBugTitle = new JTextField();
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
  JComboBox JComboBoxStoredArrayLists;
+ JComboBox jComboBoxSetDataLoopType;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
      JTextField JTextFieldBugURL = new JTextField("", 15);
      JLabel JLabelBugSeverity = new JLabel ("Importance:");
@@ -103,7 +104,7 @@ public class ProcedureView {
    CSVReader CSVFileReader;
 JPanel panelForTable;
 JLabel JLabelUseList;
-JLabel JLabelOR;
+JLabel JLabelDataLoopType;
 String Type;
 TitledBorder BugPanelBorder;
 String DataFile;
@@ -160,13 +161,13 @@ URLListName = "";
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
          myTable=new MyTable(""); 
-             JLabelOR = new JLabel("OR:");
+             JLabelDataLoopType = new JLabel("Set Dataloop Type:");
        JLabelUseList = new JLabel("Use Stored URL List");
 JTextFieldDataFile = new JTextField();
 JTextFieldDataFile.setVisible(true);
  JButtonBrowseForDataFile = new JButton();
 
- JButtonBrowseForDataFile.setText("Browse for Data File");
+ JButtonBrowseForDataFile.setText("Change Data File");
 
  JButtonBrowseForDataFile.setVisible(true);
 panelForTable = new JPanel();
@@ -175,6 +176,9 @@ sortmodel = new SortedComboBoxModel<>(URLLIST_ORDER);
 
  JComboBoxStoredArrayLists = new JComboBox<String>(sortmodel);
  JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+  jComboBoxSetDataLoopType = new JComboBox<>();
+ jComboBoxSetDataLoopType.addItem("File");
+ jComboBoxSetDataLoopType.addItem("Stored URL List");
        JComboBoxBugSeverity.addItem("Trivial");
      JComboBoxBugSeverity.addItem("Low");
      JComboBoxBugSeverity.addItem("Medium");
@@ -443,7 +447,7 @@ ActionScrollPane.setVisible(true);
      }
      public void ShowFieldInstructions(boolean showit, int textfieldindex, int bugindex, int actionindex)
      {
-         bugindex++;
+        // bugindex++;
          actionindex++;
          String stringactionindex = Integer.toString(actionindex);
         String stringbugindex = Integer.toString(bugindex);
@@ -451,7 +455,7 @@ ActionScrollPane.setVisible(true);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
          if (showit)
          {
-             this.JLabelAddFieldInstructions.setText("Click ColumnName to set Field" + textfieldindex_char + " of " + bugdashactionindex);
+             this.JLabelAddFieldInstructions.setText("Click Column Header to insert field.");
          }
          else
          {
@@ -736,6 +740,10 @@ ActionScrollPane.setVisible(true);
   {
       JComboBoxStoredArrayLists.addItemListener(listener);
   }
+   public void addjComboBoxSetDataLoopTypeItemListener(ItemListener listener)
+  {
+     jComboBoxSetDataLoopType.addItemListener(listener);
+  }
   public void addDoActionItemListener(ItemListener listener) {
        JComboBoxDoActions.addItemListener(listener);
      
@@ -800,6 +808,18 @@ ActionScrollPane.setVisible(true);
    {
        
        JComboBoxStoredArrayLists.setSelectedItem(itemname);
+   }
+    public void setjComboBoxSetDataLoopType(String itemname)
+   {
+       if ("file".equals(itemname))
+       {
+       jComboBoxSetDataLoopType.setSelectedItem("File");
+       }
+       else
+       {
+           jComboBoxSetDataLoopType.setSelectedItem("Stored URL List");
+       }
+     
    }
    
       public void addJButtonBrowseForDataFileActionListener(ActionListener listener)
@@ -882,10 +902,27 @@ ActionScrollPane.setVisible(true);
     JPanel panelForBrowseAndPulldown = new JPanel();
 //    EnableArrayListsPulldown(false);
 //    JComboBoxStoredArrayLists.setEnabled(false);
-    panelForBrowseAndPulldown.add(JButtonBrowseForDataFile);
-    panelForBrowseAndPulldown.add(JLabelOR);
-    panelForBrowseAndPulldown.add(JLabelUseList);
-    panelForBrowseAndPulldown.add(JComboBoxStoredArrayLists);
+    panelForBrowseAndPulldown.add(JLabelDataLoopType);
+    panelForBrowseAndPulldown.add(jComboBoxSetDataLoopType);
+     panelForBrowseAndPulldown.add(JButtonBrowseForDataFile);
+      panelForBrowseAndPulldown.add(JLabelUseList);
+       panelForBrowseAndPulldown.add(JComboBoxStoredArrayLists);
+    if ("file".equals(DataLoopSource))
+    {
+       jComboBoxSetDataLoopType.setSelectedItem("File");
+       JLabelUseList.setVisible(false);
+       JComboBoxStoredArrayLists.setVisible(false);
+       JButtonBrowseForDataFile.setVisible(true);
+    }
+    else
+    {
+   
+    jComboBoxSetDataLoopType.setSelectedItem("Stored URL List");
+    JButtonBrowseForDataFile.setVisible(false);
+     JLabelUseList.setVisible(true);
+       JComboBoxStoredArrayLists.setVisible(true);
+   
+    }
     panelForBrowseAndPulldown.add(JLabelSpinnerLimit);
     panelForBrowseAndPulldown.add(JSpinnerLimit);
     panelForBrowseAndPulldown.add(JCheckBoxRandom);
@@ -902,9 +939,9 @@ ActionScrollPane.setVisible(true);
   panelForTable.add(JTableScrollPane, BorderLayout.CENTER);
   
    // JLabelAddFieldInstructions.setVisible(false);
-   AddToGrid(JLabelAddFieldInstructions, 9, 1, 2, 1, 1, 1, GridBagConstraints.WEST);
+   AddToGrid(JLabelAddFieldInstructions, 9, 0, 1, 1, 1, 1, GridBagConstraints.WEST);
   
-    AddToGrid(panelForTable, 10, 1, 4, 1, 1, 1, GridBagConstraints.WEST);
+    AddToGrid(panelForTable, 9, 1, 4, 1, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -944,7 +981,16 @@ ActionScrollPane.setVisible(true);
      }
      public void setDataLoopSource(String in_looptype)
      {
+         if (in_looptype.equals(this.DataLoopSource))
+         {
+             
+         }
+         else
+         {
          this.DataLoopSource = in_looptype;
+         
+         setjComboBoxSetDataLoopType(in_looptype);
+         }
      }
   
      public void setJTableSourceToURLList(String[] in_list, String list_name)

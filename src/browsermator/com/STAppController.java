@@ -56,7 +56,7 @@ public final class STAppController  {
 public JDesktopPane SeleniumToolDesktop;
 
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.51";
+   public final String ProgramVersion = "1.1.53";
    public String loginName;
    public String loginPassword;
 
@@ -3329,6 +3329,50 @@ File newfile = new File(path + ".js");
        newbug.setDataLoopSource("urllist");
 
                }
+            
+        }
+         
+            
+         
+        });
+                  newbugview.addjComboBoxSetDataLoopTypeItemListener((ItemEvent e) -> {
+     
+               if ((e.getStateChange() == ItemEvent.SELECTED)) {
+         if (newbugview.jComboBoxSetDataLoopType.getSelectedIndex()==0)
+               {
+                   newbugview.setDataLoopSource("file");
+                      newbug.setDataLoopSource("file"); 
+                      
+                         newbugview.JLabelUseList.setVisible(false);
+                     newbugview.JComboBoxStoredArrayLists.setVisible(false);
+                     newbugview.JButtonBrowseForDataFile.setVisible(true);
+                                File chosenCSVFile = STAppFrame.ChangeCSVFile();
+   if (chosenCSVFile!=null)
+   {
+  STAppFrame.saveState();
+
+   newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
+   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
+  // newbugview.setDataLoopSource("file");
+   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
+  // newbug.setDataLoopSource("file");
+  
+   STAppFrame.UpdateDisplay();
+   }
+                     
+               }
+               else
+              {
+
+                   newbugview.setDataLoopSource("urllist");
+                   newbug.setDataLoopSource("urllist");
+                   newbugview.JLabelUseList.setVisible(true);
+                      newbugview.JComboBoxStoredArrayLists.setVisible(true);
+                     newbugview.JButtonBrowseForDataFile.setVisible(false);
+                     
+              }
+       
+
             
         }
          
