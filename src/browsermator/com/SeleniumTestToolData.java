@@ -70,11 +70,14 @@ String EmailFrom;
 String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
-
+public final String USERDIR;
+public final String UNIQUE_LOG_DIR;
 
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
+              USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
+UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
            this.TemplateOrNew = false;
             this.BugArray = BugArray;
                 this.UniqueOption = "file";
@@ -310,10 +313,10 @@ public void setAllFieldValues(ArrayList<String> allfieldvalues)
       public final void loadGlobalEmailSettings() throws IOException 
  {
      Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
+   
 try
 {
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties")) {
              applicationProps.load(input);
          }
          catch (Exception e)
@@ -883,13 +886,14 @@ Collections.shuffle(data_in, new Random(seed));
           currentlist = VarLists.get(URLListName);
                       if (this.UniqueList)
 {
-   String userdir = System.getProperty("user.home");
+   
    String file_name_to_check = "global";
        if (UniqueOption.equals("file"))
        {
            file_name_to_check = this.short_filename;
        }
-        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_check + "_visited_url_log.xml";
+       
+        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + file_name_to_check + "_visited_url_log.xml";
         
          File file = new File(visited_list_file_path);
          if (file.exists())
@@ -1005,12 +1009,12 @@ else
  {
       
      String file_name_to_write = "global";
-        String userdir = System.getProperty("user.home");
+      
         if (fileOption.equals("file"))
         {
         file_name_to_write = this.short_filename;
         }
-        String visited_list_file_path = userdir + File.separator + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
+        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
          File file = new File(visited_list_file_path);
          if (file.exists())
          {

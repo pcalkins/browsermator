@@ -45,10 +45,14 @@ String undoTempFile;
     JButton jButtonCancel;
     JButton jButtonClearUniqueList;
     JPanel SouthButtonPanel;
-
+public final String USERDIR;
+public final String UNIQUE_LOG_DIR;
    
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
+        USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
+UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
+ 
   this.undoTempFile = "";
   this.STAppData = in_STAppData;
   this.BugPanel = new JPanel();
@@ -1790,8 +1794,9 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
      
        add(jPanelNorth, BorderLayout.NORTH);
          pack();
-     String userdir = System.getProperty("user.home");
-        String visited_list_file_path = userdir + File.separator + "browsermator_" + STAppData.short_filename + "_visited_url_log.xml";
+    
+     
+        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + STAppData.short_filename + "_visited_url_log.xml";
        File fileCheck = new File(visited_list_file_path);
        if (!fileCheck.exists())
        {

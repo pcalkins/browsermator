@@ -57,6 +57,10 @@ public class ProcedureView {
    JLabel JLabelBugTitle2 = new JLabel ("Title:");
      JTextField JTextFieldBugTitle = new JTextField();
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
+      JLabel  JLabelAddFieldInstructions2 = new JLabel (" ");
+      JPanel jPanelFieldInstructions;
+     
+    
  JComboBox JComboBoxStoredArrayLists;
  JComboBox jComboBoxSetDataLoopType;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
@@ -88,8 +92,8 @@ public class ProcedureView {
    // JButton JButtonDoNotFindPageTitlePassFail = new JButton ("Do Not Find Page Title");
     JButton JButtonYesNoPromptPassFail = new JButton ("Yes/No Question");
     JLabel JLabelQuickActions = new JLabel ("Quick Select Actions:");
-    JLabel JLabelQuickPassFailActions = new JLabel("Quick Select Pass/Fail Actions:");
-  //  JLabel JLabelQuickActionsPassFail = new JLabel ("Quick Select Pass/Fail Action Buttons:");
+    JLabel JLabelQuickPassFailActions = new JLabel("Pass/Fail Actions:");
+
     MyTable myTable;
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
@@ -210,7 +214,7 @@ for (String passfailaction_name : passfailaction_keys)
  //  JPanelBug.setSize(920, 252);
  //    BugConstraints.fill = GridBagConstraints.NONE;
 //     BugConstraints.anchor = GridBagConstraints.WEST;
-//     BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
+    BugConstraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
      double global_weightx = 0.0;
      double global_weighty = 0.0;
      JPanel ProcedurePlusIndex = new JPanel();
@@ -455,11 +459,13 @@ ActionScrollPane.setVisible(true);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
          if (showit)
          {
-             this.JLabelAddFieldInstructions.setText("Click Column Header to insert field.");
+             this.JLabelAddFieldInstructions.setText("Click Column Header");
+             this.JLabelAddFieldInstructions2.setText("to insert field.");
          }
          else
          {
              this.JLabelAddFieldInstructions.setText(" ");
+             this.JLabelAddFieldInstructions2.setText(" ");
          }
      }
      public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int anchor_value)
@@ -937,9 +943,13 @@ ActionScrollPane.setVisible(true);
      panelForTable.setPreferredSize(new Dimension(700, 220));    
     }
   panelForTable.add(JTableScrollPane, BorderLayout.CENTER);
+   jPanelFieldInstructions = new JPanel();
+   jPanelFieldInstructions.setLayout(new BoxLayout(jPanelFieldInstructions, BoxLayout.Y_AXIS));
+  jPanelFieldInstructions.add(JLabelAddFieldInstructions);
+  jPanelFieldInstructions.add(JLabelAddFieldInstructions2);
   
-   // JLabelAddFieldInstructions.setVisible(false);
-   AddToGrid(JLabelAddFieldInstructions, 9, 0, 1, 1, 1, 1, GridBagConstraints.WEST);
+   
+   AddToGrid(jPanelFieldInstructions, 9, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST);
   
     AddToGrid(panelForTable, 9, 1, 4, 1, 1, 1, GridBagConstraints.WEST);
             myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
