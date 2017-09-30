@@ -299,7 +299,7 @@ String stringactionindex = Integer.toString(this.index+1);
    
            this.index = actionindex;
            this.bugindex = bugindex;
-            String stringactionindex = Integer.toString(this.index);
+            String stringactionindex = Integer.toString(this.index+1);
         String stringbugindex = Integer.toString(this.bugindex);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
            this.JLabelIndex.setText(bugdashactionindex);
