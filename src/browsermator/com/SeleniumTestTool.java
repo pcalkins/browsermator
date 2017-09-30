@@ -1462,18 +1462,27 @@ refreshjComboBoxMoveToIndex();
   //      JScrollBar action_scroll_pane_vertical = bugview.ActionScrollPane.getVerticalScrollBar();
  // action_scroll_pane_vertical.setValue( action_scroll_pane_vertical.getMaximum() );         
  } 
-
+    public void RefreshActionViewIndexes (ArrayList<ActionView> actionviewlist)
+                {
+                  for (int x=0; x<actionviewlist.size(); x++)
+                  {
+                      actionviewlist.get(x).index = x;
+                  }
+                }
       public void AddActionViewToArray (ActionView actionview, ProcedureView newbugview)
 {
     int at_index = newbugview.getJComboBoxAddAtPosition();
     if (at_index>0) {at_index--;
             newbugview.ActionsViewList.add(at_index, actionview);
+             actionview.index = at_index;
+             RefreshActionViewIndexes(newbugview.ActionsViewList);
                 }
     else
     {
         newbugview.ActionsViewList.add(actionview);
+         actionview.index = newbugview.ActionsViewList.size();
     }
-          actionview.index = newbugview.ActionsViewList.size();
+         
         actionview.SetIndexes(newbugview.index, actionview.index);
         
                if ("StoreLinksAsURLListByXPATH".equals(actionview.ActionType))

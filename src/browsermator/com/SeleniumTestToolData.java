@@ -767,12 +767,20 @@ else
             AddDataLoopProc(newdataloop, atindex); 
 
         }
+                public void RefreshActionIndexes (ArrayList<Action> actionlist)
+                {
+                  for (int x=0; x<actionlist.size(); x++)
+                  {
+                      actionlist.get(x).index = x;
+                  }
+                }
            public void AddActionToArray(Action action, Procedure newbug, ProcedureView newbugview)
            {
                         int at_index = newbugview.getJComboBoxAddAtPosition();
              if (at_index>0) {at_index--;}
            newbug.ActionsList.add(at_index, action);
-            action.index = newbug.ActionsList.size()-1;
+            action.index = at_index;
+            RefreshActionIndexes(newbug.ActionsList);
                if ("Store Links as URL List by XPATH".equals(action.Type))
            {
                     String stringactionindex = Integer.toString(action.index+1);
