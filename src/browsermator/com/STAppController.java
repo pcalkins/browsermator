@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.55";
+   public final String ProgramVersion = "1.1.56";
    public String loginName;
    public String loginPassword;
 
@@ -3526,10 +3526,11 @@ File newfile = new File(path + ".js");
 
                GoAction thisActionToAdd = new GoAction("");
                GoActionView thisActionViewToAdd = new GoActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+            
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                  thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
               
                STAppFrame.UpdateDisplay();
         STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3541,11 +3542,12 @@ File newfile = new File(path + ".js");
        
                 ClickXPATHAction thisActionToAdd = new ClickXPATHAction("", false, false);
               ClickXPATHActionView thisActionViewToAdd = new ClickXPATHActionView();
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-             
-            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+       
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                       thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+             
+            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
                STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
                newbugview.refreshjComboBoxAddAtPosition();
@@ -3558,10 +3560,11 @@ File newfile = new File(path + ".js");
         
                TypeAtXPATHAction thisActionToAdd = new TypeAtXPATHAction("","", false);
               TypeAtXPATHActionView thisActionViewToAdd = new TypeAtXPATHActionView();
-             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+          
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
         STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+           thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
           STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);   
         newbugview.refreshjComboBoxAddAtPosition();
@@ -3573,10 +3576,11 @@ File newfile = new File(path + ".js");
     
                FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", false);
              FindXPATHPassFailActionView thisActionViewToAdd = new FindXPATHPassFailActionView();
-           thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+        
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                 thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
                STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
               newbugview.refreshjComboBoxAddAtPosition();
@@ -3589,10 +3593,11 @@ File newfile = new File(path + ".js");
       
                FindXPATHPassFailAction thisActionToAdd = new FindXPATHPassFailAction("", true);
              NOTFindXPATHPassFailActionView thisActionViewToAdd = new NOTFindXPATHPassFailActionView();
-             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+        
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
             STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                 thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
              STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
             newbugview.refreshjComboBoxAddAtPosition();
@@ -3605,10 +3610,11 @@ File newfile = new File(path + ".js");
       
                    YesNoPromptPassFailAction thisActionToAdd = new YesNoPromptPassFailAction("");
              YesNoPromptPassFailActionView thisActionViewToAdd = new YesNoPromptPassFailActionView();
-             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+         
                STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
              STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                 thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
              STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
              newbugview.refreshjComboBoxAddAtPosition();
@@ -3634,10 +3640,11 @@ File newfile = new File(path + ".js");
            {
                Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
-              thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+         
                    STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);       
                STAppData.AddActionToArray(thisActionToAdd, newbug);
+                    thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            
           STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
@@ -3666,11 +3673,12 @@ File newfile = new File(path + ".js");
              {
                  Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
                ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
-           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+         
           
            STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         
                STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+                     thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+           thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
           STAppFrame.UpdateDisplay();
                STAppFrame.ScrollActionPaneDown(newbugview);
              newbugview.refreshjComboBoxAddAtPosition();
