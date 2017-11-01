@@ -35,10 +35,12 @@ String DataLoopSource;
   String URLListName;
   String[] URLListData;
 //  String[] URLListRunTimeEntries;
-  
- 
+  String PTPUSERCLOUDDIR;
+  String BMUSERCLOUDDIR;
    Procedure () 
    {
+       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
+       BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
        this.limit = 0;
        this.Locked = false;
        this.random = false;
@@ -113,10 +115,29 @@ this.URLListData = new String[0];
          DataLoopSource = "file";
          DataSet = CreateArrayListFromURL(DataFile);
        }
+             
              else
              {
            DataLoopSource = "file";
-           DataSet = CreateArrayListFromFile(DataFile);
+             File checkPath = new File(DataFile);
+      if (checkPath.exists())
+      {
+              
+      }
+      else
+      {
+          DataFile = PTPUSERCLOUDDIR + DataFile;
+          checkPath = new File(DataFile);
+          if (checkPath.exists())
+          {
+              
+          }
+          else
+          {
+          DataFile = BMUSERCLOUDDIR + DataFile;
+          }
+      }
+           DataSet = CreateArrayListFromFile();
              }
           }
            
@@ -157,12 +178,10 @@ this.URLListData = new String[0];
      return return_array;
      
     }
-    public List<String[]> CreateArrayListFromFile(String in_file)
+    public List<String[]> CreateArrayListFromFile()
     {
       List<String[]> return_array = new ArrayList();
-      File checkPath = new File(DataFile);
-      if (checkPath.exists())
-      {
+    
       try
      {
       CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
@@ -172,7 +191,7 @@ this.URLListData = new String[0];
      {
          System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
      }
-      }
+  
        return return_array;
     }
    public void setRunTimeFileSet(List<String[]> in_set)
