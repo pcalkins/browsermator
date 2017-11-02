@@ -2001,8 +2001,10 @@ options.setBinary(chrome_path);
         (new ListenerTask<Void, String>(procMethod) {
             @Override
             protected void process(List<String> chunks) {
-             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          
+ if (RUNWITHGUI)
+          {
+                STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+          }
             }
         }).execute();
      

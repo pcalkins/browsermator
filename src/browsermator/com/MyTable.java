@@ -279,6 +279,52 @@ catch (Exception ex)
        
 }
  }
+MyTable(List<String[]> in_dataset, String csvFileName)
+{
+        DataFile = csvFileName;
+        DataTable = new JTable();
+        myEntries = new ArrayList<>();
+        runtimeEntries = new ArrayList<>();
+        URLListRunTimeEntries = new String[0];
+        
+    myEntries = in_dataset;
+       if (myEntries.size()>0)
+       {
+        columnnames = (String[]) myEntries.get(0);
+          DefaultTableModel tableModel = new DefaultTableModel(columnnames, myEntries.size()-1); 
+           rowcount = tableModel.getRowCount();
+          this.number_of_records = rowcount;
+          for (int x = 0; x<rowcount+1; x++)
+           {
+             
+              int columnnumber = 0;
+             if (x>0)
+             {
+           for (String thiscellvalue : (String[])myEntries.get(x))
+           {
+               tableModel.setValueAt(thiscellvalue, x-1, columnnumber);
+              columnnumber++;
+           }
+             }
+   
+          
+           }
+        
+           
+           DataTable = new JTable(tableModel);
+        
+      
+        int number_of_rows = DataTable.getRowCount();
+        if (number_of_rows < 10)
+        {
+      DataTable.setPreferredScrollableViewportSize(new Dimension (694, number_of_rows * DataTable.getRowHeight()));
+        }
+        else
+        {
+       DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
+        }
+       }  
+}
 
  MyTable(String[] in_entries, String list_name)
 

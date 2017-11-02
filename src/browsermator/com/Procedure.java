@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +34,10 @@ String DataLoopSource;
   String URLListName;
   String[] URLListData;
 //  String[] URLListRunTimeEntries;
-  String PTPUSERCLOUDDIR;
-  String BMUSERCLOUDDIR;
+
    Procedure () 
    {
-       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
-       BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
-       this.limit = 0;
+        this.limit = 0;
        this.Locked = false;
        this.random = false;
 this.Pass = false;
@@ -66,7 +62,7 @@ this.URLListData = new String[0];
    public void RefreshFileData()
    {
    RunTimeFileSet.clear();
-  setDataFile(DataFile);
+ // DataSet =  setDataFile(DataFile);
    }
    public void RefreshURLListData()
    {
@@ -107,41 +103,24 @@ this.URLListData = new String[0];
     public void setDataFile(String dataFile)
    {
        DataFile = dataFile;
-     
+    
        if (!"placeholder".equals(DataFile))
        {  
-             if (dataFile.contains("http")&& dataFile.contains("//"))
-       {
-         DataLoopSource = "file";
-         DataSet = CreateArrayListFromURL(DataFile);
-       }
+// legacy web stuff...   
+//          if (dataFile.contains("http")&& dataFile.contains("//"))
+   //    {
+   //      DataLoopSource = "file";
+   //      ReturnSet = CreateArrayListFromURL(DataFile);
+   //    }
              
-             else
-             {
-           DataLoopSource = "file";
-             File checkPath = new File(DataFile);
-      if (checkPath.exists())
-      {
-              
-      }
-      else
-      {
-          DataFile = PTPUSERCLOUDDIR + DataFile;
-          checkPath = new File(DataFile);
-          if (checkPath.exists())
-          {
-              
-          }
-          else
-          {
-          DataFile = BMUSERCLOUDDIR + DataFile;
-          }
-      }
-           DataSet = CreateArrayListFromFile();
-             }
-          }
-           
+          DataLoopSource = "file";
+    
    }
+   }
+    public void setDataSet(List<String[]> in_dataset)
+    {
+        this.DataSet = in_dataset;
+    }
     public List<String[]> CreateArrayListFromURL(String fileURL)
     {
      List<String[]> return_array = new ArrayList();
@@ -178,22 +157,7 @@ this.URLListData = new String[0];
      return return_array;
      
     }
-    public List<String[]> CreateArrayListFromFile()
-    {
-      List<String[]> return_array = new ArrayList();
-    
-      try
-     {
-      CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
-             return_array = CSVFileReader.readAll();   
-     }
-     catch(Exception ex)
-     {
-         System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
-     }
   
-       return return_array;
-    }
    public void setRunTimeFileSet(List<String[]> in_set)
    {
        this.RunTimeFileSet = in_set;

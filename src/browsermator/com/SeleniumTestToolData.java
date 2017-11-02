@@ -5,10 +5,12 @@
  */
 package browsermator.com;
 
+import com.opencsv.CSVReader;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +36,7 @@ import org.w3c.dom.NodeList;
  * @author Pete
  */
 public class SeleniumTestToolData {
+    transient CSVReader CSVFileReader;
 ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
     ArrayList<String> AllFieldValues;
     ArrayList<String> Visitted_URL_List;
@@ -73,10 +76,15 @@ String SMTPHostName;
 String EmailLoginName;
 public final String USERDIR;
 public final String UNIQUE_LOG_DIR;
-
+HashMap<String, List<String[]>> DataFileHashMap = new HashMap();
+String PTPUSERCLOUDDIR;
+String BMUSERCLOUDDIR;
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
+             PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
+       BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
+  
               USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
 UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
            this.TemplateOrNew = false;
@@ -251,8 +259,64 @@ changes=true;
    
   }
          
+    public List<String[]> CreateArrayListFromFile(String DataFile)
+    {
+      List<String[]> return_array = new ArrayList();
+             File checkPath = new File(DataFile);
+      if (checkPath.exists())
+      {
+              
+      }
+      else
+      {
+          DataFile = PTPUSERCLOUDDIR + DataFile;
+          checkPath = new File(DataFile);
+          if (checkPath.exists())
+          {
+              
+          }
+          else
+          {
+          DataFile = BMUSERCLOUDDIR + DataFile;
+          }
+      }
      
+      try
+     {
+      CSVFileReader = new CSVReader(new FileReader(DataFile), ',', '"', '\0');
+             return_array = CSVFileReader.readAll();   
+     }
+     catch(Exception ex)
+     {
+         System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
+     }
   
+       return return_array;
+    }   
+  public void addDataFileToDataFileHashMap(String path_to_file)
+{
+    List<String[]> DataSet = new ArrayList<String[]>();
+    DataSet = CreateArrayListFromFile(path_to_file);
+   DataFileHashMap.put(path_to_file, DataSet);
+}
+  public List<String[]> getDataSetByFileName(String filename)
+  {
+      List<String[]> DataOut = new ArrayList<String[]>();
+      if (DataFileHashMap.containsKey(filename))
+      {
+          DataOut = DataFileHashMap.get(filename);
+      }
+      else
+      {
+          File checkfile = new File(filename);
+          if (checkfile.exists())
+          {
+              addDataFileToDataFileHashMap(filename);
+              DataOut = DataFileHashMap.get(filename);
+          }
+      }
+      return DataOut;
+  }
   
           public void addSelectedVariableName(String varname)
         {
@@ -710,8 +774,10 @@ else
      
         if (CSVFile.exists())
          {
-       
+         
          newdataloop.setDataFile(CSVFile.getAbsolutePath());
+         List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getAbsolutePath());
+         newdataloop.setDataSet(dataset_to_send);
          
          }
          else
@@ -734,6 +800,8 @@ else
          {
        
          newdataloop.setDataFile(CSVFile.getAbsolutePath());
+             List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getAbsolutePath());
+         newdataloop.setDataSet(dataset_to_send);
          
          }
          else

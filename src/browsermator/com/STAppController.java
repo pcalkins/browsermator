@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.58";
+   public final String ProgramVersion = "1.1.59";
    public String loginName;
    public String loginPassword;
 
@@ -2387,10 +2387,13 @@ actionindex = Integer.parseInt(parts[1])-1;
                  break;
              case "setdatafile":
                
-                 STAppData.BugArray.get(bugindex).setDataFile(newValue);
-             //    STAppFrame.BugViewArray.get(bugindex).setDataFile(newValue);
+              STAppData.BugArray.get(bugindex).setDataFile(newValue);
+              STAppData.addDataFileToDataFileHashMap(newValue);
+              List<String[]> thisDataSet = STAppData.getDataSetByFileName(newValue);
+              STAppData.BugArray.get(bugindex).setDataSet(thisDataSet);
                STAppFrame.BugViewArray.get(bugindex).setDataFile( STAppData.BugArray.get(bugindex).DataFile);
-             STAppFrame.BugViewArray.get(bugindex).setJTableSourceToFile(STAppData.BugArray.get(bugindex).DataFile);
+               
+             STAppFrame.BugViewArray.get(bugindex).setJTableSourceToDataSet(thisDataSet, newValue);
                    break;
                    
                  

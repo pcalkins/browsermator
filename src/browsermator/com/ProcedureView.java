@@ -20,6 +20,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.swing.BorderFactory;
@@ -868,21 +869,23 @@ ActionScrollPane.setVisible(true);
               AV.JTextFieldVariable2.setText(newval);
              }
              }
-             else
-             {
-              if (AV.JTextFieldVariable1.getText().contains("[dataloop-field-start]"))
-             {
+             
+   // this assumed we needed to clear the field.  That's not always true.
+  //           else
+  //           {
+  //            if (AV.JTextFieldVariable1.getText().contains("[dataloop-field-start]"))
+  //           {
             
-              AV.JTextFieldVariable1.setText("");
-             }
+  //            AV.JTextFieldVariable1.setText("");
+  //           }
            
-               if (AV.JTextFieldVariable2.getText().contains("[dataloop-field-start]"))
-             {
+ //              if (AV.JTextFieldVariable2.getText().contains("[dataloop-field-start]"))
+ //            {
             
-              AV.JTextFieldVariable2.setText("");
-             }  
+ //             AV.JTextFieldVariable2.setText("");
+ //            }  
           
-             }
+ //            }
          }
     
      }
@@ -990,6 +993,16 @@ ActionScrollPane.setVisible(true);
      
      
          
+     }
+     public void setJTableSourceToDataSet(List<String[]> thisDataSet, String thisDataFileName)
+     {
+     
+         JPanelBug.remove(panelForTable);
+     myTable = null;
+     myTable = new MyTable(thisDataSet, thisDataFileName);
+    
+     
+     AddTableToGrid();   
      }
      public void setDataLoopSource(String in_looptype)
      {
