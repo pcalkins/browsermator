@@ -262,24 +262,19 @@ changes=true;
     public List<String[]> CreateArrayListFromFile(String DataFile)
     {
       List<String[]> return_array = new ArrayList();
+      
+      if (DataFile.contains("%PTPCLOUDDIR%"))
+      {
+         DataFile = DataFile.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
+      }
+      if (DataFile.contains("%BMUSERCLOUDDIR%"))
+      {
+          DataFile = DataFile.replace("%BMUSERCLOUDDIR%", BMUSERCLOUDDIR);
+      }
              File checkPath = new File(DataFile);
       if (checkPath.exists())
       {
-              
-      }
-      else
-      {
-          DataFile = PTPUSERCLOUDDIR + DataFile;
-          checkPath = new File(DataFile);
-          if (checkPath.exists())
-          {
-              
-          }
-          else
-          {
-          DataFile = BMUSERCLOUDDIR + DataFile;
-          }
-      }
+  
      
       try
      {
@@ -290,7 +285,7 @@ changes=true;
      {
          System.out.println("Exception reading csv file: 122 procedure" + ex.toString());
      }
-  
+      }
        return return_array;
     }   
   public void addDataFileToDataFileHashMap(String path_to_file)
