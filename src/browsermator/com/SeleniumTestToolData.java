@@ -77,13 +77,11 @@ String EmailLoginName;
 public final String USERDIR;
 public final String UNIQUE_LOG_DIR;
 HashMap<String, List<String[]>> DataFileHashMap = new HashMap();
-String PTPUSERCLOUDDIR;
-String BMUSERCLOUDDIR;
+
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
-             PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
-       BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
+      
   
               USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
 UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
@@ -263,14 +261,7 @@ changes=true;
     {
       List<String[]> return_array = new ArrayList();
       
-      if (DataFile.contains("%PTPCLOUDDIR%"))
-      {
-         DataFile = DataFile.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
-      }
-      if (DataFile.contains("%BMUSERCLOUDDIR%"))
-      {
-          DataFile = DataFile.replace("%BMUSERCLOUDDIR%", BMUSERCLOUDDIR);
-      }
+    
              File checkPath = new File(DataFile);
       if (checkPath.exists())
       {
@@ -770,15 +761,20 @@ else
         if (CSVFile.exists())
          {
          
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
-         List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getAbsolutePath());
+            try {
+                newdataloop.setDataFile(CSVFile.getCanonicalPath());
+                  List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getCanonicalPath());
          newdataloop.setDataSet(dataset_to_send);
+            } catch (IOException ex) {
+               System.out.println(ex.toString());
+            }
+       
          
          }
          else
          {
        
-         newdataloop.setDataFile("");  
+         newdataloop.setDataFile("placeholder");  
         
          
          }
@@ -793,10 +789,14 @@ else
      
         if (CSVFile.exists())
          {
-       
-         newdataloop.setDataFile(CSVFile.getAbsolutePath());
-             List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getAbsolutePath());
+           try {
+                newdataloop.setDataFile(CSVFile.getCanonicalPath());
+                  List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getCanonicalPath());
          newdataloop.setDataSet(dataset_to_send);
+            } catch (IOException ex) {
+               System.out.println(ex.toString());
+            }
+        
          
          }
          else
@@ -923,8 +923,11 @@ else
            public java.util.List<String[]> RandomizeAndLimitFileList(java.util.List<String[]> data_in, int limit, Boolean randval)
   {
     // first row is column names, remove it
+      List<String[]> ret_val = new ArrayList<String[]>();
+      if (data_in.size()>0)
+      {
   data_in.remove(0);
-   java.util.List<String[]> ret_val = null;
+  
              if (randval)
                 {
              long seed = System.nanoTime();
@@ -940,8 +943,9 @@ Collections.shuffle(data_in, new Random(seed));
                 }
             
      ret_val = data_in;
-     return ret_val;
-             
+    
+      }
+       return ret_val;
   }
            public void setUniqueList(boolean unique)
  {

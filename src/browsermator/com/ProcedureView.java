@@ -871,21 +871,21 @@ ActionScrollPane.setVisible(true);
              }
              
    // this assumed we needed to clear the field.  That's not always true.
-  //           else
-  //           {
-  //            if (AV.JTextFieldVariable1.getText().contains("[dataloop-field-start]"))
-  //           {
+   //         else
+   //          {
+   //           if (AV.JTextFieldVariable1.getText().contains("[dataloop-field-start]"))
+   //          {
             
-  //            AV.JTextFieldVariable1.setText("");
-  //           }
+   //           AV.JTextFieldVariable1.setText("");
+   //          }
            
- //              if (AV.JTextFieldVariable2.getText().contains("[dataloop-field-start]"))
- //            {
+    //           if (AV.JTextFieldVariable2.getText().contains("[dataloop-field-start]"))
+    //         {
             
- //             AV.JTextFieldVariable2.setText("");
- //            }  
+    //          AV.JTextFieldVariable2.setText("");
+    //         }  
           
- //            }
+    //         }
          }
     
      }
@@ -1022,7 +1022,7 @@ ActionScrollPane.setVisible(true);
      {
       updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);
-  //   myTable = null;
+    myTable = null;
      myTable = new MyTable(in_list, list_name);
      if (in_list.length>0)
      {

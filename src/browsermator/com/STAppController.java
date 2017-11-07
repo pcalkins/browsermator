@@ -57,9 +57,11 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.60";
+   public final String ProgramVersion = "1.1.61";
    public String loginName;
    public String loginPassword;
+   String PTPUSERCLOUDDIR;
+String BMUSERCLOUDDIR;
 
   Boolean SHOWGUI = true;
   public int user_id;
@@ -70,6 +72,8 @@ public final String UNIQUE_LOG_DIR;
  MainAppFrame mainAppFrame;
 
   public STAppController(String[] args) throws PropertyVetoException {
+             PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
+       BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
   USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
 UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
    File file = new File(USERDIR);
@@ -2386,7 +2390,26 @@ actionindex = Integer.parseInt(parts[1])-1;
                  }
                  break;
              case "setdatafile":
-               
+                   if (newValue.contains("%PTPCLOUDDIR%"))
+      {
+         newValue = newValue.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
+      }
+      if (newValue.contains("%BMUSERCLOUDDIR%"))
+      {
+          newValue = newValue.replace("%BMUSERCLOUDDIR%", BMUSERCLOUDDIR);
+      }
+              File checkfile = new File(newValue);
+              if (checkfile.exists())
+              {
+                  try
+                  {
+                  newValue = checkfile.getCanonicalPath();
+                  }
+                  catch (Exception ex)
+                  {
+                      System.out.println(ex.toString());
+                  }
+                  }
               STAppData.BugArray.get(bugindex).setDataFile(newValue);
               STAppData.addDataFileToDataFileHashMap(newValue);
               List<String[]> thisDataSet = STAppData.getDataSetByFileName(newValue);

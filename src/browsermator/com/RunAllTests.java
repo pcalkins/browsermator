@@ -704,7 +704,10 @@ options.setBinary(chrome_path);
      for (Procedure thisbug : STAppData.BugArray)
       {
           String bugtitle = STAppData.BugArray.get(thisbugindex).getBugTitle();
-      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+   
+       if (RUNWITHGUI)
+       {
+              LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
             shoutOut(bugtitle);
@@ -712,8 +715,6 @@ options.setBinary(chrome_path);
                     return null;
                       }
         };
-       if (RUNWITHGUI)
-       {
           (new ListenerTask<Void, String>(procMethod) {
             @Override
             protected void process(List<String> chunks) {
@@ -1990,7 +1991,9 @@ options.setBinary(chrome_path);
      for (Procedure thisbug : STAppData.BugArray)
       {
           String bugtitle = STAppData.BugArray.get(thisbugindex).getBugTitle();
-      LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+     if (RUNWITHGUI)
+          {
+          LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
             @Override
             public Void call() throws Exception {
             shoutOut(bugtitle);
@@ -2001,13 +2004,12 @@ options.setBinary(chrome_path);
         (new ListenerTask<Void, String>(procMethod) {
             @Override
             protected void process(List<String> chunks) {
- if (RUNWITHGUI)
-          {
+
                 STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          }
+          
             }
         }).execute();
-     
+          }
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
 

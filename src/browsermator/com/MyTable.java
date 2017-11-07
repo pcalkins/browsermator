@@ -43,8 +43,14 @@ public class MyTable {
  String listname;
  MyTable (String csvFile)
  {
-     
+        if ("".equals(csvFile))
+        {
+            DataFile = "placeholder";
+        }
+        else
+        {
         DataFile = csvFile;
+        }
         DataTable = new JTable();
         myEntries = new ArrayList<>();
         runtimeEntries = new ArrayList<>();
@@ -329,6 +335,12 @@ MyTable(List<String[]> in_dataset, String csvFileName)
  MyTable(String[] in_entries, String list_name)
 
 {
+     DataFile = "";
+        DataTable = new JTable();
+        myEntries = new ArrayList<>();
+        runtimeEntries = new ArrayList<>();
+        URLListRunTimeEntries = new String[0];
+        
     listname = list_name;
          if ("".equals(list_name) || "Select a stored URL List".equals(list_name))
          {
