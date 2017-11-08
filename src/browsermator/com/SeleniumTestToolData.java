@@ -960,7 +960,9 @@ Collections.shuffle(data_in, new Random(seed));
    if (VarLists.containsKey(URLListName))
             {
           currentlist = VarLists.get(URLListName);
-                      if (this.UniqueList)
+          if (currentlist.length>0)
+          {
+          if (this.UniqueList)
 {
    
    String file_name_to_check = "global";
@@ -1069,7 +1071,7 @@ else
  }
    return currentlist;        
             }   
- 
+            }
    return currentlist;
   }
  public void AddURLToUniqueFileList(String thisURL)

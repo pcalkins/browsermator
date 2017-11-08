@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.61";
+   public final String ProgramVersion = "1.1.62";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -2339,7 +2339,18 @@ actionindex = Integer.parseInt(parts[1])-1;
          {
        switch(commandText)
             {
-            
+           case "changeOS":
+            STAppFrame.setOSTypeView(newValue);
+                STAppData.setOSType(newValue);
+                
+               break;
+           case "changebrowser":
+                STAppFrame.setTargetBrowserView(newValue);
+                STAppData.setTargetBrowser(newValue);
+               
+               break;
+               
+           
              case "disable":
                  if (actionindex>-1)
                  {
@@ -2465,7 +2476,16 @@ actionindex = Integer.parseInt(parts[1])-1;
          {
        switch(commandText)
             {
-            
+               case "changeOS":
+          
+                STAppData.setOSType(newValue);
+                
+               break;
+           case "changebrowser":
+              
+                STAppData.setTargetBrowser(newValue);
+               
+               break;
              case "disable":
                  if (actionindex>-1)
                  {

@@ -7,6 +7,8 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class RunAllTests extends SwingWorker<String, Integer>
 {
+  
 SeleniumTestToolData STAppData;
 SeleniumTestTool STAppFrame;
 String targetbrowser;
@@ -40,6 +43,7 @@ Boolean paused = false;
   
  public RunAllTests (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
+     
          STAppFrame.RefreshViewData();
   STAppData.RefreshData();
   STAppFrame.UpdateDisplay();
@@ -1672,7 +1676,8 @@ if (number_of_rows==0)
             ChromeOptions options = new ChromeOptions();
 options.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
-  driver = new ChromeDriver(options);     
+  driver = new ChromeDriver(options);    
+  
       }
   }
    public void RunAllActions(SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
