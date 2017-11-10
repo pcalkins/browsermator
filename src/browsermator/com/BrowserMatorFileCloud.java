@@ -173,9 +173,10 @@ webEngine = browser2.getEngine();
               @Override public void changed(ObservableValue ov, State oldState, State newState) {
 
                   if (newState == Worker.State.SUCCEEDED) {
-                  JSObject win
+                 JavaApp appREF = new JavaApp(webEngine);
+                      JSObject win
                                 = (JSObject) webEngine.executeScript("window");
-                        win.setMember("app", new JavaApp(webEngine));  
+                        win.setMember("app", appREF);  
                 }
                   
                 }
