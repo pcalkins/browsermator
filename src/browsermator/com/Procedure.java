@@ -33,7 +33,7 @@ String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
   String URLListName;
   String[] URLListData;
-//  String[] URLListRunTimeEntries;
+ // String[] URLListRunTimeEntries;
 
    Procedure () 
    {
@@ -170,8 +170,9 @@ this.URLListData = new String[0];
    {
        URLListData = in_list;
        URLListName = list_name;
-     
+   
    }
+ 
    public String getPassText()
    {
        String passtext = "has Failed";

@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 /**
  *
@@ -85,7 +86,7 @@ public class StoredArrayLoopVarParser {
     }
    }
  }
- public String GetFullValue(int row_number, MyTable my_Table)
+ public String GetFullValue(int row_number, JTable in_Table)
  {
      String concat_variable = "";
        for (int y=0; y<StoredLoopVars.size(); y++)
@@ -95,7 +96,7 @@ public class StoredArrayLoopVarParser {
        concat_variable+= theseDataLoopVars.beforevar;
        if (theseDataLoopVars.field_column_index!=-1)
        {
-           concat_variable+= my_Table.DataTable.getValueAt(row_number, theseDataLoopVars.field_column_index);
+           concat_variable+= in_Table.getValueAt(row_number, theseDataLoopVars.field_column_index);
          
        }
        concat_variable+=theseDataLoopVars.aftervar;

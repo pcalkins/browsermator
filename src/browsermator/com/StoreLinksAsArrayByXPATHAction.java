@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -83,36 +82,36 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
        
        if (!link_elements.isEmpty())
        {
-        for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {
-            WebElement e = it.next();
-          
-            String thishref = e.getAttribute("href");
-              if (thishref==null){thishref = "";}
-           if (thishref.isEmpty())
-           {
-               thishref = e.getAttribute("src");
+            for (WebElement e : link_elements) {
+                String thishref = e.getAttribute("href");
                 if (thishref==null){thishref = "";}
-           }
-            if (link_list.contains(thishref)||thishref=="")
-            {
-                
+                if (thishref.isEmpty())
+                {
+                    thishref = e.getAttribute("src");
+                    if (thishref==null){thishref = "";}
+                }
+                if (link_list.contains(thishref)||"".equals(thishref))
+                {
+                    
+                }
+                else
+                {
+                    link_list.add(thishref);
+                }
             }
-            else
-            {
-                link_list.add(thishref);
-            } }
-  
+      if (!link_list.isEmpty())
+      {
      String[] convert_list = link_list.toArray(new String[link_list.size()]);
  SetStoredLinkArray(convert_list);
-    
+      }
         this.Pass = true;
     }
        else
        {
-           this.Pass = false;
+           this.Pass = true;
        }
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
   
@@ -123,6 +122,6 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
     public void SetStoredLinkArray (String[] to_storelist)
     {
        this.tostore_varlist = to_storelist;
-       
+     System.out.println ("GOT HERE");  
     }  
 }

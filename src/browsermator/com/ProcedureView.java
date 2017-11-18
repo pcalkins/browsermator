@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
@@ -45,6 +46,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultFormatter;
 // import net.miginfocom.swing.MigLayout;
 
@@ -60,8 +62,8 @@ public class ProcedureView {
        JLabel JLabelAddFieldInstructions = new JLabel (" ");
       JLabel  JLabelAddFieldInstructions2 = new JLabel (" ");
       JPanel jPanelFieldInstructions;
-     
-    
+            JTable DataTable;
+    DefaultTableModel tableModel;
  JComboBox JComboBoxStoredArrayLists;
  JComboBox jComboBoxSetDataLoopType;
      JLabel JLabelBugURL = new JLabel("Procedure URL (if available):");
@@ -95,7 +97,7 @@ public class ProcedureView {
     JLabel JLabelQuickActions = new JLabel ("Quick Select Actions:");
     JLabel JLabelQuickPassFailActions = new JLabel("Pass/Fail Actions:");
 
-    MyTable myTable;
+  //  MyTable myTable;
     int last_selected_procedure_index = 0;
     int last_selected_action_index = 0;
     int last_selected_jtextfield_variable_number = 0;
@@ -128,6 +130,9 @@ String fieldBugTitleOnFocus;
 JComboBox jComboBoxMoveToIndex;
 JLabel jLabelAddAtPosition;
 JComboBox jComboBoxAddAtPosition;
+ String[] URLListRunTimeEntries;
+  Object[] columnnames = {""};
+  Integer rowcount;
 
    static final Comparator<String> URLLIST_ORDER = 
                                         new Comparator<String>() {
@@ -157,15 +162,18 @@ JComboBox jComboBoxAddAtPosition;
     ProcedureView()
      {
          jComboBoxMoveToIndex = new JComboBox();
-        
+        DataTable = new JTable(tableModel);  
+        tableModel = new DefaultTableModel(new String[0], 0); 
+        rowcount = 0;
          fieldBugTitleOnFocus = "";
          DataFile = "";
 URLListName = "";
+URLListRunTimeEntries = new String[0];
  DataLoopSource = "none";
          limit = 0;
 JButtonOK.setActionCommand("Update");
 JLabelPass.setOpaque(true);
-         myTable=new MyTable(""); 
+ //        myTable=new MyTable(""); 
              JLabelDataLoopType = new JLabel("Set Dataloop Type:");
        JLabelUseList = new JLabel("Use Stored URL List");
 JTextFieldDataFile = new JTextField();
@@ -306,6 +314,38 @@ ActionScrollPane.setVisible(true);
   
     JPanelBug.validate();
      }
+     public void populateTableWithURLListRunTimeEntries(String[] in_data, String listname)
+ {
+     columnnames[0] = "Stored URL List:" + listname;
+   
+  
+          DefaultTableModel tableModel = new DefaultTableModel(columnnames, in_data.length); 
+         
+           rowcount = tableModel.getRowCount();
+   //       this.number_of_records = rowcount;
+             int columnnumber = 0;
+             
+          for (int x = 0; x<rowcount; x++)
+           {
+             
+               
+               tableModel.setValueAt(in_data[x], x, columnnumber);
+
+ }
+                DataTable = new JTable(tableModel);
+        
+   
+        int number_of_rows = DataTable.getRowCount();
+    //     DataTable.getColumnModel().getColumn(0).setPreferredWidth(950);
+        if (number_of_rows < 10)
+        {
+      DataTable.setPreferredScrollableViewportSize(new Dimension (950, number_of_rows * DataTable.getRowHeight()));
+        }
+        else
+        {
+       DataTable.setPreferredScrollableViewportSize(new Dimension (950,400));     
+        }
+ }
     public void refreshjComboBoxAddAtPosition()
     {
         jComboBoxAddAtPosition.removeAllItems();
@@ -419,6 +459,21 @@ ActionScrollPane.setVisible(true);
                   
    
    }
+    public void refreshURLListRunTimeEntries()
+ {
+     URLListRunTimeEntries = new String[0];
+ }
+ //    public void setJTableSourceToFile (String sourceCSVfile)
+//     {
+//     updatePlacedLoopVars(sourceCSVfile);
+//         JPanelBug.remove(panelForTable);
+   
+//         JTextFieldDataFile.setText(sourceCSVfile);
+//     AddTableToGrid();
+     
+     
+         
+ //    }
    public Boolean getLocked()
    {
        return Locked;
@@ -892,13 +947,13 @@ ActionScrollPane.setVisible(true);
     public void AddTableToGrid()
     {
   //       myTable.DataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-     myTable.DataTable.getTableHeader().setReorderingAllowed(false);
+  DataTable.getTableHeader().setReorderingAllowed(false);
 
-  myTable.DataTable.setFillsViewportHeight( true );
+  DataTable.setFillsViewportHeight( true );
 
     panelForTable.removeAll();
   
-   JTableScrollPane = new JScrollPane(myTable.DataTable, 
+   JTableScrollPane = new JScrollPane(DataTable, 
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -939,7 +994,7 @@ ActionScrollPane.setVisible(true);
     panelForBrowseAndPulldown.add(JCheckBoxRandom);
  //   myTable.setColumnWidth(panelForTable.getWidth()-4);
     panelForTable.add(panelForBrowseAndPulldown, BorderLayout.PAGE_START);
-    if (myTable.number_of_records<2)
+    if (rowcount<2)
     {
     panelForTable.setPreferredSize(new Dimension(700, 120));
     }
@@ -957,12 +1012,12 @@ ActionScrollPane.setVisible(true);
    AddToGrid(jPanelFieldInstructions, 9, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST);
   
     AddToGrid(panelForTable, 9, 1, 4, 1, 1, 1, GridBagConstraints.WEST);
-            myTable.DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            DataTable.getTableHeader().addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {
-        int columnindex = myTable.DataTable.columnAtPoint(e.getPoint());
+        int columnindex = DataTable.columnAtPoint(e.getPoint());
         if (columnindex<0){columnindex=0;}
-        String selected_name = myTable.DataTable.getColumnName(columnindex);
+        String selected_name = DataTable.getColumnName(columnindex);
      
         int field_number = last_selected_jtextfield_variable_number;
         int action_index = last_selected_action_index;
@@ -981,27 +1036,56 @@ ActionScrollPane.setVisible(true);
      { 
          DataFile = data_file;
      }
-     public void setJTableSourceToFile (String sourceCSVfile)
-     {
-     updatePlacedLoopVars(sourceCSVfile);
-         JPanelBug.remove(panelForTable);
-     myTable = null;
-     myTable = new MyTable(sourceCSVfile);
-    
-         JTextFieldDataFile.setText(sourceCSVfile);
-     AddTableToGrid();
-     
-     
-         
-     }
+
      public void setJTableSourceToDataSet(List<String[]> thisDataSet, String thisDataFileName)
      {
      
          JPanelBug.remove(panelForTable);
-     myTable = null;
-     myTable = new MyTable(thisDataSet, thisDataFileName);
+  //   myTable = null;
+  //   myTable = new MyTable(thisDataSet, thisDataFileName);
+  //         DataFile = csvFileName;
+//     DataTable = new JTable();
+  //      myEntries = new ArrayList<>();
+  //      runtimeEntries = new ArrayList<>();
+        URLListRunTimeEntries = new String[0];
+ 
+       if (thisDataSet.size()>0)
+       {
+        columnnames = (String[]) thisDataSet.get(0);
+     tableModel = new DefaultTableModel(columnnames, thisDataSet.size()-1); 
+           rowcount = tableModel.getRowCount();
+         
+          for (int x = 0; x<rowcount+1; x++)
+           {
+             
+              int columnnumber = 0;
+             if (x>0)
+             {
+           for (String thiscellvalue : (String[])thisDataSet.get(x))
+           {
+               tableModel.setValueAt(thiscellvalue, x-1, columnnumber);
+              columnnumber++;
+           }
+             }
+   
+          
+           }
+        
+           
+           DataTable = new JTable(tableModel);
+        
+      
+        int number_of_rows = DataTable.getRowCount();
+        if (number_of_rows < 10)
+        {
+      DataTable.setPreferredScrollableViewportSize(new Dimension (694, number_of_rows * DataTable.getRowHeight()));
+        }
+        else
+        {
+       DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
+        }
+       }  
     
-     
      AddTableToGrid();   
      }
      public void setDataLoopSource(String in_looptype)
@@ -1017,18 +1101,17 @@ ActionScrollPane.setVisible(true);
          setjComboBoxSetDataLoopType(in_looptype);
          }
      }
-  
+ 
      public void setJTableSourceToURLList(String[] in_list, String list_name)
      {
       updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);
-    myTable = null;
-     myTable = new MyTable(in_list, list_name);
-     if (in_list.length>0)
-     {
-     myTable.populateTableWithURLListRunTimeEntries();
+ //   myTable = null;
+ //    myTable = new MyTable(in_list, list_name);
+  
+     populateTableWithURLListRunTimeEntries(in_list, list_name);
     
-     }
+   
     
          if ("".equals(list_name) || "Select a stored URL List".equals(list_name))
     {

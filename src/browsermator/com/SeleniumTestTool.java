@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
@@ -20,6 +21,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -1011,7 +1013,7 @@ public int GetWaitTime()
          {
         
       
-           procview.myTable.refreshURLListRunTimeEntries();  
+           procview.refreshURLListRunTimeEntries();  
          
              }
        
@@ -1255,13 +1257,7 @@ bugindex++;
     
 
     
-         public void UpdateDataLoopURLListTableView(String ListName, String[] storedURLlist, ProcedureView thisprocview)
-  {
-
-    thisprocview.setJTableSourceToURLList(storedURLlist, ListName);
-
-   
-  }
+ 
              public void AddNewBugView()
         {
        
@@ -1312,7 +1308,8 @@ refreshjComboBoxMoveToIndex();
         {
            
         String dataLoopSource = newdataloopview.DataLoopSource;
-         
+         String canon_path = "";
+        List<String[]> dataset_to_send = new ArrayList<String[]>();
         switch (dataLoopSource)
         {
          
@@ -1321,10 +1318,11 @@ refreshjComboBoxMoveToIndex();
               newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
               break;
             case "file":
-                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+                
                 break;
             default:
-                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+                newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
                 break;
                     
         }
@@ -1342,7 +1340,8 @@ refreshjComboBoxMoveToIndex();
         {
            atindex--;
         String dataLoopSource = newdataloopview.DataLoopSource;
-         
+             String canon_path = "";
+        List<String[]> dataset_to_send = new ArrayList<String[]>();
         switch (dataLoopSource)
         {
          
@@ -1351,10 +1350,10 @@ refreshjComboBoxMoveToIndex();
               newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
               break;
             case "file":
-                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+               newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
                 break;
             default:
-                newdataloopview.setJTableSourceToFile(newdataloopview.DataFile);
+               newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
                 break;
                     
         }
@@ -1402,16 +1401,26 @@ refreshjComboBoxMoveToIndex();
         }
            public void AddNewDataLoopFileView(File CSVFile)
         {
-     
-      
-      
-        ProcedureView newdataloopview = new ProcedureView();
+        String canon_path = "";
+         ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("file");
         if (CSVFile.exists())
         {
-            
-         newdataloopview.setDataFile(CSVFile.getAbsolutePath());
+        try {
+           canon_path = CSVFile.getCanonicalPath();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Exception getting data file path: " + ex.toString());
+        }
+      
+                         newdataloopview.setDataFile(canon_path);
+                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+       //  newbug.setDataSet(dataset_to_send);
+           newdataloopview.setJComboBoxStoredArraylists("Select a stored URL List");
+   newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+       
         }
   
    AddDataLoopProcView(newdataloopview);
@@ -1420,14 +1429,26 @@ refreshjComboBoxMoveToIndex();
         {
      
       
-      
-        ProcedureView newdataloopview = new ProcedureView();
+         String canon_path = "";
+         ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("file");
         if (CSVFile.exists())
         {
-            
-         newdataloopview.setDataFile(CSVFile.getAbsolutePath());
+        try {
+           canon_path = CSVFile.getCanonicalPath();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Exception getting data file path: " + ex.toString());
+        }
+      
+                         newdataloopview.setDataFile(canon_path);
+                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+       //  newbug.setDataSet(dataset_to_send);
+           newdataloopview.setJComboBoxStoredArraylists("Select a stored URL List");
+   newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+       
         }
   
    AddDataLoopProcView(newdataloopview, at_index);

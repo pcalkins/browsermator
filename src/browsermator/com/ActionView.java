@@ -695,8 +695,9 @@ if (!potentialDrag) return;
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
             
-             STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
+            
               STAppData.AddActionToArray(thisActionToAdd, this_bug, this_bugview);
+               STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
                   thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
              this_bugview.refreshjComboBoxAddAtPosition();
@@ -710,8 +711,9 @@ if (!potentialDrag) return;
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
            
-              STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
+            
               STAppData.AddActionToArray(thisActionToAdd, this_bug, this_bugview);
+                STAppFrame.AddActionViewToArray (thisActionViewToAdd, this_bugview);
                   thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
              this_bugview.refreshjComboBoxAddAtPosition();

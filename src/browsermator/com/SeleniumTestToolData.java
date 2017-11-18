@@ -249,13 +249,7 @@ changes=true;
 
        this.changes=true;
    }
- public void UpdateDataLoopURLListTable(String ListName, String[] storedURLlist, Procedure thisproc)
-  {
-
-  
-    thisproc.setURLListData(storedURLlist, ListName);
-   
-  }
+ 
          
     public List<String[]> CreateArrayListFromFile(String DataFile)
     {
@@ -1220,52 +1214,7 @@ xmlfile.writeStartElement("URLsVisited");
 
          
  }
- public int FillTables(Procedure thisproc)
-  {
-      int number_of_rows = 0;
-     for (Action ThisAction: thisproc.ActionsList)
-     {
-      String concat_variable;
  
-              DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
-    DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);   
-    if (var1Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable1;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-            if (parts[2].contains(":"))
-            {   
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-               if (this.VarLists.containsKey(URLListName))
-            {
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc);
-            number_of_rows = this.VarLists.get(URLListName).length;
-            }
-            }
-        } 
-    if (var2Parser.hasDataLoopVar)
-    {
- concat_variable = ThisAction.Variable2;
-            String middle_part = concat_variable.substring(21, concat_variable.length()-20 );
-            String[] parts = middle_part.split(",");
-             if (parts[2].contains(":"))
-            {  
-            String[] parts2 = parts[2].split(":");
-            String URLListName = parts2[1];
-            if (this.VarLists.containsKey(URLListName))
-            {
-              
-            this.UpdateDataLoopURLListTable(URLListName, this.VarLists.get(URLListName), thisproc);
-            number_of_rows = this.VarLists.get(URLListName).length;
-            }
-            }
-        } 
-    
-    }
-     return number_of_rows;
-     }
 
   
 }

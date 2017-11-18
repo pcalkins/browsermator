@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.64";
+   public final String ProgramVersion = "1.1.66";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -3414,11 +3414,23 @@ File newfile = new File(path + ".js");
    if (chosenCSVFile!=null)
    {
   STAppFrame.saveState();
-
-   newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
+   String canon_path = "";
+        try {
+           canon_path = chosenCSVFile.getCanonicalPath();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Exception getting data file path: " + ex.toString());
+        }
+               newbugview.setDataFile(canon_path);
+                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+         newbug.setDataSet(dataset_to_send);
+           newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
+   newbugview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+           
+ 
   // newbugview.setDataLoopSource("file");
-   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
+   newbug.setDataFile(canon_path);
   // newbug.setDataLoopSource("file");
   
    STAppFrame.UpdateDisplay();
@@ -3449,14 +3461,27 @@ File newfile = new File(path + ".js");
    if (chosenCSVFile!=null)
    {
   STAppFrame.saveState();
-
-   newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSourceToFile(chosenCSVFile.getAbsolutePath());
-   newbugview.setDataLoopSource("file");
-   newbug.setDataFile(chosenCSVFile.getAbsolutePath());
-   newbug.setDataLoopSource("file");
+  String canon_path = "";
+   try {
+           canon_path = chosenCSVFile.getCanonicalPath();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Exception getting data file path: " + ex.toString());
+        }
+               newbugview.setDataFile(canon_path);
+                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+         newbug.setDataSet(dataset_to_send);
+           newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
+   newbugview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+           
+ 
+  // newbugview.setDataLoopSource("file");
+   newbug.setDataFile(canon_path);
+  // newbug.setDataLoopSource("file");
   
    STAppFrame.UpdateDisplay();
+  
    }
           });
       

@@ -451,7 +451,7 @@ options.setBinary(chrome_path);
 }
 else
 {
- int number_of_rows = thisbugview.myTable.DataTable.getRowCount();
+ int number_of_rows = thisbugview.DataTable.getRowCount();
  
      for (int x = 0; x<number_of_rows; x++)
     {

@@ -738,7 +738,10 @@ if (!"Dataloop".equals(thisbug.Type))
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
           
             }
         }).execute();
@@ -779,7 +782,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
-
+         System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -796,7 +799,8 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
-          ThisAction.RunAction(driver);
+          System.out.print(ThisAction.Type);
+         ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
            }
@@ -806,11 +810,12 @@ if (!"Dataloop".equals(thisbug.Type))
        {
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-      
+       System.out.print(ThisAction.Type);
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
                  {
+                      System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);    
                  }
                  if (RUNWITHGUI)
@@ -831,7 +836,7 @@ if (!"Dataloop".equals(thisbug.Type))
        {
       
            STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
-
+System.out.println("GOT HERE");
        }
     
        
@@ -970,7 +975,8 @@ else
         {
            
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-        changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
+        System.out.print(ThisAction.Type);
+           changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
         ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
@@ -1041,11 +1047,14 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-        
+                }
             }
         }).execute();
         }
+         System.out.print(ThisAction.Type);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -1077,11 +1086,14 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
             STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-        
+                }
             }
         }).execute();
          }
+          System.out.print(ThisAction.Type);
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -1106,11 +1118,14 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          
+                }
             }
         }).execute();   
            }
+            System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);    
        }   
          
@@ -1237,11 +1252,14 @@ else
           (new ListenerTask<Void, String>(actMethod) {
             @Override
             protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          
+                }
             }
         }).execute();   
                  }
+                  System.out.print(ThisAction.Type);
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
@@ -1942,9 +1960,10 @@ options.setBinary(chrome_path);
         (new ListenerTask<Void, String>(procMethod) {
             @Override
             protected void process(List<String> chunks) {
-
+if (chunks.size()>0)
+                {
                 STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
-          
+                }
             }
         }).execute();
           }
@@ -2007,7 +2026,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
-
+ System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2024,6 +2043,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
+          System.out.print(ThisAction.Type);
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2034,11 +2054,12 @@ if (!"Dataloop".equals(thisbug.Type))
        {
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-         
+          System.out.print(ThisAction.Type);
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
                  {
+                      System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);    
                  }
               
@@ -2173,6 +2194,7 @@ else
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
+            System.out.print(ThisAction.Type);
         changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
         ThisAction.loop_pass_values[x] = ThisAction.Pass;
@@ -2226,7 +2248,7 @@ else
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
         String action_title3 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2; 
                   
-       
+        System.out.print(ThisAction.Type);
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2244,7 +2266,7 @@ else
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
        
-      
+       System.out.print(ThisAction.Type);
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2254,7 +2276,7 @@ else
        
        else
        {
-     
+      System.out.print(ThisAction.Type);
          ThisAction.RunAction(driver);    
        }   
          
@@ -2357,7 +2379,7 @@ else
           break;
   }
                  }
-             
+            System.out.print(ThisAction.Type);  
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
