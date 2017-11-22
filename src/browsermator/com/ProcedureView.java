@@ -130,7 +130,7 @@ String fieldBugTitleOnFocus;
 JComboBox jComboBoxMoveToIndex;
 JLabel jLabelAddAtPosition;
 JComboBox jComboBoxAddAtPosition;
- String[] URLListRunTimeEntries;
+ List<String> URLListRunTimeEntries;
   Object[] columnnames = {""};
   Integer rowcount;
 
@@ -168,7 +168,7 @@ JComboBox jComboBoxAddAtPosition;
          fieldBugTitleOnFocus = "";
          DataFile = "";
 URLListName = "";
-URLListRunTimeEntries = new String[0];
+URLListRunTimeEntries = new ArrayList<>();
  DataLoopSource = "none";
          limit = 0;
 JButtonOK.setActionCommand("Update");
@@ -314,14 +314,14 @@ ActionScrollPane.setVisible(true);
   
     JPanelBug.validate();
      }
-     public void populateTableWithURLListRunTimeEntries(String[] in_data, String listname)
+     public void populateTableWithURLListRunTimeEntries(List<String> in_data, String listname)
  {
      columnnames[0] = "Stored URL List:" + listname;
    
   
-          DefaultTableModel tableModel = new DefaultTableModel(columnnames, in_data.length); 
+          DefaultTableModel tableModel = new DefaultTableModel(columnnames, in_data.size()); 
          
-           rowcount = tableModel.getRowCount();
+           rowcount = in_data.size();
    //       this.number_of_records = rowcount;
              int columnnumber = 0;
              
@@ -329,7 +329,7 @@ ActionScrollPane.setVisible(true);
            {
              
                
-               tableModel.setValueAt(in_data[x], x, columnnumber);
+               tableModel.setValueAt(in_data.get(x), x, columnnumber);
 
  }
                 DataTable = new JTable(tableModel);
@@ -427,7 +427,7 @@ ActionScrollPane.setVisible(true);
    {
        this.URLListName = in_listname;
       
-       String[] blanklist = new String[0];
+       List<String> blanklist = new ArrayList<>();
        if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname))
        {
         
@@ -461,7 +461,7 @@ ActionScrollPane.setVisible(true);
    }
     public void refreshURLListRunTimeEntries()
  {
-     URLListRunTimeEntries = new String[0];
+     URLListRunTimeEntries = new ArrayList<>();
  }
  //    public void setJTableSourceToFile (String sourceCSVfile)
 //     {
@@ -851,7 +851,7 @@ ActionScrollPane.setVisible(true);
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-   public void populateJComboBoxStoredArrayLists( HashMap<String, String[]> VarLists)
+   public void populateJComboBoxStoredArrayLists( HashMap<String, List<String>> VarLists)
    {
               for (String keyname: VarLists.keySet())
         {
@@ -1047,7 +1047,7 @@ ActionScrollPane.setVisible(true);
 //     DataTable = new JTable();
   //      myEntries = new ArrayList<>();
   //      runtimeEntries = new ArrayList<>();
-        URLListRunTimeEntries = new String[0];
+        URLListRunTimeEntries = new ArrayList<>();
  
        if (thisDataSet.size()>0)
        {
@@ -1085,7 +1085,7 @@ ActionScrollPane.setVisible(true);
        DataTable.setPreferredScrollableViewportSize(new Dimension (694,400));     
         }
        }  
-    
+    setJTextFieldDataFile(thisDataFileName);
      AddTableToGrid();   
      }
      public void setDataLoopSource(String in_looptype)
@@ -1102,7 +1102,7 @@ ActionScrollPane.setVisible(true);
          }
      }
  
-     public void setJTableSourceToURLList(String[] in_list, String list_name)
+     public void setJTableSourceToURLList(List<String> in_list, String list_name)
      {
       updatePlacedLoopVars(list_name);
          JPanelBug.remove(panelForTable);

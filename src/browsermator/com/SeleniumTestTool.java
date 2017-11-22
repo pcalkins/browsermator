@@ -229,7 +229,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
         else
         {
   
-            STAppData.VarLists.put(newname, new String[0]);
+            STAppData.VarLists.put(newname, new ArrayList<>());
            
              int bugindex = 0;  
             for (Procedure PROC: STAppData.BugArray)
@@ -274,7 +274,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
          if (oldname.equals(newname))
          {
           // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
-      STAppData.VarLists.put(newname, new String[0]);
+      STAppData.VarLists.put(newname, new ArrayList<>());
        
        //  addSelectedArrayName(bugdashactionindex);
           }
@@ -601,7 +601,7 @@ thisBugView.ActionsViewList.get(toMoveIndex).SetIndexes(thisBugView.index, toMov
      }
     BV.JComboBoxStoredArrayLists.setSelectedItem(selecteditem);
     BV.updatePlacedLoopVars(selecteditem);
-    String[] blanklist = new String[0];
+    List<String> blanklist = new ArrayList<>();
     BV.setJTableSourceToURLList(blanklist, selecteditem);
         BV.JComboBoxStoredArrayLists.setEnabled(true);
               }
@@ -907,7 +907,7 @@ public int GetWaitTime()
             }
             PV.JComboBoxStoredArrayLists.addItem(keyname);
         }
-             String[] blanklist = new String[0];
+             List<String> blanklist = new ArrayList<>();
             if (hasSelecteditem)
             {
                PV.setURLListName(selecteditem);
@@ -1307,26 +1307,7 @@ refreshjComboBoxMoveToIndex();
          public void AddDataLoopProcView(ProcedureView newdataloopview)
         {
            
-        String dataLoopSource = newdataloopview.DataLoopSource;
-         String canon_path = "";
-        List<String[]> dataset_to_send = new ArrayList<String[]>();
-        switch (dataLoopSource)
-        {
-         
-            case "urllist":
-                String[] blanklist = new String[0];
-              newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
-              break;
-            case "file":
-                newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
-                
-                break;
-            default:
-                newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
-                break;
-                    
-        }
-         
+           
      
       
           BugViewArray.add(newdataloopview);
@@ -1339,26 +1320,7 @@ refreshjComboBoxMoveToIndex();
                public void AddDataLoopProcView(ProcedureView newdataloopview, int atindex)
         {
            atindex--;
-        String dataLoopSource = newdataloopview.DataLoopSource;
-             String canon_path = "";
-        List<String[]> dataset_to_send = new ArrayList<String[]>();
-        switch (dataLoopSource)
-        {
-         
-            case "urllist":
-                String[] blanklist = new String[0];
-              newdataloopview.setJTableSourceToURLList(blanklist, newdataloopview.URLListName);
-              break;
-            case "file":
-               newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
-                break;
-            default:
-               newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
-                break;
-                    
-        }
-         
-     
+        
       
           BugViewArray.add(atindex, newdataloopview);
        ResetBugIndexes();
@@ -1374,8 +1336,8 @@ refreshjComboBoxMoveToIndex();
        
     
         newdataloopview.setURLListName(in_listname);
-        String[] blanklist = new String[0];
-//  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
+        List<String> blanklist = new ArrayList<>();
+  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
      
      
@@ -1391,8 +1353,8 @@ refreshjComboBoxMoveToIndex();
        
     
         newdataloopview.setURLListName(in_listname);
-        String[] blanklist = new String[0];
-//  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
+        List<String> blanklist = new ArrayList<>();
+  newdataloopview.setJTableSourceToURLList(blanklist, in_listname);
   
      
      

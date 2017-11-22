@@ -32,7 +32,7 @@ Boolean random;
 String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
   String URLListName;
-  String[] URLListData;
+  List<String> URLListData;
  // String[] URLListRunTimeEntries;
 
    Procedure () 
@@ -51,7 +51,7 @@ this.DataFile="";
 this.Type = "";
 this.DataLoopSource = "urllist";
 this.URLListName = "";
-this.URLListData = new String[0];
+this.URLListData = new ArrayList<>();
 
 
    }
@@ -66,7 +66,7 @@ this.URLListData = new String[0];
    }
    public void RefreshURLListData()
    {
-    URLListData = new String[0];
+    URLListData = new ArrayList<>();
       setURLListData(URLListData, URLListName);
    }
 
@@ -166,7 +166,7 @@ this.URLListData = new String[0];
    {
        URLListName = in_name;
    }
-   public void setURLListData(String[] in_list, String list_name)
+   public void setURLListData(List<String> in_list, String list_name)
    {
        URLListData = in_list;
        URLListName = list_name;

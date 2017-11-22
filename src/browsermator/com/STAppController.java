@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.66";
+   public final String ProgramVersion = "1.1.68";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -1812,7 +1812,7 @@ xmlfile.writeAttribute("Random", randstring);
    
     
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-      number_of_rows = thisbug.URLListData.length;
+      number_of_rows = thisbug.URLListData.size();
     }
     else
     {
@@ -3377,7 +3377,7 @@ File newfile = new File(path + ".js");
    }
        public void AddLoopHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, ProcedureView newbugview, Procedure newbug) 
       {
-          String[] blanklist = new String[0];
+          List<String> blanklist = new ArrayList<>();
            newbugview.addJComboBoxStoredArrayListsItemListener((ItemEvent e) -> {
      
                if ((e.getStateChange() == ItemEvent.SELECTED)) {

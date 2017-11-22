@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
  */
 public class SeleniumTestToolData {
     transient CSVReader CSVFileReader;
-ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
+ArrayList<Procedure> BugArray = new ArrayList<>();
     ArrayList<String> AllFieldValues;
     ArrayList<String> Visitted_URL_List;
       Thread ActionThread;
@@ -58,7 +58,7 @@ ArrayList<Procedure> BugArray = new ArrayList<Procedure>();
   boolean hasStoredArray;
   boolean IncludeScreenshots;
   HashMap<String, String> VarHashMap = new HashMap();
-  HashMap<String, String[]> VarLists = new HashMap();
+  HashMap<String, List<String>> VarLists = new HashMap();
   boolean cancelled;
   boolean testRunning;
   String short_filename;
@@ -155,7 +155,7 @@ public HashMap<String, String> getVarHashMap()
 {
     return VarHashMap;
 }
-public HashMap<String, String[]> getVarLists()
+public HashMap<String, List<String>> getVarLists()
 {
    return VarLists;    
 }
@@ -275,7 +275,7 @@ changes=true;
     }   
   public void addDataFileToDataFileHashMap(String path_to_file)
 {
-    List<String[]> DataSet = new ArrayList<String[]>();
+    List<String[]> DataSet = new ArrayList<>();
     DataSet = CreateArrayListFromFile(path_to_file);
    DataFileHashMap.put(path_to_file, DataSet);
 }
@@ -715,7 +715,7 @@ else
       
         newdataloop.setDataLoopSource("urllist");
   
-        String[] blanklist = new String[0];
+        List<String> blanklist = new ArrayList<>();
   
   
        
@@ -735,7 +735,7 @@ else
       
         newdataloop.setDataLoopSource("urllist");
   
-        String[] blanklist = new String[0];
+        List<String> blanklist = new ArrayList<>();
   
   
        
@@ -899,7 +899,7 @@ else
    public void addSelectedArrayName(String varname)
       {
  
- VarLists.put(varname, new String[0]);
+ VarLists.put(varname, new ArrayList<>());
  
       }
  
@@ -914,10 +914,10 @@ else
           
                 
         }
-           public java.util.List<String[]> RandomizeAndLimitFileList(java.util.List<String[]> data_in, int limit, Boolean randval)
+           public List<String[]> RandomizeAndLimitFileList(List<String[]> data_in, int limit, Boolean randval)
   {
     // first row is column names, remove it
-      List<String[]> ret_val = new ArrayList<String[]>();
+      List<String[]> ret_val = new ArrayList<>();
       if (data_in.size()>0)
       {
   data_in.remove(0);
@@ -947,14 +947,14 @@ Collections.shuffle(data_in, new Random(seed));
   
      setUniqueFileOption(UniqueOption);
  }
-             public String[] RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
+             public List<String> RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
   {
-       ArrayList<String> convert_list = new ArrayList<String>();
-      String[] currentlist = new String[0];
+ //     List<String> convert_list = new ArrayList<>();
+      List<String> currentlist = new ArrayList<>();
    if (VarLists.containsKey(URLListName))
             {
           currentlist = VarLists.get(URLListName);
-          if (currentlist.length>0)
+          if (currentlist.size()>0)
           {
           if (this.UniqueList)
 {
@@ -982,7 +982,7 @@ doc = builder.parse(file_path);
  
    
 
- ArrayList<String> removeList = new ArrayList<String>();
+List<String> removeList = new ArrayList<>();
   
 for (String grabbedURL: currentlist)
 {   
@@ -993,7 +993,7 @@ for (String grabbedURL: currentlist)
    NodeList SettingsNodes = theseElements.item(0).getChildNodes();
 String URL_FROM_FILE="";
 Boolean hasValue = false;
-int node_match_index = 0;
+
     for (int k = 0; k<SettingsNodes.getLength(); k++)
     {
           URL_FROM_FILE = SettingsNodes.item(k).getTextContent();
@@ -1010,12 +1010,10 @@ int node_match_index = 0;
 
     }
  
-  
 
-  convert_list = new ArrayList(Arrays.asList(currentlist));
 
-    convert_list.removeAll(removeList);
-   currentlist =convert_list.stream().toArray(String[]::new);
+    currentlist.removeAll(removeList);
+ 
 // VarLists.get(URLListName).clear();
 // VarLists.replace(URLListName, currentlist);
 
@@ -1032,28 +1030,28 @@ catch (Exception ex)
              long seed = System.nanoTime();
              
  
-        convert_list = new ArrayList(Arrays.asList(currentlist));      
-Collections.shuffle(convert_list, new Random(seed));
-   currentlist = convert_list.toArray(new String[convert_list.size()]);
+    //    convert_list = currentlist;
+Collections.shuffle(currentlist, new Random(seed));
+  // currentlist = convert_list;
 
  
                 }
                 if (limit>0)
                 {
-                    int sizeofvarlist = currentlist.length;
+                    int sizeofvarlist = currentlist.size();
 
  if (limit<sizeofvarlist)
  {
-     convert_list = new ArrayList(Arrays.asList(currentlist));
-   if (convert_list.size()<limit)
+ //    convert_list = currentlist;
+   if (currentlist.size()<limit)
    {
     
    }
    else
    {
-     convert_list.subList(limit, sizeofvarlist).clear();
+     currentlist.subList(limit, sizeofvarlist).clear();
    }
-  currentlist = convert_list.toArray(new String[convert_list.size()]);
+ // currentlist = convert_list;
    return currentlist;
  }
 else
@@ -1065,6 +1063,7 @@ else
  }
    return currentlist;        
             }   
+          return currentlist;
             }
    return currentlist;
   }

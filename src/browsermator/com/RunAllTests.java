@@ -832,12 +832,13 @@ if (!"Dataloop".equals(thisbug.Type))
         
            STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-    if (ThisAction.tostore_varlist.length>0)
+    if (ThisAction.tostore_varlist.size()<=0)
        {
-      
-           STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
-System.out.println("GOT HERE");
-       }
+  
+       } 
+    else {
+        STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
+           }
     
        
       
@@ -897,8 +898,8 @@ else
      int number_of_rows = 0;
     if ("urllist".equals(thisbug.DataLoopSource))
     {
-       String[] randomList = new String[0]; 
-       randomList = STAppData.VarLists.get(thisbug.URLListName);
+      // randomList = new ArrayList<>(); 
+        List<String> randomList = STAppData.VarLists.get(thisbug.URLListName);
       if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
       randomList = STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
@@ -911,16 +912,16 @@ else
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
     
       }
-      number_of_rows = randomList.length;
+      number_of_rows = randomList.size();
     }
     else
     {
    if ("file".equals(thisbug.DataLoopSource))
-    {
+    { List<String[]> randomList = new ArrayList<>(); 
         if (thisbug.getLimit()>0 || thisbug.getRandom())
         {
-            
-         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom())); 
+            randomList = STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom());
+         thisbug.setRunTimeFileSet(randomList); 
      number_of_rows = thisbug.RunTimeFileSet.size();
         }
         else
@@ -1465,7 +1466,7 @@ while(thisContinuePrompt.isVisible() == true){
       if ("urllist".equals(thisbug.DataLoopSource))
       {
  
-      number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.length;
+      number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.size();
       }
       if ("file".equals(thisbug.DataLoopSource))
       {
@@ -2071,7 +2072,7 @@ if (!"Dataloop".equals(thisbug.Type))
         
            STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-    if (ThisAction.tostore_varlist.length>0)
+    if (ThisAction.tostore_varlist.size()>0)
        {
       
            STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
@@ -2126,7 +2127,7 @@ else
      int number_of_rows = 0;
     if ("urllist".equals(thisbug.DataLoopSource))
     {
-      String[] randomList = new String[0];  
+      List<String> randomList = new ArrayList<>();  
       randomList = STAppData.VarLists.get(thisbug.URLListName);
       if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
@@ -2134,7 +2135,7 @@ else
       }
       thisbug.setURLListData(randomList, thisbug.URLListName);
      
-      number_of_rows = randomList.length;
+      number_of_rows = randomList.size();
     }
     else
     {

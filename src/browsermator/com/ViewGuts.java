@@ -320,7 +320,7 @@ else
       }
       thisbug.setURLListData(SiteTestData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-      number_of_rows = SiteTestData.VarLists.get(thisbug.URLListName).length;
+      number_of_rows = SiteTestData.VarLists.get(thisbug.URLListName).size();
     }
     else
     {

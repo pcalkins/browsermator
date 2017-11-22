@@ -6,7 +6,6 @@
 package browsermator.com;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -76,7 +75,7 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
     try
  {
 
-        ArrayList<String> link_list = new ArrayList();
+        List<String> link_list = new ArrayList<>();
 
        List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));
        
@@ -101,8 +100,8 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
             }
       if (!link_list.isEmpty())
       {
-     String[] convert_list = link_list.toArray(new String[link_list.size()]);
- SetStoredLinkArray(convert_list);
+ //    String[] convert_list = link_list.toArray(new String[link_list.size()]);
+ SetStoredLinkArray(link_list);
       }
         this.Pass = true;
     }
@@ -119,9 +118,9 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
     
     }
 
-    public void SetStoredLinkArray (String[] to_storelist)
+    public void SetStoredLinkArray (List<String> to_storelist)
     {
        this.tostore_varlist = to_storelist;
-     System.out.println ("GOT HERE");  
+  
     }  
 }

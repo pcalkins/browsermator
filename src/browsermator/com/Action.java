@@ -2,6 +2,7 @@ package browsermator.com;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
@@ -36,12 +37,12 @@ LocalDateTime[] loop_time_of_test;
  String Guts;
  String tostore_varname;
  String tostore_varvalue;
- String[] tostore_varlist;
+ List<String> tostore_varlist;
    Action ()
    {
   this.tostore_varname = "";
   this.tostore_varvalue = "";
-  this.tostore_varlist = new String[0];
+  this.tostore_varlist = new ArrayList<>();
   this.Pass = false;
   this.TimeOfTest = LocalDateTime.now();
   this.NOT = false;
@@ -60,6 +61,7 @@ LocalDateTime[] loop_time_of_test;
 
    public void InitializeLoopTestVars(int number_of_rows)
    {
+      
        this.loop_pass_values = new Boolean[number_of_rows];
        this.loop_time_of_test = new LocalDateTime[number_of_rows];
        this.loop_ScreenshotsBase64 = new String[number_of_rows];

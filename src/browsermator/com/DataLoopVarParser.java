@@ -100,7 +100,7 @@ public class DataLoopVarParser {
     }
    }
  }
- public String GetFullValueFromURLList(int row_number, String[] in_list)
+ public String GetFullValueFromURLList(int row_number, List<String> in_list)
  {
    String concat_variable = "";
        for (int y=0; y<DataLoopVars.size(); y++)
@@ -111,10 +111,10 @@ public class DataLoopVarParser {
        if (theseDataLoopVars.field_column_index!=-1)
        {
            //this is wrong...
-           if (in_list.length>0)
+           if (in_list.size()>0)
           
            {
-            concat_variable+= in_list[row_number];
+            concat_variable+= in_list.get(row_number);
             
            }
        }
