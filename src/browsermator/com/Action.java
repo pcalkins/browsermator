@@ -30,10 +30,10 @@ Boolean Locked;
 String Password;
 Boolean Loopable;
 String pause_message;
-Boolean[] loop_pass_values;
-LocalDateTime[] loop_time_of_test;
+List<Boolean> loop_pass_values;
+List<LocalDateTime> loop_time_of_test;
  String ScreenshotBase64;
- String[] loop_ScreenshotsBase64;
+ List<String> loop_ScreenshotsBase64;
  String Guts;
  String tostore_varname;
  String tostore_varvalue;
@@ -61,15 +61,14 @@ LocalDateTime[] loop_time_of_test;
 
    public void InitializeLoopTestVars(int number_of_rows)
    {
-      
-       this.loop_pass_values = new Boolean[number_of_rows];
-       this.loop_time_of_test = new LocalDateTime[number_of_rows];
-       this.loop_ScreenshotsBase64 = new String[number_of_rows];
+       loop_pass_values = new ArrayList<>();
+       loop_time_of_test = new ArrayList<>();
+       loop_ScreenshotsBase64 = new ArrayList<>();
        for (int x = 0; x<number_of_rows; x++)
        {
-        this.loop_pass_values[x] = false;
-        this.loop_time_of_test[x] = LocalDateTime.now();
-        this.loop_ScreenshotsBase64[x] = "<img src = \"\"></img>";
+       loop_pass_values.add(false);
+       loop_time_of_test.add (LocalDateTime.now());
+       loop_ScreenshotsBase64.add("<img src = \"\"></img>");
        }
    }
    public void RunAction(WebDriver driver)

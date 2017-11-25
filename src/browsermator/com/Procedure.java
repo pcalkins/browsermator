@@ -160,7 +160,10 @@ this.URLListData = new ArrayList<>();
   
    public void setRunTimeFileSet(List<String[]> in_set)
    {
+       if (in_set.size()>0)
+       {   
        this.RunTimeFileSet = in_set;
+   }
    }
    public void setURLListName(String in_name)
    {

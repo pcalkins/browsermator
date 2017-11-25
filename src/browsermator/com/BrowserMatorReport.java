@@ -377,7 +377,7 @@ mainPanel = new JPanel(new BorderLayout());
         int passvalueslength = 0;
         if (STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values!=null)
         {
-              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.length;
+              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.size();
         }
               if (passvalueslength>0)
             {
@@ -398,9 +398,9 @@ mainPanel = new JPanel(new BorderLayout());
             String pass_string = " has failed at ";
                    DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
-        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values.get(passindex);
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test.get(passindex);
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64.get(passindex);
                int index_of_fileslashes = ThisScreenshot.indexOf("file:///")+8;
         int index_of_id = ThisScreenshot.indexOf("id")-2;
           if (index_of_fileslashes > 0 && index_of_id>index_of_fileslashes)
@@ -809,7 +809,7 @@ mainPanel = new JPanel(new BorderLayout());
         {
         if (STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values!=null)
         {
-              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.length;
+              passvalueslength = STAppData.BugArray.get(BugIndex).ActionsList.get(0).loop_pass_values.size();
         }
         }
               if (passvalueslength>0)
@@ -831,9 +831,9 @@ mainPanel = new JPanel(new BorderLayout());
             String pass_string = " has failed at ";
                    DataLoopVarParser var1Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).Variable2);
-    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values[passindex];
-        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test[passindex];
-        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64[passindex];
+    ThisPassValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_pass_values.get(passindex);
+        ThisTimeValue = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_time_of_test.get(passindex);
+        ThisScreenshot = STAppData.BugArray.get(BugIndex).ActionsList.get(ActionViewIndex).loop_ScreenshotsBase64.get(passindex);
     if (var1Parser.hasDataLoopVar==false && var2Parser.hasDataLoopVar==false)
     {
         

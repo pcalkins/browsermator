@@ -1367,6 +1367,7 @@ refreshjComboBoxMoveToIndex();
          ProcedureView newdataloopview = new ProcedureView();
         newdataloopview.setType("Dataloop");
         newdataloopview.setDataLoopSource("file");
+         List<String[]> dataset_to_send = new ArrayList<>();
         if (CSVFile.exists())
         {
         try {
@@ -1378,12 +1379,13 @@ refreshjComboBoxMoveToIndex();
         }
       
                          newdataloopview.setDataFile(canon_path);
-                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+                dataset_to_send = STAppData.getDataSetByFileName(canon_path);
+        }
        //  newbug.setDataSet(dataset_to_send);
            newdataloopview.setJComboBoxStoredArraylists("Select a stored URL List");
    newdataloopview.setJTableSourceToDataSet(dataset_to_send, canon_path);
        
-        }
+        
   
    AddDataLoopProcView(newdataloopview);
         }

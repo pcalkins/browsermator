@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.swing.BorderFactory;
@@ -487,6 +488,10 @@ ActionScrollPane.setVisible(true);
      public void setType (String type)
      {
          this.Type = type;
+         if (this.Type.equals("Dataloop"))
+         {
+         AddTableToGrid();
+         }
      }
      public void setBugTitle(String title)
      {
@@ -851,7 +856,7 @@ ActionScrollPane.setVisible(true);
    {
     this.JComboBoxStoredArrayLists.setEnabled(true);
    }
-   public void populateJComboBoxStoredArrayLists( HashMap<String, List<String>> VarLists)
+   public void populateJComboBoxStoredArrayLists( Map<String, List<String>> VarLists)
    {
               for (String keyname: VarLists.keySet())
         {

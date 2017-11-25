@@ -220,7 +220,7 @@ public String doInBackground()
      {
       STAppFrame.jButtonClearUniqueList.setEnabled(true);
      }
-          STAppFrame.enablejButtonDoStuff(true);
+    STAppFrame.enablejButtonDoStuff(true);
     STAppFrame.enableAdds();
     STAppFrame.enableRemoves();
     STAppFrame.hideTaskGUI();
@@ -746,8 +746,6 @@ if (!"Dataloop".equals(thisbug.Type))
             }
         }).execute();
        }
-   try
-   {
        if (totalpause>0)
        {
       try
@@ -832,33 +830,16 @@ if (!"Dataloop".equals(thisbug.Type))
         
            STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-    if (ThisAction.tostore_varlist.size()<=0)
+    if (ThisAction.tostore_varlist.size()>0)
        {
   
-       } 
-    else {
         STAppData.VarLists.put(ThisAction.Variable2, ThisAction.tostore_varlist);
            }
     
        
       
     
-   }
-  catch (Exception ex)
-     {
-  System.out.println(ex.toString());
-      ThisAction.Pass = false;
-      if (RUNWITHGUI)
-      {
-            ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-        thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
- 
-              publish(thisbugindex);
-      }
-          break;
-      
-       
-     }
+
          if (STAppData.getIncludeScreenshots())
     { 
       try
@@ -917,18 +898,23 @@ else
     else
     {
    if ("file".equals(thisbug.DataLoopSource))
-    { List<String[]> randomList = new ArrayList<>(); 
+    { 
         if (thisbug.getLimit()>0 || thisbug.getRandom())
         {
-            randomList = STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom());
+            if (thisbug.DataSet.size()>0)
+            {
+        List<String[]> randomList = STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom());
          thisbug.setRunTimeFileSet(randomList); 
      number_of_rows = thisbug.RunTimeFileSet.size();
+        }
         }
         else
         {
             thisbug.setRunTimeFileSet(thisbug.DataSet);
             number_of_rows = thisbug.RunTimeFileSet.size();
         }
+        
+       
         
     }     
     }
@@ -937,17 +923,15 @@ else
 // {
 //  number_of_rows = FillTables(thisbug, thisbugview);
 // }
+if (number_of_rows>0)
+{
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
-
+}
  for (int x = 0; x<number_of_rows; x++)
     {
-        if (RUNWITHGUI)
-        {
-       ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);       
-   STAppFrame.clearProcedurePassFailColors(thisbugview);
-        }
+ 
    int changex = -1;
   action_INT = 0;
     for( Action ThisAction : thisbug.ActionsList ) {
@@ -979,16 +963,16 @@ else
         System.out.print(ThisAction.Type);
            changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
-        ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        ThisAction.loop_pass_values.set(x, ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x, ThisAction.TimeOfTest);
            if (STAppData.getIncludeScreenshots())
     { 
 
-       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>";
+       ThisAction.loop_ScreenshotsBase64.set(x, "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>");
     } 
            else
            {
-             ThisAction.loop_ScreenshotsBase64[x] = "";
+             ThisAction.loop_ScreenshotsBase64.set(x,"");
            }
           
         }
@@ -1136,20 +1120,20 @@ else
            STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
        
-        ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x, ThisAction.TimeOfTest);
             }
              catch (Exception ex)
      {
    
-          ThisAction.loop_pass_values[x] = false;
-          ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+          ThisAction.loop_pass_values.set(x,false);
+          ThisAction.loop_time_of_test.set(x, LocalDateTime.now());
         
              if (RUNWITHGUI)
              {
                publish(thisbugindex);
                  ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-                thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+                thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values.get(x));
              }
           break;
        
@@ -1160,18 +1144,18 @@ else
         {
     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64.set(x, "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>");
   
         }
                  catch (Exception ex)
        {
-          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+          ThisAction.loop_ScreenshotsBase64.set(x,"Screenshot Failed");
      //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
                   else
                   {
-                   ThisAction.loop_ScreenshotsBase64[x] = "";    
+                   ThisAction.loop_ScreenshotsBase64.set(x, "");    
                   }
             
         }
@@ -1234,7 +1218,7 @@ else
        {
             publish(thisbugindex);
               ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values.get(x));
        }
           break;
   }
@@ -1265,26 +1249,26 @@ else
 
       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
-   ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+   ThisAction.loop_pass_values.set(x ,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x ,ThisAction.TimeOfTest);
              if (STAppData.getIncludeScreenshots())
     { 
         try
         {
      File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64.set(x ,"<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>");
        }
                   catch (Exception ex)
        {
-          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+          ThisAction.loop_ScreenshotsBase64.set(x,"Screenshot Failed");
      //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
         
     } 
              else
              {
-             ThisAction.loop_ScreenshotsBase64[x] = "";     
+             ThisAction.loop_ScreenshotsBase64.set(x,"");     
              }
              }
       catch (Exception ex)
@@ -1292,12 +1276,12 @@ else
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
-       ThisAction.loop_pass_values[x] = false;
-        ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+       ThisAction.loop_pass_values.set(x, false);
+        ThisAction.loop_time_of_test.set(x, LocalDateTime.now());
         if (RUNWITHGUI)
         {
               ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-         thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+         thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values.get(x));
   
                publish(thisbugindex);
         }
@@ -1310,14 +1294,14 @@ else
       else
       {
           ThisAction.Pass = true;
-          ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+          ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
             
       }
        if (RUNWITHGUI)
         {
               ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-      thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values[x]);
+      thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.loop_pass_values.get(x));
         }
      }
  
@@ -1348,36 +1332,24 @@ else
                 actions_passed++;
             }
         }
-        if (actions_passed == ThisAction.loop_pass_values.length)
+        if (actions_passed == ThisAction.loop_pass_values.size())
         {
             ThisAction.Pass = true;
         }
-    }
-     
-   }
-  int actions_passed = 0;
- for( Action ThisAction : thisbug.ActionsList )
-    {   
-     
-      
-      
-        Boolean passvalue = ThisAction.Pass;
-        
-            if (passvalue)
-            {
-                actions_passed++;
-            }
-        
-     
-    }
-    if (actions_passed == thisbug.ActionsList.size())
-        {
-            thisbug.Pass = true;
-        }
-    else
+  int sizeof = thisbug.ActionsList.size();
+    if (actions_passed==sizeof)
     {
         thisbug.Pass = false;
     }
+    else
+    {
+        thisbug.Pass = true;
+    }
+    }
+     
+   }
+
+ 
   
  publish(thisbugindex);
     thisbugindex++;
@@ -1477,7 +1449,7 @@ if (number_of_rows==0)
 {
    int ActionIndex = 0;
     for( Action TheseActions : ActionsToLoop ) {
-          LocalDateTime stringtime =  LocalDateTime.now();
+       
           TheseActions.Pass = false;
         
          ActionIndex++;
@@ -1486,13 +1458,12 @@ if (number_of_rows==0)
     for (int x = 0; x<number_of_rows; x++)
     {
         
- int ActionIndex = 0;
     for( Action TheseActions : ActionsToLoop ) {
 
          
     LocalDateTime stringtime =  LocalDateTime.now();
    TheseActions.TimeOfTest = stringtime;
-       boolean TestState = TheseActions.loop_pass_values[x];
+       boolean TestState = TheseActions.loop_pass_values.get(x);
        if (TestState==true)
        {
        
@@ -1525,7 +1496,7 @@ if (number_of_rows==0)
            
        }
 
-       ActionIndex++;   
+   
   }
     }
      if (NumberOfActionsPassed == STAppData.BugArray.get(BugIndex).ActionsList.size()*number_of_rows)
@@ -1996,8 +1967,7 @@ if (!"Dataloop".equals(thisbug.Type))
            if (!ThisAction.Locked)
    {
     
-   try
-   {
+
        if (totalpause>0)
        {
       try
@@ -2079,19 +2049,7 @@ if (!"Dataloop".equals(thisbug.Type))
 
        }
     
-       
-      
-    
-   }
-  catch (Exception ex)
-     {
-  System.out.println(ex.toString());
-      ThisAction.Pass = false;
-     
-          break;
-      
-       
-     }
+
          if (STAppData.getIncludeScreenshots())
     { 
       try
@@ -2127,15 +2085,16 @@ else
      int number_of_rows = 0;
     if ("urllist".equals(thisbug.DataLoopSource))
     {
-      List<String> randomList = new ArrayList<>();  
-      randomList = STAppData.VarLists.get(thisbug.URLListName);
+    
       if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      randomList = STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
+      thisbug.setURLListData(STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom()), thisbug.URLListName);
       }
-      thisbug.setURLListData(randomList, thisbug.URLListName);
-     
-      number_of_rows = randomList.size();
+      else
+      {
+      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      }
+      number_of_rows = thisbug.URLListData.size();
     }
     else
     {
@@ -2198,22 +2157,21 @@ else
             System.out.print(ThisAction.Type);
         changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
-        ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+        ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
            if (STAppData.getIncludeScreenshots())
     { 
 
-       ThisAction.loop_ScreenshotsBase64[x] = "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>";
+       ThisAction.loop_ScreenshotsBase64.set(x, "<img id = \"Screenshot" + bug_ID + "-" + action_ID + "\" class = \"report_screenshots\" style = \"display: none;\" src=\"\"></img>");
     } 
            else
            {
-             ThisAction.loop_ScreenshotsBase64[x] = "";
+             ThisAction.loop_ScreenshotsBase64.set(x,"");
            }
         }
        else
         {
-            try
-            {
+    
                    if (totalpause>0)
        {
                   try
@@ -2286,38 +2244,28 @@ else
         
            STAppData.VarHashMap.put(ThisAction.tostore_varname, ThisAction.tostore_varvalue);
        }
-       
-        ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
-            }
-             catch (Exception ex)
-     {
-   
-          ThisAction.loop_pass_values[x] = false;
-          ThisAction.loop_time_of_test[x] = LocalDateTime.now();
-        
-          
-          break;
-       
-     }
+
+        ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
+  
                   if (STAppData.getIncludeScreenshots())
     { 
               try
         {
     File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64.set(x, "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>");
   
         }
                  catch (Exception ex)
        {
-          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+          ThisAction.loop_ScreenshotsBase64.set(x, "Screenshot Failed");
      //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
     }
                   else
                   {
-                   ThisAction.loop_ScreenshotsBase64[x] = "";    
+                   ThisAction.loop_ScreenshotsBase64.set(x,"");    
                   }
             
         }
@@ -2385,26 +2333,26 @@ else
 
       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
-   ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+   ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
              if (STAppData.getIncludeScreenshots())
     { 
         try
         {
      File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
-   ThisAction.loop_ScreenshotsBase64[x] = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
+   ThisAction.loop_ScreenshotsBase64.set(x,"<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>");
        }
                   catch (Exception ex)
        {
-          ThisAction.loop_ScreenshotsBase64[x] = "Screenshot Failed";
+          ThisAction.loop_ScreenshotsBase64.set(x,"Screenshot Failed");
      //      System.out.println("Exception creating screenshot: " + ex.toString());     
     }
         
     } 
              else
              {
-             ThisAction.loop_ScreenshotsBase64[x] = "";     
+             ThisAction.loop_ScreenshotsBase64.set(x, "");     
              }
              }
       catch (Exception ex)
@@ -2412,8 +2360,8 @@ else
    
        ThisAction.Variable1 = original_value1;
        ThisAction.Variable2 = original_value2;
-       ThisAction.loop_pass_values[x] = false;
-        ThisAction.loop_time_of_test[x] = LocalDateTime.now();
+       ThisAction.loop_pass_values.set(x,false);
+        ThisAction.loop_time_of_test.set(x,LocalDateTime.now());
       
           break;
        
@@ -2424,8 +2372,8 @@ else
       else
       {
           ThisAction.Pass = true;
-          ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+          ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
             
       }
      
@@ -2458,7 +2406,7 @@ else
                 actions_passed++;
             }
         }
-        if (actions_passed == ThisAction.loop_pass_values.length)
+        if (actions_passed == ThisAction.loop_pass_values.size())
         {
             ThisAction.Pass = true;
         }

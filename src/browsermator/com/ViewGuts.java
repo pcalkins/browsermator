@@ -2,7 +2,6 @@
 package browsermator.com;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -425,8 +424,8 @@ else
  this.Guts+=ThisAction.GetGuts();
       ThisAction.Variable1 = original_value1;
    ThisAction.Variable2 = original_value2;
-   ThisAction.loop_pass_values[x] = ThisAction.Pass;
-        ThisAction.loop_time_of_test[x] = ThisAction.TimeOfTest;
+   ThisAction.loop_pass_values.set(x,ThisAction.Pass);
+        ThisAction.loop_time_of_test.set(x,ThisAction.TimeOfTest);
      
    
       }

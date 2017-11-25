@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.68";
+   public final String ProgramVersion = "1.1.70";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -2422,7 +2422,7 @@ actionindex = Integer.parseInt(parts[1])-1;
                   }
                   }
               STAppData.BugArray.get(bugindex).setDataFile(newValue);
-              STAppData.addDataFileToDataFileHashMap(newValue);
+           
               List<String[]> thisDataSet = STAppData.getDataSetByFileName(newValue);
               STAppData.BugArray.get(bugindex).setDataSet(thisDataSet);
                STAppFrame.BugViewArray.get(bugindex).setDataFile( STAppData.BugArray.get(bugindex).DataFile);

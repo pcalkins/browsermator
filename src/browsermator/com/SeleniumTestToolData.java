@@ -16,10 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
@@ -57,8 +57,9 @@ ArrayList<Procedure> BugArray = new ArrayList<>();
   boolean hasStoredVar;
   boolean hasStoredArray;
   boolean IncludeScreenshots;
-  HashMap<String, String> VarHashMap = new HashMap();
-  HashMap<String, List<String>> VarLists = new HashMap();
+  Map<String, String> VarHashMap = new HashMap();
+  Map<String, List<String>> VarLists = new HashMap();
+  
   boolean cancelled;
   boolean testRunning;
   String short_filename;
@@ -76,7 +77,7 @@ String SMTPHostName;
 String EmailLoginName;
 public final String USERDIR;
 public final String UNIQUE_LOG_DIR;
-HashMap<String, List<String[]>> DataFileHashMap = new HashMap();
+Map<String, List<String[]>> DataFileHashMap = new HashMap();
 
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
@@ -151,11 +152,11 @@ public void initVarLists()
 {
  this.VarLists = new HashMap(); 
 }
-public HashMap<String, String> getVarHashMap()
+public Map<String, String> getVarHashMap()
 {
     return VarHashMap;
 }
-public HashMap<String, List<String>> getVarLists()
+public Map<String, List<String>> getVarLists()
 {
    return VarLists;    
 }
@@ -253,7 +254,7 @@ changes=true;
          
     public List<String[]> CreateArrayListFromFile(String DataFile)
     {
-      List<String[]> return_array = new ArrayList();
+      List<String[]> return_array = new ArrayList<>();
       
     
              File checkPath = new File(DataFile);
@@ -720,8 +721,10 @@ else
   
        
         newdataloop.setURLListData(blanklist, in_listname);
+        if (!"".equals(in_listname))
+        {
         VarLists.put(in_listname, blanklist);
-   
+        }
      
    AddDataLoopProc(newdataloop);
         }    
@@ -740,8 +743,10 @@ else
   
        
         newdataloop.setURLListData(blanklist, in_listname);
+         if (!"".equals(in_listname))
+        {
         VarLists.put(in_listname, blanklist);
-   
+        }
      
    AddDataLoopProc(newdataloop, at_index);
         }    
