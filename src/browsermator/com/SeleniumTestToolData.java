@@ -762,8 +762,7 @@ else
          
             try {
                 newdataloop.setDataFile(CSVFile.getCanonicalPath());
-                  List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getCanonicalPath());
-         newdataloop.setDataSet(dataset_to_send);
+             
             } catch (IOException ex) {
                System.out.println(ex.toString());
             }
@@ -790,8 +789,7 @@ else
          {
            try {
                 newdataloop.setDataFile(CSVFile.getCanonicalPath());
-                  List<String[]> dataset_to_send = getDataSetByFileName(CSVFile.getCanonicalPath());
-         newdataloop.setDataSet(dataset_to_send);
+           
             } catch (IOException ex) {
                System.out.println(ex.toString());
             }
@@ -919,10 +917,15 @@ else
           
                 
         }
-           public List<String[]> RandomizeAndLimitFileList(List<String[]> data_in, int limit, Boolean randval)
+           public List<String[]> RandomizeAndLimitFileList(List<String[]> data_REF, int limit, Boolean randval)
   {
     // first row is column names, remove it
       List<String[]> ret_val = new ArrayList<>();
+      List<String[]> data_in = new ArrayList<>();
+      for (String[] thisrow: data_REF)
+      {
+          data_in.add(thisrow);
+      }
       if (data_in.size()>0)
       {
   data_in.remove(0);
@@ -1025,7 +1028,7 @@ Boolean hasValue = false;
 }
 catch (Exception ex)
 {
-    
+  System.out.println("Exception with unique log: " + ex.toString());  
 }
          }
 }

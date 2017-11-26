@@ -327,7 +327,7 @@ else
     {
         if (thisbugview.getLimit()>0 || thisbugview.getRandom())
         {
-         thisbug.setRunTimeFileSet(SiteTestData.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+         thisbug.setRunTimeFileSet(SiteTestData.RandomizeAndLimitFileList(SiteTestData.getDataSetByFileName(thisbug.DataFile), thisbugview.getLimit(), thisbugview.getRandom())); 
         }
          number_of_rows = thisbug.RunTimeFileSet.size();
     }     

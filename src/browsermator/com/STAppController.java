@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.70";
+   public final String ProgramVersion = "1.1.71";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -1820,11 +1820,11 @@ xmlfile.writeAttribute("Random", randstring);
     {
        if (thisbugview.getLimit()>0 || thisbugview.getRandom())
        {
-         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbugview.getLimit(), thisbugview.getRandom())); 
+         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(STAppData.getDataSetByFileName(thisbug.DataFile), thisbugview.getLimit(), thisbugview.getRandom())); 
         }
        else
        {
-           thisbug.setRunTimeFileSet(thisbug.DataSet);
+           thisbug.setRunTimeFileSet(STAppData.getDataSetByFileName(thisbug.DataFile));
        }
          number_of_rows = thisbug.RunTimeFileSet.size();
     }  
@@ -1960,7 +1960,7 @@ int action_index_for_flatten = 0;
     {
     if ("file".equals(thisbug.DataLoopSource))
     {
-        thisaction.Variable1 = var1Parser.GetFullValueFromFile(x, thisbug.DataSet);
+        thisaction.Variable1 = var1Parser.GetFullValueFromFile(x, STAppData.getDataSetByFileName(thisbug.DataFile));
     }
     else
     {
@@ -1995,7 +1995,7 @@ int action_index_for_flatten = 0;
     {
     if ("file".equals(thisbug.DataLoopSource))
     {
-        thisaction.Variable2 = var2Parser.GetFullValueFromFile(x, thisbug.DataSet);
+        thisaction.Variable2 = var2Parser.GetFullValueFromFile(x, STAppData.getDataSetByFileName(thisbug.DataFile));
     }
     else
     {
@@ -2423,11 +2423,10 @@ actionindex = Integer.parseInt(parts[1])-1;
                   }
               STAppData.BugArray.get(bugindex).setDataFile(newValue);
            
-              List<String[]> thisDataSet = STAppData.getDataSetByFileName(newValue);
-              STAppData.BugArray.get(bugindex).setDataSet(thisDataSet);
+           
                STAppFrame.BugViewArray.get(bugindex).setDataFile( STAppData.BugArray.get(bugindex).DataFile);
                
-             STAppFrame.BugViewArray.get(bugindex).setJTableSourceToDataSet(thisDataSet, newValue);
+             STAppFrame.BugViewArray.get(bugindex).setJTableSourceToDataSet(STAppData.getDataSetByFileName(newValue), newValue);
                    break;
                    
                  
@@ -3423,10 +3422,9 @@ File newfile = new File(path + ".js");
             System.out.println("Exception getting data file path: " + ex.toString());
         }
                newbugview.setDataFile(canon_path);
-                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
-         newbug.setDataSet(dataset_to_send);
+           
            newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+   newbugview.setJTableSourceToDataSet(STAppData.getDataSetByFileName(canon_path), canon_path);
            
  
   // newbugview.setDataLoopSource("file");
@@ -3470,10 +3468,9 @@ File newfile = new File(path + ".js");
             System.out.println("Exception getting data file path: " + ex.toString());
         }
                newbugview.setDataFile(canon_path);
-                  List<String[]> dataset_to_send = STAppData.getDataSetByFileName(canon_path);
-         newbug.setDataSet(dataset_to_send);
+      
            newbugview.setJComboBoxStoredArraylists("Select a stored URL List");
-   newbugview.setJTableSourceToDataSet(dataset_to_send, canon_path);
+   newbugview.setJTableSourceToDataSet(STAppData.getDataSetByFileName(canon_path), canon_path);
            
  
   // newbugview.setDataLoopSource("file");

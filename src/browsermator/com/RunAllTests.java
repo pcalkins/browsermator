@@ -377,7 +377,7 @@ public String doInBackground()
   public void RunAllActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
  {
  STAppData.TimeOfRun = LocalDateTime.now();
-    LocalDate today = LocalDate.now();
+
     switch (TargetBrowser)
    {
         // legacy file support
@@ -880,41 +880,49 @@ else
     if ("urllist".equals(thisbug.DataLoopSource))
     {
       // randomList = new ArrayList<>(); 
-        List<String> randomList = STAppData.VarLists.get(thisbug.URLListName);
-      if (thisbug.getLimit()>0 || thisbug.getRandom())
+    
+    if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      randomList = STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom());
+      thisbug.setURLListData(STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom()), thisbug.URLListName);
       }
-      
-      thisbug.setURLListData(randomList, thisbug.URLListName);
+      else
+      {
+      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      }
+      number_of_rows = thisbug.URLListData.size();
+
+     
       if (RUNWITHGUI)
       {
+          if (number_of_rows>0)
+          {
             ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
       thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
-    
+          }
       }
-      number_of_rows = randomList.size();
+    
     }
     else
     {
    if ("file".equals(thisbug.DataLoopSource))
     { 
+       
         if (thisbug.getLimit()>0 || thisbug.getRandom())
         {
-            if (thisbug.DataSet.size()>0)
+            if (STAppData.getDataSetByFileName(thisbug.DataFile).size()>0)
             {
-        List<String[]> randomList = STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom());
+        List<String[]> randomList = STAppData.RandomizeAndLimitFileList(STAppData.getDataSetByFileName(thisbug.DataFile), thisbug.getLimit(), thisbug.getRandom());
          thisbug.setRunTimeFileSet(randomList); 
-     number_of_rows = thisbug.RunTimeFileSet.size();
+   
         }
         }
         else
         {
-            thisbug.setRunTimeFileSet(thisbug.DataSet);
-            number_of_rows = thisbug.RunTimeFileSet.size();
+            thisbug.setRunTimeFileSet(STAppData.getDataSetByFileName(thisbug.DataFile));
+         
         }
         
-       
+         number_of_rows = thisbug.RunTimeFileSet.size();
         
     }     
     }
@@ -923,12 +931,11 @@ else
 // {
 //  number_of_rows = FillTables(thisbug, thisbugview);
 // }
-if (number_of_rows>0)
-{
+
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
-}
+
  for (int x = 0; x<number_of_rows; x++)
     {
  
@@ -1325,12 +1332,15 @@ if (number_of_rows>0)
         ThisAction.Pass = false;
       
         int actions_passed = 0;
+        if (ThisAction.loop_pass_values.size()>0)
+        {
         for (Boolean passvalue: ThisAction.loop_pass_values)
         {
             if (passvalue)
             {
                 actions_passed++;
             }
+        }
         }
         if (actions_passed == ThisAction.loop_pass_values.size())
         {
@@ -1639,7 +1649,7 @@ options.setBinary(chrome_path);
    public void RunAllActions(SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
  {
  STAppData.TimeOfRun = LocalDateTime.now();
-    LocalDate today = LocalDate.now();
+  
     switch (TargetBrowser)
    {
         // legacy file support
@@ -2100,15 +2110,18 @@ else
     {
    if ("file".equals(thisbug.DataLoopSource))
     {
-        if (thisbug.getLimit()>0 || thisbug.getRandom())
+          if (thisbug.getLimit()>0 || thisbug.getRandom())
         {
-            
-         thisbug.setRunTimeFileSet(STAppData.RandomizeAndLimitFileList(thisbug.DataSet, thisbug.getLimit(), thisbug.getRandom())); 
+            if (STAppData.getDataSetByFileName(thisbug.DataFile).size()>0)
+            {
+        List<String[]> randomList = STAppData.RandomizeAndLimitFileList(STAppData.getDataSetByFileName(thisbug.DataFile), thisbug.getLimit(), thisbug.getRandom());
+         thisbug.setRunTimeFileSet(randomList); 
      number_of_rows = thisbug.RunTimeFileSet.size();
+        }
         }
         else
         {
-            thisbug.setRunTimeFileSet(thisbug.DataSet);
+            thisbug.setRunTimeFileSet(STAppData.getDataSetByFileName(thisbug.DataFile));
             number_of_rows = thisbug.RunTimeFileSet.size();
         }
         
@@ -2399,6 +2412,8 @@ else
         ThisAction.Pass = false;
       
         int actions_passed = 0;
+        if (ThisAction.loop_pass_values.size()>0)
+        {
         for (Boolean passvalue: ThisAction.loop_pass_values)
         {
             if (passvalue)
@@ -2409,6 +2424,7 @@ else
         if (actions_passed == ThisAction.loop_pass_values.size())
         {
             ThisAction.Pass = true;
+        }
         }
     }
      

@@ -19,7 +19,7 @@ String BugURL;
 String BugTitle;
 int index;
 String TargetBrowser;
-List<String[]> DataSet;
+// List<String[]> DataSet;
 List<String[]> RunTimeFileSet;
 String DataFile;
 String Type;
@@ -45,7 +45,7 @@ this.BugURL = "https://www.browsermator.com";
 this.BugTitle = "";
 this.index = 0;
 this.TargetBrowser = "Firefox";
-this.DataSet = new ArrayList(); 
+// this.DataSet = new ArrayList(); 
 this.RunTimeFileSet = new ArrayList();
 this.DataFile="";
 this.Type = "";
@@ -117,10 +117,7 @@ this.URLListData = new ArrayList<>();
     
    }
    }
-    public void setDataSet(List<String[]> in_dataset)
-    {
-        this.DataSet = in_dataset;
-    }
+
     public List<String[]> CreateArrayListFromURL(String fileURL)
     {
      List<String[]> return_array = new ArrayList();
@@ -171,8 +168,10 @@ this.URLListData = new ArrayList<>();
    }
    public void setURLListData(List<String> in_list, String list_name)
    {
+   
        URLListData = in_list;
        URLListName = list_name;
+     
    
    }
  
