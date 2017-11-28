@@ -752,6 +752,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
         
         hasDataloop = true;
         String DataFile = "";
+    
         if (Procedure.hasAttribute("DataLoopFile"))
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
@@ -761,6 +762,11 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                         DataLoopSource = "file";
                     }
                 }
+        //failsafe
+            if (DataLoopSource.equals("")||DataLoopSource.equals("none"))
+        {
+            DataLoopSource = "file";
+        }
         if ("file".equals(DataLoopSource))
         {
         File DataFile_file = new File(DataFile);

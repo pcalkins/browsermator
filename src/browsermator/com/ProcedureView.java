@@ -317,10 +317,11 @@ ActionScrollPane.setVisible(true);
      }
      public void populateTableWithURLListRunTimeEntries(List<String> in_data, String listname)
  {
-     columnnames[0] = "Stored URL List:" + listname;
+      Object[] columnnames_new = {"Stored URL List:" + listname };
+   
    
   
-          DefaultTableModel tableModel = new DefaultTableModel(columnnames, in_data.size()); 
+          DefaultTableModel tableModel_new = new DefaultTableModel(columnnames_new, in_data.size()); 
          
            rowcount = in_data.size();
    //       this.number_of_records = rowcount;
@@ -330,10 +331,10 @@ ActionScrollPane.setVisible(true);
            {
              
                
-               tableModel.setValueAt(in_data.get(x), x, columnnumber);
+               tableModel_new.setValueAt(in_data.get(x), x, columnnumber);
 
  }
-                DataTable = new JTable(tableModel);
+                DataTable = new JTable(tableModel_new);
         
    
         int number_of_rows = DataTable.getRowCount();

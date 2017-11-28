@@ -780,7 +780,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
-         System.out.print(ThisAction.Type);
+        
          ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -797,7 +797,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
-          System.out.print(ThisAction.Type);
+      
          ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -808,12 +808,12 @@ if (!"Dataloop".equals(thisbug.Type))
        {
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-       System.out.print(ThisAction.Type);
+   
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
                  {
-                      System.out.print(ThisAction.Type);
+        
          ThisAction.RunAction(driver);    
                  }
                  if (RUNWITHGUI)
@@ -872,7 +872,19 @@ if (!"Dataloop".equals(thisbug.Type))
             thisbugview.ActionsViewList.get(ThisAction.index).setPassState(ThisAction.Pass);
            }
    }  
-
+   int actionspassed = 0;
+ for (Action thisaction: thisbug.ActionsList)
+ {
+     Boolean passvalue = thisaction.Pass;
+     if (passvalue)
+     {
+         actionspassed++;
+     }
+ }
+ if (actionspassed==thisbug.ActionsList.size())
+ {
+     thisbug.Pass = true;
+ }
 }
 else
 {
@@ -967,7 +979,7 @@ else
         {
            
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-        System.out.print(ThisAction.Type);
+     
            changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
         ThisAction.loop_pass_values.set(x, ThisAction.Pass);
@@ -1046,7 +1058,7 @@ else
             }
         }).execute();
         }
-         System.out.print(ThisAction.Type);
+     
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -1085,7 +1097,7 @@ else
             }
         }).execute();
          }
-          System.out.print(ThisAction.Type);
+      
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -1117,7 +1129,7 @@ else
             }
         }).execute();   
            }
-            System.out.print(ThisAction.Type);
+      
          ThisAction.RunAction(driver);    
        }   
          
@@ -1251,7 +1263,7 @@ else
             }
         }).execute();   
                  }
-                  System.out.print(ThisAction.Type);
+       
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
@@ -1327,35 +1339,41 @@ else
     }
     }
      //check if all actions passed
+     int actions_passed = 0;
     for( Action ThisAction : thisbug.ActionsList )
     {   
         ThisAction.Pass = false;
       
-        int actions_passed = 0;
+        int loop_actions_passed = 0;
         if (ThisAction.loop_pass_values.size()>0)
         {
         for (Boolean passvalue: ThisAction.loop_pass_values)
         {
             if (passvalue)
             {
-                actions_passed++;
+                loop_actions_passed++;
             }
         }
         }
-        if (actions_passed == ThisAction.loop_pass_values.size())
+        if (loop_actions_passed == ThisAction.loop_pass_values.size())
         {
             ThisAction.Pass = true;
         }
+        if (ThisAction.Pass)
+        {
+            actions_passed++;
+        }
+    }
   int sizeof = thisbug.ActionsList.size();
     if (actions_passed==sizeof)
     {
-        thisbug.Pass = false;
+        thisbug.Pass = true;
     }
     else
     {
-        thisbug.Pass = true;
+        thisbug.Pass = false;
     }
-    }
+    
      
    }
 
@@ -2007,7 +2025,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
- System.out.print(ThisAction.Type);
+
          ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2024,7 +2042,7 @@ if (!"Dataloop".equals(thisbug.Type))
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
-          System.out.print(ThisAction.Type);
+   
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2035,12 +2053,12 @@ if (!"Dataloop".equals(thisbug.Type))
        {
                  if ("Pause with Continue Button".equals(ThisAction.Type))
         {
-          System.out.print(ThisAction.Type);
+  
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
                  else
                  {
-                      System.out.print(ThisAction.Type);
+  
          ThisAction.RunAction(driver);    
                  }
               
@@ -2088,7 +2106,19 @@ if (!"Dataloop".equals(thisbug.Type))
            }
          
    }  
-
+   int actionspassed = 0;
+ for (Action thisaction: thisbug.ActionsList)
+ {
+     Boolean passvalue = thisaction.Pass;
+     if (passvalue)
+     {
+         actionspassed++;
+     }
+ }
+ if (actionspassed==thisbug.ActionsList.size())
+ {
+     thisbug.Pass = true;
+ }
 }
 else
 {
@@ -2128,10 +2158,7 @@ else
     }     
     }
  
-// if (number_of_rows==0)
-// {
-//  number_of_rows = FillTables(thisbug, thisbugview);
-// }
+
   for( Action ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
@@ -2167,7 +2194,7 @@ else
         if ("Pause with Continue Button".equals(ThisAction.Type))
         {
            String pause_message = "Paused at record " + (x+1) + " of " + number_of_rows;
-            System.out.print(ThisAction.Type);
+       
         changex =  ThisAction.RunAction(driver, pause_message, STAppData, x, number_of_rows);
         
         ThisAction.loop_pass_values.set(x,ThisAction.Pass);
@@ -2218,9 +2245,8 @@ else
          String fieldname = split_testfield_end[0].substring(22);
       
          ThisAction.Variable2 = STAppData.GetStoredVariableValue(fieldname);
-        String action_title3 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2; 
                   
-        System.out.print(ThisAction.Type);
+  
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2238,7 +2264,7 @@ else
       
          ThisAction.Variable1 = STAppData.GetStoredVariableValue(fieldname);
        
-       System.out.print(ThisAction.Type);
+  
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
                    }
@@ -2248,7 +2274,7 @@ else
        
        else
        {
-      System.out.print(ThisAction.Type);
+
          ThisAction.RunAction(driver);    
        }   
          
@@ -2341,7 +2367,7 @@ else
           break;
   }
                  }
-            System.out.print(ThisAction.Type);  
+     
       ThisAction.RunAction(driver);
 
       ThisAction.Variable1 = original_value1;
@@ -2407,51 +2433,42 @@ else
     }
     }
      //check if all actions passed
+     int actions_passed = 0;
     for( Action ThisAction : thisbug.ActionsList )
     {   
         ThisAction.Pass = false;
       
-        int actions_passed = 0;
+        int loop_actions_passed = 0;
         if (ThisAction.loop_pass_values.size()>0)
         {
         for (Boolean passvalue: ThisAction.loop_pass_values)
         {
             if (passvalue)
             {
-                actions_passed++;
+                loop_actions_passed++;
             }
         }
-        if (actions_passed == ThisAction.loop_pass_values.size())
+        }
+        if (loop_actions_passed == ThisAction.loop_pass_values.size())
         {
             ThisAction.Pass = true;
         }
-        }
-    }
-     
-   }
-  int actions_passed = 0;
- for( Action ThisAction : thisbug.ActionsList )
-    {   
-     
-      
-      
-        Boolean passvalue = ThisAction.Pass;
-        
-            if (passvalue)
-            {
-                actions_passed++;
-            }
-        
-     
-    }
-    if (actions_passed == thisbug.ActionsList.size())
+        if (ThisAction.Pass)
         {
-            thisbug.Pass = true;
+            actions_passed++;
         }
+    }
+  int sizeof = thisbug.ActionsList.size();
+    if (actions_passed==sizeof)
+    {
+        thisbug.Pass = true;
+    }
     else
     {
         thisbug.Pass = false;
     }
+    
+     
   
  publish(thisbugindex);
     thisbugindex++;
@@ -2483,4 +2500,5 @@ while(thisContinuePrompt.isVisible() == true){
      
  }
  }
+}
 }
