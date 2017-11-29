@@ -2468,7 +2468,7 @@ else
         thisbug.Pass = false;
     }
     
-     
+}
   
  publish(thisbugindex);
     thisbugindex++;
@@ -2501,4 +2501,4 @@ while(thisContinuePrompt.isVisible() == true){
  }
  }
 }
-}
+

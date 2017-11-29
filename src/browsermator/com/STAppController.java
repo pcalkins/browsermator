@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.72";
+   public final String ProgramVersion = "1.1.73";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -2535,8 +2535,28 @@ actionindex = Integer.parseInt(parts[1])-1;
                  }
                  break;
              case "setdatafile":
-               
-                 STAppData.BugArray.get(bugindex).setDataFile(newValue);
+                            if (newValue.contains("%PTPCLOUDDIR%"))
+      {
+         newValue = newValue.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
+      }
+      if (newValue.contains("%BMUSERCLOUDDIR%"))
+      {
+          newValue = newValue.replace("%BMUSERCLOUDDIR%", BMUSERCLOUDDIR);
+      }
+              File checkfile = new File(newValue);
+              if (checkfile.exists())
+              {
+                  try
+                  {
+                  newValue = checkfile.getCanonicalPath();
+                  }
+                  catch (Exception ex)
+                  {
+                      System.out.println(ex.toString());
+                  }
+                  }
+              STAppData.BugArray.get(bugindex).setDataFile(newValue);    
+         
                  break;
                    
                  
