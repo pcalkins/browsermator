@@ -43,7 +43,7 @@ this.Guts+="this.Pass = true;\n" +
     {
 try
 {
-
+this.Pass = true;
 if (this.Variable2.length()>0)
  {
      WebElement element = driver.findElement(By.id(this.Variable1));
@@ -88,9 +88,13 @@ element.sendKeys(Keys.RETURN);
   
 }
  }
+else
+{
+    this.Pass = false;
+}
 
 
-this.Pass = true;
+
 }
 catch (NoSuchElementException e)
  {

@@ -41,7 +41,7 @@ public class TypePasswordAtXPATHAction extends Action
   
  try
  {
-        
+  this.Pass = true;      
      
 if (this.Variable2.length()>0)
  {
@@ -87,8 +87,12 @@ element.sendKeys(Keys.RETURN);
     }
 }
  }
+else
+{
+    this.Pass = false;
+}
 
-        this.Pass = true;
+  
  }
  catch (Exception e)
  {

@@ -44,7 +44,7 @@ public class TypeAtInputNameAction extends Action
 
 try
 {
-
+this.Pass=true;
 if (this.Variable2.length()>0)
  {
  WebElement element = driver.findElement(By.name(this.Variable1));   
@@ -89,8 +89,11 @@ Thread.sleep((long)(Math.random() * 200));
    
 }
  }
+else
+{
+    this.Pass = false;
+}
 
-this.Pass = true;
 }
 catch (NoSuchElementException e)
  {

@@ -50,7 +50,7 @@ public class TypeAtXPATHAction extends Action
  try
  {
         
-     
+this.Pass = true;     
 if (this.Variable2.length()>0)
  {
         WebElement element = driver.findElement(By.xpath(this.Variable1));
@@ -96,8 +96,12 @@ element.sendKeys(Keys.RETURN);
  
 }
  }
+else
+{
+    this.Pass = false;
+}
 
-        this.Pass = true;
+    
  }
  catch (NoSuchElementException e)
  {
