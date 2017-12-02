@@ -127,10 +127,10 @@ WebElement element = elements.get(0);
 element.click();
   this.Pass = true;
  }
-
-
-if (elements.isEmpty())
+ else
+ 
 {
+    elements.clear();
     this.Pass = false;
 }
   }

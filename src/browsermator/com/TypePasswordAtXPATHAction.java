@@ -42,6 +42,9 @@ public class TypePasswordAtXPATHAction extends Action
  try
  {
         
+     
+if (this.Variable2.length()>0)
+ {
         WebElement element = driver.findElement(By.xpath(this.Variable1));
 char[] keys_to_type = this.Variable2.toCharArray();
 for(int i=0;i<keys_to_type.length;i++){
@@ -55,7 +58,14 @@ Thread.sleep((long)(Math.random() * 200));
       System.out.println ("Exception when sleeping random: " + ex.toString());
   }
           
+    try
+    {
 element.sendKeys(sendkey);
+    }
+    catch (Exception ex)
+    {
+       this.Pass = false; 
+    }
 }
 if (this.BoolVal1.equals(true))
 {
@@ -67,8 +77,17 @@ Thread.sleep((long)(Math.random() * 200));
   {
       System.out.println ("Exception when sleeping random: " + ex.toString());
   }
-    element.sendKeys(Keys.RETURN);
+    try
+    {
+element.sendKeys(Keys.RETURN);
+    }
+    catch (Exception ex)
+    {
+       this.Pass = false; 
+    }
 }
+ }
+
         this.Pass = true;
  }
  catch (Exception e)
