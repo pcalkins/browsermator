@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.75";
+   public final String ProgramVersion = "1.1.76";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;
@@ -2444,6 +2444,8 @@ actionindex = Integer.parseInt(parts[1])-1;
           int actionindex = -1;
           int fieldNumber = -1;
           String newValue = "";
+          if (ROW.length>3)
+          {
           if (ROW[0].contains("-"))
           {
  String[] parts = ROW[0].split("-");
@@ -2563,6 +2565,7 @@ actionindex = Integer.parseInt(parts[1])-1;
                      
        }
          }
+          }
       }
   }
   public void OpenFile(File file, boolean RunIt, String mapFile)
