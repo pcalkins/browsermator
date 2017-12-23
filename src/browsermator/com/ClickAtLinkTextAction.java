@@ -1,5 +1,6 @@
 package browsermator.com;
 
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -74,37 +75,16 @@ public class ClickAtLinkTextAction extends Action
     @Override
      public void RunAction(WebDriver driver)
     {
-    
- if (this.BoolVal1.equals(true))
+      
+  
+   String xpather = "//a[text()='" + this.Variable1 + "']";
+  if (this.BoolVal1.equals(true))
 {
- try
-        {
-    
-          Actions actions = new Actions(driver);
- WebElement element = driver.findElement(By.linkText(this.Variable1));
- actions.contextClick(element).perform();
-     this.Pass = true;
-        }
-     catch (NoSuchElementException e)
- {
-  this.Pass = false;
-   
- }
+     RightClickCatchAction(driver, xpather);
  }
  else
  {
-     try
-        {
-     WebElement element = driver.findElement(By.linkText(this.Variable1));
-   
-     element.click();
-     this.Pass = true;
-        }
-     catch (NoSuchElementException e)
- {
-  this.Pass = false;
-   
- }
- }
+ ClickCatchAction(driver, xpather);
+ }        
     }
 }

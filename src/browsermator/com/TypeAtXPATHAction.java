@@ -59,7 +59,7 @@ for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
   try
   {
-Thread.sleep((long)(Math.random() * 200));
+Thread.sleep((long)(Math.random() * 150));
   }
   catch (Exception ex)
   {
@@ -79,7 +79,7 @@ if (this.BoolVal1.equals(true))
 {
    try
   {
-Thread.sleep((long)(Math.random() * 200));
+Thread.sleep((long)(Math.random() * 150));
   }
   catch (Exception ex)
   {
@@ -103,7 +103,7 @@ else
 
     
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   
   this.Pass = false;

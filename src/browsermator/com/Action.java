@@ -57,6 +57,9 @@ List<LocalDateTime> loop_time_of_test;
   this.Loopable = false;
   this.pause_message = "";
   this.ScreenshotBase64 = "null";
+    loop_pass_values = new ArrayList<>();
+       loop_time_of_test = new ArrayList<>();
+       loop_ScreenshotsBase64 = new ArrayList<>();
    }
 
    public void InitializeLoopTestVars(int number_of_rows)
@@ -135,7 +138,7 @@ element.click();
 }
   }
  }
- catch (Exception e)
+  catch (Exception e)
  {
      System.out.println ("Exception while running clickcatch: " + e.toString());
   this.Pass = false;
@@ -175,7 +178,7 @@ if (elements.isEmpty())
 
  
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
   

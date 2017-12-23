@@ -33,29 +33,28 @@ public class TypePasswordAtInputNameAction extends Action
 "  \n" +
 " }"; 
    }
-    @Override
+     @Override
     public void RunAction(WebDriver driver)
     {
 
  try
  {
-
-  this.Pass = true;  
+this.Pass = true;
+      
 if (this.Variable2.length()>0)
  {
-         WebElement element = driver.findElement(By.name(this.Variable1));  
-        char[] keys_to_type = this.Variable2.toCharArray();
+       WebElement element = driver.findElement(By.name(this.Variable1)); 
+char[] keys_to_type = this.Variable2.toCharArray();
 for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
   try
   {
-Thread.sleep((long)(Math.random() * 200));
+Thread.sleep((long)(Math.random() * 150));
   }
   catch (Exception ex)
   {
       System.out.println ("Exception when sleeping random: " + ex.toString());
   }
-          
     try
     {
 element.sendKeys(sendkey);
@@ -66,10 +65,9 @@ element.sendKeys(sendkey);
     }
 }
 if (this.BoolVal1.equals(true))
-{
-      try
+{  try
   {
-Thread.sleep((long)(Math.random() * 200));
+Thread.sleep((long)(Math.random() * 150));
   }
   catch (Exception ex)
   {
@@ -90,14 +88,15 @@ else
     this.Pass = false;
 }
 
-  
+   
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
   
  }
     }  
+    
     
     
     

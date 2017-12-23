@@ -68,7 +68,7 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
      }
 
  }
- catch (NoSuchElementException e)
+ catch (Exception e)
  {
   this.Pass = false;
   
