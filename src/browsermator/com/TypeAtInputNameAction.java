@@ -95,7 +95,7 @@ else
 }
 
 }
-catch (NoSuchElementException e)
+catch (Exception e)
  {
   this.Pass = false;
   
