@@ -57,7 +57,7 @@ public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
  public final String USERDIR;
     private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.79";
+   public final String ProgramVersion = "1.1.80";
    public String loginName;
    public String loginPassword;
    String PTPUSERCLOUDDIR;

@@ -932,8 +932,8 @@ else
   
              if (randval)
                 {
-             long seed = System.nanoTime();
-Collections.shuffle(data_in, new Random(seed));
+       
+Collections.shuffle(data_in);
                 }
                 if (limit>0)
                 {
@@ -1035,12 +1035,10 @@ catch (Exception ex)
        
                 if (randval)
                 {
-             long seed = System.nanoTime();
-             
- 
-    //    convert_list = currentlist;
-Collections.shuffle(currentlist, new Random(seed));
-  // currentlist = convert_list;
+         
+
+Collections.shuffle(currentlist);
+
 
  
                 }
