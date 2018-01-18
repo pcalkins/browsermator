@@ -1726,6 +1726,7 @@ refreshjComboBoxMoveToIndex();
         jPanelEast.setLayout(new BoxLayout(jPanelEast, BoxLayout.Y_AXIS));
         jPanelEast.add(jCheckBoxShowReport);
         jPanelEast.add(jCheckBoxIncludeScreenshots);
+        jPanelEast.add(jCheckBoxExitAfter);
 
    
         
