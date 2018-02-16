@@ -19,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 
@@ -500,7 +501,9 @@ public String doInBackground()
      break;
      
      case "Silent Mode (HTMLUnit)":
+  
      driver = new HtmlUnitDriver();  
+   
      break;
      
      case "Internet Explorer-32":
