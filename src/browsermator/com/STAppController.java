@@ -52,15 +52,15 @@ import javax.xml.stream.XMLStreamWriter;
 
 
 public final class STAppController  {
- public final SiteTestView Navigator;
+public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
- public final String USERDIR;
-    private int CurrentMDIWindowIndex;
-   public final String ProgramVersion = "1.1.81";
-   public String loginName;
-   public String loginPassword;
-   String PTPUSERCLOUDDIR;
+public final String USERDIR;
+private int CurrentMDIWindowIndex;
+public final String ProgramVersion = "1.2.82";
+public String loginName;
+public String loginPassword;
+String PTPUSERCLOUDDIR;
 String BMUSERCLOUDDIR;
 
   Boolean SHOWGUI = true;

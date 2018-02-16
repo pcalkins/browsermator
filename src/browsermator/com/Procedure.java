@@ -33,6 +33,7 @@ String DataLoopSource;
    ArrayList<Action> ActionsList = new ArrayList();    
   String URLListName;
   List<String> URLListData;
+  List<String> URLListRunTimeEntries;
  // String[] URLListRunTimeEntries;
 
    Procedure () 
@@ -52,7 +53,7 @@ this.Type = "";
 this.DataLoopSource = "urllist";
 this.URLListName = "";
 this.URLListData = new ArrayList<>();
-
+this.URLListRunTimeEntries = new ArrayList<>();
 
    }
    public void setIndex(int newindex)
@@ -165,6 +166,11 @@ this.URLListData = new ArrayList<>();
    public void setURLListName(String in_name)
    {
        URLListName = in_name;
+   }
+   public void setURListRunTimeData(List<String> in_list, String list_name)
+   {
+       URLListRunTimeEntries = in_list;
+       URLListName = list_name;
    }
    public void setURLListData(List<String> in_list, String list_name)
    {

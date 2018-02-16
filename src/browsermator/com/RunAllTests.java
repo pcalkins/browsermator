@@ -37,6 +37,7 @@ BrowserMatorReport BrowserMatorReport;
 Boolean RUNWITHGUI;
 
 Boolean paused = false;
+Boolean RunAgain = false;
   
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
@@ -200,13 +201,9 @@ public String doInBackground()
       {
           thisbugview.JLabelPass.setVisible(false);
       }
-     //     RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
+  
      }
             RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
- //    else
- //    {
-//           RunAllActions(STAppData, targetbrowser, OSType);
-//     }
   
      
     ret_val = "Run All Procedures";
@@ -217,7 +214,7 @@ public String doInBackground()
 @Override
  protected void done()
  {
-    
+
       if (RUNWITHGUI)
      {
      if (STAppFrame.getjCheckBoxUniqueURLsSelected())
@@ -905,13 +902,13 @@ else
     
     if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
-      thisbug.setURLListData(STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom()), thisbug.URLListName);
+      thisbug.setURListRunTimeData(STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom()), thisbug.URLListName);
       }
       else
       {
-      thisbug.setURLListData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
+      thisbug.setURListRunTimeData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       }
-      number_of_rows = thisbug.URLListData.size();
+      number_of_rows = thisbug.URLListRunTimeEntries.size();
 
      
       if (RUNWITHGUI)
@@ -919,7 +916,7 @@ else
           if (number_of_rows>0)
           {
             ProcedureView thisbugview = STAppFrame.BugViewArray.get(thisbugindex);
-      thisbugview.setJTableSourceToURLList(thisbug.URLListData, thisbug.URLListName);
+      thisbugview.setJTableSourceToURLList(thisbug.URLListRunTimeEntries, thisbug.URLListName);
           }
       }
     
@@ -1198,7 +1195,7 @@ else
             String concat_variable2="";
             if ("urllist".equals(thisbug.DataLoopSource))
             {
- concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListRunTimeEntries);
             }
             if ("file".equals(thisbug.DataLoopSource))
             {
@@ -1215,7 +1212,7 @@ else
  }
     if ("urllist".equals(thisbug.DataLoopSource))
             {
- concat_variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+ concat_variable2 = var2Parser.GetFullValueFromURLList(x, thisbug.URLListRunTimeEntries);
             }
             if ("file".equals(thisbug.DataLoopSource))
             {
@@ -1396,7 +1393,61 @@ else
  
          if (STAppData.getPromptToClose())
      {
-          Prompter thisContinuePrompt = new Prompter(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?", false,0, 0);
+          PromptToClose thisContinuePrompt = new PromptToClose(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?");
+  
+   thisContinuePrompt.addjButtonRunAgainActionListener(new ActionListener()
+  {
+   @Override
+     public void actionPerformed(ActionEvent event)
+     {
+        RunAgain = true;
+   thisContinuePrompt.dispose();
+       boolean closecaught = false;
+   
+ try
+ {
+     driver.close();
+ }
+ catch (Exception e)
+ {
+     closecaught = true;
+     System.out.println(e.toString());
+     try {
+                driver.quit();
+            }
+            catch (Exception exce)
+            {
+               
+                System.out.println("Exception quitting" + exce.toString());
+            }
+ }
+ if (closecaught)
+ {
+ 
+ }
+ else
+ {
+     try
+ {
+   driver.quit();
+ }
+ catch (Exception ex)
+ {
+     // don't worry it should close
+ }
+  
+ }
+     }   
+  });
+    thisContinuePrompt.addjButtonCloseActionListener(new ActionListener()
+  {
+   @Override
+     public void actionPerformed(ActionEvent event)
+     {
+        RunAgain = false;
+        thisContinuePrompt.dispose();
+     }   
+  });
   
     
 
@@ -1416,7 +1467,11 @@ while(thisContinuePrompt.isVisible() == true){
   
 }
   
-   
+     if (RunAgain)
+    {
+        RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
+       
+    }  
      
  }
  }
@@ -1477,7 +1532,7 @@ while(thisContinuePrompt.isVisible() == true){
       if ("urllist".equals(thisbug.DataLoopSource))
       {
  
-      number_of_rows = STAppData.BugArray.get(BugIndex).URLListData.size();
+      number_of_rows = STAppData.BugArray.get(BugIndex).URLListRunTimeEntries.size();
       }
       if ("file".equals(thisbug.DataLoopSource))
       {
@@ -1515,7 +1570,7 @@ if (number_of_rows==0)
                  String concat_variable="";
          if ("urllist".equals(thisbug.DataLoopSource))
             {
- concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListData);
+ concat_variable = var1Parser.GetFullValueFromURLList(x, thisbug.URLListRunTimeEntries);
             }
             if ("file".equals(thisbug.DataLoopSource))
             {

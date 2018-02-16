@@ -922,6 +922,7 @@ else
     // first row is column names, remove it
       List<String[]> ret_val = new ArrayList<>();
       List<String[]> data_in = new ArrayList<>();
+      
       for (String[] thisrow: data_REF)
       {
           data_in.add(thisrow);
@@ -961,7 +962,8 @@ Collections.shuffle(data_in);
       List<String> currentlist = new ArrayList<>();
    if (VarLists.containsKey(URLListName))
             {
-          currentlist = VarLists.get(URLListName);
+                 currentlist = new ArrayList<>(VarLists.get(URLListName));
+       
           if (currentlist.size()>0)
           {
           if (this.UniqueList)
