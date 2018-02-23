@@ -62,7 +62,7 @@ JLabel loginLabelText;
  String rootURL = "https://www.browsermator.com";
     JPanel bottomPanel;
 JLabel LoadingLabel;
-
+String CLOUDFOLDER = System.getProperty("user.home") + File.separator+"BrowserMatorCloudFiles"+File.separator;
 JButton loginButton = new JButton("Login"); 
       public BrowserMatorFileCloud(MainAppFrame in_mainAppFrame, STAppController in_mainAppController)
  {
@@ -220,7 +220,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
   }
   String file_date = filedate_value[1];
   String extension = ".browsermation";
-  File thisFile = new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+extension);
+  File thisFile = new File(CLOUDFOLDER+filename+extension);
              if (thisFile.exists())
              {
                Boolean checkdate = CheckIfFileIsNew(file_date, file_id);
@@ -229,7 +229,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
                try {
           
          
-    org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+extension));
+    org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(CLOUDFOLDER+filename+extension));
   
     
     mainAppController.OpenFile(thisFile, false, true);
@@ -250,7 +250,7 @@ filename = URLDecoder.decode(filename_value[1], "UTF-8");
           try {
           
          
-    org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+extension));
+    org.apache.commons.io.FileUtils.copyURLToFile(new URL(newLoc), new File(CLOUDFOLDER+filename+extension));
     UpdateCloudConfig(file_id, file_date);
     
     mainAppController.OpenFile(thisFile,false, true);
@@ -339,14 +339,14 @@ mainPanel = new JPanel(new BorderLayout());
     }
     public void UpdateCloudConfig(String file_id, String file_date)
     {
-             String userdir = System.getProperty("user.home");
+           
       Properties applicationProps = new Properties();
       
       try
 {
     Boolean file_exists = false;
     
-    File f = new File(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+    File f = new File(CLOUDFOLDER + "browsermator_cloud_files.properties");
 if(f.exists() && !f.isDirectory()) { 
    file_exists = true;
 }
@@ -354,7 +354,7 @@ if (file_exists == false)
 {
     CreateCloudConfigFile();
 }
-      FileInputStream input = new FileInputStream(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+      FileInputStream input = new FileInputStream(CLOUDFOLDER + "browsermator_cloud_files.properties");
   
 applicationProps.load(input);
 input.close();
@@ -366,7 +366,7 @@ input.close();
       applicationProps.setProperty(file_id, file_date);     
    
            try {
-       FileWriter writer = new FileWriter(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+       FileWriter writer = new FileWriter(CLOUDFOLDER + "browsermator_cloud_files.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
          
@@ -382,7 +382,7 @@ input.close();
      public final void CreateCloudConfigFile()
   {
     String userdir = System.getProperty("user.home");
-      File newconfig = new File(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+      File newconfig = new File(CLOUDFOLDER+ "browsermator_cloud_files.properties");
       Properties newProps = new Properties();
 
               try {
@@ -407,7 +407,7 @@ input.close();
 {
     Boolean file_exists = false;
     
-    File f = new File(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+    File f = new File(CLOUDFOLDER+ "browsermator_cloud_files.properties");
 if(f.exists() && !f.isDirectory()) { 
    file_exists = true;
 }
@@ -415,7 +415,7 @@ if (file_exists == false)
 {
     CreateCloudConfigFile();
 }
-      FileInputStream input = new FileInputStream(userdir + "\\BrowserMatorCloudFiles\\" + "browsermator_cloud_files.properties");
+      FileInputStream input = new FileInputStream(CLOUDFOLDER + "browsermator_cloud_files.properties");
   
 applicationProps.load(input);
 input.close();

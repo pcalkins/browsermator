@@ -35,6 +35,7 @@ String DataLoopSource;
   List<String> URLListData;
   List<String> URLListRunTimeEntries;
  // String[] URLListRunTimeEntries;
+  String CLOUDFOLDER = System.getProperty("user.home") + File.separator+"BrowserMatorCloudFiles"+File.separator;
 
    Procedure () 
    {
@@ -126,7 +127,7 @@ this.URLListRunTimeEntries = new ArrayList<>();
       String[] filename_parse = fileURL.split("=");
       String filename = filename_parse[filename_parse.length-1];
       
-  File thisFile = new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename);
+  // File thisFile = new File(CLOUDFOLDER+filename);
   
     //         if (thisFile.exists())
     //         {
@@ -136,13 +137,13 @@ this.URLListRunTimeEntries = new ArrayList<>();
                try {
           
          
-    org.apache.commons.io.FileUtils.copyURLToFile(new URL(fileURL), new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename));
-   DataFile = System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename;
+    org.apache.commons.io.FileUtils.copyURLToFile(new URL(fileURL), new File(CLOUDFOLDER+filename));
+   DataFile = CLOUDFOLDER+filename;
   
 } catch (Exception x) { System.out.println ("Exception downloading CSV file" + x.toString()); }
        try
      {
-      CSVFileReader = new CSVReader(new FileReader(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename), ',', '"', '\0');
+      CSVFileReader = new CSVReader(new FileReader(CLOUDFOLDER+filename), ',', '"', '\0');
              return_array = CSVFileReader.readAll();   
      }
      catch(Exception ex)

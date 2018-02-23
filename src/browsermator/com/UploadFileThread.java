@@ -374,12 +374,11 @@ public String doInBackground()
   public void UploadFile(SeleniumTestTool STAppFrame) throws IOException, XMLStreamException
     {
 
+   File thisfile = new File(STAppFrame.filename);
+String just_filename = thisfile.getName();
+   String[] left_side_of_dot = just_filename.split("\\.");
+  String noext_filename = left_side_of_dot[0];
    
-   String[] left_side_of_dot = STAppFrame.filename.split("\\.");
-   String[] noslashes_name = left_side_of_dot[0].split("\\\\");
-         int lastbit_index = noslashes_name.length-1;
-         
-   String noext_filename = noslashes_name[lastbit_index];
    
    
 File file= File.createTempFile(noext_filename, ".browsermation"); 

@@ -110,7 +110,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
             //legacy support...
-                    if (DataFile.contains("\\"))
+                    if (DataFile.contains(File.separator))
                     {
                         DataLoopSource = "file";
                     }

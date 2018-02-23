@@ -154,7 +154,13 @@ public String doInBackground()
   
    
    int last_index = mainAppController.MDIDataClasses.size()-1;
-   
+   if (last_index<0)
+   {
+       return;
+   }
+   else
+   {
+       
      if (hasGUI)
      {
        
@@ -211,6 +217,7 @@ public String doInBackground()
     }
   } 
  }
+ }
  @Override
  protected void process ( List <Integer> bugindex)
  {
@@ -256,9 +263,9 @@ int MDI_Index = -1;
      for (SeleniumTestTool thisfile: MDIViewClasses)
      {
          
-        String twoslashes = "\\" + "\\";
+        String twoslashes = File.separator + File.separator;
         
-         String thisfilename = thisfile.filename.replace(twoslashes, "\\");
+         String thisfilename = thisfile.filename.replace(twoslashes, File.separator);
         String browsedfile = file.getAbsolutePath();
         
                 
@@ -757,7 +764,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
             //legacy support...
-                    if (DataFile.contains("\\"))
+                    if (DataFile.contains(File.separator))
                     {
                         DataLoopSource = "file";
                     }

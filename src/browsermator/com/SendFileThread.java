@@ -32,7 +32,7 @@ public class SendFileThread extends SwingWorker<String, Integer>{
 // String rootURL = "http://localhost";
  String rootURL = "https://www.browsermator.com";
 WebEngine cloudEngine;
-
+String CLOUDFOLDER = System.getProperty("user.home") + File.separator+"BrowserMatorCloudFiles"+File.separator;
     SendFileThread(WebEngine in_cloudREF, File in_sendfile, String in_name, String in_password, String file_id)
   {
 
@@ -114,7 +114,7 @@ public String doInBackground()
            {
            thisUpDiag.dispose();
            thisUpDiag.hideWarningMessage();
-               File thisFile = new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+".browsermation");
+               File thisFile = new File(CLOUDFOLDER+filename+".browsermation");
         Files.copy(sendfile.toPath(), thisFile.toPath(), REPLACE_EXISTING);
          
          sendfile.deleteOnExit();
@@ -122,7 +122,7 @@ public String doInBackground()
            }
            else
            {
-            File thisFile = new File(System.getProperty("user.home")+"\\BrowserMatorCloudFiles\\"+filename+".browsermation");
+            File thisFile = new File(CLOUDFOLDER+filename+".browsermation");
         Files.copy(clean_file.toPath(), thisFile.toPath(), REPLACE_EXISTING);
          
          clean_file.deleteOnExit();
