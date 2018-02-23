@@ -542,11 +542,12 @@ return file_to_upload;
 public File DocToFile(Document doc, String filename)
 {
    File file = null;
-      String[] left_side_of_dot =filename.split("\\.");
-   String[] noslashes_name = left_side_of_dot[0].split("\\\\");
-         int lastbit_index = noslashes_name.length-1;
-         
-   String noext_filename = noslashes_name[lastbit_index];
+  
+     File thisfile = new File(filename);
+String just_filename = thisfile.getName();
+   String[] left_side_of_dot = just_filename.split("\\.");
+  String noext_filename = left_side_of_dot[0];
+    
    
    try
    {
