@@ -2705,7 +2705,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
                     jButtonBrowseForFireFoxExe.setEnabled(false);
                     break;  
                 case "Chrome":
-                    jButtonBrowseForFireFoxExe.setEnabled(false);
+                    jButtonBrowseForFireFoxExe.setEnabled(true);
                      setOSTypeActive(true);
                     break;
                 

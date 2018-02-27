@@ -33,6 +33,7 @@ String OSType;
 WebDriver driver;
 String firefox_path;
 String chrome_path;
+String chrome_main_path;
 FireFoxProperties FFprops;
 BrowserMatorReport BrowserMatorReport;
 Boolean RUNWITHGUI;
@@ -53,7 +54,7 @@ Boolean RunAgain = false;
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
-
+  this.chrome_main_path = FFprops.LoadChromeMainPath();
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.OSType = STAppData.OSType;
@@ -75,7 +76,7 @@ Boolean RunAgain = false;
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
-
+ this.chrome_main_path = FFprops.LoadChromeMainPath();
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
@@ -538,6 +539,12 @@ public String doInBackground()
      break;
      case "Chrome":
          //legacy support
+             if (chrome_main_path!=null) {
+  ChromeOptions options = new ChromeOptions();       
+options.setBinary(chrome_main_path);
+
+
+    }
          if ("Windows".equals(OSType))
      {
         System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
@@ -617,6 +624,7 @@ options.setBinary(chrome_path);
          
          default: 
            //legacy support
+    
          if ("Windows".equals(OSType))
      {
         System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
@@ -1669,7 +1677,7 @@ if (number_of_rows==0)
        }
             ChromeOptions options = new ChromeOptions();
 options.setBinary(chrome_path);
- System.setProperty("webdriver.chrome.driver", "lib\\chromedriver_win32\\chromedriver-winxp.exe");
+ System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
   driver = new ChromeDriver(options);    
   
       }

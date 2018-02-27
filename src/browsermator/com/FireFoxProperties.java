@@ -21,6 +21,7 @@ public class FireFoxProperties {
     String firefox_path;
     String targetbrowser;
     JFileChooser FindFireFoxExe;
+    String BrowermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
   public FireFoxProperties(String in_tb)
   {
   this.targetbrowser = in_tb;
@@ -31,18 +32,26 @@ public class FireFoxProperties {
   {
          //   System.out.println("Cannot find binary for Firefox");
   
-  
-        if ("Chrome 49".equals(this.targetbrowser))
+      switch (targetbrowser)
       {
-  FindFireFoxExe = new JFileChooser("Browse for Chrome executable");
+              case "Chrome 49":
+      
+       FindFireFoxExe = new JFileChooser("Browse for Chrome49 executable");
  
  FindFireFoxExe.setDialogTitle("Browse for Chrome executable (for manual installs on XP.)");
-      } 
-        else
-        {
+      break;
+              case "Firefox":
+       
  FindFireFoxExe = new JFileChooser("Browse for Firefox executable");
  FindFireFoxExe.setDialogTitle("Browse for Firefox executable (If Selenium had a problem loading Firefox this may fix it.)");        
-        }
+        break;
+        
+              case "Chrome":
+                 FindFireFoxExe = new JFileChooser("Browse for Chrome executable");
+ 
+ FindFireFoxExe.setDialogTitle("Browse for Chrome executable.");      
+      }
+                
       
  JPanel newJPanel = new JPanel();
  
@@ -67,10 +76,10 @@ public class FireFoxProperties {
   {
    
           Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
+   
 try
 {
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder+ "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -92,14 +101,44 @@ catch (Exception e) {
    
         
   }
+    public String LoadChromeMainPath()
+    {
+        String ret_val = "";
+               Properties applicationProps = new Properties();
+  
+try
+{
+         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties")) {
+             applicationProps.load(input);
+             
+            
+         }
+         catch (Exception e)
+         {
+             System.out.println("error loading chrome path:" + e.toString());
+           
+             
+         }
+}
+catch (Exception e) {
+			System.out.println("Exception loading firefox path: " + e);
+                        
+		} 
+      ret_val = applicationProps.getProperty("chrome_main_exe");
+   return ret_val;
+ 
+   
+        
+  }  
+    
         public String LoadChromePath()
   {
    
           Properties applicationProps = new Properties();
-    String userdir = System.getProperty("user.home");
+   
 try
 {
-         try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -123,12 +162,12 @@ catch (Exception e) {
   }
   public void WriteFireFoxPathToProperties(String pathtofirefox)
   {
-      String userdir = System.getProperty("user.home");
+    
       Properties applicationProps = new Properties();
       try
 {
 
-      FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+      FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -136,15 +175,24 @@ input.close();
       {
           
       }
-      String prop_type = "chrome_exe";
-      if ("Firefox".equals(targetbrowser))
+       String prop_type = "chrome_exe";
+      switch (targetbrowser)
       {
-         prop_type = "firefox_exe";
+          case "Chrome 49":
+            break;
+          case "Firefox":
+             prop_type = "firefox_exe";  
+              break;
+          case "Chrome":
+              prop_type = "chrome_main_exe";
+              break;    
       }
+     
+    
     
       applicationProps.setProperty(prop_type, pathtofirefox);
            try {
-       FileWriter writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+       FileWriter writer = new FileWriter(BrowermatorAppFolder + "browsermator_config.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
          
