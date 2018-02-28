@@ -28,6 +28,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     FireFoxProperties FFprops;
     String firefox_path;
     String chrome_path;
+    String chrome_main_path;
+    
     SeleniumTestTool STAppFrame;
     SeleniumTestToolData STAppData;
     WebDriver driver;
@@ -50,7 +52,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
       FFprops = new FireFoxProperties(this.targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
-  
+    this.chrome_main_path = FFprops.LoadChromeMainPath();
    thisbugview.JButtonRunTest.setText("Running...");
   
     RunSingleTest(bugtorun, thisbugview, targetbrowser, OSType);
@@ -280,6 +282,13 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
              }
      break;
      case "Chrome":
+           ChromeOptions options = new ChromeOptions();  
+             if (chrome_main_path!=null) {
+      
+options.setBinary(chrome_main_path);
+
+
+    }
      if ("Windows32".equals(OSType))
      {
      System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
@@ -302,7 +311,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      }
      try
      {
-        driver = new ChromeDriver();     
+        driver = new ChromeDriver(options);     
      }
    catch (Exception ex)
    {
@@ -314,10 +323,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    }
      break;
    case "Chrome 49":
-           ChromeOptions options = new ChromeOptions();
+           ChromeOptions options49 = new ChromeOptions();
       if (chrome_path!=null) {
         
-options.setBinary(chrome_path);
+options49.setBinary(chrome_path);
 
 
     }
@@ -326,7 +335,7 @@ options.setBinary(chrome_path);
     
      try
      {
-        driver = new ChromeDriver(options);     
+        driver = new ChromeDriver(options49);     
      }
    catch (Exception ex)
    {
@@ -684,11 +693,12 @@ while(thisContinuePrompt.isVisible() == true){
       }
       else
       {
+     
        STAppData.setTargetBrowser("Chrome 49");
-            ChromeOptions options = new ChromeOptions();
-options.setBinary(chrome_path);
+            ChromeOptions optionsfallback49 = new ChromeOptions();
+optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
-  driver = new ChromeDriver(options);     
+  driver = new ChromeDriver(optionsfallback49);     
       }
   }
 }

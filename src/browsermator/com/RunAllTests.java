@@ -539,8 +539,9 @@ public String doInBackground()
      break;
      case "Chrome":
          //legacy support
+          ChromeOptions options = new ChromeOptions();  
              if (chrome_main_path!=null) {
-  ChromeOptions options = new ChromeOptions();       
+      
 options.setBinary(chrome_main_path);
 
 
@@ -571,7 +572,7 @@ options.setBinary(chrome_main_path);
      }
      try
      {
-        driver = new ChromeDriver();     
+        driver = new ChromeDriver(options);     
      }
    catch (Exception ex)
    {
@@ -586,10 +587,10 @@ options.setBinary(chrome_main_path);
      
      
    case "Chrome 49":
-         ChromeOptions options = new ChromeOptions();
+         ChromeOptions options49 = new ChromeOptions();
       if (chrome_path!=null) {
         
-options.setBinary(chrome_path);
+options49.setBinary(chrome_path);
 
 
     }
@@ -598,7 +599,7 @@ options.setBinary(chrome_path);
     
      try
      {
-        driver = new ChromeDriver(options);     
+        driver = new ChromeDriver(options49);     
      }
    catch (Exception ex)
    {
@@ -1675,10 +1676,10 @@ if (number_of_rows==0)
        {
        STAppFrame.setTargetBrowserView("Chrome 49");     
        }
-            ChromeOptions options = new ChromeOptions();
-options.setBinary(chrome_path);
+            ChromeOptions optionsfallback49 = new ChromeOptions();
+optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
-  driver = new ChromeDriver(options);    
+  driver = new ChromeDriver(optionsfallback49);    
   
       }
   }
