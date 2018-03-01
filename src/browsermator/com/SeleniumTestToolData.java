@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -75,17 +74,18 @@ String EmailFrom;
 String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
-public final String USERDIR;
+
 public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
-
+String BrowsermatorAppFolder;
     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
       
   
-              USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
-UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
+         BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+  
+UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
            this.TemplateOrNew = false;
             this.BugArray = BugArray;
                 this.UniqueOption = "file";
@@ -362,7 +362,7 @@ public void setAllFieldValues(ArrayList<String> allfieldvalues)
    
 try
 {
-         try (FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
          }
          catch (Exception e)

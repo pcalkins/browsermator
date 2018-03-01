@@ -26,7 +26,7 @@ String CloudFile2;
 String CloudFile3;
 String CloudFile4;
 String CloudFile5;
-   
+ String BrowsermatorAppFolder;
 
    SiteTestView() {
    RecentFile1 = "";
@@ -39,20 +39,20 @@ String CloudFile5;
    CloudFile3 = "";
    CloudFile4 = "";
    CloudFile5 = "";
-   
+   BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+  
     initComponents();
     jTextFieldSMTPHostName.setText("");
     jTextFieldEmailPassword.setText("");
     
              Properties applicationProps = new Properties();
              Boolean file_exists = false;
-              String userdir = System.getProperty("user.home");
-
+      
 
   
 try
 {
-    File f = new File(userdir + File.separator + "browsermator_config.properties");
+    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
 if(f.exists() && !f.isDirectory()) { 
    file_exists = true;
 }
@@ -60,7 +60,7 @@ if (file_exists == false)
 {
     CreateConfigFile();
 }
-     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -74,8 +74,8 @@ String[] RFilesArray = recentfiles.split(",");
     }
   public final void CreateConfigFile()
   {
-    String userdir = System.getProperty("user.home");
-      File newconfig = new File(userdir + File.separator + "browsermator_config.properties");
+  
+      File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
       Properties newProps = new Properties();
       newProps.setProperty("email_subect", "");
       newProps.setProperty("email_to", "");
@@ -105,7 +105,7 @@ String[] RFilesArray = recentfiles.split(",");
        String userdir = System.getProperty("user.home");
 try
 {
-     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -188,7 +188,7 @@ setRecentFiles(outarray);
             String userdir = System.getProperty("user.home");
 try
 {
-     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 String recentfiles = applicationProps.getProperty("recentfiles");
@@ -450,7 +450,7 @@ catch (Exception e) {
            String userdir = System.getProperty("user.home");
 try
 {
-     FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -458,7 +458,7 @@ catch (Exception e) {
 			System.out.println("Exception loading email settings: " + e);
 		} 
 
-        File configFile = new File(userdir + File.separator + "browsermator_config.properties");
+        File configFile = new File(BrowsermatorAppFolder + "browsermator_config.properties");
  String commastringfilenames = filenames[0];
  int ccount = 0;
  for (String filename: filenames)
