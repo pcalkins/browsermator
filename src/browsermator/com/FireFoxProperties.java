@@ -21,7 +21,7 @@ public class FireFoxProperties {
     String firefox_path;
     String targetbrowser;
     JFileChooser FindFireFoxExe;
-    String BrowermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+    String BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
   public FireFoxProperties(String in_tb)
   {
   this.targetbrowser = in_tb;
@@ -79,7 +79,7 @@ public class FireFoxProperties {
    
 try
 {
-         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder+ "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder+ "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -108,7 +108,7 @@ catch (Exception e) {
   
 try
 {
-         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -138,7 +138,7 @@ catch (Exception e) {
    
 try
 {
-         try (FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -167,7 +167,7 @@ catch (Exception e) {
       try
 {
 
-      FileInputStream input = new FileInputStream(BrowermatorAppFolder + "browsermator_config.properties");
+      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -192,7 +192,7 @@ input.close();
     
       applicationProps.setProperty(prop_type, pathtofirefox);
            try {
-       FileWriter writer = new FileWriter(BrowermatorAppFolder + "browsermator_config.properties");
+       FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
          

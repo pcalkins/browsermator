@@ -55,14 +55,13 @@ public final class STAppController  {
 public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
-public final String USERDIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.91";
+public final String ProgramVersion = "1.2.92";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
 String BMUSERCLOUDDIR;
-
+String BrowsermatorAppFolder; 
   Boolean SHOWGUI = true;
   public int user_id;
 //  String rootURL = "http://localhost";
@@ -72,11 +71,13 @@ String BMUSERCLOUDDIR;
  MainAppFrame mainAppFrame;
 
   public STAppController(String[] args) throws PropertyVetoException {
-             PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+  
+      PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
-  USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
-UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
-   File file = new File(USERDIR);
+
+UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
+   File file = new File(BrowsermatorAppFolder);
         if (!file.exists()) {
             if (file.mkdir()) {
                 System.out.println("Directory is created!");
@@ -110,7 +111,7 @@ UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File
            
     try
 {
-    File f = new File(USERDIR + File.separator + "browsermator_config.properties");
+    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
 if(f.exists() && !f.isDirectory()) { 
    file_exists = true;
 }
@@ -118,7 +119,7 @@ if (file_exists == false)
 {
     CreateConfigFile();
 }
-     FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
   mainAppFrame.setWindowProps(input);
  
  
@@ -184,9 +185,9 @@ if (file_exists == false)
        
     try
 {
-    File f = new File(USERDIR + File.separator + "browsermator_config.properties");
+    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
 
-     FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
    newProps.load(input);
  
    
@@ -197,7 +198,7 @@ if (file_exists == false)
       newProps.setProperty("main_window_sizeHeight", Integer.toString(windowEvent.getWindow().getHeight()));
     
     
-    FileWriter writer = new FileWriter(USERDIR + File.separator + "browsermator_config.properties");
+    FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     newProps.store(writer, "browsermator_settings");
     writer.close();
    
@@ -697,7 +698,7 @@ mainAppFrame.initComponents();
         { 
  
         
-         String visited_list_file_path = USERDIR + File.separator + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+         String visited_list_file_path = BrowsermatorAppFolder + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
        File fileCheck = new File(visited_list_file_path);
        if (fileCheck.exists())
        {
@@ -825,7 +826,7 @@ mainAppFrame.initComponents();
    public final void CreateConfigFile()
   {
   
-      File newconfig = new File(USERDIR + File.separator + "browsermator_config.properties");
+      File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
       Properties newProps = new Properties();
 
        newProps.setProperty("main_window_locationY", "0");
@@ -1095,9 +1096,9 @@ return 1;
             
     try
 {
-    File f = new File(USERDIR + File.separator + "browsermator_config.properties");
+    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
 
-     FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
    newProps.load(input);
  
    
@@ -1108,7 +1109,7 @@ return 1;
       newProps.setProperty("main_window_sizeHeight", Integer.toString(mainAppFrame.getHeight()));
     
     
-    FileWriter writer = new FileWriter(USERDIR + File.separator + "browsermator_config.properties");
+    FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     newProps.store(writer, "browsermator_settings");
     writer.close();
    
@@ -2892,7 +2893,7 @@ actionindex = Integer.parseInt(parts[1])-1;
      
 try
 {
-     FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -2936,8 +2937,8 @@ catch (Exception e) {
  
 
 
-    File configFile = new File(USERDIR + File.separator + "browsermator_config.properties");
-     FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+    File configFile = new File(BrowsermatorAppFolder + "browsermator_config.properties");
+     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 
 try {
     Properties props = new Properties();
@@ -2996,7 +2997,7 @@ if (args.length>0)
   
 try
 {
-         try (FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
          }
          catch (Exception e)
@@ -3024,7 +3025,7 @@ catch (Exception e) {
       try
 {
 
-      FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
 applicationProps.load(input);
 input.close();
 }
@@ -3034,7 +3035,7 @@ input.close();
       }
       applicationProps.setProperty("firefox_exe", pathtofirefox);
            try {
-       FileWriter writer = new FileWriter(USERDIR + File.separator + "browsermator_config.properties");
+       FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
          
@@ -3070,7 +3071,7 @@ public void addJMenuViewItem (JMenuItem item_to_add)
    
 try
 {
-         try (FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties")) {
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
          }
          catch (Exception e)
@@ -3119,7 +3120,7 @@ catch (Exception e) {
 {
     Boolean file_exists = false;
     
-    File f = new File(USERDIR+ File.separator + "browsermator_config.properties");
+    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
 if(f.exists() && !f.isDirectory()) { 
    file_exists = true;
 }
@@ -3127,7 +3128,7 @@ if (file_exists == false)
 {
     CreateConfigFile();
 }
-      FileInputStream input = new FileInputStream(USERDIR + File.separator + "browsermator_config.properties");
+      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
   
 applicationProps.load(input);
 input.close();
@@ -3150,7 +3151,7 @@ input.close();
       applicationProps.setProperty("loginPassword", encPassword);
       
            try {
-       FileWriter writer = new FileWriter(USERDIR + File.separator + "browsermator_config.properties");
+       FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
          
@@ -3838,7 +3839,7 @@ File newfile = new File(path + ".js");
         { 
  
         
-         String visited_list_file_path = USERDIR + File.separator + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+         String visited_list_file_path = BrowsermatorAppFolder + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
        File fileCheck = new File(visited_list_file_path);
        if (fileCheck.exists())
        {

@@ -20,12 +20,15 @@ public class BrowserMatorConfig {
       FileInputStream input;
         String userdir;
      FileWriter writer;
+      String BrowsermatorAppFolder;
+
       BrowserMatorConfig()
       {
-       
+    this.BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+
           this.userdir = System.getProperty("user.home");
       this.applicationProps = new Properties();    
-        try (FileInputStream input = new FileInputStream(userdir + File.separator + "browsermator_config.properties")) {
+        try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
              
             
@@ -48,7 +51,7 @@ public class BrowserMatorConfig {
       {
            applicationProps.setProperty(key, value);
      try {
-       writer = new FileWriter(userdir + File.separator + "browsermator_config.properties");
+       writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
     applicationProps.store(writer, "browsermator_settings");
     writer.close();
     } 
