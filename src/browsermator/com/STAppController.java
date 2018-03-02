@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.92";
+public final String ProgramVersion = "1.2.93";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4024,7 +4024,7 @@ STAppFrame.saveState();
      STAppFrame.saveState();
              if (STAppFrame.getjCheckBoxOSTypeLinux32Selected())
      {
-         STAppData.OSType = "Linux32";
+         STAppData.OSType = "Linux-32";
      STAppFrame.setjCheckBoxOSTypeMacSelected(false);
      STAppFrame.setjCheckBoxOSTypeWindows32Selected(false);
      STAppFrame.setjCheckBoxOSTypeLinux64Selected(false);
@@ -4037,7 +4037,7 @@ STAppFrame.saveState();
      STAppFrame.saveState();
                  if (STAppFrame.getjCheckBoxOSTypeLinux64Selected())
      {
-         STAppData.OSType = "Linux64";
+         STAppData.OSType = "Linux-64";
      STAppFrame.setjCheckBoxOSTypeMacSelected(false);
      STAppFrame.setjCheckBoxOSTypeLinux32Selected(false);
      STAppFrame.setjCheckBoxOSTypeWindows32Selected(false);
