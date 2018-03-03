@@ -49,17 +49,13 @@ String BMPATH;
    
        BMPATH = new File(RunAllTests.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
    
-      if (BMPATH.contains("class"))
-      {
-          BMPATH = "";
-      }
+  
      }
      catch (Exception ex)
      {
        Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
      }
-  //   Path test = return new File(MyClass.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-  //   File tempFile =  new File(this.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
   
           STAppData = in_STAppData;
           STAppFrame = in_STAppFrame;
@@ -397,36 +393,54 @@ public String doInBackground()
   public void RunAllActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
  {
  STAppData.TimeOfRun = LocalDateTime.now();
-
+  File thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
     switch (TargetBrowser)
    {
-        // legacy file support
+     
      case "Firefox-Marionette":
      // legacy file support
+         
          if ("Windows".equals(OSType))
      {
-         
-       System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+           thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+    //   System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
      }   
      if ("Windows32".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+         thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());   
+      // System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
      }
      if ("Windows64".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
+         thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
+         setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+    //   System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
+            thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());     
+    //  System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
      }
      if ("Linux-32".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
+              thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+    //  System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
      }
      if ("Linux-64".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
+                thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+   //   System.setProperty("webdriver.gecko.driver", "lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
      }
    
     if (firefox_path!=null) {
@@ -465,31 +479,43 @@ public String doInBackground()
      if ("Windows".equals(OSType))
      {
         
-         File thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+        thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
      }
      if ("Windows32".equals(OSType))
      {
-          File thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
+         thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win32"+File.separator+"geckodriver.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
      }
      if ("Windows64".equals(OSType))
      {
-       System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
+           thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+   //    System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-win64"+File.separator+"geckodriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
+            thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+  //    System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-osx"+File.separator+"geckodriver");
      }
      if ("Linux-32".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver",BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
+            thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+  //    System.setProperty("webdriver.gecko.driver",BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux32"+File.separator+"geckodriver");
      }
      if ("Linux-64".equals(OSType))
      {
-      System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
+           thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.gecko.driver", thisDriver.getAbsolutePath());  
+    //  System.setProperty("webdriver.gecko.driver", BMPATH+File.separator+"lib"+File.separator+"geckodriver-linux64"+File.separator+"geckodriver");
      }
    
     if (firefox_path!=null) {
@@ -531,7 +557,10 @@ public String doInBackground()
      break;
      
      case "Internet Explorer-32":
-     System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
+            thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
+    // System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
      try
      {
      driver = new InternetExplorerDriver();
@@ -546,7 +575,11 @@ public String doInBackground()
      }
      break;
      case "Internet Explorer-64":
-     System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
+            thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
+      
+   //  System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
      try
      {
      driver = new InternetExplorerDriver();
@@ -571,29 +604,47 @@ options.setBinary(chrome_main_path);
     }
          if ("Windows".equals(OSType))
      {
-        System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+            thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+     //   System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
      }
      if ("Windows32".equals(OSType))
      {
-  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+                 thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ // System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
  
   
      }
        if ("Windows64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+                 thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
+                 thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
      }
      if ("Linux-32".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
+                  thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());    
+   //  System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
      }
      if ("Linux-64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
+                    thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
      }
      try
      {
@@ -619,7 +670,10 @@ options49.setBinary(chrome_path);
 
 
     }
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
+                 thisDriver =  new File(BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-xp.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+    // System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
    
     
      try
@@ -634,7 +688,10 @@ options49.setBinary(chrome_path);
    }
      break;
    case "Edge":
-     System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
+                  thisDriver =  new File( BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
+  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
    try
    {
      driver = new EdgeDriver();  
@@ -653,27 +710,51 @@ options49.setBinary(chrome_path);
     
          if ("Windows".equals(OSType))
      {
-        System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+                      thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ 
+    //    System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
      }
      if ("Windows32".equals(OSType))
      {
+                   thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+    
      System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
      }
        if ("Windows64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+                      thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ 
+  //   System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
      }
      if ("Mac".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
+                      thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ 
+   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
      }
      if ("Linux-32".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
+                      thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ 
+   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
      }
      if ("Linux-64".equals(OSType))
      {
-     System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
+                      thisDriver =  new File(BMPATH+File.separator+ "lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
+ 
+  //   System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
      }
      try
      {

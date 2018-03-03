@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.94";
+public final String ProgramVersion = "1.2.95";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
