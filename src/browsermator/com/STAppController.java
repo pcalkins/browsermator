@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.93";
+public final String ProgramVersion = "1.2.94";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -69,10 +69,20 @@ String BrowsermatorAppFolder;
      ArrayList<SeleniumTestTool> MDIViewClasses = new ArrayList();
        ArrayList<SeleniumTestToolData> MDIDataClasses = new ArrayList();
  MainAppFrame mainAppFrame;
-
+String BMPATH;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-  
+   try
+     {
+   
+       BMPATH = new File(RunAllTests.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getAbsolutePath();
+   
+    
+     }
+     catch (Exception ex)
+     {
+       Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
+     }
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 
@@ -94,6 +104,7 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
+    
      mainAppFrame = new MainAppFrame(); 
     Navigator = new SiteTestView();
     if (args.length>0) { 
@@ -4051,7 +4062,7 @@ STAppFrame.saveState();
          
       }
        
-         
+
    
   public void RunActions (SeleniumTestToolData STAppData)
   {
