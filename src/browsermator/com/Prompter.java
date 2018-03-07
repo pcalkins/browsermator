@@ -37,11 +37,12 @@ public class Prompter extends JFrame implements ActionListener
                 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //        FlowLayout flo = new FlowLayout();
         //        setLayout(flo);
-           
-                JLabel messageText = new JLabel(messagetodisplay);
+                JTextArea jTextAreaMessage = new JTextArea(messagetodisplay);
+                jTextAreaMessage.setColumns(40);
+              //  JLabel messageText = new JLabel(messagetodisplay);
                 JPanel messagepanel = new JPanel();
                 
-                messagepanel.add(messageText);
+                messagepanel.add(jTextAreaMessage);
              
                 JPanel buttonpanel = new JPanel();
            //  buttonpanel.setLayout(new FlowLayout());

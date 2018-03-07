@@ -21,6 +21,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,18 +53,17 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-
-
 public final class STAppController  {
 public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.95";
+public final String ProgramVersion = "1.2.96";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
 String BMUSERCLOUDDIR;
+String WEBDRIVERSDIR;
 String BrowsermatorAppFolder; 
   Boolean SHOWGUI = true;
   public int user_id;
@@ -72,17 +75,8 @@ String BrowsermatorAppFolder;
 String BMPATH;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-   try
-     {
-   
-       BMPATH = new File(RunAllTests.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getAbsolutePath();
-   
-    
-     }
-     catch (Exception ex)
-     {
-       Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
-     }
+  
+      ExtractWebDrivers();
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 
@@ -95,7 +89,16 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
-      
+    WEBDRIVERSDIR = BrowsermatorAppFolder + "WebDrivers" + File.separator;
+       File web_dir_file = new File(WEBDRIVERSDIR);
+        if (!web_dir_file.exists()) {
+            if (web_dir_file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
+        ExtractWebDrivers();
      file = new File(UNIQUE_LOG_DIR);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -4144,6 +4147,61 @@ STAppFrame.saveState();
  {
       RunASingleTest REFSYNCH = new RunASingleTest(STAppFrame, STAppData, bugtorun, thisbugview, STAppData.getTargetBrowser(), STAppData.getOSType());
     REFSYNCH.execute();
+ }
+ public void ExtractWebDrivers()
+ {
+     
+ WriteResource ("chromedriver_linux32", "chromedriver");
+ WriteResource ("chromedriver_linux64", "chromedriver");    
+ WriteResource ("chromedriver_mac64", "chromedriver");
+ WriteResource ("chromedriver_win32", "chromedriver.exe");
+ WriteResource ("chromedriver_win32", "chromedriver-winxp.exe");
+ WriteResource ("edgedriver", "MicrosoftWebDriver.exe");
+ WriteResource ("geckodriver-linux32", "geckodriver");
+ WriteResource ("geckodriver-linux64", "geckodriver");
+ WriteResource ("geckodriver-osx", "geckodriver");
+  WriteResource ("geckodriver-win32", "geckodriver.exe");
+   WriteResource ("geckodriver-win64", "geckodriver.exe");
+    WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
+     WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
+     
+ }
+ public void WriteResource (String dirname, String filename)
+ {
+       File driver_directory = new File(WEBDRIVERSDIR + dirname);
+        if (!driver_directory.exists()) {
+            if (driver_directory.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
+      InputStream inStream = STAppController.class.getResourceAsStream("/browsermator/com/Resources/" + dirname + "/" + filename);
+   
+      File newFile = new File(WEBDRIVERSDIR + dirname + File.separator + filename); 
+          Path BMAppPath = newFile.toPath();
+          if (!newFile.exists())
+          {
+try
+{
+   if (inStream != null) {
+ 
+                Files.copy(inStream, BMAppPath,StandardCopyOption.REPLACE_EXISTING);
+                inStream.close();
+            }
+   else
+   {
+   
+    
+   }
+   
+}
+catch (Exception ex)
+{
+    Prompter fallbackprompt2 = new Prompter ("Error writing driver", "Could not write driver: " + BMAppPath + " Error: " + ex.toString(), false,0,0);     
+ 
+}  
+          }
  }
  
       
