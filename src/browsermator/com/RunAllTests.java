@@ -54,10 +54,10 @@ String BrowsermatorAppFolder;
 //     }
 //     catch (Exception ex)
 //     {
-//       Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
+ //    Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekekck brown fox jumped...ocate jar fCould not lThe quiekck brown fox jumped...ocate jar folder:  Error: " , false,0,0);     
 //     }
  BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-   WEBDRIVERSDIR = BrowsermatorAppFolder + "WebDrivers" + File.separator;
+   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
           STAppData = in_STAppData;
           STAppFrame = in_STAppFrame;
      STAppFrame.RefreshViewData();
@@ -671,7 +671,7 @@ options49.setBinary(chrome_path);
 
 
     }
-                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-xp.exe");
+                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
     // System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
@@ -1766,9 +1766,11 @@ if (number_of_rows==0)
           public void setPermissions(File thisDriver)
          {
              
-          
+        
            if (!thisDriver.canExecute())
            {
+       Prompter cantexecuteprompt = new Prompter ("Permissions Error", "The current user does not have permission to run the webdriver.  The Browsermator will attempt to set permissions now.  If this fails, you'll need to manually set permission to execute the following file: " + thisDriver.getAbsolutePath(), false,0,0);     
+  
             thisDriver.setExecutable (true, true);
            }
            

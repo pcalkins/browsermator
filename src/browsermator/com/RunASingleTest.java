@@ -59,7 +59,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
   //     Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
   //   }
      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-   WEBDRIVERSDIR = BrowsermatorAppFolder + "WebDrivers" + File.separator;        
+   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;        
           }
     public String doInBackground()
  {
@@ -435,7 +435,7 @@ options49.setBinary(chrome_path);
 
 
     }
-                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-xp.exe");
+                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
     // System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");

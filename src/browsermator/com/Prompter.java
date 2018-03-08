@@ -14,10 +14,12 @@ public class Prompter extends JFrame implements ActionListener
     Boolean hasCancelButton;
   int JumpToRecord = -1;
     int number_of_records = 0;
+      JTextArea jTextAreaMessage;
+      JLabel jLabelMessage;
      Prompter ( String filename, String messagetodisplay, Boolean in_hascancel, int currentrecord, int number_of_records)
             {
            this.JLabelJumpTo = new JLabel("Skip to #: ");
-           
+           this.setResizable(true);
           
            if (number_of_records>0)
            {
@@ -37,20 +39,29 @@ public class Prompter extends JFrame implements ActionListener
                 setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //        FlowLayout flo = new FlowLayout();
         //        setLayout(flo);
-                JTextArea jTextAreaMessage = new JTextArea(messagetodisplay);
-                jTextAreaMessage.setColumns(40);
-              //  JLabel messageText = new JLabel(messagetodisplay);
-                JPanel messagepanel = new JPanel();
-                
-                messagepanel.add(jTextAreaMessage);
+            
              
                 JPanel buttonpanel = new JPanel();
            //  buttonpanel.setLayout(new FlowLayout());
                 buttonpanel.add(ContinueButton);
+                   JPanel messagepanel = new JPanel();
                 if (this.hasCancelButton)
                 {
+                    this.setResizable(false);
                buttonpanel.add(CancelButton);
+               jLabelMessage = new JLabel(messagetodisplay);                       
+                messagepanel.add(jLabelMessage);
                 }
+                else
+                {
+           //     jTextAreaMessage = new JTextArea(5, 40); 
+                    jTextAreaMessage = new JTextArea(messagetodisplay); 
+                jTextAreaMessage.setLineWrap(true);
+            //    jTextAreaMessage.setText(messagetodisplay);
+                jTextAreaMessage.setColumns(40);
+                messagepanel.add(jTextAreaMessage);
+                }
+                        
                 if (this.number_of_records>0)
                 {
                     buttonpanel.add(JLabelJumpTo);
@@ -62,17 +73,20 @@ public class Prompter extends JFrame implements ActionListener
                 WholePrompt.add(buttonpanel, BorderLayout.SOUTH);
                 
                
-         setSize(400, 200);
-         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-        int x = (int) rect.getMaxX() - this.getWidth();
-       setResizable(false);
-        this.setLocation(x, 0);
+         // setSize(400, 200);
+       
+    
+    //   setResizable(false);
+    
                 this.setTitle(filename);
                 add(WholePrompt);
-             
-                
+               pack();
+                   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+        int x = (int) rect.getMaxX() - this.getWidth();
+    //   setResizable(false);
+        this.setLocation(x, 0); 
                 setVisible(true);
                 ContinueButton.addActionListener(this);
               

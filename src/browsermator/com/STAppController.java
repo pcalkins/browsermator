@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.96";
+public final String ProgramVersion = "1.2.98";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -76,7 +76,7 @@ String BMPATH;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
   
-      ExtractWebDrivers();
+    
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 
@@ -89,16 +89,8 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
-    WEBDRIVERSDIR = BrowsermatorAppFolder + "WebDrivers" + File.separator;
-       File web_dir_file = new File(WEBDRIVERSDIR);
-        if (!web_dir_file.exists()) {
-            if (web_dir_file.mkdir()) {
-                System.out.println("Directory is created!");
-            } else {
-                System.out.println("Failed to create directory!");
-            }
-        }
-        ExtractWebDrivers();
+   
+      
      file = new File(UNIQUE_LOG_DIR);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -107,7 +99,16 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
-    
+     WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
+       File web_dir_file = new File(WEBDRIVERSDIR);
+        if (!web_dir_file.exists()) {
+            if (web_dir_file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
+          ExtractWebDrivers();
      mainAppFrame = new MainAppFrame(); 
     Navigator = new SiteTestView();
     if (args.length>0) { 

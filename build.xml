@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="Browsermator" default="default" basedir=".">
+    <description>Builds, tests, and runs the project Browsermator.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar:                  JAR building
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="Browsermator-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+
+    <target name="-post-compile">
+        <copy file="lib\chromedriver_win32\chromedriver.exe" todir="${dist.dir}\lib\chromedriver_win32\"/>
+   <copy file="lib\chromedriver_win32\chromedriver-winxp.exe" todir="${dist.dir}\lib\chromedriver_win32\"/>
+    <copy file="lib\chromedriver_linux32\chromedriver" todir="${dist.dir}\lib\chromedriver_linux32\"/>
+    <copy file="lib\chromedriver_linux64\chromedriver" todir="${dist.dir}\lib\chromedriver_linux64\"/>
+    <copy file="lib\chromedriver_mac64\chromedriver" todir="${dist.dir}\lib\chromedriver_mac64\"/>
+    <copy file="lib\edgedriver\MicrosoftWebDriver.exe" todir="${dist.dir}\lib\edgedriver\"/>
+    <copy file="lib\geckodriver-linux32\geckodriver" todir="${dist.dir}\lib\geckodriver-linux32\"/>    
+    <copy file="lib\geckodriver-linux64\geckodriver" todir="${dist.dir}\lib\geckodriver-linux64\"/>
+    <copy file="lib\geckodriver-osx\geckodriver" todir="${dist.dir}\lib\geckodriver-osx\"/>
+    <copy file="lib\geckodriver-win32\geckodriver.exe" todir="${dist.dir}\lib\geckodriver-win32\"/>
+    <copy file="lib\geckodriver-win64\geckodriver.exe" todir="${dist.dir}\lib\geckodriver-win64\"/>             
+    <copy file="lib\iedriverserver_win32\IEDriverServer.exe" todir="${dist.dir}\lib\iedriverserver_win32\"/>
+  <copy file="lib\iedriverserver_win64\IEDriverServer.exe" todir="${dist.dir}\lib\iedriverserver_win64\"/>
+  
+    </target>
+       -->   
+</project>
