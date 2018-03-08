@@ -44,18 +44,7 @@ String WEBDRIVERSDIR;
 String BrowsermatorAppFolder;
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
- //    BMPATH = "";
- //    try
- //    {
-   
-//       BMPATH = new File(RunAllTests.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
-   
-  
-//     }
-//     catch (Exception ex)
-//     {
- //    Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekCould not lThe quiekck brown fox jumped...ocate jar fCould not lThe quiekekck brown fox jumped...ocate jar fCould not lThe quiekck brown fox jumped...ocate jar folder:  Error: " , false,0,0);     
-//     }
+
  BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
           STAppData = in_STAppData;
@@ -82,6 +71,8 @@ String BrowsermatorAppFolder;
  
  public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
   //   STAppData.RefreshData();
  //we're in no GUI Mode
      STAppData = in_SiteTest;

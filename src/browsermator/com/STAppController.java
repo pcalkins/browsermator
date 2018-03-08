@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.98";
+public final String ProgramVersion = "1.2.99";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -75,8 +75,6 @@ String BrowsermatorAppFolder;
 String BMPATH;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-  
-    
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 
