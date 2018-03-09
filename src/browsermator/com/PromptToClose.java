@@ -44,19 +44,19 @@ public class PromptToClose extends JFrame  {
                 WholePrompt.add(buttonPanel, BorderLayout.SOUTH);
                 
                
-         setSize(400, 200);
-         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+               this.setTitle(filename);
+                add(WholePrompt);
+               pack();
+                   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
         int x = (int) rect.getMaxX() - this.getWidth();
-       setResizable(false);
-        this.setLocation(x, 0);
-                this.setTitle(filename);
-                add(WholePrompt);
-             
-                
+    //   setResizable(false);
+        this.setLocation(x, 0); 
                 setVisible(true);
-                pack();
+             
+              
+             pack();
            }
     public void addjButtonCloseActionListener(ActionListener listener)
     {
