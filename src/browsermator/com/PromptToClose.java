@@ -50,14 +50,15 @@ public class PromptToClose extends JFrame  {
                 this.setTitle(filename);
                 add(WholePrompt);
              
-             setVisible(true);
-                      pack();
+         
                    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
         int x = (int) rect.getMaxX() - this.getWidth();
     //   setResizable(false);
         this.setLocation(x, 0); 
+            setVisible(true);
+                      pack();
            }
     public void addjButtonCloseActionListener(ActionListener listener)
     {
