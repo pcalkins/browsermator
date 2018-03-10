@@ -913,6 +913,28 @@ else
             {
                 OSType = "Windows32";
             }
+           switch (OSType)
+            {
+                case "Windows":
+                  OSType = "Windows32";
+                    break;
+                    
+                case "Windows32":
+              OSType = "Windows32";
+                break;
+                case "Windows64":
+              OSType = "Windows64";
+                break;
+                case "Mac":
+               OSType = "Mac";
+                break;
+                case "Linux-32":
+               OSType = "Linux-32";
+                break;
+                case "Linux-64":
+              OSType = "Linux-64";
+                break;
+           }   
             this.OSType = OSType;
           
                 
