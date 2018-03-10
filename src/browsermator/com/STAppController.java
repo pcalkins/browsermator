@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.102";
+public final String ProgramVersion = "1.2.103";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4179,8 +4179,7 @@ STAppFrame.saveState();
    
       File newFile = new File(WEBDRIVERSDIR + dirname + File.separator + filename); 
           Path BMAppPath = newFile.toPath();
-          if (!newFile.exists())
-          {
+
 try
 {
    if (inStream != null) {
@@ -4200,7 +4199,7 @@ catch (Exception ex)
     Prompter fallbackprompt2 = new Prompter ("Error writing driver", "Could not write driver: " + BMAppPath + " Error: " + ex.toString(), false,0,0);     
  
 }  
-          }
+        
  }
  
       
