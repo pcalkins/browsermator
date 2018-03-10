@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.104";
+public final String ProgramVersion = "1.2.105";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4149,7 +4149,13 @@ STAppFrame.saveState();
  }
  public void ExtractWebDrivers()
  {
-     
+     BrowserMatorConfig configCheck = new BrowserMatorConfig();
+    String versionstored = configCheck.getKeyValue("version");
+    if (versionstored==null) {versionstored = "";}
+    
+      
+    if (versionstored == null ? this.ProgramVersion != null : !versionstored.equals(this.ProgramVersion))
+    {
  WriteResource ("chromedriver_linux32", "chromedriver");
  WriteResource ("chromedriver_linux64", "chromedriver");    
  WriteResource ("chromedriver_mac64", "chromedriver");
@@ -4163,7 +4169,8 @@ STAppFrame.saveState();
    WriteResource ("geckodriver-win64", "geckodriver.exe");
     WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
      WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
-     
+    configCheck.setKeyValue("version", this.ProgramVersion);
+    }
  }
  public void WriteResource (String dirname, String filename)
  {
