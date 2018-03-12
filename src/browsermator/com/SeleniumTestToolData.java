@@ -907,13 +907,10 @@ else
       }
  
  
-         public void setOSType(String OSType)
+         public void setOSType(String in_OSType)
         {
-            if ("Windows".equals(OSType))
-            {
-                OSType = "Windows32";
-            }
-           switch (OSType)
+        
+           switch (in_OSType)
             {
                 case "Windows":
                   OSType = "Windows32";

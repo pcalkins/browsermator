@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.106";
+public final String ProgramVersion = "1.2.107";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -2336,10 +2336,11 @@ actionindex = Integer.parseInt(parts[1])-1;
               try
               {
               bugindex = Integer.parseInt(ROW[0])-1;
+          
               }
               catch (Exception ex)
               {
-                  bugindex = -1;
+                System.out.println (ex.toString());  bugindex = -1;
               }
           }
        String commandText = ROW[1];
@@ -2352,8 +2353,7 @@ actionindex = Integer.parseInt(parts[1])-1;
            fieldNumber = 0;
        }
       newValue = ROW[3];
-         if (bugindex > -1)
-         {
+       
        switch(commandText)
             {
            case "changeOS":
@@ -2449,7 +2449,7 @@ actionindex = Integer.parseInt(parts[1])-1;
                  
                      
        }
-         }
+         
         }
       }
       
@@ -2492,8 +2492,7 @@ actionindex = Integer.parseInt(parts[1])-1;
            fieldNumber = 0;
        }
       newValue = ROW[3];
-         if (bugindex > -1)
-         {
+      
        switch(commandText)
             {
                case "changeOS":
@@ -2583,7 +2582,7 @@ actionindex = Integer.parseInt(parts[1])-1;
                  
                      
        }
-         }
+     
           }
       }
   }

@@ -377,33 +377,58 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
    setTitle(in_short_filename);
    repaint();
        }
-        public void setOSType(String OSType)
+        public void setOSType(String in_OSType)
         {
-            if ("Windows".equals(OSType))
-            {
-                OSType = "Windows32";
-            }
+      
           
-            switch (OSType)
+            switch (in_OSType)
             {
                 case "Windows":
                    jCheckBoxOSTypeWindows32.setSelected(true); 
+                   jCheckBoxOSTypeWindows64.setSelected(false);
+                   jCheckBoxOSTypeMac.setSelected(false);
+                   jCheckBoxOSTypeLinux32.setSelected(false);
+                   jCheckBoxOSTypeLinux64.setSelected(false);
                     break;
                     
                 case "Windows32":
-                jCheckBoxOSTypeWindows32.setSelected(true);
+               jCheckBoxOSTypeWindows32.setSelected(true); 
+                   jCheckBoxOSTypeWindows64.setSelected(false);
+                   jCheckBoxOSTypeMac.setSelected(false);
+                   jCheckBoxOSTypeLinux32.setSelected(false);
+                   jCheckBoxOSTypeLinux64.setSelected(false);
                 break;
                 case "Windows64":
                 jCheckBoxOSTypeWindows64.setSelected(true);
+                 jCheckBoxOSTypeWindows32.setSelected(false); 
+               
+                   jCheckBoxOSTypeMac.setSelected(false);
+                   jCheckBoxOSTypeLinux32.setSelected(false);
+                   jCheckBoxOSTypeLinux64.setSelected(false);
                 break;
                 case "Mac":
                 jCheckBoxOSTypeMac.setSelected(true);
+                 jCheckBoxOSTypeWindows32.setSelected(false); 
+                   jCheckBoxOSTypeWindows64.setSelected(false);
+               
+                   jCheckBoxOSTypeLinux32.setSelected(false);
+                   jCheckBoxOSTypeLinux64.setSelected(false);
                 break;
                 case "Linux-32":
                 jCheckBoxOSTypeLinux32.setSelected(true);
+                 jCheckBoxOSTypeWindows32.setSelected(false); 
+                   jCheckBoxOSTypeWindows64.setSelected(false);
+                   jCheckBoxOSTypeMac.setSelected(false);
+                
+                   jCheckBoxOSTypeLinux64.setSelected(false);
                 break;
                 case "Linux-64":
                 jCheckBoxOSTypeLinux64.setSelected(true);
+                 jCheckBoxOSTypeWindows32.setSelected(false); 
+                   jCheckBoxOSTypeWindows64.setSelected(false);
+                   jCheckBoxOSTypeMac.setSelected(false);
+                   jCheckBoxOSTypeLinux32.setSelected(false);
+               
                 break;
                 
             }
