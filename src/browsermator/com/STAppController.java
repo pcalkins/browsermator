@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.107";
+public final String ProgramVersion = "1.2.108";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4154,8 +4154,9 @@ STAppFrame.saveState();
     if (versionstored==null) {versionstored = "";}
     
       
-    if (versionstored == null ? this.ProgramVersion != null : !versionstored.equals(this.ProgramVersion))
+    if (!versionstored.equals(this.ProgramVersion))
     {
+           Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
  WriteResource ("chromedriver_linux32", "chromedriver");
  WriteResource ("chromedriver_linux64", "chromedriver");    
  WriteResource ("chromedriver_mac64", "chromedriver");
