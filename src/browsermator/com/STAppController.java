@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.105";
+public final String ProgramVersion = "1.2.106";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -106,7 +106,7 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
-          ExtractWebDrivers();
+   
      mainAppFrame = new MainAppFrame(); 
     Navigator = new SiteTestView();
     if (args.length>0) { 
@@ -132,6 +132,7 @@ if (file_exists == false)
 {
     CreateConfigFile();
 }
+       ExtractWebDrivers();
      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
   mainAppFrame.setWindowProps(input);
  
