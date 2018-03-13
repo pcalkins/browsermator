@@ -260,7 +260,7 @@ public String doInBackground()
    
  try
  {
-     driver.close();
+   if (driver!=null) {  driver.close(); }
  }
  catch (Exception e)
  {
@@ -458,8 +458,8 @@ public String doInBackground()
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
-            FallbackDriver("HTMLUnit");
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch Marionette driver:" + ex.toString(), false,0,0);
+     
          
           
     }
@@ -535,8 +535,8 @@ public String doInBackground()
     {
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver, will fallback to HTMLUnitDriver", false,0,0);
-         FallbackDriver("HTMLUnit");
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver: " + ex.toString(), false,0,0);
+      
       
     }
       
@@ -559,10 +559,10 @@ public String doInBackground()
      }
      catch (Exception ex)
      {
-         System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
+    
      
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
-          FallbackDriver("HTMLUnit");
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver:" + ex.toString(), false,0,0);
+         
           
      }
      break;
@@ -578,10 +578,10 @@ public String doInBackground()
      }
      catch (Exception ex)
              {
-             System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
+     
     
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
-          FallbackDriver("HTMLUnit");
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver: " +ex.toString(), false,0,0);
+       
           
              }
      break;
@@ -646,8 +646,8 @@ options.setBinary(chrome_main_path);
    {
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
      
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0,0);
-         FallbackDriver("HTMLUnit");
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver." + ex.toString(), false,0,0);
+       
           
    }
      break;
@@ -675,8 +675,8 @@ options49.setBinary(chrome_path);
    catch (Exception ex)
    {
        System.out.println ("Problem launching Chromedriver 49: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0, 0);
-      FallbackDriver("HTMLUnit");
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver." + ex.toString(), false,0, 0);
+     
    }
      break;
    case "Edge":
@@ -691,8 +691,8 @@ options49.setBinary(chrome_path);
      catch (Exception ex)
    {
        System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0, 0);
-      FallbackDriver("HTMLUnit");
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. " + ex.toString(), false,0, 0);
+  
    }
        break;
        
@@ -754,10 +754,10 @@ options49.setBinary(chrome_path);
      }
    catch (Exception ex)
    {
-       System.out.println ("Problem launching Chromedriver: " + ex.toString());
+     
     
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver, will fallback to HTMLUnit Driver: " + ex.toString(), false,0,0);
-          FallbackDriver("HTMLUnit");
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch Chromedriver: " + ex.toString(), false,0,0);
+      
      
 
     
@@ -1501,7 +1501,7 @@ else
     thisbugindex++;
       }
  
-         if (STAppData.getPromptToClose())
+         if (STAppData.getPromptToClose() && driver!=null)
      {
           PromptToClose thisContinuePrompt = new PromptToClose(STAppData.short_filename + " - Prompt to close webdriver", "Close webdriver/browser?");
   
@@ -1516,7 +1516,7 @@ else
    
  try
  {
-     driver.close();
+   if (driver!=null) {  driver.close(); }  
  }
  catch (Exception e)
  {
