@@ -459,7 +459,29 @@ public String doInBackground()
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch Marionette driver:" + ex.toString(), false,0,0);
-     
+     if (OSType.contains("Windows"))
+   {
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+          
+   }
+   else
+   {
+            try
+     {
+       Runtime.getRuntime().exec("killall geckodriver");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+   }
          
           
     }
@@ -536,7 +558,29 @@ public String doInBackground()
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver: " + ex.toString(), false,0,0);
-      
+           if (OSType.contains("Windows"))
+   {
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+          
+   }
+   else
+   {
+            try
+     {
+       Runtime.getRuntime().exec("killall geckodriver");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+   }
       
     }
       
@@ -647,12 +691,32 @@ options.setBinary(chrome_main_path);
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver." + ex.toString(), false,0,0);
-       
+   if (OSType.contains("Windows"))
+   {
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver.exe");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing chromedriver: " + ex2.toString());
+     }
           
    }
-     break;
-
-     
+   else
+   {
+            try
+     {
+       Runtime.getRuntime().exec("killall chromedriver");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing chromedriver: " + ex2.toString());
+     }
+   }
+   
+   }
+       break;
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
@@ -676,7 +740,19 @@ options49.setBinary(chrome_path);
    {
        System.out.println ("Problem launching Chromedriver 49: " + ex.toString());
         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver." + ex.toString(), false,0, 0);
-     
+    if (OSType.contains("Windows"))
+   {
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver-xp.exe");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing chromedriver: " + ex2.toString());
+     }
+          
+   }
+ 
    }
      break;
    case "Edge":
@@ -695,73 +771,8 @@ options49.setBinary(chrome_path);
   
    }
        break;
-       
          
-         default: 
-           //legacy support
     
-         if ("Windows".equals(OSType))
-     {
-                      thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
- 
-    //    System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
-     }
-     if ("Windows32".equals(OSType))
-     {
-                   thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
-    
-   //  System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
-     }
-       if ("Windows64".equals(OSType))
-     {
-                      thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
- 
-  //   System.setProperty("webdriver.chrome.driver",BMPATH+File.separator+ "lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver.exe");
-     }
-     if ("Mac".equals(OSType))
-     {
-                      thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_mac64"+File.separator+"chromedriver");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
- 
-   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_mac64"+File.separator+"chromedriver");
-     }
-     if ("Linux-32".equals(OSType))
-     {
-                      thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_linux32"+File.separator+"chromedriver");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
- 
-   //  System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux32"+File.separator+"chromedriver");
-     }
-     if ("Linux-64".equals(OSType))
-     {
-                      thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_linux64"+File.separator+"chromedriver");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
- 
-  //   System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_linux64"+File.separator+"chromedriver");
-     }
-     try
-     {
-        driver = new ChromeDriver();     
-     }
-   catch (Exception ex)
-   {
-     
-    
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch Chromedriver: " + ex.toString(), false,0,0);
-      
-     
-
-    
-   }
     }
     int WaitTime = 0;
 
@@ -1584,6 +1595,68 @@ while(thisContinuePrompt.isVisible() == true){
     }  
      
  }
+  if (driver==null)
+  {
+      if ("Chrome".equals(targetbrowser))
+       {
+      if (OSType.contains("Windows"))
+   {
+     
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver.exe");
+    
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing chromedriver: " + ex2.toString());
+     }
+          
+   }
+   else
+   {
+            try
+     {
+       Runtime.getRuntime().exec("killall chromedriver");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing chromedriver: " + ex2.toString());
+     }
+   }
+   }
+      
+   if ("Firefox".equals(targetbrowser))
+   {
+        if (OSType.contains("Windows"))
+   {
+     
+         try
+     {
+       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
+    
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+          
+   }
+   else
+   {
+            try
+     {
+       Runtime.getRuntime().exec("killall geckodriver");
+     }
+     catch (Exception ex2)
+     {
+         System.out.println("exception killing geckodriver: " + ex2.toString());
+     }
+   }     
+   }
+  }
+  
+ 
  }
 
   public void FillReport()
