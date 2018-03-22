@@ -459,29 +459,7 @@ public String doInBackground()
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch Marionette driver:" + ex.toString(), false,0,0);
-     if (OSType.contains("Windows"))
-   {
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-          
-   }
-   else
-   {
-            try
-     {
-       Runtime.getRuntime().exec("killall geckodriver");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-   }
+     
          
           
     }
@@ -558,29 +536,7 @@ public String doInBackground()
         System.out.println ("Exception launching Marionette driver... possibly XP or missing msvcr110.dll: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Marionette driver: " + ex.toString(), false,0,0);
-           if (OSType.contains("Windows"))
-   {
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-          
-   }
-   else
-   {
-            try
-     {
-       Runtime.getRuntime().exec("killall geckodriver");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-   }
+      
       
     }
       
@@ -691,32 +647,11 @@ options.setBinary(chrome_main_path);
        System.out.println ("Problem launching Chromedriver: " + ex.toString());
      
          Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chromedriver." + ex.toString(), false,0,0);
-   if (OSType.contains("Windows"))
-   {
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver.exe");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing chromedriver: " + ex2.toString());
-     }
-          
+  
    }
-   else
-   {
-            try
-     {
-       Runtime.getRuntime().exec("killall chromedriver");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing chromedriver: " + ex2.toString());
-     }
-   }
-   
-   }
-       break;
+  
+      break;
+     
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
@@ -740,20 +675,10 @@ options49.setBinary(chrome_path);
    {
        System.out.println ("Problem launching Chromedriver 49: " + ex.toString());
         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Chrome 49 driver." + ex.toString(), false,0, 0);
-    if (OSType.contains("Windows"))
-   {
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver-xp.exe");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing chromedriver: " + ex2.toString());
-     }
           
    }
  
-   }
+   
      break;
    case "Edge":
                   thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
@@ -1595,66 +1520,7 @@ while(thisContinuePrompt.isVisible() == true){
     }  
      
  }
-  if (driver==null)
-  {
-      if ("Chrome".equals(targetbrowser))
-       {
-      if (OSType.contains("Windows"))
-   {
-     
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM chromedriver.exe");
     
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing chromedriver: " + ex2.toString());
-     }
-          
-   }
-   else
-   {
-            try
-     {
-       Runtime.getRuntime().exec("killall chromedriver");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing chromedriver: " + ex2.toString());
-     }
-   }
-   }
-      
-   if ("Firefox".equals(targetbrowser))
-   {
-        if (OSType.contains("Windows"))
-   {
-     
-         try
-     {
-       Runtime.getRuntime().exec("TASKKILL /F /IM geckodriver.exe");
-    
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-          
-   }
-   else
-   {
-            try
-     {
-       Runtime.getRuntime().exec("killall geckodriver");
-     }
-     catch (Exception ex2)
-     {
-         System.out.println("exception killing geckodriver: " + ex2.toString());
-     }
-   }     
-   }
-  }
   
  
  }

@@ -105,7 +105,7 @@ else
  }
  catch (Exception e)
  {
-  
+  System.out.println (e.toString());
   this.Pass = false;
   
  }
