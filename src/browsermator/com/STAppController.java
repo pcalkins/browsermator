@@ -58,7 +58,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.112";
+public final String ProgramVersion = "1.2.113";
+public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4151,11 +4152,13 @@ STAppFrame.saveState();
  {
      BrowserMatorConfig configCheck = new BrowserMatorConfig();
     String versionstored = configCheck.getKeyValue("version");
+    String lastWebDriverUpdateStored = configCheck.getKeyValue("lastWebDriverUpdate");
     if (versionstored==null) {versionstored = "";}
-    
+    if (lastWebDriverUpdateStored==null) {lastWebDriverUpdateStored="";}
       
-    if (!versionstored.equals(this.ProgramVersion))
+    if (!lastWebDriverUpdateStored.equals(this.lastWebDriverUpdate))
     {
+       
            Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
  WriteResource ("chromedriver_linux32", "chromedriver");
  WriteResource ("chromedriver_linux64", "chromedriver");    
@@ -4170,7 +4173,7 @@ STAppFrame.saveState();
    WriteResource ("geckodriver-win64", "geckodriver.exe");
     WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
      WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
-    configCheck.setKeyValue("version", this.ProgramVersion);
+    configCheck.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);
     }
  }
  public void WriteResource (String dirname, String filename)
