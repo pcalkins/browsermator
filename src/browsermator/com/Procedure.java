@@ -104,6 +104,7 @@ this.URLListRunTimeEntries = new ArrayList<>();
    }
     public void setDataFile(String dataFile)
    {
+     
        DataFile = dataFile;
     
        if (!"placeholder".equals(DataFile))
@@ -116,7 +117,7 @@ this.URLListRunTimeEntries = new ArrayList<>();
    //    }
              
           DataLoopSource = "file";
-    
+   
    }
    }
 
@@ -159,8 +160,10 @@ this.URLListRunTimeEntries = new ArrayList<>();
   
    public void setRunTimeFileSet(List<String[]> in_set)
    {
-       if (in_set.size()>0)
+       if (in_set.size()>1)
        {   
+           //remove first row, this is field names
+           in_set.remove(0);
        this.RunTimeFileSet = in_set;
    }
    }
