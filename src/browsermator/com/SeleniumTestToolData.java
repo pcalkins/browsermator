@@ -296,9 +296,7 @@ changes=true;
               DataOut = DataFileHashMap.get(filename);
           }
       }
-      //remove first line, this is field names
-      DataOut.remove(0);
-      
+ 
       return DataOut;
   }
   
