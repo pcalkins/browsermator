@@ -160,12 +160,11 @@ this.URLListRunTimeEntries = new ArrayList<>();
   
    public void setRunTimeFileSet(List<String[]> in_set)
    {
-       if (in_set.size()>1)
-       {   
-           //remove first row, this is field names
-           in_set.remove(0);
-       this.RunTimeFileSet = in_set;
-   }
+    
+       if (in_set.size()>0)
+       {
+           this.RunTimeFileSet = in_set;
+       }
    }
    public void setURLListName(String in_name)
    {
