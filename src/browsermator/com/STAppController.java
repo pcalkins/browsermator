@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.116";
+public final String ProgramVersion = "1.2.117";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -66,6 +66,7 @@ String PTPUSERCLOUDDIR;
 String BMUSERCLOUDDIR;
 String WEBDRIVERSDIR;
 String BrowsermatorAppFolder; 
+String PTPAPPFOLDER;
   Boolean SHOWGUI = true;
   public int user_id;
 //  String rootURL = "http://localhost";
@@ -78,7 +79,7 @@ String BMPATH;
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
-
+PTPAPPFOLDER = System.getProperty("user.home") + File.separator + "PTPAppFolder" + File.separator;
 UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
    File file = new File(BrowsermatorAppFolder);
         if (!file.exists()) {
@@ -2357,6 +2358,12 @@ actionindex = Integer.parseInt(parts[1])-1;
        
        switch(commandText)
             {
+             case "setpeteymode":
+                STAppFrame.setTargetBrowserView("Chrome 49");
+                STAppData.setTargetBrowser("Chrome 49");
+              FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
+              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
+              break;
            case "changeOS":
             STAppFrame.setOSTypeView(newValue);
                 STAppData.setOSType(newValue);
@@ -2496,6 +2503,13 @@ actionindex = Integer.parseInt(parts[1])-1;
       
        switch(commandText)
             {
+             case "setpeteymode":
+             
+                STAppData.setTargetBrowser("Chrome 49");
+              FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
+              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
+              break;
+              
                case "changeOS":
           
                 STAppData.setOSType(newValue);
