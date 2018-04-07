@@ -74,6 +74,7 @@ Map<String, Object> prefs;
  
  public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
+     prefs = new HashMap<String, Object>();
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
   //   STAppData.RefreshData();
