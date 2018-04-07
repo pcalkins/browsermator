@@ -9,6 +9,8 @@ import java.awt.Cursor;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,8 +38,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  //  String BMPATH;
     String BrowsermatorAppFolder;
     String WEBDRIVERSDIR;
+     Map<String, Object> prefs;
   public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
+              prefs = new HashMap<String, Object>();
               this.STAppFrame = in_STAppFrame;
               this.STAppData = in_STAppData;
               this.bugtorun = in_bugtorun;
@@ -155,7 +159,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, String TargetBrowser, String OSType)
  {
-   
+     prefs = new HashMap<String, Object>();
   STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
@@ -361,8 +365,11 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      case "Chrome":
          //legacy support
           ChromeOptions options = new ChromeOptions();  
+             prefs.put("profile.default_content_setting_values.notifications", 2);
+                 options.setExperimentalOption("prefs", prefs);
              if (chrome_main_path!=null) {
-      
+    
+              
 options.setBinary(chrome_main_path);
 
 
@@ -429,8 +436,10 @@ options.setBinary(chrome_main_path);
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
+                    prefs.put("profile.default_content_setting_values.notifications", 2);
+                 options49.setExperimentalOption("prefs", prefs); 
       if (chrome_path!=null) {
-        
+   
 options49.setBinary(chrome_path);
 
 
@@ -886,6 +895,9 @@ while(thisContinuePrompt.isVisible() == true){
        STAppFrame.setTargetBrowserView("Chrome 49");     
      
             ChromeOptions optionsfallback49 = new ChromeOptions();
+  
+                 prefs.put("profile.default_content_setting_values.notifications", 2);
+                 optionsfallback49.setExperimentalOption("prefs", prefs);
 optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
   driver = new ChromeDriver(optionsfallback49);    

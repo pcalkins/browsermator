@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -42,9 +44,10 @@ Boolean RunAgain = false;
 // String BMPATH;
 String WEBDRIVERSDIR;
 String BrowsermatorAppFolder;
+Map<String, Object> prefs;
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
-
+ prefs = new HashMap<String, Object>();
  BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
           STAppData = in_STAppData;
@@ -588,8 +591,12 @@ public String doInBackground()
      case "Chrome":
          //legacy support
           ChromeOptions options = new ChromeOptions();  
+          
+                 prefs.put("profile.default_content_setting_values.notifications", 2);
+                 options.setExperimentalOption("prefs", prefs);   
              if (chrome_main_path!=null) {
-      
+            
+   
 options.setBinary(chrome_main_path);
 
 
@@ -655,8 +662,11 @@ options.setBinary(chrome_main_path);
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
+                 prefs.put("profile.default_content_setting_values.notifications", 2);
+                 options49.setExperimentalOption("prefs", prefs);     
       if (chrome_path!=null) {
-        
+   
+          
 options49.setBinary(chrome_path);
 
 
@@ -1725,6 +1735,9 @@ if (number_of_rows==0)
        STAppFrame.setTargetBrowserView("Chrome 49");     
        }
             ChromeOptions optionsfallback49 = new ChromeOptions();
+          prefs.put("profile.default_content_setting_values.notifications", 2);
+                 optionsfallback49.setExperimentalOption("prefs", prefs);
+           
 optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
   driver = new ChromeDriver(optionsfallback49);    
