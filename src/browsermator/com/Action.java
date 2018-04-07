@@ -99,12 +99,13 @@ List<LocalDateTime> loop_time_of_test;
   
   public void ClickCatchAction(WebDriver driver, String xpather)
   {
-     
+     if (driver!=null)
+     {
        try { 
   
   
           List<WebElement> elements = driver.findElements(By.xpath(xpather));
-          
+ 
  if (this.BoolVal2)
  {
 
@@ -136,13 +137,21 @@ element.click();
     this.Pass = false;
 }
   }
+     
  }
   catch (Exception e)
  {
+     e.printStackTrace();
      System.out.println ("Exception while running clickcatch: " + e.toString());
   this.Pass = false;
   
  }
+       
+     }
+     else
+     {
+         this.Pass=false;
+     }
   }
   public void RightClickCatchAction (WebDriver driver, String xpather)
   {

@@ -671,8 +671,11 @@ options49.setBinary(chrome_path);
 
 
     }
-                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
-          setPermissions(thisDriver);
+      // since new SElenium does not work with Chrome49, this was changed
+       //          thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
+                 thisDriver =  new File(WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
+      
+                 setPermissions(thisDriver);
         System.setProperty("webdriver.chrome.driver", thisDriver.getAbsolutePath());  
     // System.setProperty("webdriver.chrome.driver", BMPATH+File.separator+"lib"+File.separator+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
    
