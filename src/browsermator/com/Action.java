@@ -146,6 +146,8 @@ element.click();
   }
   public void RightClickCatchAction (WebDriver driver, String xpather)
   {
+      if (driver!=null)
+      {
         try { 
         // actions don't seem to work with geckodriver
             Actions actions = new Actions(driver);
@@ -181,7 +183,12 @@ if (elements.isEmpty())
  {
   this.Pass = false;
   
- }    
+ }  
+      }
+      else
+      {
+          this.Pass = false;
+      }
   }
   public void setBoolVal1 (Boolean BoolVal1)
 {

@@ -9,6 +9,8 @@ import java.awt.Cursor;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,8 +38,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  //  String BMPATH;
     String BrowsermatorAppFolder;
     String WEBDRIVERSDIR;
+       Map<String, Object> prefs;
   public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
           {
+              prefs = new HashMap<String, Object>();
               this.STAppFrame = in_STAppFrame;
               this.STAppData = in_STAppData;
               this.bugtorun = in_bugtorun;
@@ -360,9 +364,11 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
      case "Chrome":
          //legacy support
-          ChromeOptions options = new ChromeOptions();  
+          ChromeOptions options = new ChromeOptions(); 
+                           prefs.put("profile.default_content_setting_values.notifications", 2);
+                 options.setExperimentalOption("prefs", prefs);
              if (chrome_main_path!=null) {
-      options.addArguments("--disable-notifications");
+    
 options.setBinary(chrome_main_path);
 
 
@@ -429,8 +435,9 @@ options.setBinary(chrome_main_path);
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
-      if (chrome_path!=null) {
-  options49.addArguments("--disable-notifications");      
+     options49.addArguments("--disable-notifications");  
+         if (chrome_path!=null) {
+    
 options49.setBinary(chrome_path);
 
 
@@ -884,13 +891,14 @@ while(thisContinuePrompt.isVisible() == true){
        STAppData.setTargetBrowser("Chrome 49");
       
        STAppFrame.setTargetBrowserView("Chrome 49");     
-     
+     if (chrome_path!=null)
+     {
             ChromeOptions optionsfallback49 = new ChromeOptions();
             optionsfallback49.addArguments("--disable-notifications");
 optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
   driver = new ChromeDriver(optionsfallback49);    
-  
+     }
       }
   }
 }
