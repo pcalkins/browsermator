@@ -362,7 +362,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
          //legacy support
           ChromeOptions options = new ChromeOptions();  
              if (chrome_main_path!=null) {
-      
+      options.addArguments("--disable-notifications");
 options.setBinary(chrome_main_path);
 
 
@@ -430,7 +430,7 @@ options.setBinary(chrome_main_path);
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
       if (chrome_path!=null) {
-        
+  options49.addArguments("--disable-notifications");      
 options49.setBinary(chrome_path);
 
 
@@ -886,6 +886,7 @@ while(thisContinuePrompt.isVisible() == true){
        STAppFrame.setTargetBrowserView("Chrome 49");     
      
             ChromeOptions optionsfallback49 = new ChromeOptions();
+            optionsfallback49.addArguments("--disable-notifications");
 optionsfallback49.setBinary(chrome_path);
  System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
   driver = new ChromeDriver(optionsfallback49);    
