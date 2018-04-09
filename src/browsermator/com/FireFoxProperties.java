@@ -21,7 +21,7 @@ public class FireFoxProperties {
     String firefox_path;
     String targetbrowser;
     JFileChooser FindFireFoxExe;
-    String BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+    String BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
   public FireFoxProperties(String in_tb)
   {
   this.targetbrowser = in_tb;

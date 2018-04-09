@@ -52,7 +52,7 @@ public final String UNIQUE_LOG_DIR;
    
   public SeleniumTestTool(SeleniumTestToolData in_STAppData)
   {
-        USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorAppFolder";
+        USERDIR = System.getProperty("user.home") + File.separator + "BrowsermatorXPAppFolder";
 UNIQUE_LOG_DIR = USERDIR + File.separator + "BrowsermatorUniqueLogFolder" + File.separator;
  
   this.undoTempFile = "";

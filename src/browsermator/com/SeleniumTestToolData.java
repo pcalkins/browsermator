@@ -83,7 +83,7 @@ public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
       
   
-         BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+         BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
   
 UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
            this.TemplateOrNew = false;

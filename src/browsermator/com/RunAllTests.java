@@ -48,7 +48,7 @@ Map<String, Object> prefs;
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
- BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+ BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
           STAppData = in_STAppData;
           STAppFrame = in_STAppFrame;
@@ -75,7 +75,7 @@ Map<String, Object> prefs;
  public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
      prefs = new HashMap<String, Object>();
-      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
   //   STAppData.RefreshData();
  //we're in no GUI Mode

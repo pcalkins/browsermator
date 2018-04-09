@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.122XP";
+public final String ProgramVersion = "1.2.123XP";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -76,7 +76,7 @@ String PTPAPPFOLDER;
  MainAppFrame mainAppFrame;
 String BMPATH;
   public STAppController(String[] args) throws PropertyVetoException {
-      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 PTPAPPFOLDER = System.getProperty("user.home") + File.separator + "PTPAppFolder" + File.separator;
@@ -2359,8 +2359,8 @@ actionindex = Integer.parseInt(parts[1])-1;
        switch(commandText)
             {
              case "setpeteymode":
-                STAppFrame.setTargetBrowserView("Chrome 49");
-                STAppData.setTargetBrowser("Chrome 49");
+           //     STAppFrame.setTargetBrowserView("Chrome 49");
+           //     STAppData.setTargetBrowser("Chrome 49");
               FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
               FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
               break;
@@ -2505,7 +2505,7 @@ actionindex = Integer.parseInt(parts[1])-1;
             {
              case "setpeteymode":
              
-                STAppData.setTargetBrowser("Chrome 49");
+        //        STAppData.setTargetBrowser("Chrome 49");
               FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
               FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
               break;

@@ -24,7 +24,7 @@ public class BrowserMatorConfig {
 
       BrowserMatorConfig()
       {
-    this.BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+    this.BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
 
           this.userdir = System.getProperty("user.home");
       this.applicationProps = new Properties();    

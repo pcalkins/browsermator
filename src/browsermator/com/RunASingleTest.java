@@ -62,7 +62,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
   //   {
   //     Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
   //   }
-     BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+     BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;        
           }
     public String doInBackground()
