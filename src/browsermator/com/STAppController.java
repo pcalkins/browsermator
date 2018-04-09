@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.128XP";
+public final String ProgramVersion = "1.2.129XP";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -4168,7 +4168,25 @@ STAppFrame.saveState();
  }
  public void ExtractWebDrivers()
  {
+     Boolean file_exists = false;
+        try
+{
+    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
+if(f.exists() && !f.isDirectory()) { 
+   file_exists = true;
+}
+if (file_exists == false)
+{
+    CreateConfigFile();
+}
+
+
     
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} 
      BrowserMatorConfig configCheck = new BrowserMatorConfig();
     String versionstored = configCheck.getKeyValue("version");
     String lastWebDriverUpdateStored = configCheck.getKeyValue("lastWebDriverUpdate");
