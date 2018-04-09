@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.123XP";
+public final String ProgramVersion = "1.2.126XP";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -66,8 +66,9 @@ String PTPUSERCLOUDDIR;
 String BMUSERCLOUDDIR;
 String WEBDRIVERSDIR;
 String BrowsermatorAppFolder; 
-String PTPAPPFOLDER;
+// String PTPAPPFOLDER;
   Boolean SHOWGUI = true;
+   Boolean updateIT = false;
   public int user_id;
 //  String rootURL = "http://localhost";
  String rootURL = "https://www.browsermator.com";
@@ -79,7 +80,7 @@ String BMPATH;
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
-PTPAPPFOLDER = System.getProperty("user.home") + File.separator + "PTPAppFolder" + File.separator;
+// PTPAPPFOLDER = System.getProperty("user.home") + File.separator + "PTPAppFolder" + File.separator;
 UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
    File file = new File(BrowsermatorAppFolder);
         if (!file.exists()) {
@@ -103,11 +104,14 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
        File web_dir_file = new File(WEBDRIVERSDIR);
         if (!web_dir_file.exists()) {
             if (web_dir_file.mkdir()) {
+                updateIT = true;
                 System.out.println("Directory is created!");
             } else {
+             
                 System.out.println("Failed to create directory!");
             }
         }
+      
    
      mainAppFrame = new MainAppFrame(); 
     Navigator = new SiteTestView();
@@ -2362,7 +2366,7 @@ actionindex = Integer.parseInt(parts[1])-1;
            //     STAppFrame.setTargetBrowserView("Chrome 49");
            //     STAppData.setTargetBrowser("Chrome 49");
               FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
-              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
+              FFprops.WriteFireFoxPathToProperties(BrowsermatorAppFolder+  "Chrome 49" + File.separator + "chrome.exe");
               break;
            case "changeOS":
             STAppFrame.setOSTypeView(newValue);
@@ -2507,7 +2511,7 @@ actionindex = Integer.parseInt(parts[1])-1;
              
         //        STAppData.setTargetBrowser("Chrome 49");
               FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
-              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
+              FFprops.WriteFireFoxPathToProperties(BrowsermatorAppFolder+ "Chrome 49" + File.separator + "chrome.exe");
               break;
               
                case "changeOS":
@@ -4164,13 +4168,18 @@ STAppFrame.saveState();
  }
  public void ExtractWebDrivers()
  {
+    
      BrowserMatorConfig configCheck = new BrowserMatorConfig();
     String versionstored = configCheck.getKeyValue("version");
     String lastWebDriverUpdateStored = configCheck.getKeyValue("lastWebDriverUpdate");
     if (versionstored==null) {versionstored = "";}
     if (lastWebDriverUpdateStored==null) {lastWebDriverUpdateStored="";}
-      
-    if (!lastWebDriverUpdateStored.equals(this.lastWebDriverUpdate))
+       if (!lastWebDriverUpdateStored.equals(this.lastWebDriverUpdate))
+       {
+           updateIT = true;
+       }
+  
+    if (updateIT)
     {
        
            Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
