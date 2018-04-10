@@ -1743,7 +1743,7 @@ if (number_of_rows==0)
                  optionsfallback49.setExperimentalOption("prefs", prefs);
            
 optionsfallback49.setBinary(chrome_path);
- System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver-winxp.exe");
+ System.setProperty("webdriver.chrome.driver", WEBDRIVERSDIR+"chromedriver_win32"+File.separator+"chromedriver.exe");
   driver = new ChromeDriver(optionsfallback49);    
   
       }
