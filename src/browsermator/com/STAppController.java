@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.129XP";
+public final String ProgramVersion = "1.2.131XP";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -76,6 +76,7 @@ String BrowsermatorAppFolder;
        ArrayList<SeleniumTestToolData> MDIDataClasses = new ArrayList();
  MainAppFrame mainAppFrame;
 String BMPATH;
+Boolean EXITAFTER = false;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
@@ -2730,7 +2731,7 @@ actionindex = Integer.parseInt(parts[1])-1;
     if (args[0].equals("runsilent"))
     {
        SHOWGUI=false;
- 
+       EXITAFTER = true;
    File file_to_open = new File(args[1]);
     if (hasMap)
     {
@@ -4092,13 +4093,16 @@ STAppFrame.saveState();
          {
           sessions = STAppData.getSessions();
          }
-         
+          if (EXITAFTER)
+           {
+               STAppData.setExitAfter(true);
+           }
           String tbrowser = STAppData.getTargetBrowser();
       if ("Firefox/IE/Chrome".equals(tbrowser))
       {
  for (int x=0; x<sessions; x++)
  {
-    
+
      STAppData.setTargetBrowser("Firefox");
        RunAllTests REFSYNCH = new RunAllTests(STAppData);
     REFSYNCH.execute();   
@@ -4115,10 +4119,12 @@ STAppFrame.saveState();
       {
      for (int x=0; x<sessions; x++)
  {
+  
     RunAllTests REFSYNCH = new RunAllTests(STAppData);
     REFSYNCH.execute();      
  }       
   }
+   
   }
     public void RunActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
