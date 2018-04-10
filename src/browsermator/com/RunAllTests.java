@@ -82,6 +82,7 @@ Map<String, Object> prefs;
      STAppData = in_SiteTest;
        STAppData.RefreshData();
      RUNWITHGUI = false;
+    
   FFprops = new FireFoxProperties(targetbrowser);
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
