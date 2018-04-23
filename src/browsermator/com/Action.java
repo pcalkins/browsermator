@@ -99,7 +99,7 @@ List<LocalDateTime> loop_time_of_test;
   
   public void ClickCatchAction(WebDriver driver, String xpather)
   {
-     if (driver!=null)
+     if (driver!=null && xpather!="")
      {
        try { 
   
