@@ -45,6 +45,7 @@ Boolean RunAgain = false;
 String WEBDRIVERSDIR;
 String BrowsermatorAppFolder;
 Map<String, Object> prefs;
+ProgressFrame popOutFrame;
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
@@ -72,10 +73,10 @@ Map<String, Object> prefs;
     
  }
  
- public RunAllTests (SeleniumTestToolData in_SiteTest)
+public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
      prefs = new HashMap<String, Object>();
-      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
   //   STAppData.RefreshData();
  //we're in no GUI Mode
@@ -90,16 +91,16 @@ Map<String, Object> prefs;
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
-
-
+popOutFrame = new ProgressFrame(in_SiteTest.short_filename);
+ setProgressListeners(popOutFrame);
       
  }
  public synchronized void Pause() {
-       STAppFrame.Pause();
+     if (RUNWITHGUI) {  STAppFrame.Pause(); } else {popOutFrame.Pause();}
         this.paused = true;
     }
   public synchronized void Continue() {
-      STAppFrame.Continue();
+    if (RUNWITHGUI) {  STAppFrame.Continue();} else {popOutFrame.Continue();}
         this.paused = false;
          synchronized(this) {
             this.notifyAll();
@@ -192,6 +193,80 @@ public void setProgressListeners()
      });
         
  } 
+public void setProgressListeners(ProgressFrame popFrame)
+ {
+     popFrame.initFrame();
+   popFrame.addJButtonCancelActionListener(new ActionListener() {
+    public void actionPerformed (ActionEvent evt) {
+
+     LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut("cancel");
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+      
+       (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             STAppData.cancelled = true;
+            popOutFrame.jButtonCancel.setText("Cancelling...");
+             
+         
+           }
+       }).execute();
+       
+   }    
+ });
+  popFrame.addJButtonContinueActionListener(new ActionListener() {
+    public void actionPerformed (ActionEvent evt) {
+
+
+     LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut("continue");
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+      
+       (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+     Continue();
+    
+        
+           }
+       }).execute(); 
+   }    
+ });
+     popFrame.addJButtonPauseActionListener(new ActionListener() {
+    public void actionPerformed (ActionEvent evt) {
+
+    LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut("pause");
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+      
+       (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+ Pause();
+           
+           }
+       }).execute();
+  
+    }
+     });
+        
+ } 
 @Override 
 public String doInBackground()
  {
@@ -241,7 +316,10 @@ public String doInBackground()
     STAppFrame.setJTextFieldProgress("");
   STAppFrame.jButtonCancel.setText("Cancel");
      }
- 
+    else
+      {
+          popOutFrame.mainFrame.dispose();
+      }
    STAppData.testRunning = false; 
    
     if (RUNWITHGUI)
@@ -758,6 +836,23 @@ options49.setBinary(chrome_path);
                    STAppFrame.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");           
       
        }
+       else
+       {       LoudCall<Void, String> procMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(bugtitle);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(procMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+             popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+            
+             }
+        }).execute();
+       }
    int bug_INT = thisbugindex+1;
   String bug_ID = Integer.toString(bug_INT);
 
@@ -803,6 +898,27 @@ if (!"Dataloop".equals(thisbug.Type))
                 if (chunks.size()>0)
                 {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
+          
+            }
+        }).execute();
+       }
+       else
+       {   String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+               LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
+            popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
                 }
           
             }
@@ -1127,6 +1243,25 @@ else
             }
         }).execute();
         }
+        else
+        {   LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title3);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
+            popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
+            }
+        }).execute();
+        }
      
           ThisAction.RunAction(driver);
           ThisAction.Variable2 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
@@ -1166,6 +1301,25 @@ else
             }
         }).execute();
          }
+         else {       String action_title2 = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+        LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title2);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
+            popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
+            }
+        }).execute();
+         }
       
           ThisAction.RunAction(driver);
           ThisAction.Variable1 = "[stored_varname-start]"+fieldname+"[stored_varname-end]";
@@ -1194,6 +1348,26 @@ else
                 if (chunks.size()>0)
                 {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
+            }
+        }).execute();   
+           }
+           else {    String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+            
+              LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
+            popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
                 }
             }
         }).execute();   
@@ -1328,6 +1502,26 @@ else
                 if (chunks.size()>0)
                 {
              STAppFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
+                }
+            }
+        }).execute();   
+                 }
+                 else
+                 {           String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
+             LoudCall<Void, String> actMethod = new LoudCall<Void, String>() {
+            @Override
+            public Void call() throws Exception {
+            shoutOut(action_title);
+                    Thread.sleep(100);
+                    return null;
+                      }
+        };
+          (new ListenerTask<Void, String>(actMethod) {
+            @Override
+            protected void process(List<String> chunks) {
+                if (chunks.size()>0)
+                {
+             popOutFrame.setJTextFieldProgress(chunks.get(chunks.size() - 1));
                 }
             }
         }).execute();   

@@ -99,7 +99,7 @@ List<LocalDateTime> loop_time_of_test;
   
   public void ClickCatchAction(WebDriver driver, String xpather)
   {
-     if (driver!=null)
+     if (driver!=null && !"".equals(xpather))
      {
        try { 
   
@@ -155,6 +155,8 @@ element.click();
   }
   public void RightClickCatchAction (WebDriver driver, String xpather)
   {
+       if (driver!=null && !"".equals(xpather))
+     {
         try { 
         // actions don't seem to work with geckodriver
             Actions actions = new Actions(driver);
@@ -190,7 +192,12 @@ if (elements.isEmpty())
  {
   this.Pass = false;
   
- }    
+ }  
+            }
+     else
+     {
+         this.Pass=false;
+     }
   }
   public void setBoolVal1 (Boolean BoolVal1)
 {
