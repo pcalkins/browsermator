@@ -661,7 +661,7 @@ options.setBinary(chrome_main_path);
      
    case "Chrome 49":
          ChromeOptions options49 = new ChromeOptions();
-    options49.addArguments("--disable-notifications");  
+   options49.addArguments("--disable-notifications");  
          if (chrome_path!=null) {
     
 options49.setBinary(chrome_path);

@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.131XP";
+public final String ProgramVersion = "1.2.133XP";
 public final String lastWebDriverUpdate = "03212018";
 public String loginName;
 public String loginPassword;
@@ -4207,16 +4207,10 @@ if (file_exists == false)
     {
        
            Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
- WriteResource ("chromedriver_linux32", "chromedriver");
- WriteResource ("chromedriver_linux64", "chromedriver");    
- WriteResource ("chromedriver_mac64", "chromedriver");
+
  WriteResource ("chromedriver_win32", "chromedriver.exe");
  WriteResource ("chromedriver_win32", "chromedriver-winxp.exe");
- WriteResource ("edgedriver", "MicrosoftWebDriver.exe");
- WriteResource ("geckodriver-linux32", "geckodriver");
- WriteResource ("geckodriver-linux64", "geckodriver");
- WriteResource ("geckodriver-osx", "geckodriver");
-  WriteResource ("geckodriver-win32", "geckodriver.exe");
+   WriteResource ("geckodriver-win32", "geckodriver.exe");
    WriteResource ("geckodriver-win64", "geckodriver.exe");
     WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
      WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
