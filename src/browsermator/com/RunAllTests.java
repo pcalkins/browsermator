@@ -375,14 +375,14 @@ public String doInBackground()
   
  }
  
-
+    FillReport();  
      
     if (STAppData.getExitAfter())
     {
     System.exit(0);
     }
   
-      FillReport();      
+      
     
      BrowserMatorReport = new BrowserMatorReport(STAppData);
       if (STAppData.getShowReport())
