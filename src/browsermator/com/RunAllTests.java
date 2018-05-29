@@ -270,6 +270,10 @@ public void setProgressListeners(ProgressFrame popFrame)
 @Override 
 public String doInBackground()
  {
+     if (STAppData.hasSentStoredVars)
+     {
+       STAppData.PromptForUserVarValues();
+     }
      String ret_val = "";
     if (RUNWITHGUI)
     {

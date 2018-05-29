@@ -6,6 +6,8 @@
 package browsermator.com;
 
 import com.opencsv.CSVReader;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +52,7 @@ ArrayList<Procedure> BugArray = new ArrayList<>();
   String TargetBrowser;
   Boolean MultiSession;
   Boolean TemplateOrNew;
+
   String OSType;
   int WaitTime;
   int Sessions;
@@ -78,10 +81,11 @@ String EmailLoginName;
 public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
 String BrowsermatorAppFolder;
-    
+     boolean hasSentStoredVars;
+     
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
-      
+     this.hasSentStoredVars = false;
   
          BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
   
@@ -336,7 +340,11 @@ if (VarHashMap.containsKey(fieldname))
 
 return ret_val;
 }
-
+public void SetSentStoredVariableName(String varname)
+{
+   VarHashMap.put(varname, "");
+   hasSentStoredVars = true;
+}
 public void SetStoredVariableName(String varname)
 {
     VarHashMap.put(varname, "");  
@@ -1242,6 +1250,62 @@ xmlfile.writeStartElement("URLsVisited");
          
  }
  
+ public void PromptForUserVarValues()
+ {
+         int counter = 0;
+         String[] singleinputnames_list = new String[0];
+         UserSingleInputPanel[] UserSingleInputPanels;
+         
+    UserSingleInputPanels = new UserSingleInputPanel[VarHashMap.size()];
+     for (String thisVarName: VarHashMap.values())
+     {
+         
+   
+          
+           singleinputnames_list[counter] = thisVarName;
+        
+       
+              UserSingleInputPanel thisUserSingleInputPanel = new UserSingleInputPanel(thisVarName);
+               thisUserSingleInputPanel.CreatePanel();
+             UserSingleInputPanels[counter] = thisUserSingleInputPanel;
+            
+          
+           
+            counter++;
+          }
+       UserSingleInputFrame newInputFrame = new UserSingleInputFrame(UserSingleInputPanels);
+       newInputFrame.addjButtonCancelActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
 
+          newInputFrame.dispose();
+           
   
+        }
+      });
+              newInputFrame.addjButtonOKActionListener(  new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+          
+              String[] singleinputnames = new String[UserSingleInputPanels.length];
+               String[] singleinputvalues = new String[UserSingleInputPanels.length];
+                             
+            int panel_counter = 0;      
+        for (UserSingleInputPanel thisPanel: UserSingleInputPanels)
+        {
+            singleinputnames[panel_counter] = thisPanel.GetInputName();
+           singleinputvalues[panel_counter] = thisPanel.GetInputValue();
+        
+         
+           
+     
+      panel_counter++;
+           
+        }
+        newInputFrame.dispose();
+  }
+      }
+    );
+ }
 }
