@@ -510,8 +510,10 @@ public void setCurrentlySelectedFieldToStoredVariable(String fieldindex, int fie
     String actionindex = indexes[1];
     int bugindexnum = Integer.parseInt(bugindex)-1;
     int actionindexnum = Integer.parseInt(actionindex)-1;
+    if (actionindexnum>=0)
+    {
    BugViewArray.get(bugindexnum).ActionsViewList.get(actionindexnum).setFieldToStoredVariable(jComboBoxStoredVariables.getSelectedItem().toString(), fieldnum);
-
+    }
 }
 
   public String getSelectedVariableName()

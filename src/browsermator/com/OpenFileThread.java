@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -730,13 +731,17 @@ catch (Exception e)
           
         }
  }
-
+   if (hasGUI)
+ {
+     STAppFrame.UpdateDisplay();
+ }
 try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
 
    boolean hasDataloop = false;
    boolean hasURLList = false;
+
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
@@ -790,7 +795,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-      STAppFrame.UpdateDisplay();
+  //    STAppFrame.UpdateDisplay();
  
     }
   
@@ -811,7 +816,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
                   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
                     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
                       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-                       STAppFrame.UpdateDisplay();
+        //              STAppFrame.UpdateDisplay();
    
          }
   
@@ -859,7 +864,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     STAppFrame.AddNewBugView();  
      ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-       STAppFrame.UpdateDisplay();
+  //     STAppFrame.UpdateDisplay();
 
     }
        
@@ -991,6 +996,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
       if (hasGUI)
     {
    ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
+   NewProcedureView.ActionScrollPane.setViewportView(new JPanel());
     if (thisActionHashMap.containsKey(ActionType))
            {
                Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
@@ -1051,7 +1057,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   
 
         }   
- 
+ if (hasGUI)
+ {
+     STAppFrame.UpdateDisplay();
+ }
     }
 
     if (hasDataloop)

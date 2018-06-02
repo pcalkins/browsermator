@@ -82,6 +82,7 @@ public class ProcedureView {
     JPanel JPanelBug = new JPanel(BugLayout);
    ArrayList<ActionView> ActionsViewList = new ArrayList();   
   JScrollPane ActionScrollPane = new JScrollPane(VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
      GridBagLayout ActionLayout = new GridBagLayout();
    GridBagConstraints ActionConstraints = new GridBagConstraints(); 
        JLabel JLabelDoActions = new JLabel("Add Actions:");

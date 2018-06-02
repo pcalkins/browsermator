@@ -5,7 +5,9 @@
  */
 package browsermator.com;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author Pete
  */
-public class UserSingleInputFrame extends JFrame{
+public class UserSingleInputFrame extends JFrame implements ActionListener{
   
   
     UserSingleInputPanel[] UserSingleInputPanels;
@@ -23,16 +25,60 @@ public class UserSingleInputFrame extends JFrame{
                 JButton jButtonOK;
                 JButton jButtonCancel;
             JPanel jPanelMain;
-   public UserSingleInputFrame(UserSingleInputPanel[] in_user_single_input_panels)
+     Map<String, String> map;       
+   public UserSingleInputFrame(UserSingleInputPanel[] in_user_single_input_panels, Map<String, String> in_map)
   {
-     
+     map = in_map;
                 jButtonOK = new JButton("Send User Input(s)");
                 jButtonCancel = new JButton("Close");
                 jPanelButtons = new JPanel();
              
       UserSingleInputPanels = in_user_single_input_panels;
-    
+   
   }
+   @Override
+     public void actionPerformed(ActionEvent event)
+     {
+      
+         Object source = event.getSource();
+         if (source == jButtonOK)
+         {
+        ClickedOK();
+         }
+         if (source == jButtonCancel)
+         {
+         ClickedCancel();
+         }
+       setVisible(false);
+       dispose();
+   
+     }
+     public void ClickedOK()
+     {
+                String[] singleinputnames = new String[UserSingleInputPanels.length];
+               String[] singleinputvalues = new String[UserSingleInputPanels.length];
+                             
+            int panel_counter = 0;      
+        for (UserSingleInputPanel thisPanel: UserSingleInputPanels)
+        {
+            String thisname = thisPanel.GetInputName();
+          String thisvalue = thisPanel.GetInputValue();
+        
+         map.put(thisname, thisvalue);
+           
+     
+    
+           
+        }
+      setVisible(false);
+     dispose();
+     }
+     public void ClickedCancel()
+     {
+         dispose();
+        
+     }
+     
    public void InitializeFrame()
    {
      jPanelMain = new JPanel();
@@ -49,6 +95,8 @@ public class UserSingleInputFrame extends JFrame{
                    jPanelButtons.setSize(600,200);
                     jPanelMain.add(jPanelButtons);
                       add(jPanelMain);
+                      jButtonOK.addActionListener(this);
+                      
         setTitle("Site Inputs");
         pack();
       setVisible(true);

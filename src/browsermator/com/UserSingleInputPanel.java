@@ -26,14 +26,13 @@ public class UserSingleInputPanel extends JPanel {
                 
                
                 String input_value;
-              
-                String input_index;
+   
              
              
     public UserSingleInputPanel(String in_inputname)
     {
         inputName = in_inputname;
-  
+        input_value = "";
       
 
       
@@ -41,10 +40,7 @@ public class UserSingleInputPanel extends JPanel {
   
     public void CreatePanel()
     {
-          JLabel jLabelInputValue;
-                JTextField jTextFieldInputValue;
-              
-                JPanel jPanelSetInputValue;
+        
              
           jLabelInputValue = new JLabel(inputName + " Value:");
           jTextFieldInputValue = new JTextField(input_value, 20);

@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.131";
+public final String ProgramVersion = "1.2.136";
 public final String lastWebDriverUpdate = "04232018";
 public String loginName;
 public String loginPassword;
@@ -2460,11 +2460,24 @@ actionindex = Integer.parseInt(parts[1])-1;
              STAppFrame.BugViewArray.get(bugindex).setJTableSourceToDataSet(STAppData.getDataSetByFileName(newValue), newValue);
                    break;
              case "setstoredvar":
-             {
+        
+               if (newValue.contains(":::"))
+               {
+               String[] valueNames = newValue.split(":::");
                
+                   
+               for (String value: valueNames)
+               {
                  STAppData.SetSentStoredVariableName(newValue);
-                 
-             }
+              
+               }
+               }
+               else
+               {
+                   STAppData.SetSentStoredVariableName(newValue);
+                 STAppFrame.addSelectedVariableNameView(newValue);
+               }
+             break;
                  
                      
        }
@@ -2605,7 +2618,23 @@ actionindex = Integer.parseInt(parts[1])-1;
          
                  break;
                    
-                 
+              case "setstoredvar":
+        
+               if (newValue.contains(":::"))
+               {
+               String[] valueNames = newValue.split(":::");
+               
+                   
+               for (String value: valueNames)
+               {
+                 STAppData.SetSentStoredVariableName(newValue);
+               }
+               }
+               else
+               {
+                   STAppData.SetSentStoredVariableName(newValue);
+               }
+             break;     
                      
        }
      
