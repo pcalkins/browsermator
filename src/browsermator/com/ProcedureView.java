@@ -142,6 +142,8 @@ JComboBox jComboBoxAddAtPosition;
               
               if ("Select a stored URL List".equals(list_item1) || "".equals(list_item1)) { list_item1 = "0-0"; }
               if ("Select a stored URL List".equals(list_item2)|| "".equals(list_item2)) { list_item2 = "0-0"; }
+                if ("MASTER".equals(list_item1) || "".equals(list_item1)) { list_item1 = "0-0"; }
+              if ("MASTER".equals(list_item2)|| "".equals(list_item2)) { list_item2 = "0-0"; }
               String[] left_and_right_item1 = list_item1.split("-");
               String[] left_and_right_item2 = list_item2.split("-");
               Integer leftitem1 = Integer.parseInt(left_and_right_item1[0]);
@@ -191,6 +193,7 @@ sortmodel = new SortedComboBoxModel<>(URLLIST_ORDER);
 
  JComboBoxStoredArrayLists = new JComboBox<String>(sortmodel);
  JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+  JComboBoxStoredArrayLists.addItem("MASTER");
   jComboBoxSetDataLoopType = new JComboBox<>();
  jComboBoxSetDataLoopType.addItem("File");
  jComboBoxSetDataLoopType.addItem("Stored URL List");
@@ -431,13 +434,19 @@ ActionScrollPane.setVisible(true);
        this.URLListName = in_listname;
       
        List<String> blanklist = new ArrayList<>();
-       if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname))
+       if ("".equals(in_listname)|| "Select a stored URL List".equals(in_listname) || "MASTER".equals(in_listname))
        {
-        
+       if ("MASTER".equals(in_listname))
+       {
+            JComboBoxStoredArrayLists.setSelectedItem("MASTER");
+         this.setJTableSourceToURLList(blanklist, in_listname);   
+       }
+       else
+       {
                  JComboBoxStoredArrayLists.setSelectedItem("Select a stored URL List");
          this.setJTableSourceToURLList(blanklist, in_listname);     
           
-                
+       }        
        }
        else
        {
@@ -862,6 +871,8 @@ ActionScrollPane.setVisible(true);
    {
               for (String keyname: VarLists.keySet())
         {
+         if (keyname.contains("-"))
+            {   
      String[] parts = keyname.split("-");
  String leftpart = parts[0];
  if (!"".equals(leftpart))
@@ -871,7 +882,9 @@ ActionScrollPane.setVisible(true);
  {       
            JComboBoxStoredArrayLists.addItem(keyname);
  }
+
         }
+            }
           }
               JComboBoxStoredArrayLists.setSelectedItem(URLListName);
    }

@@ -178,7 +178,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       {
       setOSTypeActive(true);
     
-      }    
+      }  
 
  populateSelectURLListPulldowns();
   }
@@ -340,8 +340,11 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
                  BV.JComboBoxStoredArrayLists.removeAllItems();
               
         BV.JComboBoxStoredArrayLists.addItem("Select a stored URL List");
+        BV.JComboBoxStoredArrayLists.addItem("MASTER");
         for (String keyname: STAppData.VarLists.keySet())
         {
+            if (keyname.contains("-"))
+            {
      String[] parts = keyname.split("-");
  String leftpart = parts[0];
  if (!"".equals(leftpart))
@@ -352,6 +355,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
            BV.JComboBoxStoredArrayLists.addItem(keyname);
  }
         }
+            }
           }
      if ("".equals(selecteditem))
      {
@@ -379,7 +383,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
        }
         public void setOSType(String in_OSType)
         {
-      
+    
           
             switch (in_OSType)
             {

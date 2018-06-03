@@ -153,6 +153,7 @@ public boolean getIsTemplateOrNew()
 public void initVarLists()
 {
  this.VarLists = new HashMap(); 
+ VarLists.put("MASTER", new ArrayList<String>());
 }
 public Map<String, String> getVarHashMap()
 {

@@ -1084,10 +1084,34 @@ else
     
     if (thisbug.getLimit()>0 || thisbug.getRandom())
       {
+          if (thisbug.URLListName.equals("MASTER"))
+          {
+              ArrayList<String> masterList = new ArrayList<>();
+              for (List<String> thisList: STAppData.VarLists.values())
+              {
+                 for(String thisString: thisList)
+                 {
+                     masterList.add(thisString);
+                 }
+              }
+              STAppData.VarLists.put("MASTER", masterList);
+          }
       thisbug.setURListRunTimeData(STAppData.RandomizeAndLimitURLList(thisbug.URLListName,thisbug.getLimit(), thisbug.getRandom()), thisbug.URLListName);
       }
       else
       {
+           if (thisbug.URLListName.equals("MASTER"))
+          {
+              ArrayList<String> masterList = new ArrayList<>();
+              for (List<String> thisList: STAppData.VarLists.values())
+              {
+                 for(String thisString: thisList)
+                 {
+                     masterList.add(thisString);
+                 }
+              }
+              STAppData.VarLists.put("MASTER", masterList);
+          }
       thisbug.setURListRunTimeData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       }
       number_of_rows = thisbug.URLListRunTimeEntries.size();

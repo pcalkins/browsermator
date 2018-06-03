@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.2.136";
+public final String ProgramVersion = "1.3.138";
 public final String lastWebDriverUpdate = "04232018";
 public String loginName;
 public String loginPassword;
@@ -3037,7 +3037,7 @@ try {
   public static void main(String[] args) { 
   try
   {
-   
+ 
       STAppController app = new STAppController(args); 
  
 app.mainAppFrame.setVisible(true); 
