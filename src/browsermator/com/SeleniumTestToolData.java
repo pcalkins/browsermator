@@ -864,6 +864,7 @@ else
         String stringbugindex = Integer.toString(newbug.index);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
              addSelectedVariableName(bugdashactionindex);
+            
            
            }   
             

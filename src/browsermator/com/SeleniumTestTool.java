@@ -668,7 +668,7 @@ public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int
     {
      jButtonPlaceStoredVariable.setVisible(true);   
      jButtonPlaceStoredVariable.setEnabled(true); 
-       
+       actionindex++;
             String stringactionindex = Integer.toString(actionindex);
         String stringbugindex = Integer.toString(bugindex);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
@@ -1213,6 +1213,7 @@ bugindex++;
  // this.pack();
     this.validate();
  // this.revalidate();
+      updateStoredVarPulldownView();
  }
 
      public void setJTextFieldProgress(String value)

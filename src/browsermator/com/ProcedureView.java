@@ -706,6 +706,7 @@ ActionScrollPane.setVisible(true);
                thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, this_bug, this_bugview);
                 this_bugview.refreshjComboBoxAddAtPosition();
           //    window.UpdateDisplay();
+          
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
