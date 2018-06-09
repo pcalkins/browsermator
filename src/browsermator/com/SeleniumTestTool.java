@@ -191,7 +191,31 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
            PV.JComboBoxStoredArrayLists.addItem(keyname);
        }
    }
+   public void updateSelectedVariableName (String oldname, String newname)
+    {
+           if (STAppData.VarHashMap.containsKey(oldname))
+      {
+          STAppData.VarHashMap.remove(oldname);
+        
+      }  
+        if (STAppData.VarHashMap.containsKey(newname))
+        {       
+      
+            
+     
+     
+        }
+        else
+        {
   
+            STAppData.VarHashMap.put(newname, "");
+           
+     
+        }
+      
+     
+    
+    }        
     public void updateSelectedArrayName(String oldname, String newname)
     {
            if (STAppData.VarLists.containsKey(oldname))
@@ -301,25 +325,35 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
        if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
         {
               STAppData.setHasStoredVar(true);
-                                      String stringactionindex = Integer.toString(actionindex+1);
+                            String stringactionindex = Integer.toString(actionindex+1);
         String stringbugindex = Integer.toString(thisBugView.index);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
-        String oldname = AV.JTextFieldVariableVARINDEX.getText();
+        String oldname = AV.JTextFieldVariable2.getText();
          String newname = bugdashactionindex;
-      
+        if (oldname.equals(newname))
+         {
+          // addSelectedVariableName(AV.JTextFieldVariableVARINDEX.getText());
+      STAppData.VarHashMap.put(newname, "");
+       
+       //  addSelectedArrayName(bugdashactionindex);
+          }
+        else
+        {
               if ("".equals(oldname))
           {
            addSelectedVariableName(bugdashactionindex);
-           AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
+        //   AV.JTextFieldVariableVARINDEX.setText(bugdashactionindex);
          
           }
           else
           {
-         STAppData.updateSelectedVariableName(oldname, newname);
+              updateSelectedVariableName(oldname, newname);
+     //    STAppData.updateSelectedVariableName(oldname, newname);
      //    updateInsertedVariableNames(oldname, newname);
-          AV.JTextFieldVariableVARINDEX.setText(newname);
+     //     AV.JTextFieldVariableVARINDEX.setText(newname);
           }
- 
+        }
+   AV.JTextFieldVariable2.setText(newname);
         }  
        actionindex++;
         }

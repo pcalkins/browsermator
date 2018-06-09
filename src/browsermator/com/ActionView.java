@@ -544,8 +544,8 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                      
                      original_locationY = snapped_locationY;
      STAppFrame.updateStoredURLListIndexes(newbugview);
-   
-
+     
+    STAppFrame.updateStoredVarPulldownView();
   STAppFrame.UpdateScrollPane(newbugview);
 
 //scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "up");  
@@ -560,6 +560,7 @@ newbugview.ActionsViewList.get(action.index).JButtonDragIt.addMouseMotionListene
                  STAppData.MoveAction(newbug, action.index, 1); 
           original_locationY = snapped_locationY;
  STAppFrame.updateStoredURLListIndexes(newbugview);
+ STAppFrame.updateStoredVarPulldownView();
  STAppFrame.UpdateScrollPane(newbugview);
 
 // scroll (newbugview.ActionsViewList.get(action.index).JPanelAction, "down");  
