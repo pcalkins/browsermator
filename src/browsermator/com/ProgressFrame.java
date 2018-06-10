@@ -47,12 +47,13 @@ public class ProgressFrame {
         jButtonContinue = new JButton("Continue");
         jButtonContinue.setEnabled(false);
         jButtonCancel = new JButton("Cancel");
-    
+    jButtonCancel.setEnabled(false);
          JPanel   SouthButtonPanel = new JPanel();
         SouthButtonPanel.add(jButtonContinue);
         SouthButtonPanel.add(jButtonPause);
         SouthButtonPanel.add(jButtonCancel);
        JTextFieldProgress.setPreferredSize(new Dimension(300, 20));
+       JTextFieldProgress.setText("Launching Browser");
         jPanelSouth2.add(JTextFieldProgress);
         
         JPanel contentPanel = new JPanel();
@@ -95,17 +96,19 @@ public class ProgressFrame {
   }
        public void setJTextFieldProgress(String value)
 {
- 
+  jButtonCancel.setEnabled(true);
     JTextFieldProgress.setText(value);
 }
   public void Pause()
   {
+      jButtonCancel.setEnabled(false);
    jButtonPause.setEnabled(false);
        jButtonContinue.setEnabled(true);
     
   }
   public void Continue()
   {
+      jButtonCancel.setEnabled(true);
        jButtonPause.setEnabled(true);
        jButtonContinue.setEnabled(false);
     
