@@ -90,11 +90,13 @@ jComboBoxStoredVariables.setFocusable(false);
   {
    jButtonPause.setEnabled(false);
        jButtonContinue.setEnabled(true);
+       jButtonCancel.setEnabled(false);
   }
   public void Continue()
   {
        jButtonPause.setEnabled(true);
        jButtonContinue.setEnabled(false);
+       jButtonCancel.setEnabled(true);
   }
  public void refreshjComboBoxAtIndex()
  {
@@ -173,6 +175,7 @@ setjSpinnerWaitTime(STAppData.getWaitTime());
    setUniqueListView(STAppData.getUniqueList());
    setEmailReportView(STAppData.getEmailReport());
     setEmailReportFailView(STAppData.getEmailReportFail());
+      jButtonCancel.setEnabled(false);
 
 if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser().equals("Chrome"))
       {
@@ -1252,6 +1255,7 @@ bugindex++;
 
      public void setJTextFieldProgress(String value)
 {
+       jButtonCancel.setEnabled(true);
     JTextFieldProgress.setText(value);
 }
      public void UpdateScrollPane(ProcedureView newbugview)

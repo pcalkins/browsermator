@@ -47,6 +47,7 @@ public class ProgressFrame {
         jButtonContinue = new JButton("Continue");
         jButtonContinue.setEnabled(false);
         jButtonCancel = new JButton("Cancel");
+    
          JPanel   SouthButtonPanel = new JPanel();
         SouthButtonPanel.add(jButtonContinue);
         SouthButtonPanel.add(jButtonPause);
@@ -94,16 +95,19 @@ public class ProgressFrame {
   }
        public void setJTextFieldProgress(String value)
 {
+ 
     JTextFieldProgress.setText(value);
 }
   public void Pause()
   {
    jButtonPause.setEnabled(false);
        jButtonContinue.setEnabled(true);
+    
   }
   public void Continue()
   {
        jButtonPause.setEnabled(true);
        jButtonContinue.setEnabled(false);
+    
   }
 }

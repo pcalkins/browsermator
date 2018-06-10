@@ -678,7 +678,10 @@ public String doInBackground()
           ChromeOptions options = new ChromeOptions();  
           
                  prefs.put("profile.default_content_setting_values.notifications", 2);
-                 options.setExperimentalOption("prefs", prefs);   
+                // prefs.put("--dns-prefetch-disable", );
+                 
+                 options.setExperimentalOption("prefs", prefs);  
+                 options.addArguments("--dns-prefetch-disable");
              if (chrome_main_path!=null) {
             
    
