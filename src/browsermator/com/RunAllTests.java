@@ -957,7 +957,7 @@ if (!"Dataloop".equals(thisbug.Type))
        {
            if (ThisAction.Variable2.contains("[stored_varname-start]"))
                    {
-          varfieldname = ThisAction.Variable1;
+          varfieldname = ThisAction.Variable2;
          //   indexof_end_tag = varfieldname.indexOf("[stored_varname_end]")-1;
       // assuming name of "[stored_varname-start]" and "[stored_varname-end]"
                String[] split_testfield_end = varfieldname.split("\\[stored_varname\\-end\\]");
