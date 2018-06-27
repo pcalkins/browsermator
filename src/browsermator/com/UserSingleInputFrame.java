@@ -23,14 +23,14 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
     UserSingleInputPanel[] UserSingleInputPanels;
      JPanel jPanelButtons; 
                 JButton jButtonOK;
-                JButton jButtonCancel;
+    //            JButton jButtonCancel;
             JPanel jPanelMain;
      Map<String, String> map;       
    public UserSingleInputFrame(UserSingleInputPanel[] in_user_single_input_panels, Map<String, String> in_map)
   {
      map = in_map;
                 jButtonOK = new JButton("Send User Input(s)");
-                jButtonCancel = new JButton("Close");
+        //        jButtonCancel = new JButton("Close");
                 jPanelButtons = new JPanel();
              
       UserSingleInputPanels = in_user_single_input_panels;
@@ -45,10 +45,10 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
          {
         ClickedOK();
          }
-         if (source == jButtonCancel)
-         {
-         ClickedCancel();
-         }
+    //     if (source == jButtonCancel)
+    //     {
+    //     ClickedCancel();
+   //      }
        setVisible(false);
        dispose();
    
@@ -91,7 +91,7 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
        }
       
                 jPanelButtons.add(jButtonOK);
-                   jPanelButtons.add(jButtonCancel);  
+        //           jPanelButtons.add(jButtonCancel);  
                    jPanelButtons.setSize(600,200);
                     jPanelMain.add(jPanelButtons);
                       add(jPanelMain);
@@ -107,8 +107,8 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
     {
         jButtonOK.addActionListener(listener);
     }
-       public void addjButtonCancelActionListener(ActionListener listener)
-       {
-           jButtonCancel.addActionListener(listener);
-       }
+   //    public void addjButtonCancelActionListener(ActionListener listener)
+  //     {
+   //        jButtonCancel.addActionListener(listener);
+   //    }
 }
