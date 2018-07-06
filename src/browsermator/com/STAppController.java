@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.3.148";
+public final String ProgramVersion = "1.3.149";
 public final String lastWebDriverUpdate = "06262018";
 public String loginName;
 public String loginPassword;
@@ -4249,7 +4249,7 @@ if (file_exists == false)
  WriteResource ("chromedriver_mac64", "chromedriver");
  WriteResource ("chromedriver_win32", "chromedriver.exe");
 // WriteResource ("chromedriver_win32", "chromedriver-winxp.exe");
- WriteResource ("edgedriver", "MicrosoftWebDriver.exe");
+// WriteResource ("edgedriver", "MicrosoftWebDriver.exe");
  WriteResource ("geckodriver-linux32", "geckodriver");
  WriteResource ("geckodriver-linux64", "geckodriver");
  WriteResource ("geckodriver-osx", "geckodriver");

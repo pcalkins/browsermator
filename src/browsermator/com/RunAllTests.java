@@ -18,7 +18,6 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -781,23 +780,23 @@ options49.setBinary(chrome_path);
  
    
      break;
-   case "Edge":
-                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
-  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-   try
-   {
-     driver = new EdgeDriver();  
-   }
-     catch (Exception ex)
-   {
-       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. " + ex.toString(), false,0, 0);
-  
-   }
-       break;
-         
+//   case "Edge":
+//                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
+//          setPermissions(thisDriver);
+//        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
+//  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
+//   try
+//   {
+//     driver = new EdgeDriver();  
+//   }
+//     catch (Exception ex)
+//   {
+//       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
+//        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. " + ex.toString(), false,0, 0);
+//  
+//   }
+//       break;
+//         
     
     }
     int WaitTime = 0;
