@@ -76,7 +76,7 @@ ProgressFrame popOutFrame;
 public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
      prefs = new HashMap<String, Object>();
-      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
   //   STAppData.RefreshData();
  //we're in no GUI Mode
@@ -1756,6 +1756,69 @@ while(thisContinuePrompt.isVisible() == true){
   
      if (RunAgain)
     {
+      RunAgain=false;  
+      if (RUNWITHGUI)
+    {
+     STAppFrame.clearPassFailColors();
+     STAppFrame.disableAdds();
+     STAppFrame.disableRemoves();
+     STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+     STAppFrame.setRunButtonEnabled(false);
+    
+    }
+        if (STAppData.hasSentStoredVars)
+     {
+       STAppData.PromptForUserVarValues();
+     }
+     STAppData.testRunning = true;
+     
+     if (RUNWITHGUI)
+     {
+     prefs = new HashMap<String, Object>();
+ BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
+        
+     STAppFrame.RefreshViewData();
+    
+  STAppData.RefreshData();
+  STAppFrame.UpdateDisplay();
+  RUNWITHGUI = true;
+  FFprops = new FireFoxProperties(targetbrowser);
+  this.firefox_path = FFprops.LoadFirefoxPath();
+  this.chrome_path = FFprops.LoadChromePath();
+  this.chrome_main_path = FFprops.LoadChromeMainPath();
+    this.STAppData.cancelled = false;
+  this.targetbrowser = STAppData.TargetBrowser;
+  this.OSType = STAppData.OSType;
+  STAppFrame.jButtonCancel.setText("Cancel");
+  STAppFrame.showTaskGUI();
+
+ setProgressListeners();
+     }
+     else
+     {
+             prefs = new HashMap<String, Object>();
+      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
+  //   STAppData.RefreshData();
+ //we're in no GUI Mode
+
+       STAppData.RefreshData();
+     RUNWITHGUI = false;
+    
+  FFprops = new FireFoxProperties(targetbrowser);
+  this.firefox_path = FFprops.LoadFirefoxPath();
+  this.chrome_path = FFprops.LoadChromePath();
+ this.chrome_main_path = FFprops.LoadChromeMainPath();
+    this.STAppData.cancelled = false;
+  this.targetbrowser = STAppData.TargetBrowser;
+  this.OSType = STAppData.OSType;
+   popOutFrame.mainFrame.dispose();
+   popOutFrame = new ProgressFrame(STAppData.short_filename);
+ setProgressListeners(popOutFrame);
+     }
+     
+      
         RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
        
     }  

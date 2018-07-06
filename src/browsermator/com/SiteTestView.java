@@ -39,7 +39,7 @@ String CloudFile5;
    CloudFile3 = "";
    CloudFile4 = "";
    CloudFile5 = "";
-   BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorXPAppFolder"+File.separator;
+   BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
   
     initComponents();
     jTextFieldSMTPHostName.setText("");
