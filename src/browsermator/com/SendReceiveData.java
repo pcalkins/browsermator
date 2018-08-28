@@ -240,7 +240,7 @@ connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" +
     public String UploadFile(String user_filename, String description, File file, String PrivateVal) throws MalformedURLException, IOException
     {
         String ret_val="<HTML><HEAD></HEAD><BODY>DEFAULT</BODY></HTML>";
-                
+             file = CleanFile(file);   
 String charset = "UTF-8";
 String param = "15000";
 

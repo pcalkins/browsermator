@@ -58,8 +58,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.3.149";
-public final String lastWebDriverUpdate = "06262018";
+public final String ProgramVersion = "1.3.154";
+public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -77,10 +77,12 @@ String PTPAPPFOLDER;
  MainAppFrame mainAppFrame;
 String BMPATH;
 Boolean EXITAFTER = false;
+String PTPCLOUDDIRUSERLIST;
 
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
+     PTPCLOUDDIRUSERLIST = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator + "UserLists" + File.separator;
        BMUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "BrowserMatorCloudFiles" + File.separator;
 PTPAPPFOLDER = System.getProperty("user.home") + File.separator + "PTPAppFolder" + File.separator;
 UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.separator;
@@ -693,9 +695,14 @@ mainAppFrame.initComponents();
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
- 
-       
-         String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+         String file_name_to_write = "global";
+        String fileOption = STAppData.getUniqueFileOption();
+        if (fileOption.equals("file"))
+        {
+        file_name_to_write = STAppData.short_filename;
+        }
+        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
+     
        File fileCheck = new File(visited_list_file_path);
        if (fileCheck.exists())
        {
@@ -714,31 +721,7 @@ mainAppFrame.initComponents();
         }
       }
     );  
-          STAppFrame.addjButtonClearUniqueListActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
  
-        
-         String visited_list_file_path = BrowsermatorAppFolder + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
-       File fileCheck = new File(visited_list_file_path);
-       if (fileCheck.exists())
-       {
-           if (fileCheck.canWrite())
-           {
-               fileCheck.delete();
-               STAppFrame.jButtonClearUniqueList.setEnabled(false);
-                Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
-           }
-    
-      
-       }
-     
-     
-  
-        }
-      }
-    );  
       STAppFrame.addjButtonClearEmailSettingsListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -2432,6 +2415,10 @@ actionindex = Integer.parseInt(parts[1])-1;
                  }
                  break;
              case "setdatafile":
+                    if (newValue.contains("%PTPUSERLIST%"))
+      {
+         newValue = newValue.replace("%PTPUSERLIST%", PTPCLOUDDIRUSERLIST);
+      }
                    if (newValue.contains("%PTPCLOUDDIR%"))
       {
          newValue = newValue.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
@@ -2594,6 +2581,10 @@ actionindex = Integer.parseInt(parts[1])-1;
                  }
                  break;
              case "setdatafile":
+                                if (newValue.contains("%PTPUSERLIST%"))
+      {
+         newValue = newValue.replace("%PTPUSERLIST%", PTPCLOUDDIRUSERLIST);
+      }
                             if (newValue.contains("%PTPCLOUDDIR%"))
       {
          newValue = newValue.replace("%PTPCLOUDDIR%", PTPUSERCLOUDDIR);
@@ -3901,13 +3892,18 @@ File newfile = new File(path + ".js");
   }
           
        });
-                STAppFrame.addjButtonClearUniqueListActionListener(
+           STAppFrame.addjButtonClearUniqueListActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
- 
-        
-         String visited_list_file_path = BrowsermatorAppFolder + "browsermator_" + STAppFrame.short_filename + "_visited_url_log.xml";
+         String file_name_to_write = "global";
+        String fileOption = STAppData.getUniqueFileOption();
+        if (fileOption.equals("file"))
+        {
+        file_name_to_write = STAppData.short_filename;
+        }
+        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
+     
        File fileCheck = new File(visited_list_file_path);
        if (fileCheck.exists())
        {
@@ -3915,7 +3911,7 @@ File newfile = new File(path + ".js");
            {
                fileCheck.delete();
                STAppFrame.jButtonClearUniqueList.setEnabled(false);
-               Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
+                Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
            }
     
       

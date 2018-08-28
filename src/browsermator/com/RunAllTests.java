@@ -1721,7 +1721,12 @@ else
  {
      // don't worry it should close
  }
-  
+     if (STAppData.getUniqueList())
+     {
+         String file_option = STAppData.getUniqueFileOption();
+ STAppData.AddURLListToUniqueFile(file_option);
+ STAppData.ClearVisittedURLList();
+     } 
  }
      }   
   });
