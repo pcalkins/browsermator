@@ -632,7 +632,7 @@ public String doInBackground()
      case "Silent Mode (HTMLUnit)":
   
      driver = new HtmlUnitDriver();  
-   
+   if (driver==null){System.out.println("driver null");}
      break;
      
      case "Internet Explorer-32":
