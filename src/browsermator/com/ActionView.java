@@ -15,12 +15,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -61,6 +63,8 @@ public abstract class ActionView implements Listenable, Initializable{
    JPanel ActionPanelRight;
    ArrayList<ActionSettings> theseActionSettings;
   
+   JComboBox jComboBoxDriver;
+  
    ActionView()
    {
     theseActionSettings = new ArrayList<>();
@@ -91,7 +95,9 @@ String stringactionindex = Integer.toString(this.index+1);
   //    AddToGrid(JButtonDragIt, 0, 1, 1, 1, 0, 0, 0, GridBagConstraints.WEST);
   //    this.ActionPanelLeft.add(this.JLabelIndex);
   //    this.ActionPanelLeft.add(this.JButtonDragIt);
-    
+     this.jComboBoxDriver = new JComboBox();  
+     jComboBoxDriver.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+
         theseActionSettings.add(new ActionSettings(JLabelIndex, 0, 1, 0.0, GridBagConstraints.WEST));
        theseActionSettings.add(new ActionSettings(JButtonDragIt, 1, 1, 0.0, GridBagConstraints.WEST));
   
@@ -770,7 +776,6 @@ if (!potentialDrag) return;
    
 
    } 
-
 
   public void AddLoopListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {

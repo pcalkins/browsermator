@@ -1,9 +1,12 @@
 package browsermator.com;
 
+import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -13,7 +16,11 @@ import org.openqa.selenium.interactions.Actions;
 public abstract class Action implements Initializable, Serializable {
   
   
-    
+    String OSType;
+  String chrome_path;
+  String firefox_path;  
+String chrome_main_path;
+Map<String, Object> prefs;
 
 int index;
 Boolean Pass;
@@ -39,6 +46,7 @@ List<LocalDateTime> loop_time_of_test;
  List<String> tostore_varlist;
    Action ()
    {
+       prefs = new HashMap<String, Object>();
   this.tostore_varname = "";
   this.tostore_varvalue = "";
   this.tostore_varlist = new ArrayList<>();
@@ -59,6 +67,7 @@ List<LocalDateTime> loop_time_of_test;
     loop_pass_values = new ArrayList<>();
        loop_time_of_test = new ArrayList<>();
        loop_ScreenshotsBase64 = new ArrayList<>();
+           OSType = "Windows32";
    }
 
    public void InitializeLoopTestVars(int number_of_rows)
@@ -73,6 +82,10 @@ List<LocalDateTime> loop_time_of_test;
        loop_ScreenshotsBase64.add("<img src = \"\"></img>");
        }
    }
+    public void RunAction(RunAllTests RunThread)
+    {
+        System.out.println("GOT HERE");
+    }
    public void RunAction(WebDriver driver)
    {
   
@@ -235,7 +248,30 @@ public void setActionIndex (int newindex)
      this.Locked = LOCKED;
  }
  
-
+    public void setChromePath(String in_ChromePath)
+    {
+        chrome_path = in_ChromePath;
+    }
+    public void setFirefoxPath(String in_FireFoxPath)
+    {
+        firefox_path = in_FireFoxPath;
+    }
+    public void setOSType(String in_OSType)
+    {
+        this.OSType = in_OSType;
+    }
+         public void setPermissions(File thisDriver)
+         {
+             
+        
+           if (!thisDriver.canExecute())
+           {
+       Prompter cantexecuteprompt = new Prompter ("Permissions Error", "The current user does not have permission to run the webdriver.  The Browsermator will attempt to set permissions now.  If this fails, you'll need to manually set permission to execute the following file: " + thisDriver.getAbsolutePath(), false,0,0);     
+  
+            thisDriver.setExecutable (true, true);
+           }
+           
+         }
     
        
 }

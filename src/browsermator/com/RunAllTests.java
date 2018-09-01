@@ -996,10 +996,14 @@ if (!"Dataloop".equals(thisbug.Type))
    
         int nothing =  ThisAction.RunAction(driver, "Actions Paused...", STAppData, 0, 0);
         }
-                 else
+                 else if ("Switch Driver".equals(ThisAction.Type))
                  {
         
-         ThisAction.RunAction(driver);    
+         ThisAction.RunAction(this);    
+                 }
+                 else
+                 {
+                     ThisAction.RunAction(driver);
                  }
                  if (RUNWITHGUI)
                  {
