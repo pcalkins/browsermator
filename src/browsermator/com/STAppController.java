@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.156";
+public final String ProgramVersion = "1.4.157";
 public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
@@ -996,6 +996,7 @@ else
                         try
                           {
                         SaveFileNow(STAppFrame, STAppData, true, false);
+                       
                           }
                           catch (Exception ex)
                           {
@@ -2174,7 +2175,7 @@ else
 Navigator.addRecentFile(STAppData.filename);
 }
 }
-
+ STAppData.setIsTemplateOrNew(false);
      
         }
  public void RefreshCleanState(SeleniumTestToolData STAppData)
