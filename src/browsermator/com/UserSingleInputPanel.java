@@ -5,6 +5,7 @@
  */
 package browsermator.com;
 
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -57,6 +58,11 @@ public class UserSingleInputPanel extends JPanel {
                 setVisible(true);
 
     }
+     public void addjTextFieldInputValueActionListener(ActionListener listener)
+    {
+        jTextFieldInputValue.addActionListener(listener);
+    }
+
     public String GetInputName()
     {
         String ret_val = "";

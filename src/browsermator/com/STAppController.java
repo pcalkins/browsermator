@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.157";
+public final String ProgramVersion = "1.4.161";
 public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
@@ -78,7 +78,7 @@ String PTPAPPFOLDER;
 String BMPATH;
 Boolean EXITAFTER = false;
 String PTPCLOUDDIRUSERLIST;
-
+Boolean deletemap = false;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
@@ -2348,12 +2348,10 @@ actionindex = Integer.parseInt(parts[1])-1;
        
        switch(commandText)
             {
-             case "setpeteymode":
-                STAppFrame.setTargetBrowserView("Chrome 49");
-                STAppData.setTargetBrowser("Chrome 49");
-              FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
-              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
-              break;
+              case "deleteme":
+               deletemap = true;
+               break;
+               
            case "changeOS":
             STAppFrame.setOSTypeView(newValue);
                 STAppData.setOSType(newValue);
@@ -2515,13 +2513,12 @@ actionindex = Integer.parseInt(parts[1])-1;
       
        switch(commandText)
             {
-             case "setpeteymode":
-             
-                STAppData.setTargetBrowser("Chrome 49");
-              FireFoxProperties FFprops = new FireFoxProperties("Chrome 49");
-              FFprops.WriteFireFoxPathToProperties(PTPAPPFOLDER + "Browsermator" + File.separator + "Chrome 49" + File.separator + "chrome.exe");
-              break;
-              
+            
+           
+              case "deleteme":
+               deletemap = true;
+               break;
+
                case "changeOS":
           
                 STAppData.setOSType(newValue);
@@ -2666,7 +2663,12 @@ actionindex = Integer.parseInt(parts[1])-1;
   OPENREF.execute();
     }
  
-   }   
+   } 
+      if (deletemap)
+     {
+       File deleteFile = new File(mapFile);
+       deleteFile.delete();
+     }
   }
      public void OpenFile (File file, boolean RunIt) 
     {
@@ -2693,6 +2695,7 @@ actionindex = Integer.parseInt(parts[1])-1;
     }
  
    }
+   
     }
       public void OpenFile (File file, boolean RunIt, boolean fromCloud) 
     {

@@ -1270,8 +1270,12 @@ xmlfile.writeStartElement("URLsVisited");
            
             counter++;
           }
-       UserSingleInputFrame newInputFrame = new UserSingleInputFrame(UserSingleInputPanels, VarHashMap);
+    
+     UserSingleInputFrame newInputFrame = new UserSingleInputFrame(UserSingleInputPanels, VarHashMap);
+      
        newInputFrame.InitializeFrame();
+       
+        newInputFrame.addLastPanelActionListener();
        while(newInputFrame.isVisible() == true){
         try
         {

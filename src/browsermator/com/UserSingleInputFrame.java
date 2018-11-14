@@ -41,10 +41,10 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
      {
       
          Object source = event.getSource();
-         if (source == jButtonOK)
-         {
-        ClickedOK();
-         }
+      if (source == jButtonOK)
+{
+ClickedOK();
+}
     //     if (source == jButtonCancel)
     //     {
     //     ClickedCancel();
@@ -52,6 +52,17 @@ public class UserSingleInputFrame extends JFrame implements ActionListener{
        setVisible(false);
        dispose();
    
+     }
+       public void addLastPanelActionListener()
+     {
+         
+     int lastframeindex = UserSingleInputPanels.length-1;
+    
+             UserSingleInputPanels[lastframeindex].addjTextFieldInputValueActionListener((ActionEvent evt) -> {
+                       ClickedOK();      
+                     
+   
+   });
      }
      public void ClickedOK()
      {
