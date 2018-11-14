@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.161";
+public final String ProgramVersion = "1.4.162";
 public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
@@ -2636,6 +2636,7 @@ actionindex = Integer.parseInt(parts[1])-1;
             try {
                  CSVReader Reader = new CSVReader(new FileReader(mapFile), ',', '"', '\0');
               mapEntries = Reader.readAll();   
+              Reader.close();
                      }
                      catch(Exception e)
                              {

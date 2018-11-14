@@ -1867,6 +1867,7 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
        {
       jButtonClearUniqueList.setEnabled(false);
        }
+      
  }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

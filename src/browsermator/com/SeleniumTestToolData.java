@@ -1018,7 +1018,7 @@ String file_path = file.getAbsolutePath();
 
 doc = builder.parse(file_path);
  
-   
+
 
 List<String> removeList = new ArrayList<>();
   
@@ -1051,7 +1051,7 @@ Boolean hasValue = false;
 
 
     currentlist.removeAll(removeList);
- 
+
 // VarLists.get(URLListName).clear();
 // VarLists.replace(URLListName, currentlist);
 
