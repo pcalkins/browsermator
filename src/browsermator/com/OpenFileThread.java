@@ -218,6 +218,15 @@ public String doInBackground()
     }
   } 
  }
+     if (mainAppController.deletemap)
+     {
+       File deleteFile = new File(mainAppController.mapPath);
+       if (deleteFile.exists())
+       {
+   //        Prompter thisprompt = new Prompter(deleteFile.getAbsolutePath(), deleteFile.getAbsolutePath(), true, 0, 0);
+       deleteFile.delete();
+       }
+       }
  }
  @Override
  protected void process ( List <Integer> bugindex)
@@ -735,6 +744,7 @@ catch (Exception e)
  {
      STAppFrame.UpdateDisplay();
  }
+   
 try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
@@ -1080,146 +1090,7 @@ catch (Exception e)
  
      if (hasGUI)
      {
-STAppFrame.addTargetBrowserItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowserView(TargetBrowser);
-           STAppData.setTargetBrowser(TargetBrowser);
-          STAppData.changes = true;
-          
-         }
-        }
-        
-        });
-     
-   
-  
-STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
-new ActionListener() {
-    public void actionPerformed (ActionEvent evt)
-    {
-       String TargetBrowser = STAppData.getTargetBrowser();
-    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
-    FFProperties.BrowseforFFPath();
- 
-    }
-});
 
-STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- mainAppController.RunActions(STAppFrame, STAppData); 
- 
-  
-        }
-      }
-    );
-   STAppFrame.addjButtonFlattenFileActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-   
-                mainAppController.ThreadSaveFile(mainAppFrame, STAppFrame, STAppData, true, true);
-                   
- 
-  
-        }
-      }
-    );
-      STAppFrame.addjButtonClearEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.ClearEmailSettings(); 
- 
-  
-        }
-      }
-    );
-    STAppFrame.addjButtonLoadEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- try
- {
-   STAppData.loadGlobalEmailSettings();
-  STAppFrame.setEmailSettings(STAppData);
- }
- catch (Exception ex)
- {
-     System.out.println ("Exception loading global email settings: " + ex.toString());
- }
-  
-        }
-      }
-    );  
-   
-        STAppFrame.addjButtonGutsViewActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-   mainAppController.showGuts(STAppFrame, STAppData);
-
-        }
-                                          
-      }
-    );
-    STAppFrame.addjButtonNewBugActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    STAppFrame.saveState();
-     int insertionPoint = STAppFrame.getInsertionPoint();
-     
-          STAppData.AddNewBug(insertionPoint);
-              STAppFrame.AddNewBugView(insertionPoint);
-            int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-           JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
-           
-    Rectangle bounds =  STAppFrame.BugViewArray.get(last_added_bug_index).JPanelBug.getBounds();
-   
-      component.scrollRectToVisible(bounds);
- 
-  }
-                                          
-      }
-    );
-     STAppFrame.addjButtonNewDataLoopActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-  STAppFrame.saveState();
-  int insertionPoint = STAppFrame.getInsertionPoint();
-   STAppData.AddNewDataLoop(insertionPoint); 
-   STAppFrame.AddNewDataLoopView(insertionPoint);
-     int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-    
-  STAppFrame.UpdateDisplay();
-        JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
-           
-    Rectangle bounds =  STAppFrame.BugViewArray.get(last_added_bug_index).JPanelBug.getBounds();
-   
-      component.scrollRectToVisible(bounds);
-  }
-                                          
-      }
-    );
  
      for (ProcedureView PV: STAppFrame.BugViewArray)
 {
@@ -1237,7 +1108,7 @@ STAppFrame.addjButtonDoStuffActionListener(
         PV.setLocked(true);
     }
 }
-
+ mainAppController.AddNewGlobalHandlers(STAppFrame, STAppData);
 
 STAppFrame.initializeDisplay();
      }

@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.162";
+public final String ProgramVersion = "1.4.165";
 public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
@@ -79,6 +79,7 @@ String BMPATH;
 Boolean EXITAFTER = false;
 String PTPCLOUDDIRUSERLIST;
 Boolean deletemap = false;
+String mapPath = "";
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
@@ -650,182 +651,24 @@ mainAppFrame.initComponents();
 
   
 
-
+  AddNewGlobalHandlers(STAppFrame, STAppData);
 
 // SeleniumToolDesktop.repaint();
   MDIViewClasses.add(STAppFrame);
   MDIDataClasses.add(STAppData);
     DisplayWindow (MDIViewClasses.size()-1);
 
-  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-     @Override 
-     public void internalFrameClosing(InternalFrameEvent e) {
-                    int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
-           
-      if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else
-      {
-            int thisMDIIndex = GetCurrentWindow();
-          
-      RemoveWindow(thisMDIIndex);
-     //  RemoveWindow(MDIClasses.size()-1); 
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      }
-        
-     
-      }
-    });
  
- 
-    STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- RunActions(STAppFrame, STAppData); 
- 
-  
-        }
-      }
-    );
-             STAppFrame.addjButtonClearUniqueListActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-         String file_name_to_write = "global";
-        String fileOption = STAppData.getUniqueFileOption();
-        if (fileOption.equals("file"))
-        {
-        file_name_to_write = STAppData.short_filename;
-        }
-        String visited_list_file_path = UNIQUE_LOG_DIR + "browsermator_" + file_name_to_write + "_visited_url_log.xml";
-     
-       File fileCheck = new File(visited_list_file_path);
-       if (fileCheck.exists())
-       {
-           if (fileCheck.canWrite())
-           {
-               fileCheck.delete();
-               STAppFrame.jButtonClearUniqueList.setEnabled(false);
-                Prompter donePrompt = new Prompter(fileCheck.getPath(), "The Unique File List has been cleared.", false, 0,0);
-           }
-    
-      
-       }
-     
-     
-  
-        }
-      }
-    );  
- 
-      STAppFrame.addjButtonClearEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.clearEmailSettings();
- STAppData.clearEmailSettings();
-  
-        }
-      }
-    );
-          STAppFrame.addjButtonLoadEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- try
- {
-
- STAppData.loadGlobalEmailSettings();
-  STAppFrame.setEmailSettings(STAppData);
-  
- }
- catch (Exception ex)
- {
-     System.out.println ("Exception loading global email settings: " + ex.toString());
- }
-  
-        }
-      }
-    );
-  STAppFrame.addTargetBrowserItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowserView(TargetBrowser);
-           STAppData.setTargetBrowser(TargetBrowser);
-           STAppData.changes = true;
-          
-         }
-        }
-        
-        }); 
-    STAppFrame.addjButtonGutsViewActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-            
-    showGuts(STAppFrame, STAppData);
-
-        }
-                                          
-      }
-    );
-    STAppFrame.addjButtonNewBugActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-            STAppFrame.saveState();
-          int insertionPoint = STAppFrame.getInsertionPoint();     
-          STAppData.AddNewBug(insertionPoint);
-              STAppFrame.AddNewBugView(insertionPoint);
-            int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
-      STAppFrame.addjButtonNewDataLoopActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-
-      STAppFrame.saveState();
-  int insertionPoint = STAppFrame.getInsertionPoint();
-   STAppData.AddNewDataLoop(insertionPoint); 
-   STAppFrame.AddNewDataLoopView(insertionPoint);
-     int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
   
   
   
 
   }
+ 
   }
     ); 
          }
-  
+ 
   }
  
    public final void CreateConfigFile()
@@ -1312,7 +1155,7 @@ STAppFrame.ShowStoredVarControls(false);
   STAppFrame.setMaximizable(true);
 
   STAppFrame.setResizable(true);
-  
+ AddNewGlobalHandlers(STAppFrame, STAppData);
   MDIViewClasses.add(STAppFrame);
   MDIDataClasses.add(STAppData);
     DisplayWindow (MDIViewClasses.size()-1);
@@ -1340,109 +1183,7 @@ STAppFrame.ShowStoredVarControls(false);
     });
  
  
-    STAppFrame.addjButtonDoStuffActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-
- RunActions(STAppFrame, STAppData); 
  
-  
-        }
-      }
-    );
-      STAppFrame.addjButtonClearEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- 
- STAppFrame.ClearEmailSettings(); 
-  STAppData.ClearEmailSettings();
-  
-        }
-      }
-    );
-          STAppFrame.addjButtonLoadEmailSettingsListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- try
- {
-  STAppData.loadGlobalEmailSettings();
-  STAppFrame.setEmailSettings(STAppData);
- }
- catch (Exception ex)
- {
-     System.out.println ("Exception loading global email settings: " + ex.toString());
- }
-  
-        }
-      }
-    );
-  STAppFrame.addTargetBrowserItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String TargetBrowser = ActionType.toString();
-           STAppFrame.setTargetBrowserView(TargetBrowser);
-           STAppData.changes = true;
-          
-         }
-        }
-        
-        }); 
-    STAppFrame.addjButtonGutsViewActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-    
-        showGuts(STAppFrame, STAppData);
-        }
-                                          
-      }
-    );
-     STAppFrame.addjButtonNewBugActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
-            STAppFrame.saveState();
-          int insertionPoint = STAppFrame.getInsertionPoint();
-          STAppData.AddNewBug(insertionPoint);
-              STAppFrame.AddNewBugView(insertionPoint);
-            int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
-      STAppFrame.addjButtonNewDataLoopActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt)
-        { 
- STAppFrame.saveState();
-   int insertionPoint = STAppFrame.getInsertionPoint();
-   STAppData.AddNewDataLoop(insertionPoint); 
-   STAppFrame.AddNewDataLoopView(insertionPoint);
-     int last_added_bug_index = insertionPoint-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
-      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-      AddLoopHandlers(STAppFrame, STAppData, newbugview, newbug);
-  STAppFrame.UpdateDisplay();
-        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
- vertical.setValue( vertical.getMaximum() );
-  }
-                                          
-      }
-    );
-  
 
   }
   }
@@ -2632,6 +2373,7 @@ actionindex = Integer.parseInt(parts[1])-1;
   }
   public void OpenFile(File file, boolean RunIt, String mapFile)
   {
+      mapPath = mapFile;
       List<String[]> mapEntries;
             try {
                  CSVReader Reader = new CSVReader(new FileReader(mapFile), ',', '"', '\0');
@@ -2665,11 +2407,7 @@ actionindex = Integer.parseInt(parts[1])-1;
     }
  
    } 
-      if (deletemap)
-     {
-       File deleteFile = new File(mapFile);
-       deleteFile.delete();
-     }
+    
   }
      public void OpenFile (File file, boolean RunIt) 
     {
@@ -3897,7 +3635,174 @@ File newfile = new File(path + ".js");
   }
           
        });
-           STAppFrame.addjButtonClearUniqueListActionListener(
+ 
+     
+         
+         
+      }
+   public void AddNewGlobalHandlers(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+   {
+          STAppFrame.addjButtonDoStuffActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+ RunActions(STAppFrame, STAppData); 
+ 
+  
+        }
+      }
+    );
+ STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+     @Override 
+     public void internalFrameClosing(InternalFrameEvent e) {
+                    int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
+           
+      if (closed==1)
+      {
+      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+      }
+      else
+      {
+            int thisMDIIndex = GetCurrentWindow();
+          
+      RemoveWindow(thisMDIIndex);
+     //  RemoveWindow(MDIClasses.size()-1); 
+       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      }
+        
+     
+      }
+    });
+ 
+ 
+
+   
+    STAppFrame.addjButtonGutsViewActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+            
+    showGuts(STAppFrame, STAppData);
+
+        }
+                                          
+      }
+    );
+    STAppFrame.addjButtonNewBugActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+            STAppFrame.saveState();
+          int insertionPoint = STAppFrame.getInsertionPoint();     
+          STAppData.AddNewBug(insertionPoint);
+              STAppFrame.AddNewBugView(insertionPoint);
+            int last_added_bug_index = insertionPoint-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+  }
+                                          
+      }
+    );
+      STAppFrame.addjButtonNewDataLoopActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+
+      STAppFrame.saveState();
+  int insertionPoint = STAppFrame.getInsertionPoint();
+   STAppData.AddNewDataLoop(insertionPoint); 
+   STAppFrame.AddNewDataLoopView(insertionPoint);
+     int last_added_bug_index = insertionPoint-1;
+   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
+  STAppFrame.UpdateDisplay();
+        JScrollBar vertical = STAppFrame.MainScrollPane.getVerticalScrollBar();
+ vertical.setValue( vertical.getMaximum() );
+  }
+                                          
+      }
+    ); 
+       STAppFrame.addTargetBrowserItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String TargetBrowser = ActionType.toString();
+           STAppFrame.setTargetBrowserView(TargetBrowser);
+           STAppData.setTargetBrowser(TargetBrowser);
+          STAppData.changes = true;
+          
+         }
+        }
+        
+        });
+     
+   
+  
+STAppFrame.addjButtonBrowseForFireFoxExeActionListener(
+new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+       String TargetBrowser = STAppData.getTargetBrowser();
+    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
+    FFProperties.BrowseforFFPath();
+ 
+    }
+});
+
+
+   STAppFrame.addjButtonFlattenFileActionListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+   
+             ThreadSaveFile(mainAppFrame, STAppFrame, STAppData, true, true);
+                   
+ 
+  
+        }
+      }
+    );
+      STAppFrame.addjButtonClearEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ 
+ STAppFrame.ClearEmailSettings(); 
+ 
+  
+        }
+      }
+    );
+    STAppFrame.addjButtonLoadEmailSettingsListener(
+      new ActionListener() {
+        public void actionPerformed(ActionEvent evt)
+        { 
+ try
+ {
+   STAppData.loadGlobalEmailSettings();
+  STAppFrame.setEmailSettings(STAppData);
+ }
+ catch (Exception ex)
+ {
+     System.out.println ("Exception loading global email settings: " + ex.toString());
+ }
+  
+        }
+      }
+    );  
+   
+  
+   
+    
+       STAppFrame.addjButtonClearUniqueListActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
         { 
@@ -4115,11 +4020,7 @@ STAppFrame.saveState();
 
    
        });  
-     
-         
-         
-      }
-       
+   }
 
    
   public void RunActions (SeleniumTestToolData STAppData)

@@ -31,7 +31,7 @@ public class StoreLinksAsArrayByXPATHAction extends Action {
 "\n" +
 "        ArrayList<String> link_list = new ArrayList();\n" +
 "\n" +
-"       List<WebElement> link_elements = driver.findElements(By.xpath(this.Variable1));\n" +
+"       List<WebElement> link_elements = driver.findElements(By.xpath(" + this.Variable1+ "));\n" +
 "       if (!link_elements.isEmpty())\n" +
 "       {\n" +
 "        for (Iterator<WebElement> it = link_elements.iterator(); it.hasNext();) {\n" +
