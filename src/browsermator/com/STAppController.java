@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.168";
+public final String ProgramVersion = "1.4.169";
 public final String lastWebDriverUpdate = "11232018";
 public String loginName;
 public String loginPassword;
@@ -1312,7 +1312,7 @@ File file=null;
       {
       fc.setCurrentDirectory(new File(lastused_save_dir));
       }  
-     
+     int returnVal = 0;
     if (isSaveAs==true || STAppData.getIsTemplateOrNew() == true)
     {
      FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
@@ -1334,7 +1334,7 @@ File file=null;
         fc.setSelectedFile(file);
         
     }
-int returnVal = fc.showSaveDialog(STAppFrame);
+ returnVal = fc.showSaveDialog(STAppFrame);
       File chosenDir = fc.getCurrentDirectory();
  theseProps.setKeyValue ("lastused_save_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1361,7 +1361,7 @@ int returnVal = fc.showSaveDialog(STAppFrame);
                  file = new File(left_side_of_dot[0] + ".browsermation");
     }
   
-
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
                XMLStreamWriter xmlfile = XMLOutputFactory.newInstance().createXMLStreamWriter( new BufferedOutputStream(
                               new FileOutputStream(file)));
      
@@ -1896,7 +1896,7 @@ Navigator.addRecentFile(STAppData.filename);
 }
 }
  STAppData.setIsTemplateOrNew(false);
-     
+    }    
         }
  public void RefreshCleanState(SeleniumTestToolData STAppData)
  {

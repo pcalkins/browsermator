@@ -74,7 +74,7 @@ public String doInBackground()
    }
      if (isFlatten)
      {
-         STAppFrame.setFlattenFileButtonName("Flattenning...");
+         STAppFrame.setFlattenFileButtonName ("Flatten to New File");
          
      }
      else
