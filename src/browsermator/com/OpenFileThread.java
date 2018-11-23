@@ -508,28 +508,7 @@ for (Procedure thisproc: STAppData.BugArray)
   STAppFrame.setClosable(true);
   STAppFrame.setMaximizable(true);
 
-    STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-     @Override 
-     public void internalFrameClosing(InternalFrameEvent e) {
-    
-    
-      int closed =  mainAppController.CheckToSaveChanges(STAppFrame, STAppData, false);
-           
-      if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else
-      {
-          int thisMDIIndex = mainAppController.GetCurrentWindow();
-          
-       mainAppController.RemoveWindow(thisMDIIndex);
-       // mainApp.RemoveWindow(MDIClasses.size()-1); 
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      }
-     
-      }
-    });
+ 
   }
   NodeList FileSettingsNode = doc.getElementsByTagName("FileSettings");
  

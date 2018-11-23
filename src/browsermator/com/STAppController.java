@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.165";
+public final String ProgramVersion = "1.4.167";
 public final String lastWebDriverUpdate = "08282018";
 public String loginName;
 public String loginPassword;
@@ -716,7 +716,7 @@ if (STAppData.testRunning)
 }
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
 AllFieldValuesCheck.add(STAppData.OSType);
-AllFieldValuesCheck.add(STAppData.TargetBrowser);
+AllFieldValuesCheck.add(STAppData.getTargetBrowser());
 String stringWaitTime = String.valueOf(STAppData.WaitTime);
 AllFieldValuesCheck.add(stringWaitTime);
 String stringTimeout = String.valueOf(STAppData.Timeout);
@@ -1160,27 +1160,6 @@ STAppFrame.ShowStoredVarControls(false);
   MDIDataClasses.add(STAppData);
     DisplayWindow (MDIViewClasses.size()-1);
 
-  STAppFrame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-     @Override 
-     public void internalFrameClosing(InternalFrameEvent e) {
-                    int closed =  CheckToSaveChanges(STAppFrame, STAppData, false);
-           
-      if (closed==1)
-      {
-      STAppFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-      }
-      else
-      {
-            int thisMDIIndex = GetCurrentWindow();
-          
-      RemoveWindow(thisMDIIndex);
-     //  RemoveWindow(MDIClasses.size()-1); 
-       STAppFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-      }
-        
-     
-      }
-    });
  
  
  
@@ -3737,7 +3716,7 @@ File newfile = new File(path + ".js");
             String TargetBrowser = ActionType.toString();
            STAppFrame.setTargetBrowserView(TargetBrowser);
            STAppData.setTargetBrowser(TargetBrowser);
-          STAppData.changes = true;
+    //      STAppData.changes = true;
           
          }
         }
