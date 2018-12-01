@@ -710,6 +710,7 @@ public void ShowPlaceStoredVariableButton(Boolean showhideval, int bugindex, int
         String stringbugindex = Integer.toString(bugindex);
         String bugdashactionindex = stringbugindex + "-" + stringactionindex;
      jButtonPlaceStoredVariable.setActionCommand(bugdashactionindex);
+     removejButtonPlaceStoredVariableActionListener();
      addjButtonPlaceStoredVariableActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt)
@@ -2516,6 +2517,15 @@ public void addjButtonBrowseForFireFoxExeActionListener(ActionListener listener)
 public void addjButtonPlaceStoredVariableActionListener(ActionListener listener)
 {
     jButtonPlaceStoredVariable.addActionListener(listener);
+}
+public void removejButtonPlaceStoredVariableActionListener()
+{
+  ActionListener[] theseListeners = jButtonPlaceStoredVariable.getActionListeners();
+  if (theseListeners.length>0)
+  {
+       jButtonPlaceStoredVariable.removeActionListener(theseListeners[0]); 
+  }
+ 
 }
 
 public void addjButtonNewBugActionListener(ActionListener listener) {

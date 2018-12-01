@@ -58,7 +58,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.170";
+public final String ProgramVersion = "1.4.172";
 public final String lastWebDriverUpdate = "11242018";
 public String loginName;
 public String loginPassword;
@@ -2068,6 +2068,10 @@ actionindex = Integer.parseInt(parts[1])-1;
        
        switch(commandText)
             {
+           case "silentmode":
+               STAppData.setSilentMode(true);
+               break;
+               
               case "deleteme":
                deletemap = true;
                break;
@@ -2234,7 +2238,9 @@ actionindex = Integer.parseInt(parts[1])-1;
        switch(commandText)
             {
             
-           
+             case "silentmode":
+               STAppData.setSilentMode(true);
+               break;
               case "deleteme":
                deletemap = true;
                break;

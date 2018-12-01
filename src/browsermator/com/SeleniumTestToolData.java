@@ -75,6 +75,7 @@ String EmailFrom;
 String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
+Boolean silentMode;
 
 public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
@@ -120,6 +121,7 @@ this.EmailFrom = "";
 this.EmailSubject = "";
 this.SMTPHostName = "";
 this.EmailLoginName = "";
+this.silentMode = false;
     try{
       loadGlobalEmailSettings();
   }
@@ -128,7 +130,11 @@ this.EmailLoginName = "";
     }
 
         }
-
+public void setSilentMode(Boolean modeset)
+{
+ 
+        silentMode = modeset;
+}
 public void setHasStoredVar(boolean hasit)
 {
     this.hasStoredVar=hasit;
@@ -668,6 +674,8 @@ else
     }
         public void setTargetBrowser (String targetbrowser)
         {   
+            if (!silentMode)
+            {
             //legacy stuff
             if ("Firefox-Marionette".equals(targetbrowser))
             {
@@ -677,7 +685,20 @@ else
         
             this.TargetBrowser = targetbrowser;
             
-          
+            }
+            else
+            {
+             for (Procedure thisProc: BugArray)
+             {
+                for (Action thisAct: thisProc.ActionsList) 
+                {
+                    if (thisAct.Type.equals("Switch Driver"))
+                    {
+                        thisAct.Variable1 = targetbrowser;
+                    }
+                }
+                    }
+            }
          
         }
           public void AddDataLoopProc(Procedure newdataloop)
