@@ -220,11 +220,16 @@ public String doInBackground()
  }
      if (mainAppController.deletemap)
      {
+         
        File deleteFile = new File(mainAppController.mapPath);
        if (deleteFile.exists())
        {
-   //        Prompter thisprompt = new Prompter(deleteFile.getAbsolutePath(), deleteFile.getAbsolutePath(), true, 0, 0);
+  //      Prompter thisprompt = new Prompter(deleteFile.getAbsolutePath(), deleteFile.getAbsolutePath(), true, 0, 0);
        deleteFile.delete();
+       }
+       else
+       {
+  //           Prompter thisprompt = new Prompter(deleteFile.getAbsolutePath(), deleteFile.getAbsolutePath(), true, 0, 0);   
        }
        }
  }

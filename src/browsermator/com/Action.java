@@ -122,7 +122,7 @@ List<LocalDateTime> loop_time_of_test;
  if (this.BoolVal2)
  {
 
-  if (elements.size()>1)
+  if (elements.size()>0)
  {
   for (WebElement thiselement: elements)
   {

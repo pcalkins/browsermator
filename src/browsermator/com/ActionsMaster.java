@@ -26,10 +26,12 @@ public class ActionsMaster {
     PassFailActionHashMap = new <String, Action>HashMap();
     PassFailActionViewHashMap = new <String, ActionView>HashMap();
     ActionViewHashMap.put("Back Button", new BackActionView());
+    ActionViewHashMap.put("Click at Button Text", new ClickAtButtonTextActionView());
     ActionViewHashMap.put("Click at HREF", new ClickAtHREFActionView());
     ActionViewHashMap.put("Click at ID", new ClickAtIDActionView());
     ActionViewHashMap.put("Click at Image SRC", new ClickAtImageSRCActionView());
     ActionViewHashMap.put("Click at Link Text", new ClickAtLinkTextActionView());
+    ActionViewHashMap.put("Click at Name", new ClickAtNameActionView());
     ActionViewHashMap.put("Click at XPATH", new ClickXPATHActionView());
     ActionViewHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowActionView());
     ActionViewHashMap.put("Down Arrow Key", new DownArrowKeyActionView());
@@ -65,10 +67,12 @@ public class ActionsMaster {
     ActionViewHashMap.put("Up Arrow Key", new UpArrowKeyActionView());
     
   ActionHashMap.put("Back Button", new BackAction());
+  ActionHashMap.put("Click at Button Text", new ClickAtButtonTextAction("", false, false));
   ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false, false));
   ActionHashMap.put("Click at ID", new ClickAtIDAction("", false, false));
   ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false, false));
   ActionHashMap.put("Click at Link Text", new ClickAtLinkTextAction("", false, false));
+  ActionHashMap.put("Click at Name", new ClickAtNameAction("", false, false));
   ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false, false));
   ActionHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowAction());
   ActionHashMap.put("Down Arrow Key", new DownArrowKeyAction());

@@ -6,9 +6,17 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 import java.util.Properties;
 import javax.swing.JInternalFrame;
@@ -518,7 +526,23 @@ try {
     }
     public void setVersion(String version)
     {
-        jLabelVersion.setText(version);
+        String currentVersion = "0.0";
+        try
+        {
+            currentVersion = getCurrentVersion();
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception getting current version: " + ex.toString());
+        }
+        if (currentVersion.equals(version))
+        {
+        jLabelVersion.setText("Version " +version);
+        }
+        else
+        {
+         jLabelVersion.setText("Version " + version + " A New Version ("+currentVersion +") is Available, Visit Browsermator.com to download.");   
+        }
         
     }
    public void setSMTPHostname (String SMTPHostName)
@@ -547,6 +571,31 @@ try {
     {
       jTextFieldSubject.setText(Subject);
     } 
+              public String getCurrentVersion() throws MalformedURLException, UnsupportedEncodingException, IOException
+      {
+          String ret_val = "0.0";
+          String rootURL = "https://www.thebrowserbots.com";
+          String APPID = "3";
+       String charset = "UTF-8";
+String param = "15000";
+
+String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
+String CRLF = "\r\n"; // Line separator required by multipart/form-data.
+URLConnection connection = new URL(rootURL + "/get_current_version_noheader.php?app_id=" + APPID).openConnection();
+connection.setDoOutput(true);
+
+
+    BufferedReader in = new BufferedReader(new InputStreamReader(
+                                   ((HttpURLConnection) connection).getInputStream()));
+        String inputLine;
+        String return_text="";
+        while ((inputLine = in.readLine()) != null)
+         return_text += inputLine;
+        in.close();    
+          ret_val = return_text;
+          return ret_val;
+          
+      }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

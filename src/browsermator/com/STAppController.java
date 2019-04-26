@@ -58,8 +58,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.4.172";
-public final String lastWebDriverUpdate = "11242018";
+public final String ProgramVersion = "1.5.177";
+public final String lastWebDriverUpdate = "04202019";
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -2714,7 +2714,7 @@ catch (Exception e) {
    Navigator.setEmailTo(to);
    Navigator.setEmailFrom(from);
    Navigator.setSubject(subject);
-   Navigator.setVersion("Version: " + this.ProgramVersion);
+   Navigator.setVersion(this.ProgramVersion);
   
 	}
  public void SaveGlobalEmailSettings() throws IOException
