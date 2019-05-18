@@ -58,8 +58,9 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.5.177";
-public final String lastWebDriverUpdate = "04202019";
+public final String ProgramVersion = "1.5.180";
+public final String lastWebDriverUpdate = "05182019";
+public boolean DriverUpdateFail = false;
 public String loginName;
 public String loginPassword;
 String PTPUSERCLOUDDIR;
@@ -4111,13 +4112,7 @@ if (file_exists == false)
 }
 
 
-    
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} 
-     BrowserMatorConfig configCheck = new BrowserMatorConfig();
+       BrowserMatorConfig configCheck = new BrowserMatorConfig();
     String versionstored = configCheck.getKeyValue("version");
     String lastWebDriverUpdateStored = configCheck.getKeyValue("lastWebDriverUpdate");
     if (versionstored==null) {versionstored = "";}
@@ -4144,8 +4139,15 @@ if (file_exists == false)
    WriteResource ("geckodriver-win64", "geckodriver.exe");
     WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
      WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
-    configCheck.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);
+   if (DriverUpdateFail==false) { configCheck.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);}
     }
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception: " + e);
+                        DriverUpdateFail = true;
+		} 
+  
  }
  public void WriteResource (String dirname, String filename)
  {
@@ -4155,6 +4157,7 @@ if (file_exists == false)
                 System.out.println("Directory is created!");
             } else {
                 System.out.println("Failed to create directory!");
+                DriverUpdateFail = true;
             }
         }
       InputStream inStream = STAppController.class.getResourceAsStream("/browsermator/com/Resources/" + dirname + "/" + filename);
@@ -4171,14 +4174,15 @@ try
             }
    else
    {
-   
+   DriverUpdateFail = true;
     
    }
    
 }
 catch (Exception ex)
 {
-    Prompter fallbackprompt2 = new Prompter ("Error writing driver", "Could not write driver: " + BMAppPath + " Error: " + ex.toString(), false,0,0);     
+    Prompter fallbackprompt2 = new Prompter ("Error writing driver", "Could not write driver: " + BMAppPath + " Error: " + ex.toString(), false,0,0);  
+   DriverUpdateFail = true;
  
 }  
         
