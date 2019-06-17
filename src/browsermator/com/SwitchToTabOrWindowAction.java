@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
  *
  * @author pcalkins
  */
-public class SwitchToTabOrWindowAction extends Action
+public class SwitchToTabOrWindowAction extends BMAction
 {
      SwitchToTabOrWindowAction (String index)
     {

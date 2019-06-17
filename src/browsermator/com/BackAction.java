@@ -4,7 +4,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class BackAction extends Action 
+public class BackAction extends BMAction 
 {
     
    BackAction() 

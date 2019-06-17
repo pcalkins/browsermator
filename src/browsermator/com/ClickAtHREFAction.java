@@ -3,7 +3,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ClickAtHREFAction extends Action 
+public class ClickAtHREFAction extends BMAction 
 {
     
     ClickAtHREFAction (String HREFToClick, boolean BoolVal1, boolean BoolVal2)

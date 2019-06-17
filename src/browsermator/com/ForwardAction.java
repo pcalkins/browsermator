@@ -5,7 +5,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ForwardAction extends Action
+public class ForwardAction extends BMAction
 {
   ForwardAction()
     {

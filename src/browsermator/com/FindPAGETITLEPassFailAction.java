@@ -1,9 +1,11 @@
 package browsermator.com;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class FindPAGETITLEPassFailAction extends Action
+public class FindPAGETITLEPassFailAction extends BMAction
 {
     
     FindPAGETITLEPassFailAction (String TITLETEXTToFind, Boolean NOTVAR )
@@ -41,13 +43,14 @@ public class FindPAGETITLEPassFailAction extends Action
      public void RunAction(WebDriver driver)
     {
 
-     
-    Boolean doespass = false;
-    if(driver.getTitle().contains(this.Variable1))
+            
+        try
     {
-   doespass = true;
-    }
-   
+        wait = new WebDriverWait(driver, ec_Timeout);
+  
+    
+    Boolean doespass  =  wait.until(ExpectedConditions.titleContains(this.Variable1));
+  
     this.Pass = false;
        if (doespass == true && this.NOT == false)
     {
@@ -58,6 +61,18 @@ public class FindPAGETITLEPassFailAction extends Action
     {
         this.Pass = true;
     }
-     
+    }
+    catch (Exception ex)
+    {
+        if (this.NOT==true)
+        {
+            this.Pass = true;
+        }
+        else
+        {
+        this.Pass = false;
+        }
+        System.out.println ("Exception finding page title: " + ex.toString());
+    }
     }
 }

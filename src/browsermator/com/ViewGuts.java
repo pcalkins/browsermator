@@ -274,7 +274,7 @@ int totalpause = WaitTime * 1000;
      for (Procedure thisbug : SiteTestData.BugArray)
       {
           SiteTest.BugViewArray.get(thisbugindex).JButtonRunTest.setText("Running...");
-        ArrayList<Action> Actions = thisbug.ActionsList;
+        ArrayList<BMAction> Actions = thisbug.ActionsList;
 
 
 int action_INT = 0;
@@ -284,7 +284,7 @@ ProcedureView thisbugview = SiteTest.BugViewArray.get(thisbugindex);
 if (!"Dataloop".equals(thisbugview.Type))
 {
     action_INT=0;
-   for( Action ThisAction : thisbug.ActionsList ) {
+   for( BMAction ThisAction : thisbug.ActionsList ) {
            String original_value = ThisAction.Variable2;
  action_INT++;
  action_ID = Integer.toString(action_INT);
@@ -332,14 +332,14 @@ else
          number_of_rows = thisbug.RunTimeFileSet.size();
     }     
     }
-  for( Action ThisAction : thisbug.ActionsList ) { 
+  for( BMAction ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
  
  for (int x = 0; x<number_of_rows; x++)
     {
   action_INT = 0;
-    for( Action ThisAction : thisbug.ActionsList ) {
+    for( BMAction ThisAction : thisbug.ActionsList ) {
       
        action_INT++;
  action_ID = Integer.toString(action_INT) + "-" + Integer.toString(x);   

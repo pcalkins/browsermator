@@ -314,7 +314,7 @@ String stringactionindex = Integer.toString(this.index+1);
     
            
        }
-       public void AddSetVarFocusListeners(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, Action action)
+       public void AddSetVarFocusListeners(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, BMAction action)
        {
          addJTextPasswordFocusListener(new FocusListener() {
 
@@ -367,7 +367,7 @@ String stringactionindex = Integer.toString(this.index+1);
         });    
        }
    
-     public void AddDraggers(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+     public void AddDraggers(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
        {
          addActionPanelMouseListener(new MouseAdapter(){
     @Override
@@ -663,12 +663,12 @@ if (!potentialDrag) return;
        }
        class PopUpDemo extends JPopupMenu {
     JMenuItem anItem;
-    Action thisAct;
+    BMAction thisAct;
     Procedure this_bug;
     ProcedureView this_bugview;
     SeleniumTestTool STAppFrame;
     SeleniumTestToolData STAppData;
-    public PopUpDemo(Action Act, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData){
+    public PopUpDemo(BMAction Act, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData){
         anItem = new JMenuItem("Clone Action");
         add(anItem);
         this.thisAct = Act;
@@ -683,21 +683,21 @@ if (!potentialDrag) return;
     });      
     }
   
-      public void cloneAction(Action ACT, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
+      public void cloneAction(BMAction ACT, Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
       {
       String ActionType = ACT.Type;
 
   
   ActionsMaster NewActionsMaster = new ActionsMaster();
    
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
    HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
     if (thisActionHashMap.containsKey(ActionType))
            {
                STAppFrame.saveState();
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
@@ -713,7 +713,7 @@ if (!potentialDrag) return;
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
                  STAppFrame.saveState();
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
@@ -729,7 +729,7 @@ if (!potentialDrag) return;
 }
 
 
- public void ShowContextMenu(Action ACT,Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
+ public void ShowContextMenu(BMAction ACT,Procedure this_bug, ProcedureView this_bugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, MouseEvent evt)
  {
    PopUpDemo menu = new PopUpDemo(ACT, this_bug, this_bugview, STAppFrame, STAppData);
         menu.show(evt.getComponent(), evt.getX(), evt.getY());
@@ -738,7 +738,7 @@ if (!potentialDrag) return;
  }
  
  @Override
-   public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+   public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
   
     
@@ -777,7 +777,7 @@ if (!potentialDrag) return;
 
    } 
 
-  public void AddLoopListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+  public void AddLoopListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
 //   if (STAppData.hasStoredVar)
 //   {

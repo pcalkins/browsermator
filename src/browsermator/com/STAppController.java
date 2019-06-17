@@ -58,8 +58,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.5.180";
-public final String lastWebDriverUpdate = "05182019";
+public final String ProgramVersion = "1.6.182";
+public final String lastWebDriverUpdate = "060812019";
 public boolean DriverUpdateFail = false;
 public String loginName;
 public String loginPassword;
@@ -718,10 +718,11 @@ if (STAppData.testRunning)
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
 AllFieldValuesCheck.add(STAppData.OSType);
 AllFieldValuesCheck.add(STAppData.getTargetBrowser());
-String stringWaitTime = String.valueOf(STAppData.WaitTime);
+String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 AllFieldValuesCheck.add(stringWaitTime);
-String stringTimeout = String.valueOf(STAppData.Timeout);
-AllFieldValuesCheck.add(stringTimeout);
+String stringEcTimeout = String.valueOf(STAppData.getEcTimeout());
+AllFieldValuesCheck.add(stringEcTimeout);
+
 String stringSessions = String.valueOf(STAppData.Sessions);
 AllFieldValuesCheck.add(stringSessions);
 AllFieldValuesCheck.add(STAppData.SMTPHostName);
@@ -792,7 +793,7 @@ for (Procedure thisproc: STAppData.BugArray)
  
     String limitstring = Integer.toString(thisproc.limit);
     AllFieldValuesCheck.add(limitstring);
-    for (Action thisact: thisproc.ActionsList)
+    for (BMAction thisact: thisproc.ActionsList)
     {
         AllFieldValuesCheck.add(thisact.Variable1);
        
@@ -823,7 +824,10 @@ if (!STAppData.AllFieldValues.equals(AllFieldValuesCheck))
    STAppData.changes = true;
    
 }
-
+else
+{
+    STAppData.changes = false;
+}
 if (STAppData.changes==false)
 {
   return 0;
@@ -1428,6 +1432,11 @@ xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeCharacters(TargetBrowser);
     xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
+   Integer EcTimeout = STAppData.getEcTimeout();
+String EcTimeoutString = EcTimeout.toString();
+xmlfile.writeStartElement("EcTimeout");
+    xmlfile.writeCharacters(EcTimeoutString);
+    xmlfile.writeEndElement();
     
 Integer WaitTime = STAppData.getWaitTime();
 String WaitTimeString = WaitTime.toString();
@@ -1558,13 +1567,13 @@ xmlfile.writeAttribute("Random", randstring);
     }  
     }   
  
-  for( Action ThisAction : thisbug.ActionsList ) { 
+  for( BMAction ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
 int action_index_for_flatten = 0;
  for (int x = 0; x<number_of_rows; x++)
     {
-     for (Action thisaction: thisbug.ActionsList)
+     for (BMAction thisaction: thisbug.ActionsList)
     {
          String original_value1 = thisaction.Variable1;
            String original_value2 = thisaction.Variable2;
@@ -1769,7 +1778,7 @@ int action_index_for_flatten = 0;
   else
   {
  
-    for (Action thisaction: thisbug.ActionsList)
+    for (BMAction thisaction: thisbug.ActionsList)
     {
     xmlfile.writeStartElement("Action");
 
@@ -1908,10 +1917,12 @@ Navigator.addRecentFile(STAppData.filename);
        
 STAppData.AllFieldValues.add(STAppData.OSType);
 STAppData.AllFieldValues.add(STAppData.TargetBrowser);
+
 String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 STAppData.AllFieldValues.add(stringWaitTime);
-String stringTimeout = String.valueOf(STAppData.getTimeout());
-STAppData.AllFieldValues.add(stringTimeout);
+String stringEcTimeout = String.valueOf(STAppData.getEcTimeout());
+STAppData.AllFieldValues.add(stringEcTimeout);
+
 String stringSessions = String.valueOf(STAppData.getSessions());
 STAppData.AllFieldValues.add(stringSessions);
 STAppData.AllFieldValues.add(STAppData.getSMTPHostname());
@@ -1985,7 +1996,7 @@ for (Procedure thisproc: STAppData.BugArray)
     String limitstring = Integer.toString(thisproc.limit);
     STAppData.AllFieldValues.add(limitstring);
     
-    for (Action thisact: thisproc.ActionsList)
+    for (BMAction thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";
         String checkingboolval2 = "false";
@@ -3177,7 +3188,7 @@ File newfile = new File(path + ".js");
    
    public void UpdateStoredVarPulldowns (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, int BugIndex)
    {
-   for (Action A: STAppData.BugArray.get(BugIndex).ActionsList)
+   for (BMAction A: STAppData.BugArray.get(BugIndex).ActionsList)
    {
        if ("Store Link as Variable by XPATH".equals(A.Type))
        {
@@ -3518,13 +3529,13 @@ File newfile = new File(path + ".js");
             Object ActionType = e.getItem();
             String ActionToAdd = ActionType.toString();
             ActionsMaster newActionsMaster = new ActionsMaster();
-            HashMap<String, Action> ActionHashMap = newActionsMaster.ActionHashMap;
+            HashMap<String, BMAction> ActionHashMap = newActionsMaster.ActionHashMap;
             HashMap<String, ActionView> ActionViewHashMap = newActionsMaster.ActionViewHashMap;
             
             newbugview.JComboBoxDoActions.setSelectedIndex(0);
            if (ActionHashMap.containsKey(ActionToAdd))
            {
-               Action thisActionToAdd = ActionHashMap.get(ActionToAdd);
+               BMAction thisActionToAdd = ActionHashMap.get(ActionToAdd);
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
          
                    STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);       
@@ -3551,13 +3562,13 @@ File newfile = new File(path + ".js");
              Object PassFailActionType = e.getItem();
              String PassFailActionToAdd = PassFailActionType.toString();
              ActionsMaster newActionsMaster = new ActionsMaster();
-             HashMap<String, Action> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
+             HashMap<String, BMAction> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
              HashMap<String, ActionView> PassFailActionViewHashMap = newActionsMaster.PassFailActionViewHashMap;
              
              newbugview.JComboBoxPassFailActions.setSelectedIndex(0);
              if (PassFailActionHashMap.containsKey(PassFailActionToAdd))
              {
-                 Action thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
+                 BMAction thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
                ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
          
           
@@ -3818,6 +3829,13 @@ new ActionListener() {
         }
       }
     );  
+        STAppFrame.addjSpinnerEcTimeoutTimeChangeListener(new ChangeListener(){
+           @Override
+        public void stateChanged(ChangeEvent e) {
+  
+            STAppData.setEcTimeout(STAppFrame.getEcTimeout());
+        }    
+          });
         STAppFrame.addjSpinnerWaitTimeChangeListener(new ChangeListener(){
            @Override
         public void stateChanged(ChangeEvent e) {
@@ -4139,6 +4157,12 @@ if (file_exists == false)
    WriteResource ("geckodriver-win64", "geckodriver.exe");
     WriteResource ("iedriverserver_win32", "IEDriverServer.exe");
      WriteResource ("iedriverserver_win64", "IEDriverServer.exe");
+      File driver_directory = new File(WEBDRIVERSDIR + "edgedriver");
+        if (!driver_directory.exists()) {
+            if (driver_directory.mkdir()) {
+              
+            } 
+        }
    if (DriverUpdateFail==false) { configCheck.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);}
     }
 } 
@@ -4154,9 +4178,9 @@ if (file_exists == false)
        File driver_directory = new File(WEBDRIVERSDIR + dirname);
         if (!driver_directory.exists()) {
             if (driver_directory.mkdir()) {
-                System.out.println("Directory is created!");
+              
             } else {
-                System.out.println("Failed to create directory!");
+             
                 DriverUpdateFail = true;
             }
         }

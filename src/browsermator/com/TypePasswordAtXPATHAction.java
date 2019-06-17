@@ -5,8 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class TypePasswordAtXPATHAction extends Action
+public class TypePasswordAtXPATHAction extends BMAction
 {
 
   TypePasswordAtXPATHAction (String TargetXPATH, String ToType, Boolean BoolVal1)
@@ -45,7 +47,9 @@ public class TypePasswordAtXPATHAction extends Action
      
 if (this.Variable2.length()>0)
  {
-        WebElement element = driver.findElement(By.xpath(this.Variable1));
+      wait = new WebDriverWait(driver, ec_Timeout);     
+       WebElement element  = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(this.Variable1)));  
+    
 char[] keys_to_type = this.Variable2.toCharArray();
 for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
@@ -96,6 +100,7 @@ else
  }
  catch (Exception e)
  {
+     System.out.println ("Exception when typing password at XPATH: " + e.toString());
   this.Pass = false;
   
  }

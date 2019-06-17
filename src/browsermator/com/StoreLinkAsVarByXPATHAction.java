@@ -5,16 +5,21 @@
  */
 package browsermator.com;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 /**
  *
  * @author pcalkins
  */
-public class StoreLinkAsVarByXPATHAction extends Action 
+public class StoreLinkAsVarByXPATHAction extends BMAction 
 {
 StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
 {
@@ -48,12 +53,15 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
     {
     try
  {
+          wait = new WebDriverWait(driver, ec_Timeout);
         
-        String link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("href");
+
+       WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(this.Variable1)));
+        String link_value = element.getAttribute("href");
            if (link_value==null){link_value = "";}
   if (link_value=="")
   {
-      link_value = driver.findElement(By.xpath(this.Variable1)).getAttribute("src");
+      link_value = element.getAttribute("src");
         if (link_value==null){link_value = "";}
   }
      if (!"".equals(link_value))

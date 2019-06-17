@@ -6,11 +6,6 @@
 package browsermator.com;
 
 import java.awt.Cursor;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,12 +13,8 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import javax.swing.event.InternalFrameEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -344,8 +335,8 @@ STAppData.AllFieldValues.add(STAppData.getOSType());
 STAppData.AllFieldValues.add(STAppData.getTargetBrowser());
 String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 STAppData.AllFieldValues.add(stringWaitTime);
-String stringTimeout = String.valueOf(STAppData.getTimeout());
-STAppData.AllFieldValues.add(stringTimeout);
+String stringEcTimeout =  String.valueOf(STAppData.getEcTimeout());
+STAppData.AllFieldValues.add(stringEcTimeout);
 String stringSessions = String.valueOf(STAppData.getSessions());
 STAppData.AllFieldValues.add(stringSessions);
 STAppData.AllFieldValues.add(STAppData.getSMTPHostname());
@@ -416,7 +407,7 @@ for (Procedure thisproc: STAppData.BugArray)
  
     String limitstring = Integer.toString(thisproc.limit);
     STAppData.AllFieldValues.add(limitstring);
-    for (Action thisact: thisproc.ActionsList)
+    for (BMAction thisact: thisproc.ActionsList)
     {
         String checkingboolval1 = "false";
         String checkingboolval2 = "false";
@@ -536,8 +527,8 @@ for (Procedure thisproc: STAppData.BugArray)
   String EmailTo = "";
   String EmailFrom = "";
   String EmailSubject = "";
-  String Timeout = "";
-  String stUniqueList = "false";
+   String stUniqueList = "false";
+  String EcTimeout = "";
  if (FileSettingsNode!=null)
  {
 try
@@ -652,7 +643,14 @@ try
     
       STAppData.setTargetBrowser(TargetBrowser);
    
-            break;   
+            break; 
+            
+           case "EcTimeout":
+ EcTimeout = thisSettingsNodeValue;
+ int intEcTimeout = Integer.parseInt(EcTimeout);
+    
+      STAppData.setEcTimeout(intEcTimeout);
+            break;    
             
        case "WaitTime":
  WaitTime = thisSettingsNodeValue;
@@ -661,13 +659,6 @@ try
       STAppData.setWaitTime(intWaitTime);
             break;  
   
-            //timeouts not supported by selenium at the moment... or they're borky
- //          case "Timeout":
-// Timeout = thisSettingsNodeValue;
-// int intTimeout = Integer.parseInt(Timeout);
-//     STAppFrame.setjSpinnerTimeout(intTimeout); 
-//  STAppData.setTimeout(intTimeout);
-//            break;   
             
         case "Sessions":
  Sessions = thisSettingsNodeValue;
@@ -739,7 +730,8 @@ try
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
-    
+   Procedure newbug = new Procedure();
+   ProcedureView newbugview = new ProcedureView();
  
    
     Element Procedure = (Element) ProcedureList.item(i);
@@ -783,10 +775,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    STAppData.AddNewDataLoopFile(DataFile_file);
 
     int last_added_bug_index = STAppData.BugArray.size()-1;
-     Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+     newbug = STAppData.BugArray.get(last_added_bug_index);
     if (hasGUI)
     {
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+  newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   //    STAppFrame.UpdateDisplay();
@@ -803,11 +795,11 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
          hasURLList = true;
           STAppData.AddNewDataLoopURLList(DataFile);
            int last_added_bug_index = STAppData.BugArray.size()-1;
-           Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+           newbug = STAppData.BugArray.get(last_added_bug_index);
          if (hasGUI)
          {
                 STAppFrame.AddNewDataLoopURLListView(DataFile);
-                  ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+                  newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
                     newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
                       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
         //              STAppFrame.UpdateDisplay();
@@ -852,11 +844,11 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     {
      STAppData.AddNewBug(); 
      int last_added_bug_index = STAppData.BugArray.size()-1;
-      Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+      newbug = STAppData.BugArray.get(last_added_bug_index);
       if (hasGUI)
     {
     STAppFrame.AddNewBugView();  
-     ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+    newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
   //     STAppFrame.UpdateDisplay();
 
@@ -892,7 +884,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   //  STAppData.BugArray.get(i).setPass(Pass);
 
     NodeList ActionsList = Procedure.getElementsByTagName("Action");
-  
+   
     for (int j = 0; j <ActionsList.getLength(); j++)
     {
    Element Action = (Element) ActionsList.item(j);
@@ -982,66 +974,66 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
    }
   ActionsMaster NewActionsMaster = new ActionsMaster();
    
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
    HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-     Procedure NewProcedure = STAppData.BugArray.get(i);
+   
       if (hasGUI)
     {
-   ProcedureView NewProcedureView = STAppFrame.BugViewArray.get(i);
-   NewProcedureView.ActionScrollPane.setViewportView(new JPanel());
+  
+   newbugview.ActionScrollPane.setViewportView(new JPanel());
     if (thisActionHashMap.containsKey(ActionType))
            {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-               STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure, NewProcedureView);
-              NewProcedureView.refreshjComboBoxAddAtPosition();
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray (thisActionViewToAdd, newbugview);
+               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+            newbugview.refreshjComboBoxAddAtPosition();
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-             thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-               STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure, NewProcedureView);
-              NewProcedureView.refreshjComboBoxAddAtPosition(); 
+           thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray (thisActionViewToAdd, newbugview);
+               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+            newbugview.refreshjComboBoxAddAtPosition();
              }
     }
       else
       {
            if (thisActionHashMap.containsKey(ActionType))
            {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
              //  thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
             //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
             //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
+               STAppData.AddActionToArray(thisActionToAdd, newbug);
               
            }      
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
             // thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
             //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
             //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
-               STAppData.AddActionToArray(thisActionToAdd, NewProcedure);
+               STAppData.AddActionToArray(thisActionToAdd, newbug);
                
              }
       }

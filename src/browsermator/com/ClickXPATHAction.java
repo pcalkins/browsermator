@@ -3,7 +3,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ClickXPATHAction extends Action 
+public class ClickXPATHAction extends BMAction 
 {
 
     

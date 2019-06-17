@@ -450,9 +450,9 @@ xmlfile.writeStartElement("WaitTime");
     xmlfile.writeCharacters(WaitTimeString);
     xmlfile.writeEndElement();   
  
-    Integer Timeout = STAppData.getTimeout();
+    Integer Timeout = STAppData.getEcTimeout();
 String TimeoutString = Timeout.toString();
-xmlfile.writeStartElement("Timeout");
+xmlfile.writeStartElement("EcTimeout");
     xmlfile.writeCharacters(TimeoutString);
     xmlfile.writeEndElement();  
     
@@ -524,7 +524,7 @@ xmlfile.writeAttribute("Random", string_randval);
 }
 
 
-    for (Action thisaction: thisbug.ActionsList)
+    for (BMAction thisaction: thisbug.ActionsList)
     {
     xmlfile.writeStartElement("Action");
 

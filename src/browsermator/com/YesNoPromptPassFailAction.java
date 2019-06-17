@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 
 
-public class YesNoPromptPassFailAction extends Action 
+public class YesNoPromptPassFailAction extends BMAction 
 {
     
     YesNoPromptPassFailAction (String PromptText)

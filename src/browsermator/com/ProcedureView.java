@@ -203,7 +203,7 @@ sortmodel = new SortedComboBoxModel<>(URLLIST_ORDER);
      JComboBoxBugSeverity.addItem("High");
   JComboBoxDoActions.addItem("Choose an Action");
   ActionsMaster ActionNames = new ActionsMaster();
-  HashMap<String, Action> ActionHashMap = ActionNames.ActionHashMap;
+  HashMap<String, BMAction> ActionHashMap = ActionNames.ActionHashMap;
 SortedSet<String> action_keys = new TreeSet<>(ActionHashMap.keySet());
 for (String action_name : action_keys) 
 {
@@ -211,7 +211,7 @@ for (String action_name : action_keys)
  
 }
  
- HashMap<String, Action> PassFailActionHashMap = ActionNames.PassFailActionHashMap;
+ HashMap<String, BMAction> PassFailActionHashMap = ActionNames.PassFailActionHashMap;
  
 
      JComboBoxPassFailActions.addItem("Choose a Pass/Fail Condition");
@@ -579,7 +579,7 @@ ActionScrollPane.setVisible(true);
        }
              class PopUpDemo extends JPopupMenu {
     JMenuItem anItem;
-    Action thisAct;
+    BMAction thisAct;
     Procedure this_bug;
     ProcedureView this_bugview;
     
@@ -681,20 +681,20 @@ ActionScrollPane.setVisible(true);
           Procedure this_bug = STAppData.BugArray.get(last_added_bug_index);
           
           ProcedureView this_bugview = STAppFrame.BugViewArray.get(last_added_bug_index);
-          for (Action ACT: this_bug_in.ActionsList)
+          for (BMAction ACT: this_bug_in.ActionsList)
           {
       String ActionType = ACT.Type;
 
   
   ActionsMaster NewActionsMaster = new ActionsMaster();
    
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
    HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
     if (thisActionHashMap.containsKey(ActionType))
            {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
@@ -711,7 +711,7 @@ ActionScrollPane.setVisible(true);
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);

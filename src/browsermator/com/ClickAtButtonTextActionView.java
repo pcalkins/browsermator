@@ -27,7 +27,7 @@ public class ClickAtButtonTextActionView extends ActionView
 
    }
   @Override  
-public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
     addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
            STAppFrame.saveState();

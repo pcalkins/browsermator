@@ -36,7 +36,7 @@ public class ExecuteJavascriptActionView extends ActionView implements Loopable 
    
    }
    @Override  
- public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+ public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
    addJButtonBrowseForFile((ActionEvent evt) -> {
      File jsFile = STAppFrame.BrowseForJSFileAction();

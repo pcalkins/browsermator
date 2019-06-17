@@ -15,6 +15,7 @@ import javax.swing.SwingWorker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -463,22 +464,30 @@ options49.setBinary(chrome_path);
       FallbackDriver("HTMLUnit");
    }
      break;
-//   case "Edge":
-//                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//          setPermissions(thisDriver);
-//        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
-//  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//   try
-//   {
-//     driver = new EdgeDriver();  
-//   }
-//     catch (Exception ex)
-//   {
-//       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-//        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0, 0);
-//      FallbackDriver("HTMLUnit");
-//   }
-//       break;
+   case "Edge":
+     
+                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"msedgedriver.exe");
+                  if (thisDriver.exists())
+                  {
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
+  
+   try
+   {
+     driver = new EdgeDriver();  
+   }
+     catch (Exception ex)
+   {
+       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0, 0);
+      FallbackDriver("HTMLUnit");
+   }
+                  }
+                  else
+                  {
+                    Prompter fallbackprompt = new Prompter ("No EdgeDriver Found", "You need to download the Microsoft Edgedriver and place it your user folder + BrowsermatorAppFolder + Webdrivers + edgedriver.  We do not have permission to distribute this file.", false,0,0);   
+                  }
+       break;
        
          
          default: 
@@ -548,9 +557,9 @@ options49.setBinary(chrome_path);
    }
     }
    int WaitTime = 0;
-
+   int EcTimeout = 10;
   WaitTime = STAppData.getWaitTime();
-
+  EcTimeout = STAppData.getEcTimeout();
   //timeouts still buggy.. removed
  // int Timeout = SiteTest.getTimeout();
 //  int Timeout = 5;
@@ -563,7 +572,7 @@ options49.setBinary(chrome_path);
  
  if (!"Dataloop".equals(thisbugview.Type))
   {
-   for( Action ThisAction : bugtorun.ActionsList ) {
+   for( BMAction ThisAction : bugtorun.ActionsList ) {
         if (STAppData.cancelled)
           {
           
@@ -573,6 +582,7 @@ options49.setBinary(chrome_path);
           }  
            if (!ThisAction.Locked)
    {
+       ThisAction.setEcTimeout(EcTimeout);
    try
    {
        if (totalpause>0)
@@ -652,7 +662,7 @@ else
      for (int x = 0; x<number_of_rows; x++)
     {
          int changex = -1;
-    for( Action ThisAction : bugtorun.ActionsList ) {
+    for( BMAction ThisAction : bugtorun.ActionsList ) {
          if (STAppData.cancelled)
           {
           
@@ -663,7 +673,7 @@ else
            String original_value2 = ThisAction.Variable2;
       if (!ThisAction.Locked)
    {
-   
+   ThisAction.setEcTimeout(EcTimeout);
    
                DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);

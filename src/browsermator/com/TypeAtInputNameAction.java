@@ -6,9 +6,11 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class TypeAtInputNameAction extends Action 
+public class TypeAtInputNameAction extends BMAction 
 {
    
      TypeAtInputNameAction (String TargetFieldID, String ToType, Boolean BoolVal1)
@@ -44,10 +46,14 @@ public class TypeAtInputNameAction extends Action
 
 try
 {
+    
+    
 this.Pass=true;
 if (this.Variable2.length()>0)
  {
- WebElement element = driver.findElement(By.name(this.Variable1));   
+      wait = new WebDriverWait(driver, ec_Timeout);     
+        WebElement element  = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(this.Variable1)));
+ 
 char[] keys_to_type = this.Variable2.toCharArray();
 for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
@@ -95,8 +101,9 @@ else
 }
 
 }
-catch (Exception e)
+catch (Exception ex)
  {
+     System.out.println ("Exception when typing at input name: " + ex.toString());
   this.Pass = false;
   
  }

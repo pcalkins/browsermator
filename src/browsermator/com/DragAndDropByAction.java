@@ -4,10 +4,12 @@ package browsermator.com;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
-public class DragAndDropByAction extends Action {
+public class DragAndDropByAction extends BMAction {
     DragAndDropByAction (String ToDragXPATH, String ToTargetCoordinates)
     {
     this.Type = "Drag From XPATH Distance X and Y Pixels";
@@ -69,9 +71,12 @@ public class DragAndDropByAction extends Action {
  try
  {
     WebElement element = driver.findElement(By.xpath(this.Variable1));
-  Actions actions = new Actions(driver);
+ 
+ Actions actions = new Actions(driver);
 
-actions.dragAndDropBy(element, xtarget, ytarget).perform();
+//    Action clickAndDrag = actions.clickAndHold(dragElement).moveByOffset(-1,-1).moveToElement(dropElement, dropElement.getLocation().getX() + dropElement.getSize().getWidth()/2, dropElement.getLocation().getY()+dropElement.getSize().getHeight()/2).release(dragElement).build();
+
+actions.dragAndDropBy(element, xtarget, ytarget).build().perform();
         this.Pass = true;
  }
  catch (Exception e)

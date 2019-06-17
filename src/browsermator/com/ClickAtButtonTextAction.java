@@ -3,7 +3,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ClickAtButtonTextAction extends Action 
+public class ClickAtButtonTextAction extends BMAction 
 {
     
     ClickAtButtonTextAction (String LinkTextToClick, boolean BoolVal1, boolean BoolVal2)

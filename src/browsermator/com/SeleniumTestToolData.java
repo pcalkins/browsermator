@@ -81,6 +81,7 @@ public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
 String BrowsermatorAppFolder;
      boolean hasSentStoredVars;
+     int  EcTimeout;
      
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
@@ -122,6 +123,7 @@ this.EmailSubject = "";
 this.SMTPHostName = "";
 this.EmailLoginName = "";
 this.silentMode = false;
+this.EcTimeout = 10;
     try{
       loadGlobalEmailSettings();
   }
@@ -130,6 +132,15 @@ this.silentMode = false;
     }
 
         }
+public void setEcTimeout (int _timeout)
+{
+   EcTimeout = _timeout;
+}
+public int getEcTimeout ()
+{
+   
+    return EcTimeout;
+}
 public void setSilentMode(Boolean modeset)
 {
  
@@ -171,7 +182,7 @@ public Map<String, List<String>> getVarLists()
 }
  public void DeleteBug (int BugIndex)
    {
-   for (Action A: BugArray.get(BugIndex-1).ActionsList)
+   for (BMAction A: BugArray.get(BugIndex-1).ActionsList)
    {
        if ("Store Link as Variable by XPATH".equals(A.Type))
        {
@@ -469,6 +480,7 @@ catch (Exception e) {
     {
         this.EmailLoginName = login_name;
     }
+    
     public int getWaitTime()
     {
         return WaitTime;
@@ -690,7 +702,7 @@ else
             {
              for (Procedure thisProc: BugArray)
              {
-                for (Action thisAct: thisProc.ActionsList) 
+                for (BMAction thisAct: thisProc.ActionsList) 
                 {
                     if (thisAct.Type.equals("Switch Driver"))
                     {
@@ -857,14 +869,14 @@ else
             AddDataLoopProc(newdataloop, atindex); 
 
         }
-                public void RefreshActionIndexes (ArrayList<Action> actionlist)
+                public void RefreshActionIndexes (ArrayList<BMAction> actionlist)
                 {
                   for (int x=0; x<actionlist.size(); x++)
                   {
                       actionlist.get(x).index = x;
                   }
                 }
-           public void AddActionToArray(Action action, Procedure newbug, ProcedureView newbugview)
+           public void AddActionToArray(BMAction action, Procedure newbug, ProcedureView newbugview)
            {
                         int at_index = newbugview.getJComboBoxAddAtPosition();
              if (at_index>0) {at_index--;}
@@ -890,7 +902,7 @@ else
            }   
             
            }
-             public void AddActionToArray (Action action, Procedure newbug)
+             public void AddActionToArray (BMAction action, Procedure newbug)
 {
    
             newbug.ActionsList.add(action);

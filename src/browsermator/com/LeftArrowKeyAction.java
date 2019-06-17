@@ -14,7 +14,7 @@ import org.openqa.selenium.interactions.Actions;
  *
  * @author pcalkins
  */
-public class LeftArrowKeyAction extends Action {
+public class LeftArrowKeyAction extends BMAction {
      LeftArrowKeyAction() 
     {
      this.Type = "Left Arrow Key";     

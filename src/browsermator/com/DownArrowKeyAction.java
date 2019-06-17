@@ -14,7 +14,7 @@ import org.openqa.selenium.interactions.Actions;
  *
  * @author pcalkins
  */
-public class DownArrowKeyAction extends Action {
+public class DownArrowKeyAction extends BMAction {
    DownArrowKeyAction() 
     {
      this.Type = "Down Arrow Key";     
@@ -41,7 +41,7 @@ public class DownArrowKeyAction extends Action {
       try
       {
          WebElement element = driver.switchTo().activeElement();
-  element.sendKeys(Keys.ARROW_DOWN);
+        element.sendKeys(Keys.ARROW_DOWN);
   
  
      this.Pass = true;

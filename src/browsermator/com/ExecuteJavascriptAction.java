@@ -15,7 +15,7 @@ import org.openqa.selenium.WebDriver;
  *
  * @author pcalkins
  */
-public class ExecuteJavascriptAction extends Action {
+public class ExecuteJavascriptAction extends BMAction {
        ExecuteJavascriptAction (String JavaScriptToExecute)
     {
         this.Type = "Execute Javascript"; 

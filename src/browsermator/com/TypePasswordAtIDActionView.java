@@ -31,7 +31,7 @@ public class TypePasswordAtIDActionView extends ActionView
    }
    
  @Override  
- public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+ public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
  AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
 

@@ -15,7 +15,7 @@ import org.openqa.selenium.interactions.Actions;
  *
  * @author pcalkins
  */
-public class CloseCurrentTabOrWindowAction extends Action 
+public class CloseCurrentTabOrWindowAction extends BMAction 
 {
   CloseCurrentTabOrWindowAction() 
     {

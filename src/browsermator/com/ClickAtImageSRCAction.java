@@ -4,7 +4,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ClickAtImageSRCAction extends Action
+public class ClickAtImageSRCAction extends BMAction
 {
     
     ClickAtImageSRCAction (String IDToClick, boolean BoolVal1, boolean BoolVal2)

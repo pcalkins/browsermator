@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 
 
-public class PauseAction extends Action {
+public class PauseAction extends BMAction {
  
     PauseAction (String minutes, String seconds)
     {

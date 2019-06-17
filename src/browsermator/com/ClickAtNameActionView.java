@@ -38,7 +38,7 @@ public class ClickAtNameActionView extends ActionView
 //        this.JPanelAction.add(this.JButtonDelete);
    }
    @Override  
- public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+ public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
     addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
              STAppFrame.saveState(); 

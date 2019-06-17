@@ -10,10 +10,13 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public abstract class Action implements Initializable, Serializable {
+public abstract class BMAction implements Initializable, Serializable  {
   
   
     String OSType;
@@ -44,7 +47,10 @@ List<LocalDateTime> loop_time_of_test;
  String tostore_varname;
  String tostore_varvalue;
  List<String> tostore_varlist;
-   Action ()
+ int ec_Timeout;
+ WebDriverWait wait;
+
+   BMAction () 
    {
        prefs = new HashMap<String, Object>();
   this.tostore_varname = "";
@@ -64,12 +70,19 @@ List<LocalDateTime> loop_time_of_test;
   this.Loopable = false;
   this.pause_message = "";
   this.ScreenshotBase64 = "null";
+  this.ec_Timeout = 10;
+ 
     loop_pass_values = new ArrayList<>();
        loop_time_of_test = new ArrayList<>();
        loop_ScreenshotsBase64 = new ArrayList<>();
            OSType = "Windows32";
+           
    }
-
+  public void setEcTimeout(int _timeout)
+  {
+      this.ec_Timeout = _timeout;
+  }
+  
    public void InitializeLoopTestVars(int number_of_rows)
    {
        loop_pass_values = new ArrayList<>();
@@ -114,10 +127,12 @@ List<LocalDateTime> loop_time_of_test;
   {
      if (driver!=null && !"".equals(xpather))
      {
-       try { 
+           try { 
+           wait = new WebDriverWait(driver, ec_Timeout);
+     
   
-  
-          List<WebElement> elements = driver.findElements(By.xpath(xpather));
+   List<WebElement> elements =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));
+      
  
  if (this.BoolVal2)
  {
@@ -128,7 +143,7 @@ List<LocalDateTime> loop_time_of_test;
   {
 
    //    actions.click(thiselement).perform();
-       thiselement.click();
+    wait.until(ExpectedConditions.elementToBeClickable(thiselement)).click();
   }
  
   
@@ -140,7 +155,7 @@ else
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
-element.click();
+  wait.until(ExpectedConditions.elementToBeClickable(element)).click();
   this.Pass = true;
  }
  else
@@ -154,7 +169,7 @@ element.click();
  }
   catch (Exception e)
  {
-     e.printStackTrace();
+    
      System.out.println ("Exception while running clickcatch: " + e.toString());
   this.Pass = false;
   
@@ -170,19 +185,23 @@ element.click();
   {
        if (driver!=null && !"".equals(xpather))
      {
+            wait = new WebDriverWait(driver, ec_Timeout);
         try { 
         // actions don't seem to work with geckodriver
             Actions actions = new Actions(driver);
-             List<WebElement> elements = driver.findElements(By.xpath(xpather));
+            
+          List<WebElement> elements =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));
  if (elements.size()>1)
  {
   for (WebElement thiselement: elements)
   {
-      actions.contextClick(thiselement);
-   
+     WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(thiselement));
+   //   actions.contextClick(waitedElement);
+      Action rightClick = actions.contextClick(waitedElement).build();
+   rightClick.perform();
   }
-  actions.build();
-  actions.perform();
+ 
+ 
    this.Pass = true;
  }
  else
@@ -190,8 +209,13 @@ element.click();
      if (elements.size()>0)
      {
 WebElement element = elements.get(0);
-actions.contextClick(element).perform(); 
-     }
+WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(element));
+
+   Action rightClick = actions.contextClick(waitedElement).build();
+   rightClick.perform();
+
+
+}
  this.Pass = true;
  }
 if (elements.isEmpty())
@@ -204,6 +228,7 @@ if (elements.isEmpty())
  catch (Exception e)
  {
   this.Pass = false;
+  System.out.println(e.toString());
   
  }  
             }

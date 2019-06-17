@@ -10,3 +10,4 @@
 [0421/193048.661:ERROR:process_reader_win.cc(233)] ReadMemory at 0x6b0d7dc8 of 12 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
 [0421/193048.661:WARNING:process_snapshot_win.cc(68)] ReadMemory ExceptionInformation failed
 [0421/193048.661:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
+[0615/145209.007:ERROR:file_io.cc(134)] WriteFile: The pipe is being closed. (0xE8)

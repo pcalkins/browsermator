@@ -303,13 +303,13 @@ rightpart = parts[1];
    }
    ActionsMaster NewActionsMaster = new ActionsMaster();
    
-   HashMap<String, Action> thisActionHashMap = NewActionsMaster.ActionHashMap;
+   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
    HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, Action> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
+   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
    HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
     if (thisActionHashMap.containsKey(ActionType))
            {
-               Action thisActionToAdd = (Action) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
@@ -324,7 +324,7 @@ rightpart = parts[1];
  
      if (thisPassFailActionHashMap.containsKey(ActionType))
              {
-               Action thisActionToAdd = (Action) thisPassFailActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
                ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);

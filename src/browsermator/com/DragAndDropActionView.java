@@ -19,8 +19,8 @@ public class DragAndDropActionView extends ActionView
 {
      DragAndDropActionView()
    {
-       this.JLabelVariable1 = new JLabel("Drag From XPATH:");
-    this.JLabelVariable2 = new JLabel("Drag To XPATH:");
+       this.JLabelVariable1 = new JLabel("Drag From ID:");
+    this.JLabelVariable2 = new JLabel("Drag To ID:");
  this.JPanelAction.add(this.JLabelVariable1);
       this.JPanelAction.add(this.JTextFieldVariable1); 
       this.JPanelAction.add(this.JLabelVariable2);
@@ -36,7 +36,7 @@ public class DragAndDropActionView extends ActionView
    
    }
  @Override  
- public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+ public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
    
       AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);

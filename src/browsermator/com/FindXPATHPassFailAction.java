@@ -3,8 +3,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindXPATHPassFailAction extends Action 
+public class FindXPATHPassFailAction extends BMAction 
 {
 
  
@@ -39,9 +41,11 @@ public class FindXPATHPassFailAction extends Action
     public void RunAction(WebDriver driver)
     {
          this.Pass = false;
-   List<WebElement> element = driver.findElements(By.xpath(this.Variable1));
-       
-   
+         try
+         {
+          wait = new WebDriverWait(driver, ec_Timeout);
+        List<WebElement> element =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(this.Variable1)));   
+ 
        if (element.size() > 0 && this.NOT == false)
     {
         this.Pass = true;
@@ -51,5 +55,11 @@ public class FindXPATHPassFailAction extends Action
     {
         this.Pass = true;
     }
+         }
+         catch (Exception ex)
+         {
+             this.Pass = false;
+             System.out.println ("Exception finding XPATH" + ex.toString());
+         }
     }
 }

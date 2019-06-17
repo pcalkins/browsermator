@@ -4,9 +4,11 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class ClickAtNameAction extends Action 
+public class ClickAtNameAction extends BMAction 
 {
     
     ClickAtNameAction (String LinkTextToClick, boolean BoolVal1, boolean BoolVal2)
@@ -36,7 +38,7 @@ public class ClickAtNameAction extends Action
     @Override
      public void RunAction(WebDriver driver)
     {
-      
+      wait = new WebDriverWait(driver, ec_Timeout);  
      
         try { 
   
@@ -50,9 +52,9 @@ public class ClickAtNameAction extends Action
  {
   for (WebElement thiselement: elements)
   {
-
-   //    actions.click(thiselement).perform();
-       thiselement.click();
+ WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(thiselement));
+  
+      waitedElement.click();
   }
  
   
@@ -64,7 +66,10 @@ else
  if (elements.size()>0)
  {
 WebElement element = elements.get(0);
-element.click();
+ WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(element));
+  
+      waitedElement.click();
+
   this.Pass = true;
  }
  else

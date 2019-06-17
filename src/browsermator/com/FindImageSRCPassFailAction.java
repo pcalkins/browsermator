@@ -5,8 +5,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindImageSRCPassFailAction extends Action
+public class FindImageSRCPassFailAction extends BMAction
 {
     
     FindImageSRCPassFailAction (String ImageSRCToFind, Boolean NOTVAR)
@@ -42,10 +44,14 @@ public class FindImageSRCPassFailAction extends Action
     {
 
          String xpather = "//img[@src='" + this.Variable1 + "']";
-       
+         
+          try
+               {
+                   wait = new WebDriverWait(driver, ec_Timeout);
+              
+    List<WebElement> element =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather))); 
                  
-    List<WebElement> element = driver.findElements(By.xpath(xpather));
-    
+       
     this.Pass = false;
     if (element.size() > 0 && this.NOT == false)
     {
@@ -56,7 +62,12 @@ public class FindImageSRCPassFailAction extends Action
     {
         this.Pass = true;
     }
-     
+               }
+               catch (Exception ex)
+               {
+                   this.Pass = false;
+                   System.out.println ("Exception Finding Image SRC: " + ex.toString());
+               }
      
     }
 }

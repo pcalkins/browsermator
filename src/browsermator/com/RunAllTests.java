@@ -18,6 +18,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -45,6 +46,7 @@ String WEBDRIVERSDIR;
 String BrowsermatorAppFolder;
 Map<String, Object> prefs;
 ProgressFrame popOutFrame;
+int EcTimeout;
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
@@ -64,6 +66,7 @@ ProgressFrame popOutFrame;
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.OSType = STAppData.OSType;
+  this.EcTimeout = 10;
   STAppFrame.showTaskGUI();
 
  setProgressListeners();
@@ -90,6 +93,7 @@ public RunAllTests (SeleniumTestToolData in_SiteTest)
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.OSType = in_SiteTest.OSType;
+   this.EcTimeout = 10;
 popOutFrame = new ProgressFrame(in_SiteTest.short_filename);
  setProgressListeners(popOutFrame);
       
@@ -780,39 +784,40 @@ options49.setBinary(chrome_path);
  
    
      break;
-//   case "Edge":
-//                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//          setPermissions(thisDriver);
-//        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
-//  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//   try
-//   {
-//     driver = new EdgeDriver();  
-//   }
-//     catch (Exception ex)
-//   {
-//       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-//        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. " + ex.toString(), false,0, 0);
-//  
-//   }
-//       break;
-//         
+  case "Edge":
+     
+                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"msedgedriver.exe");
+                  if (thisDriver.exists())
+                  {
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
+  
+   try
+   {
+     driver = new EdgeDriver();  
+   }
+     catch (Exception ex)
+   {
+       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver." + ex.toString(), false,0, 0);
+    
+   }
+                  }
+                  else
+                  {
+                    Prompter fallbackprompt = new Prompter ("No EdgeDriver Found", "You need to download the Microsoft Edgedriver and place it your user folder + BrowsermatorAppFolder + Webdrivers + edgedriver.  We do not have permission to distribute this file.", false,0,0);   
+                  }
+       break;
     
     }
     int WaitTime = 0;
 
   WaitTime = STAppData.getWaitTime();
+   EcTimeout = STAppData.getEcTimeout();
 
-  //timeouts still buggy.. removed
- // int Timeout = SiteTest.getTimeout();
-//  int Timeout = 5;
-  
-// driver.manage().timeouts().implicitlyWait(Timeout, TimeUnit.SECONDS);
-// driver.manage().timeouts().pageLoadTimeout(Timeout, TimeUnit.SECONDS);
-// driver.manage().timeouts().setScriptTimeout(Timeout, TimeUnit.SECONDS);
 
      int totalpause = WaitTime * 1000;
-        
+     
   
   int thisbugindex = 0;
   
@@ -870,7 +875,7 @@ String action_ID = "";
 if (!"Dataloop".equals(thisbug.Type))
 {
     action_INT=0;
-   for( Action ThisAction : thisbug.ActionsList ) {
+   for( BMAction ThisAction : thisbug.ActionsList ) {
          if (STAppData.cancelled)
           {
           
@@ -888,6 +893,7 @@ if (!"Dataloop".equals(thisbug.Type))
 
            if (!ThisAction.Locked)
    {
+         ThisAction.setEcTimeout(EcTimeout);
        if (RUNWITHGUI)
        {
           String action_title = ThisAction.Type + ": " + ThisAction.Variable1 + " " + ThisAction.Variable2;
@@ -1062,7 +1068,7 @@ if (!"Dataloop".equals(thisbug.Type))
            }
    }  
    int actionspassed = 0;
- for (Action thisaction: thisbug.ActionsList)
+ for (BMAction thisaction: thisbug.ActionsList)
  {
      Boolean passvalue = thisaction.Pass;
      if (passvalue)
@@ -1163,7 +1169,7 @@ else
 //  number_of_rows = FillTables(thisbug, thisbugview);
 // }
 
-  for( Action ThisAction : thisbug.ActionsList ) { 
+  for( BMAction ThisAction : thisbug.ActionsList ) { 
  ThisAction.InitializeLoopTestVars(number_of_rows);
   } 
 
@@ -1172,7 +1178,7 @@ else
  
    int changex = -1;
   action_INT = 0;
-    for( Action ThisAction : thisbug.ActionsList ) {
+    for( BMAction ThisAction : thisbug.ActionsList ) {
        if (STAppData.cancelled)
           {
        
@@ -1189,7 +1195,7 @@ else
            String original_value2 = ThisAction.Variable2;
       if (!ThisAction.Locked)
    {
-   
+    ThisAction.setEcTimeout(EcTimeout);
  
                DataLoopVarParser var1Parser = new DataLoopVarParser(ThisAction.Variable1);
     DataLoopVarParser var2Parser = new DataLoopVarParser(ThisAction.Variable2);
@@ -1638,7 +1644,7 @@ else
     }
      //check if all actions passed
      int actions_passed = 0;
-    for( Action ThisAction : thisbug.ActionsList )
+    for( BMAction ThisAction : thisbug.ActionsList )
     {   
         ThisAction.Pass = false;
       
@@ -1845,13 +1851,13 @@ while(thisContinuePrompt.isVisible() == true){
     Boolean BugPass = false;
      for (Procedure thisbug : STAppData.BugArray)
       {
-        ArrayList<Action> ActionsToLoop = thisbug.ActionsList;
+        ArrayList<BMAction> ActionsToLoop = thisbug.ActionsList;
   
  int NumberOfActionsPassed = 0;
   if (!"Dataloop".equals(thisbug.Type))
   {
        int ActionIndex = 0;
-   for( Action TheseActions : ActionsToLoop ) {
+   for( BMAction TheseActions : ActionsToLoop ) {
 
 
     LocalDateTime stringtime =  LocalDateTime.now();
@@ -1903,7 +1909,7 @@ while(thisContinuePrompt.isVisible() == true){
 if (number_of_rows==0)
 {
    int ActionIndex = 0;
-    for( Action TheseActions : ActionsToLoop ) {
+    for( BMAction TheseActions : ActionsToLoop ) {
        
           TheseActions.Pass = false;
         
@@ -1913,7 +1919,7 @@ if (number_of_rows==0)
     for (int x = 0; x<number_of_rows; x++)
     {
         
-    for( Action TheseActions : ActionsToLoop ) {
+    for( BMAction TheseActions : ActionsToLoop ) {
 
          
     LocalDateTime stringtime =  LocalDateTime.now();

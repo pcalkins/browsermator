@@ -14,7 +14,7 @@ import org.openqa.selenium.WebDriver;
  *
  * @author pcalkins
  */
-public class NextTabAction extends Action {
+public class NextTabAction extends BMAction {
        NextTabAction() 
     {
      this.Type = "Next Tab";     

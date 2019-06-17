@@ -6,6 +6,7 @@
 package browsermator.com;
 
 import java.util.HashMap;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
@@ -13,17 +14,18 @@ import java.util.HashMap;
  */
 
 public class ActionsMaster {
-    HashMap<String, Action> ActionHashMap;
-    HashMap<String, Action> PassFailActionHashMap;
+    HashMap<String, BMAction> ActionHashMap;
+    HashMap<String, BMAction> PassFailActionHashMap;
     HashMap<String, ActionView> ActionViewHashMap;
     HashMap<String, ActionView> PassFailActionViewHashMap;   
-    
+    WebDriverWait dummywait;
     ActionsMaster()
     {
-    ActionHashMap = new <String, Action>HashMap();
+        ActionHashMap = new <String, BMAction>HashMap();
+  
     ActionViewHashMap = new <String, ActionView>HashMap();
-       
-    PassFailActionHashMap = new <String, Action>HashMap();
+      PassFailActionHashMap = new <String, BMAction>HashMap(); 
+    
     PassFailActionViewHashMap = new <String, ActionView>HashMap();
     ActionViewHashMap.put("Back Button", new BackActionView());
     ActionViewHashMap.put("Click at Button Text", new ClickAtButtonTextActionView());
@@ -35,7 +37,7 @@ public class ActionsMaster {
     ActionViewHashMap.put("Click at XPATH", new ClickXPATHActionView());
     ActionViewHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowActionView());
     ActionViewHashMap.put("Down Arrow Key", new DownArrowKeyActionView());
-    ActionViewHashMap.put("Drag From XPATH to XPATH", new DragAndDropActionView());
+    ActionViewHashMap.put("Drag From ID to ID", new DragAndDropActionView());
     ActionViewHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByActionView());
     ActionViewHashMap.put("Enter Key", new EnterKeyActionView());
     ActionViewHashMap.put("Escape Key", new EscapeKeyActionView());
@@ -76,7 +78,7 @@ public class ActionsMaster {
   ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false, false));
   ActionHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowAction());
   ActionHashMap.put("Down Arrow Key", new DownArrowKeyAction());
-  ActionHashMap.put("Drag From XPATH to XPATH", new DragAndDropAction("", ""));
+  ActionHashMap.put("Drag From ID to ID", new DragAndDropAction("", ""));
   ActionHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByAction("", ""));
   ActionHashMap.put("Enter Key", new EnterKeyAction());
   ActionHashMap.put("Escape Key", new EscapeKeyAction());

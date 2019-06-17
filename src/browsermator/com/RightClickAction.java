@@ -6,13 +6,15 @@
 package browsermator.com;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
 /**
  *
  * @author pcalkins
  */
-public class RightClickAction extends Action {
+public class RightClickAction extends BMAction {
        RightClickAction() 
     {
      this.Type = "Right-Click";     
@@ -26,8 +28,13 @@ public class RightClickAction extends Action {
   @Override
     public void RunAction(WebDriver driver)
     {
+        WebElement element = driver.switchTo().activeElement();
         Actions actions = new Actions(driver);
- actions.contextClick().build().perform(); 
+      
+   //   actions.contextClick(waitedElement);
+      Action rightClick = actions.contextClick(element).build();
+   rightClick.perform();
+
  
     } 
 }

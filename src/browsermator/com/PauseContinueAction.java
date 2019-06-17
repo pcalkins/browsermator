@@ -14,7 +14,7 @@ import org.openqa.selenium.WebDriver;
  *
  * @author pcalkins
  */
-class PauseContinueAction extends Action {
+class PauseContinueAction extends BMAction {
 String pause_message;
 int changex = 0;
 

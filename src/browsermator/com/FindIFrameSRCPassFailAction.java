@@ -5,8 +5,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindIFrameSRCPassFailAction extends Action
+public class FindIFrameSRCPassFailAction extends BMAction
 {
     
     FindIFrameSRCPassFailAction (String IFrameSRCToFind, Boolean NOTVAR)
@@ -24,6 +26,7 @@ public class FindIFrameSRCPassFailAction extends Action
     public void SetGuts()
     {
         String xpather = "//iframe[@src='" + this.Variable1 + "']";
+        
         this.Guts = " List<WebElement> element = driver.findElements(By.xpath("+xpather+"));\n" +
 "    \n" +
 "    this.Pass = false;\n" +
@@ -41,10 +44,14 @@ public class FindIFrameSRCPassFailAction extends Action
      public void RunAction(WebDriver driver)
     {
 
-        
+          
           String xpather = "//iframe[@src='" + this.Variable1 + "']";
-                 
-    List<WebElement> element = driver.findElements(By.xpath(xpather));
+              try
+           {
+          wait = new WebDriverWait(driver, ec_Timeout);
+      
+    List<WebElement> element =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));
+   
     
     this.Pass = false;
     if (element.size() > 0 && this.NOT == false)
@@ -56,7 +63,12 @@ public class FindIFrameSRCPassFailAction extends Action
     {
         this.Pass = true;
     }
-     
+           }
+           catch (Exception ex)
+           {
+               this.Pass = false;
+               System.out.println ("Exception finding iFrame SRC: " + ex.toString());
+           }
      
     }
 }

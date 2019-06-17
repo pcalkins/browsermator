@@ -14,7 +14,7 @@ import org.openqa.selenium.WebElement;
  *
  * @author pcalkins
  */
-public class EscapeKeyAction extends Action {
+public class EscapeKeyAction extends BMAction {
       EscapeKeyAction() 
     {
      this.Type = "Escape Key";     

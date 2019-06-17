@@ -20,7 +20,7 @@ public class NOTFindTextPassFailActionView extends ActionView
         theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));
    }
   @Override  
-public void AddListeners(Action action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
+public void AddListeners(BMAction action, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Procedure newbug, ProcedureView newbugview)
    {
  AddDraggers(action, STAppFrame, STAppData, newbug, newbugview);
 

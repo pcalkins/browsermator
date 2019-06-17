@@ -4,7 +4,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class ClickAtIDAction extends Action
+public class ClickAtIDAction extends BMAction
 {
     
     ClickAtIDAction (String IDToClick, boolean BoolVal1, boolean BoolVal2)

@@ -5,8 +5,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindHREFPassFailAction extends Action 
+public class FindHREFPassFailAction extends BMAction 
 {
     
     FindHREFPassFailAction (String HREFToFind, Boolean NOTVAR)
@@ -39,10 +41,16 @@ public class FindHREFPassFailAction extends Action
     @Override
      public void RunAction(WebDriver driver)
     {
-
          String xpather = "//a[contains(@href,'" + this.Variable1 + "')]";
-    List<WebElement> element = driver.findElements(By.xpath(xpather));
-    
+          try
+         {
+           wait = new WebDriverWait(driver, ec_Timeout);
+        
+      
+         List<WebElement> element =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));
+   
+   
+
     this.Pass = false;
        if (element.size() > 0 && this.NOT == false)
     {
@@ -53,6 +61,12 @@ public class FindHREFPassFailAction extends Action
     {
         this.Pass = true;
     }
+         }
+         catch (Exception ex)
+         {
+             System.out.println ("Exception finding Href: " + ex.toString());
+             this.Pass = false;
+         }
      
     }
 }

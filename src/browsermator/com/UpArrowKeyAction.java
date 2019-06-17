@@ -14,7 +14,7 @@ import org.openqa.selenium.interactions.Actions;
  *
  * @author pcalkins
  */
-public class UpArrowKeyAction extends Action {
+public class UpArrowKeyAction extends BMAction {
     UpArrowKeyAction() 
     {
      this.Type = "Up Arrow Key";     

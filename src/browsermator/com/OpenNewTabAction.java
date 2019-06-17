@@ -18,7 +18,7 @@ import org.openqa.selenium.interactions.Actions;
  *
  * @author pcalkins
  */
-public class OpenNewTabAction extends Action {
+public class OpenNewTabAction extends BMAction {
       OpenNewTabAction() 
     {
      this.Type = "Open New Tab";     

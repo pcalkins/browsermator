@@ -5,7 +5,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class SwitchToFrameAction extends Action 
+public class SwitchToFrameAction extends BMAction 
 {
   SwitchToFrameAction (String index)
     {
@@ -26,6 +26,7 @@ public class SwitchToFrameAction extends Action
 try
 {
  driver.switchTo().frame(this.Variable1);
+
 this.Pass = true;
 }
 catch (Exception ex)

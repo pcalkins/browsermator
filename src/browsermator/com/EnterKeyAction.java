@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
  *
  * @author pcalkins
  */
-public class EnterKeyAction extends Action {
+public class EnterKeyAction extends BMAction {
       EnterKeyAction() 
     {
      this.Type = "Enter Key";     

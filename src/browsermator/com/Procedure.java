@@ -30,7 +30,7 @@ int number_of_columns;
 int number_of_records;
 Boolean random;
 String DataLoopSource;
-   ArrayList<Action> ActionsList = new ArrayList();    
+   ArrayList<BMAction> ActionsList = new ArrayList();    
   String URLListName;
   List<String> URLListData;
   List<String> URLListRunTimeEntries;
@@ -75,7 +75,7 @@ this.URLListRunTimeEntries = new ArrayList<>();
           public void Disable()
        {
     
-    for (Action ACT: ActionsList)
+    for (BMAction ACT: ActionsList)
     {
         ACT.Locked = true;
        
@@ -83,7 +83,7 @@ this.URLListRunTimeEntries = new ArrayList<>();
        }
        public void Enable()
        {
-  for (Action ACT: ActionsList)
+  for (BMAction ACT: ActionsList)
     {
         ACT.Locked = false;
        

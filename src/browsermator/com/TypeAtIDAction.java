@@ -1,12 +1,16 @@
 package browsermator.com;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class TypeAtIDAction extends Action
+public class TypeAtIDAction extends BMAction
 {
 
   
@@ -41,12 +45,15 @@ this.Guts+="this.Pass = true;\n" +
     @Override
     public void RunAction(WebDriver driver)
     {
+       
 try
 {
 this.Pass = true;
 if (this.Variable2.length()>0)
  {
-     WebElement element = driver.findElement(By.id(this.Variable1));
+        wait = new WebDriverWait(driver, ec_Timeout);     
+       WebElement element  = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(this.Variable1)));
+
 char[] keys_to_type = this.Variable2.toCharArray();
 for(int i=0;i<keys_to_type.length;i++){
     String sendkey = String.valueOf(keys_to_type[i]);
@@ -83,6 +90,7 @@ element.sendKeys(Keys.RETURN);
     }
     catch (Exception ex)
     {
+        System.out.println ("Exception when typing at ID: " + ex.toString());
        this.Pass = false; 
     }
   

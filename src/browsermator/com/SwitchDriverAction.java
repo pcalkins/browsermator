@@ -4,12 +4,13 @@ package browsermator.com;
 import java.io.File;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 
-public class SwitchDriverAction extends Action 
+public class SwitchDriverAction extends BMAction 
 {
   String WEBDRIVERSDIR;
   String BrowsermatorAppFolder;
@@ -371,10 +372,10 @@ public class SwitchDriverAction extends Action
 "   \n" +
 "     break;\n" +
 "//   case \"Edge\":\n" +
-"//                  thisDriver =  new File( WEBDRIVERSDIR+\"edgedriver\"+File.separator+\"MicrosoftWebDriver.exe\");\n" +
+"//                  thisDriver =  new File( WEBDRIVERSDIR+\"edgedriver\"+File.separator+\"msedgedriver.exe\");\n" +
 "//          setPermissions(thisDriver);\n" +
 "//        System.setProperty(\"webdriver.edge.driver\", thisDriver.getAbsolutePath());  \n" +
-"//  //   System.setProperty(\"webdriver.edge.driver\", BMPATH+File.separator+\"lib\"+File.separator+\"edgedriver\"+File.separator+\"MicrosoftWebDriver.exe\");\n" +
+"//  //   System.setProperty(\"webdriver.edge.driver\", BMPATH+File.separator+\"lib\"+File.separator+\"edgedriver\"+File.separator+\"msedgedriver.exe\");\n" +
 "//   try\n" +
 "//   {\n" +
 "//     driver = new EdgeDriver();  \n" +
@@ -739,23 +740,30 @@ options49.setBinary(chrome_path);
  
    
      break;
-//   case "Edge":
-//                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//          setPermissions(thisDriver);
-//        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
-//  //   System.setProperty("webdriver.edge.driver", BMPATH+File.separator+"lib"+File.separator+"edgedriver"+File.separator+"MicrosoftWebDriver.exe");
-//   try
-//   {
-//     driver = new EdgeDriver();  
-//   }
-//     catch (Exception ex)
-//   {
-//       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-//        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. " + ex.toString(), false,0, 0);
-//  
-//   }
-//       break;
-//         
+  case "Edge":
+     
+                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"msedgedriver.exe");
+                  if (thisDriver.exists())
+                  {
+          setPermissions(thisDriver);
+        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
+  
+   try
+   {
+      RunThread.driver = new EdgeDriver();  
+   }
+     catch (Exception ex)
+   {
+       System.out.println ("Problem launching EdgeDriver: " + ex.toString());
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver, will fallback to HTMLUnitDriver: " + ex.toString(), false,0, 0);
+    
+   }
+                  }
+                  else
+                  {
+                    Prompter fallbackprompt = new Prompter ("No EdgeDriver Found", "You need to download the Microsoft Edgedriver and place it your user folder + BrowsermatorAppFolder + Webdrivers + edgedriver.  We do not have permission to distribute this file.", false,0,0);   
+                  }
+       break;
           
   }
         this.Pass = true;

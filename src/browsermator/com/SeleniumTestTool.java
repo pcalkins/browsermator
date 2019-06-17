@@ -155,6 +155,7 @@ jComboBoxStoredVariables.setFocusable(false);
  }
   public void initializeDisplay()
   {
+      setjSpinnerEcTimeout(STAppData.getEcTimeout());
       setOSType(STAppData.getOSType());
       setTargetBrowserView(STAppData.getTargetBrowser());
       setFilename(STAppData.getFilename());
@@ -185,6 +186,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
 
  populateSelectURLListPulldowns();
   }
+
    public void refreshStoredArrayPulldown(ProcedureView PV)
    {
        PV.JComboBoxStoredArrayLists.removeAllItems();
@@ -811,7 +813,31 @@ public int GetWaitTime()
     return wait;
     
 }
- 
+ public int getEcTimeout()
+{
+    int fallbackValue = 1;
+
+
+    
+    try {
+       jSpinnerEcTimeout.commitEdit();
+   }
+   catch (ParseException pe) {
+     
+       JComponent editor =jSpinnerEcTimeout.getEditor();
+       
+       if (editor instanceof DefaultEditor) {
+           ((DefaultEditor)editor).getTextField().setValue(jSpinnerEcTimeout.getValue());
+       }
+     
+       jSpinnerEcTimeout.setValue(fallbackValue);
+     
+      
+   }
+   int wait = (Integer)this.jSpinnerEcTimeout.getValue();
+    return wait;
+    
+}
 
 
    public int getSessions()
@@ -1586,6 +1612,8 @@ refreshjComboBoxMoveToIndex();
         MainScrollPane = new javax.swing.JScrollPane();
         jLabelTHISSITEURL = new javax.swing.JLabel();
         jSpinnerWaitTime = new javax.swing.JSpinner();
+        jSpinnerEcTimeout = new javax.swing.JSpinner();
+        JLabel jLabelEcTimeout = new javax.swing.JLabel();
         JLabel jLabelPauseTime = new javax.swing.JLabel();
         jCheckBoxEmailReport = new javax.swing.JCheckBox();
         JLabel jLabelSMTPHostname = new javax.swing.JLabel();
@@ -1644,7 +1672,11 @@ refreshjComboBoxMoveToIndex();
         MainScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         MainScrollPane.setName(""); // NOI18N
-
+        jLabelEcTimeout.setText("EC Timeout:");
+        jSpinnerEcTimeout.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
+        jSpinnerEcTimeout.setMinimumSize(new java.awt.Dimension(41, 21));
+        jSpinnerEcTimeout.setPreferredSize(new java.awt.Dimension(41, 21));
+        
         jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
@@ -1683,7 +1715,7 @@ refreshjComboBoxMoveToIndex();
         
       
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Edge", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
         jCheckBoxOSTypeWindows32.setText("Windows - 32");
         jCheckBoxOSTypeWindows32.setEnabled(false);
@@ -1760,7 +1792,10 @@ refreshjComboBoxMoveToIndex();
         jPanelSouth.add(jButtonDoStuff);
    
         jPanelSouth.add(jLabelPauseTime);
+        
         jPanelSouth.add(jSpinnerWaitTime);
+        jPanelSouth.add(jLabelEcTimeout);
+        jPanelSouth.add(jSpinnerEcTimeout);
         jPanelSouth.add(jLabelTargetBrowser);
         jPanelSouth.add(jComboBoxTargetBrowser);
         jPanelSouth.add(jButtonBrowseForFireFoxExe);
@@ -1923,6 +1958,8 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
         jRadioButtonUniqueGlobal = new javax.swing.JRadioButton();
         JTextFieldProgress = new javax.swing.JTextField();
         jLabelTasks = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jSpinnerEcTimeout = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 834));
@@ -2039,6 +2076,12 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
 
         jLabelTasks.setText("Running Tasks:");
 
+        jLabel9.setText("Timeout (seconds)");
+
+        jSpinnerEcTimeout.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
+        jSpinnerEcTimeout.setMinimumSize(new java.awt.Dimension(41, 21));
+        jSpinnerEcTimeout.setPreferredSize(new java.awt.Dimension(41, 21));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -2083,12 +2126,18 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGap(6, 6, 6)
-                                                        .addComponent(jLabel1)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel9)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jSpinnerEcTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel1)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createSequentialGroup()
@@ -2146,10 +2195,10 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
                         .addGap(0, 109, Short.MAX_VALUE))
                     .addComponent(MainScrollPane)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonNewDataLoop)
+                        .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabelStoredVariables)
                         .addGap(10, 10, 10)
                         .addComponent(jComboBoxStoredVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2164,17 +2213,19 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButtonNewDataLoop)
-                                .addComponent(jComboBoxStoredVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonPlaceStoredVariable)
-                                .addComponent(jLabelStoredVariables))
-                            .addComponent(jButtonNewBug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxStoredVariables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonPlaceStoredVariable)
+                            .addComponent(jLabelStoredVariables)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButtonGutsView)))
+                        .addComponent(jButtonGutsView))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonNewBug, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonNewDataLoop, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelTHISSITEURL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2182,17 +2233,18 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jCheckBoxShowReport)
-                                    .addComponent(jCheckBoxPromptToClose)
-                                    .addComponent(jButtonFlattenFile))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jCheckBoxIncludeScreenshots)
-                                    .addComponent(jCheckBoxExitAfter)))
-                            .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxShowReport)
+                            .addComponent(jCheckBoxPromptToClose)
+                            .addComponent(jButtonFlattenFile)
+                            .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxIncludeScreenshots)
+                            .addComponent(jCheckBoxExitAfter)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jSpinnerEcTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2554,6 +2606,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
    {
        jButtonGutsView.addActionListener(listener);
    }
+        public void addjSpinnerEcTimeoutTimeChangeListener(ChangeListener listener)
+   {
+       jSpinnerEcTimeout.addChangeListener(listener);
+   }
      public void addjSpinnerWaitTimeChangeListener(ChangeListener listener)
    {
        jSpinnerWaitTime.addChangeListener(listener);
@@ -2701,6 +2757,10 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
         jCheckBoxExitAfter.setSelected(false);
       
         }
+    }
+        public void setjSpinnerEcTimeout(int WaitTime)
+    {
+          this.jSpinnerEcTimeout.setValue(WaitTime);
     }
     public void setjSpinnerWaitTime(int WaitTime)
     {
@@ -2920,12 +2980,14 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelSessions;
     private javax.swing.JLabel jLabelStoredVariables;
     private javax.swing.JLabel jLabelTHISSITEURL;
     private javax.swing.JLabel jLabelTasks;
     private javax.swing.JRadioButton jRadioButtonUniqueGlobal;
     private javax.swing.JRadioButton jRadioButtonUniquePerFile;
+    private javax.swing.JSpinner jSpinnerEcTimeout;
     private javax.swing.JSpinner jSpinnerSessions;
     private javax.swing.JSpinner jSpinnerWaitTime;
     private javax.swing.JTextField jTextFieldEmailFrom;

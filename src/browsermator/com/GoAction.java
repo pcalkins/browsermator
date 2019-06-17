@@ -3,7 +3,7 @@ package browsermator.com;
 import org.openqa.selenium.WebDriver;
 
 
-public class GoAction extends Action 
+public class GoAction extends BMAction 
 {
 
 

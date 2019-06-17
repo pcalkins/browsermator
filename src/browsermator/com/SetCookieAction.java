@@ -5,7 +5,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 
 
-public class SetCookieAction extends Action 
+public class SetCookieAction extends BMAction 
 {
  SetCookieAction (String Key, String Value)
     {
