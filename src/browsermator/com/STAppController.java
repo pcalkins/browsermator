@@ -28,7 +28,6 @@ import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -58,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.182";
+public final String ProgramVersion = "1.6.184";
 public final String lastWebDriverUpdate = "060812019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -3132,7 +3131,8 @@ File newfile = new File(path + ".js");
       
        STAppFrame.ResetBugIndexes();
   
-    STAppFrame.ChangeURLListPulldowns();        
+    STAppFrame.ChangeURLListPulldowns();  
+    STAppFrame.RefreshStoredLists();
      STAppFrame.UpdateDisplay();
      STAppFrame.refreshjComboBoxMoveToIndex();
          JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
@@ -3140,51 +3140,8 @@ File newfile = new File(path + ".js");
         Rectangle bounds =  STAppFrame.BugViewArray.get(move_to_index-1).JPanelBug.getBounds();
 
       component.scrollRectToVisible(bounds);   
+           
    }
-   public void MoveProcedure (SeleniumTestTool STAppFrame, int toMoveIndex, int Direction)
-   {
-     
-     int SwapIndex = toMoveIndex + Direction;
-     SwapIndex--;
-     toMoveIndex--;
-    if (Direction == 1)
-       {
-      if (SwapIndex<STAppFrame.STAppData.BugArray.size())
-      {
-    Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
-  Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
-  STAppFrame.ResetBugIndexes();
-  
-    STAppFrame.ChangeURLListPulldowns();
-      }
-       }  
-    if (Direction == -1)
-    {
-        if (SwapIndex >= 0)
-        {
-    Collections.swap(STAppFrame.STAppData.BugArray, toMoveIndex, SwapIndex);
-  Collections.swap(STAppFrame.BugViewArray, toMoveIndex, SwapIndex);
- STAppFrame.ResetBugIndexes();
-  STAppFrame.ChangeURLListPulldowns();
-        }
-    }
- if (SwapIndex<STAppFrame.STAppData.BugArray.size() && SwapIndex>=0)
-      {
-        
-     
-      STAppFrame.UpdateDisplay();
-         JComponent component = (JComponent) STAppFrame.MainScrollPane.getViewport().getView();
-   
-        Rectangle bounds =  STAppFrame.BugViewArray.get(SwapIndex).JPanelBug.getBounds();
-
-      component.scrollRectToVisible(bounds);
-       }
-      
-    
-   }
- 
-  
-
    
    public void UpdateStoredVarPulldowns (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, int BugIndex)
    {
@@ -3412,6 +3369,7 @@ File newfile = new File(path + ".js");
 
                STAppData.DeleteBug(newbugview.index);
                 STAppFrame.DeleteBugView(newbugview.index);
+                
                     STAppFrame.UpdateDisplay();
 
            });

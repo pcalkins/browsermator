@@ -5,10 +5,8 @@
  */
 package browsermator.com;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -59,7 +57,7 @@ StoreLinkAsVarByXPATHAction(String TargetXPATH, String StoreVarName)
        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(this.Variable1)));
         String link_value = element.getAttribute("href");
            if (link_value==null){link_value = "";}
-  if (link_value=="")
+  if (link_value.equals(""))
   {
       link_value = element.getAttribute("src");
         if (link_value==null){link_value = "";}

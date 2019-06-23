@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -198,11 +199,7 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
    }
    public void updateSelectedVariableName (String oldname, String newname)
     {
-           if (STAppData.VarHashMap.containsKey(oldname))
-      {
-          STAppData.VarHashMap.remove(oldname);
-        
-      }  
+    
         if (STAppData.VarHashMap.containsKey(newname))
         {       
       
@@ -217,16 +214,53 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
            
      
         }
-      
+             if (STAppData.VarHashMap.containsKey(oldname))
+      {
+       RemoveOldNameIfNotUsedVarHashMap(oldname);
+        
+      }  
      
     
-    }        
+    }   
+    public void RemoveOldNameIfNotUsedVarHashMap(String _oldname)
+    {
+       boolean oldNameStillThere = false;
+               for (Procedure PROC: STAppData.BugArray)
+      {
+          for (BMAction thisAct: PROC.ActionsList)
+          {
+              if (thisAct.Variable2.equals(_oldname))
+              {
+                oldNameStillThere = true;  
+              }
+          }
+      }
+               if (!oldNameStillThere)
+               {
+                 STAppData.VarHashMap.remove(_oldname);
+               }  
+    }
+    public void RemoveOldNameIfNotUsedVarlist(String _oldname)
+    {
+        boolean oldNameStillThere = false;
+               for (Procedure PROC: STAppData.BugArray)
+      {
+          for (BMAction thisAct: PROC.ActionsList)
+          {
+              if (thisAct.Variable2.equals(_oldname))
+              {
+                oldNameStillThere = true;  
+              }
+          }
+      }
+               if (!oldNameStillThere)
+               {
+                 STAppData.VarLists.remove(_oldname);
+               }
+    }
     public void updateSelectedArrayName(String oldname, String newname)
     {
-           if (STAppData.VarLists.containsKey(oldname))
-      {
-          STAppData.VarLists.remove(oldname);
-      }  
+     
         if (STAppData.VarLists.containsKey(newname))
         {       
       
@@ -282,7 +316,10 @@ if (STAppData.getTargetBrowser().equals("Firefox") || STAppData.getTargetBrowser
       }
         }
       
-     
+           if (STAppData.VarLists.containsKey(oldname))
+      {
+          RemoveOldNameIfNotUsedVarlist(oldname);
+      }  
     
     }
   
@@ -909,7 +946,8 @@ public int GetWaitTime()
      thisBugView.ActionsViewList.get(BugViewIndex).index--;
      }
      }
-   ChangeURLListPulldowns();
+   
+//   ChangeURLListPulldowns();
  updateStoredURLListIndexes(thisBugView);
  UpdateScrollPane(thisBugView);
    thisBugView.refreshjComboBoxAddAtPosition();
@@ -920,11 +958,60 @@ public int GetWaitTime()
 
    BugViewArray.remove(BugIndex-1);
    ResetBugIndexes();
-  
+ 
    ChangeURLListPulldowns();
-   
+   RefreshStoredLists();
  
    }
+     public void RefreshStoredLists()
+     {
+   //    Map<String, List<String>> map = STAppData.VarLists;
+    //   int checker = 0;
+         List<String> ExistingLists = new ArrayList<>();
+         List<String> ExistingVars = new ArrayList<>();
+               for (ProcedureView PV: BugViewArray)
+       {
+   
+           for (ActionView AV: PV.ActionsViewList)
+           {
+           if ("StoreLinksAsURLListByXPATH".equals(AV.ActionType))
+        {
+            ExistingLists.add(AV.JTextFieldVariable2.getText());
+        }
+                if ("StoreLinkAsVarByXPATH".equals(AV.ActionType))
+        {
+            ExistingVars.add(AV.JTextFieldVariable2.getText());
+        }
+          
+           }
+       }
+               List<String> removeFromVarlistsKeys = new ArrayList<>();
+               for (String keyname: STAppData.VarLists.keySet())
+               {
+                   if (!ExistingLists.contains(keyname))
+                   {
+                       removeFromVarlistsKeys.add(keyname);
+                   }
+               }
+              
+               for (String keynameToRemove: removeFromVarlistsKeys)
+               {
+                   STAppData.VarLists.remove(keynameToRemove);
+               }
+                List<String> removeFromVars = new ArrayList<>();
+                 for (String keyname: STAppData.VarHashMap.keySet())
+               {
+                   if (!ExistingVars.contains(keyname))
+                   {
+                       removeFromVars.add(keyname);
+                   }
+               }
+                 for (String keynameToRemove: removeFromVars)
+               {
+                   STAppData.VarHashMap.remove(keynameToRemove);
+               }
+                
+     }
        public void ResetBugIndexes()
    {
        int newindex = 1;
@@ -942,6 +1029,7 @@ public int GetWaitTime()
        refreshjComboBoxAtIndex();
        refreshjComboBoxMoveToIndex();
    }
+   
      public void ChangeURLListPulldowns()
      {
             for (ProcedureView PV: BugViewArray)
@@ -1367,7 +1455,7 @@ bugindex++;
           BugViewArray.get(thissize-1).SetIndex(thissize);
        
     refreshjComboBoxAtIndex();
-refreshjComboBoxMoveToIndex();
+    refreshjComboBoxMoveToIndex();
         }
          public void AddNewBugView(int atindex)
          {
@@ -2233,18 +2321,20 @@ separator5.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxShowReport)
-                            .addComponent(jCheckBoxPromptToClose)
-                            .addComponent(jButtonFlattenFile)
-                            .addComponent(jButtonDoStuff, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonDoStuff, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBoxShowReport)
+                                .addComponent(jCheckBoxPromptToClose)
+                                .addComponent(jButtonFlattenFile)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxIncludeScreenshots)
-                            .addComponent(jCheckBoxExitAfter)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jSpinnerEcTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel9)))
+                                .addComponent(jLabel9))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBoxIncludeScreenshots)
+                                .addComponent(jCheckBoxExitAfter)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jSpinnerWaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

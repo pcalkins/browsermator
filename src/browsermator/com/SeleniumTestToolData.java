@@ -124,6 +124,7 @@ this.SMTPHostName = "";
 this.EmailLoginName = "";
 this.silentMode = false;
 this.EcTimeout = 10;
+
     try{
       loadGlobalEmailSettings();
   }
@@ -170,7 +171,7 @@ public boolean getIsTemplateOrNew()
 public void initVarLists()
 {
  this.VarLists = new HashMap(); 
- VarLists.put("MASTER", new ArrayList<String>());
+ VarLists.put("MASTER", new ArrayList<>());
 }
 public Map<String, String> getVarHashMap()
 {
@@ -196,6 +197,7 @@ public Map<String, List<String>> getVarLists()
  
   BugArray.remove(BugIndex-1);
   ResetBugIndexes();
+  
 changes=true;
    }
    public void ResetBugIndexes()
@@ -1019,7 +1021,7 @@ Collections.shuffle(data_in);
  }
              public List<String> RandomizeAndLimitURLList(String URLListName, int limit, Boolean randval)
   {
- //     List<String> convert_list = new ArrayList<>();
+    
       List<String> currentlist = new ArrayList<>();
    if (VarLists.containsKey(URLListName))
             {

@@ -476,6 +476,7 @@ public String doInBackground()
   public void RunAllActions(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, String TargetBrowser, String OSType)
  {
  STAppData.TimeOfRun = LocalDateTime.now();
+ STAppData.initVarLists();
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
     switch (TargetBrowser)
    {

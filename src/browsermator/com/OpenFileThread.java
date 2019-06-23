@@ -717,7 +717,7 @@ catch (Exception e)
  }
    if (hasGUI)
  {
-     STAppFrame.UpdateDisplay();
+  //   STAppFrame.UpdateDisplay();
  }
    
 try
@@ -781,7 +781,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
      mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
-  //    STAppFrame.UpdateDisplay();
+ 
  
     }
   
@@ -1043,10 +1043,7 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
   
 
         }   
- if (hasGUI)
- {
-     STAppFrame.UpdateDisplay();
- }
+
     }
 
     if (hasDataloop)

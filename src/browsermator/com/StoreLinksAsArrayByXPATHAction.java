@@ -8,7 +8,6 @@ package browsermator.com;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * @author pcalkins
  */
 public class StoreLinksAsArrayByXPATHAction extends BMAction {
+    int sanitycount = 0;
   StoreLinksAsArrayByXPATHAction(String TargetXPATH, String StoreVarName)
 {
     this.Type = "Store Links as URL List by XPATH";
@@ -127,8 +127,14 @@ public class StoreLinksAsArrayByXPATHAction extends BMAction {
    {
    //need to do it again, not finished loading
     System.out.println("*****************Stale caught-redoing");
+    sanitycount++;
+    if (sanitycount<50000)
+    {
     RunAction(driver);
-   }
+    }
+      System.out.println (e.toString());
+  this.Pass = false;
+    }
    else
    {
     System.out.println (e.toString());
@@ -141,9 +147,15 @@ public class StoreLinksAsArrayByXPATHAction extends BMAction {
     public void SetStoredLinkArray (List<String> to_storelist)
     {
         this.tostore_varlist.clear();
+     
         for (String thisentry: to_storelist)
         {
+            if (!this.tostore_varlist.contains(thisentry))
+            {
        this.tostore_varlist.add (thisentry);
+            }
+      
+       
         }
   
     }  

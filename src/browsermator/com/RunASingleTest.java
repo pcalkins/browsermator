@@ -161,7 +161,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
  {
      prefs = new HashMap<String, Object>();
   STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
+  STAppData.initVarLists();
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
     switch (TargetBrowser)
    {
