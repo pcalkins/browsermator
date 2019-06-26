@@ -1081,11 +1081,15 @@ Boolean hasValue = false;
      }
     }
 
- 
-   for (List<String> thisList: VarLists.values())
+  Map<String, List<String>> newMap = VarLists;
+   newMap.remove(URLListName);
+   
+   for (List<String> thisList: newMap.values())
               {
+                
                  for(String thisString: thisList)
                  {
+                     
                     if (thisString.equals(grabbedURL))
                             {
                                 if (!removeList.contains(grabbedURL))
