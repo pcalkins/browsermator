@@ -1081,9 +1081,21 @@ Boolean hasValue = false;
      }
     }
 
-    }
  
-
+   for (List<String> thisList: VarLists.values())
+              {
+                 for(String thisString: thisList)
+                 {
+                    if (thisString.equals(grabbedURL))
+                            {
+                                if (!removeList.contains(grabbedURL))
+                                {
+                                    removeList.add(grabbedURL);
+                                }     
+                            }
+                 }
+              }
+   }
 
     currentlist.removeAll(removeList);
 
