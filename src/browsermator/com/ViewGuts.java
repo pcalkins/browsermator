@@ -62,34 +62,118 @@ catch (Exception ex)
 this.Guts+="\ndriver.close();\n}" +
 " public void ClickCatchAction(WebDriver driver, String xpather)\n" +
 "  {\n" +
+"     if (driver!=null && !\"\".equals(xpather))\n" +
+"     {\n" +
+"           try { \n" +
+"           wait = new WebDriverWait(driver, ec_Timeout);\n" +
 "     \n" +
-"       try { \n" +
-" WebElement element = driver.findElement(By.xpath(xpather));\n" +
-" element.click();\n" +
-" this.Pass = true;\n" +
+"  \n" +
+"   List<WebElement> elements =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));\n" +
+"      \n" +
 " \n" +
-" }\n" +
-" catch (NoSuchElementException e)\n" +
+" if (this.BoolVal2)\n" +
 " {\n" +
+"\n" +
+"  if (elements.size()>0)\n" +
+" {\n" +
+"  for (WebElement thiselement: elements)\n" +
+"  {\n" +
+"\n" +
+"   //    actions.click(thiselement).perform();\n" +
+"    wait.until(ExpectedConditions.elementToBeClickable(thiselement)).click();\n" +
+"  }\n" +
+" \n" +
+"  \n" +
+"  this.Pass = true;\n" +
+" }\n" +
+" }\n" +
+"else\n" +
+"  {\n" +
+" if (elements.size()>0)\n" +
+" {\n" +
+"WebElement element = elements.get(0);\n" +
+"  wait.until(ExpectedConditions.elementToBeClickable(element)).click();\n" +
+"  this.Pass = true;\n" +
+" }\n" +
+" else\n" +
+" \n" +
+"{\n" +
+"    elements.clear();\n" +
+"    this.Pass = false;\n" +
+"}\n" +
+"  }\n" +
+"     \n" +
+" }\n" +
+"  catch (Exception e)\n" +
+" {\n" +
+"    \n" +
+"     System.out.println (\"Exception while running clickcatch: \" + e.toString());\n" +
 "  this.Pass = false;\n" +
 "  \n" +
 " }\n" +
+"       \n" +
+"     }\n" +
+"     else\n" +
+"     {\n" +
+"         this.Pass=false;\n" +
+"     }\n" +
 "  }\n" +
 "  public void RightClickCatchAction (WebDriver driver, String xpather)\n" +
 "  {\n" +
+"       if (driver!=null && !\"\".equals(xpather))\n" +
+"     {\n" +
+"            wait = new WebDriverWait(driver, ec_Timeout);\n" +
 "        try { \n" +
+"        // actions don't seem to work with geckodriver\n" +
 "            Actions actions = new Actions(driver);\n" +
-" WebElement element = driver.findElement(By.xpath(xpather));\n" +
-" actions.contextClick(element).perform();\n" +
+"            \n" +
+"          List<WebElement> elements =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpather)));\n" +
+" if (elements.size()>1)\n" +
+" {\n" +
+"  for (WebElement thiselement: elements)\n" +
+"  {\n" +
+"     WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(thiselement));\n" +
+"   //   actions.contextClick(waitedElement);\n" +
+"      Action rightClick = actions.contextClick(waitedElement).build();\n" +
+"   rightClick.perform();\n" +
+"  }\n" +
+" \n" +
+" \n" +
+"   this.Pass = true;\n" +
+" }\n" +
+" else\n" +
+" {\n" +
+"     if (elements.size()>0)\n" +
+"     {\n" +
+"WebElement element = elements.get(0);\n" +
+"WebElement waitedElement =  wait.until(ExpectedConditions.elementToBeClickable(element));\n" +
+"\n" +
+"   Action rightClick = actions.contextClick(waitedElement).build();\n" +
+"   rightClick.perform();\n" +
+"\n" +
+"\n" +
+"}\n" +
 " this.Pass = true;\n" +
+" }\n" +
+"if (elements.isEmpty())\n" +
+"{\n" +
+"    this.Pass = false;\n" +
+"}\n" +
+"\n" +
 " \n" +
 " }\n" +
-" catch (NoSuchElementException e)\n" +
+" catch (Exception e)\n" +
 " {\n" +
 "  this.Pass = false;\n" +
+"  System.out.println(e.toString());\n" +
 "  \n" +
-" }    \n" +
-"  }\n" +
+" }  \n" +
+"            }\n" +
+"     else\n" +
+"     {\n" +
+"         this.Pass=false;\n" +
+"     }\n" +
+"  }" +
 "public class Prompter extends JFrame implements ActionListener \n" +
 "{\n" +
 "    JButton ContinueButton;\n" +

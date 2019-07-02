@@ -1127,8 +1127,10 @@ else
           }
       thisbug.setURListRunTimeData(STAppData.VarLists.get(thisbug.URLListName), thisbug.URLListName);
       }
+      if (thisbug.URLListRunTimeEntries!=null)
+      {
       number_of_rows = thisbug.URLListRunTimeEntries.size();
-
+      }
      
       if (RUNWITHGUI)
       {
@@ -1899,8 +1901,11 @@ while(thisContinuePrompt.isVisible() == true){
  
       if ("urllist".equals(thisbug.DataLoopSource))
       {
- 
+       if (STAppData.BugArray.get(BugIndex).URLListRunTimeEntries!=null)
+       {
       number_of_rows = STAppData.BugArray.get(BugIndex).URLListRunTimeEntries.size();
+       }
+   
       }
       if ("file".equals(thisbug.DataLoopSource))
       {

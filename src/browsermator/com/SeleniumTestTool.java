@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -1746,7 +1745,7 @@ bugindex++;
         jRadioButtonUniqueGlobal = new javax.swing.JRadioButton();
         JTextFieldProgress = new javax.swing.JTextField();
         jLabelTasks = new javax.swing.JLabel();
-        BorderLayout mainLayout = new BorderLayout();
+      
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 800));
 

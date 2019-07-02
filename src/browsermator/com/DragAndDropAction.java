@@ -31,15 +31,61 @@ public class DragAndDropAction extends BMAction {
   @Override
     public void SetGuts()
     {
-        this.Guts = "\ntry\n" +
+        this.Guts = "     wait = new WebDriverWait(driver, ec_Timeout);\n" +
+" try\n" +
 " {\n" +
-"\n" +
-" WebElement dragElement = driver.findElement(By.xpath(" + this.Variable1+ "));\n" +
-" WebElement dropElement = driver.findElement(By.xpath(" + this.Variable2+ "));\n" +
-" \n" +
 "  \n" +
-"    Actions actions = new Actions(driver);\n" +
-"  actions.dragAndDrop(dragElement, dropElement).perform();\n" +
+" WebElement dragElement = wait.until(ExpectedConditions.elementToBeClickable(By.id(" + this.Variable1+ ")));\n" +
+" WebElement dropElement = wait.until(ExpectedConditions.elementToBeClickable(By.id(" + this.Variable2+ ")));\n" +
+"\n" +
+" \n" +
+" String simulateFunction = \"function simulateDragDrop(sourceNode, destinationNode) {\\n\" +\n" +
+"\"    var EVENT_TYPES = {\\n\" +\n" +
+"\"        DRAG_END: 'dragend',\\n\" +\n" +
+"\"        DRAG_START: 'dragstart',\\n\" +\n" +
+"\"        DROP: 'drop'\\n\" +\n" +
+"\"    }\\n\" +\n" +
+"\"\\n\" +\n" +
+"\"    function createCustomEvent(type) {\\n\" +\n" +
+"\"        var event = new CustomEvent(\\\"CustomEvent\\\")\\n\" +\n" +
+"\"        event.initCustomEvent(type, true, true, null)\\n\" +\n" +
+"\"        event.dataTransfer = {\\n\" +\n" +
+"\"            data: {\\n\" +\n" +
+"\"            },\\n\" +\n" +
+"\"            setData: function(type, val) {\\n\" +\n" +
+"\"                this.data[type] = val\\n\" +\n" +
+"\"            },\\n\" +\n" +
+"\"            getData: function(type) {\\n\" +\n" +
+"\"                return this.data[type]\\n\" +\n" +
+"\"            }\\n\" +\n" +
+"\"        }\\n\" +\n" +
+"\"        return event\\n\" +\n" +
+"\"    }\\n\" +\n" +
+"\"\\n\" +\n" +
+"\"    function dispatchEvent(node, type, event) {\\n\" +\n" +
+"\"        if (node.dispatchEvent) {\\n\" +\n" +
+"\"            return node.dispatchEvent(event)\\n\" +\n" +
+"\"        }\\n\" +\n" +
+"\"        if (node.fireEvent) {\\n\" +\n" +
+"\"            return node.fireEvent(\\\"on\\\" + type, event)\\n\" +\n" +
+"\"        }\\n\" +\n" +
+"\"    }\\n\" +\n" +
+"\"\\n\" +\n" +
+"\"    var event = createCustomEvent(EVENT_TYPES.DRAG_START)\\n\" +\n" +
+"\"    dispatchEvent(sourceNode, EVENT_TYPES.DRAG_START, event)\\n\" +\n" +
+"\"\\n\" +\n" +
+"\"    var dropEvent = createCustomEvent(EVENT_TYPES.DROP)\\n\" +\n" +
+"\"    dropEvent.dataTransfer = event.dataTransfer\\n\" +\n" +
+"\"    dispatchEvent(destinationNode, EVENT_TYPES.DROP, dropEvent)\\n\" +\n" +
+"\"\\n\" +\n" +
+"\"    var dragEndEvent = createCustomEvent(EVENT_TYPES.DRAG_END)\\n\" +\n" +
+"\"    dragEndEvent.dataTransfer = event.dataTransfer\\n\" +\n" +
+"\"    dispatchEvent(sourceNode, EVENT_TYPES.DRAG_END, dragEndEvent)\\n\" +\n" +
+"\"} var toDrag =document.getElementById('\" + this.Variable1 + \"'); var toDrop = document.getElementById('\" + this.Variable2 + \"');\";\n" +
+"\n" +
+"  ((JavascriptExecutor)driver).executeScript(simulateFunction + \"simulateDragDrop(toDrag, toDrop);\");\n" +
+"   \n" +
+"\n" +
 "\n" +
 "     this.Pass = true;\n" +
 " }\n" +
@@ -59,8 +105,7 @@ public class DragAndDropAction extends BMAction {
   
  WebElement dragElement = wait.until(ExpectedConditions.elementToBeClickable(By.id(this.Variable1)));
  WebElement dropElement = wait.until(ExpectedConditions.elementToBeClickable(By.id(this.Variable2)));
-// WebElement dragElement = driver.findElement(By.xpath(this.Variable1));
-// WebElement dropElement = driver.findElement(By.xpath(this.Variable2));
+
  
  String simulateFunction = "function simulateDragDrop(sourceNode, destinationNode) {\n" +
 "    var EVENT_TYPES = {\n" +

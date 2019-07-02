@@ -23,16 +23,66 @@ public class TypePasswordAtXPATHAction extends BMAction
   @Override
     public void SetGuts()
     {
-     this.Guts = " \n    WebElement element = driver.findElement(By.xpath(\"" + this.Variable1+ "\"));\n" +
-"        element.sendKeys(\""+this.Variable2+"\");";
-     if (this.BoolVal1.equals(true))
-{
-    this.Guts+="element.sendKeys(Keys.RETURN);";
-}
-    this.Guts+="       this.Pass = true;\n" +
-" }\n" +
-" catch (NoSuchElementException e)\n" +
+     this.Guts = " try\n" +
 " {\n" +
+"  this.Pass = true;      \n" +
+"     \n" +
+"if (this.Variable2.length()>0)\n" +
+" {\n" +
+"      wait = new WebDriverWait(driver, ec_Timeout);     \n" +
+"       WebElement element  = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(" + this.Variable1+")));  \n" +
+"    \n" +
+"char[] keys_to_type = this.Variable2.toCharArray();\n" +
+"for(int i=0;i<keys_to_type.length;i++){\n" +
+"    String sendkey = String.valueOf(keys_to_type[i]);\n" +
+"  try\n" +
+"  {\n" +
+"Thread.sleep((long)(Math.random() * 150));\n" +
+"  }\n" +
+"  catch (Exception ex)\n" +
+"  {\n" +
+"      System.out.println (\"Exception when sleeping random: \" + ex.toString());\n" +
+"  }\n" +
+"          \n" +
+"    try\n" +
+"    {\n" +
+"element.sendKeys(sendkey);\n" +
+"    }\n" +
+"    catch (Exception ex)\n" +
+"    {\n" +
+"       this.Pass = false; \n" +
+"    }\n" +
+"}\n" +
+"if (this.BoolVal1.equals(true))\n" +
+"{\n" +
+"      try\n" +
+"  {\n" +
+"Thread.sleep((long)(Math.random() * 150));\n" +
+"  }\n" +
+"  catch (Exception ex)\n" +
+"  {\n" +
+"      System.out.println (\"Exception when sleeping random: \" + ex.toString());\n" +
+"  }\n" +
+"    try\n" +
+"    {\n" +
+"element.sendKeys(Keys.RETURN);\n" +
+"    }\n" +
+"    catch (Exception ex)\n" +
+"    {\n" +
+"       this.Pass = false; \n" +
+"    }\n" +
+"}\n" +
+" }\n" +
+"else\n" +
+"{\n" +
+"    this.Pass = false;\n" +
+"}\n" +
+"\n" +
+"  \n" +
+" }\n" +
+" catch (Exception e)\n" +
+" {\n" +
+"     System.out.println (\"Exception when typing password at XPATH: \" + e.toString());\n" +
 "  this.Pass = false;\n" +
 "  \n" +
 " }";

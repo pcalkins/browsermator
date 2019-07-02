@@ -45,10 +45,6 @@ public class CloseCurrentTabOrWindowAction extends BMAction
 try
 {
 
-
- // driver.findElement(By.cssSelector("html")).sendKeys(Keys.chord(Keys.CONTROL, "w"));
-// Actions actions = new Actions(driver); 
-// actions.keyDown(Keys.CONTROL).sendKeys("w").keyUp(Keys.CONTROL).build().perform();
 ((JavascriptExecutor)driver).executeScript("close();");
     for (String winHandle : driver.getWindowHandles()) {
   driver.switchTo().window(winHandle); 
