@@ -406,19 +406,7 @@ catch (Exception e) {
       jLabelRecentFile10.addMouseListener(listener);
   }
     
-    public String[] getRecentFiles()
-    {
-        String[] RecentFiles = null;
-        
-        RecentFiles[0] = jLabelRecentFile1.getText();
-        RecentFiles[1] = jLabelRecentFile2.getText();
-        RecentFiles[2] = jLabelRecentFile3.getText();
-        RecentFiles[3] = jLabelRecentFile4.getText();
-        RecentFiles[4] = jLabelRecentFile5.getText();
-        
-        return RecentFiles;
-     
-    }
+  
     public void setMouseOutColor(int labelnumber)
     {
         switch(labelnumber)
