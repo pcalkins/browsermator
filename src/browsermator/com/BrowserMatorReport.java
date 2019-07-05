@@ -106,8 +106,11 @@ File TEMP_HTML_FILE;
        subject = subject + " - Some Procedures FAILED";
    }
   
-   
-       
+   // set for TLS, port 587... seems pretty standard these days
+   applicationProps.put("mail.smtp.port", "587");
+    applicationProps.put("mail.smtp.auth", "true");
+      applicationProps.put("mail.smtp.starttls.enable", "true"); //TLS
+// gmail requires Oauth id stuff...  I should still implement port setting
    applicationProps.put("mail.smtp.host", STAppData.getSMTPHostname());
     applicationProps.put("email_login_name", STAppData.getEmailLoginName());
      applicationProps.put("email_login_password", STAppData.getEmailPassword());
@@ -128,7 +131,7 @@ File TEMP_HTML_FILE;
         Transport.send(msg, login_name, password);
     } catch (MessagingException mex) {
     //    System.out.println("send failed, exception: " + mex);
-     Prompter thisContinuePrompt = new Prompter("Email Failure", "Sending Email has failed. Check settings.", false,0,0);    
+     Prompter thisContinuePrompt = new Prompter("Email Failure", "Sending Email has failed. Check settings: " + mex.toString(), false,0,0);    
      
     }
    

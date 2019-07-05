@@ -312,6 +312,13 @@ public String doInBackground()
 
       if (RUNWITHGUI)
      {
+      STAppData.setSMTPHostname(STAppFrame.getSMTPHostname());
+      STAppData.setEmailLoginName(STAppFrame.getEmailLoginName());
+      STAppData.setEmailPassword(STAppFrame.getEmailPassword());
+      STAppData.setEmailTo(STAppFrame.getEmailTo());
+      STAppData.setEmailFrom(STAppFrame.getEmailFrom());
+      STAppData.setSubject(STAppFrame.getSubject());
+      
      if (STAppFrame.getjCheckBoxUniqueURLsSelected())
      {
       STAppFrame.jButtonClearUniqueList.setEnabled(true);
@@ -408,7 +415,7 @@ public String doInBackground()
       
      
        }
-          
+    
                 if (STAppData.getEmailReportFail())
     {
         if (STAppData.AllTestsPassed)
