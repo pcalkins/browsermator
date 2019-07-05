@@ -128,7 +128,7 @@ public class StoreLinksAsArrayByXPATHAction extends BMAction {
    //need to do it again, not finished loading
     System.out.println("*****************Stale caught-redoing");
     sanitycount++;
-    if (sanitycount<50000)
+    if (sanitycount<ec_Timeout * 2)
     {
     RunAction(driver);
     }

@@ -53,7 +53,7 @@ public class FindIFrameSRCPassFailAction extends BMAction
 "   //need to do it again, not finished loading\n" +
 "    System.out.println(\"*****************Stale caught-redoing\");\n" +
 "    sanitycount++;\n" +
-"    if (sanitycount<50000)\n" +
+"    if (sanitycount<ec_Timeout * 2)\n" +
 "    {\n" +
 "    RunAction(driver);\n" +
 "    }\n" +
@@ -98,7 +98,7 @@ public class FindIFrameSRCPassFailAction extends BMAction
    //need to do it again, not finished loading
     System.out.println("*****************Stale caught-redoing");
     sanitycount++;
-    if (sanitycount<50000)
+   if (sanitycount<ec_Timeout * 2)
     {
     RunAction(driver);
     }
