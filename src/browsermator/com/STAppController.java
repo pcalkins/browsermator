@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.188";
+public final String ProgramVersion = "1.6.189";
 public final String lastWebDriverUpdate = "060812019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -557,7 +557,212 @@ mainAppFrame.initComponents();
 
           
           }  });
-  
+   Navigator.addRecentFile6MouseListener(
+  new MouseListener()
+          {
+               @Override
+            public void mouseReleased(MouseEvent e) {
+            
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+           Navigator.setMouseClickColor(6);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+          Navigator.setMouseOutColor(6);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+          Navigator.setMouseOverColor(6);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+          
+         String RecentFileName = Navigator.getRecentFile6();
+         File RecentFile = new File(RecentFileName);
+        if (!"".equals(RecentFileName))
+ {
+     
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
+            }
+     
+
+          
+          }  });
+    Navigator.addRecentFile7MouseListener(
+  new MouseListener()
+          {
+               @Override
+            public void mouseReleased(MouseEvent e) {
+            
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+           Navigator.setMouseClickColor(7);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+          Navigator.setMouseOutColor(7);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+          Navigator.setMouseOverColor(7);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+          
+         String RecentFileName = Navigator.getRecentFile7();
+         File RecentFile = new File(RecentFileName);
+        if (!"".equals(RecentFileName))
+ {
+     
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
+            }
+     
+
+          
+          }  });
+     Navigator.addRecentFile8MouseListener(
+  new MouseListener()
+          {
+               @Override
+            public void mouseReleased(MouseEvent e) {
+            
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+           Navigator.setMouseClickColor(8);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+          Navigator.setMouseOutColor(8);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+          Navigator.setMouseOverColor(8);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+          
+         String RecentFileName = Navigator.getRecentFile8();
+         File RecentFile = new File(RecentFileName);
+        if (!"".equals(RecentFileName))
+ {
+     
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
+            }
+     
+
+          
+          }  });
+      Navigator.addRecentFile9MouseListener(
+  new MouseListener()
+          {
+               @Override
+            public void mouseReleased(MouseEvent e) {
+            
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+           Navigator.setMouseClickColor(9);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+          Navigator.setMouseOutColor(9);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+          Navigator.setMouseOverColor(9);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+          
+         String RecentFileName = Navigator.getRecentFile9();
+         File RecentFile = new File(RecentFileName);
+        if (!"".equals(RecentFileName))
+ {
+     
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
+            }
+     
+
+          
+          }  });
+       Navigator.addRecentFile10MouseListener(
+  new MouseListener()
+          {
+               @Override
+            public void mouseReleased(MouseEvent e) {
+            
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+           Navigator.setMouseClickColor(10);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+          Navigator.setMouseOutColor(10);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+          Navigator.setMouseOverColor(10);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+          
+         String RecentFileName = Navigator.getRecentFile10();
+         File RecentFile = new File(RecentFileName);
+        if (!"".equals(RecentFileName))
+ {
+     
+        if (e.isAltDown())
+          {
+           
+            OpenFile(RecentFile, true);   
+          }
+  else
+  {
+     OpenFile(RecentFile, false);
+  }
+            }
+     
+
+          
+          }  });
+       
   Navigator.addJButtonSaveEmailConfigActionListener(
           new ActionListener()
           {

@@ -190,7 +190,17 @@ String outarray[];
 
 outarray = recentfiles.split(",");
 index--;
-
+if (outarray.length<10)
+{
+   // starts as 5... increase to 10 legacy hack
+  
+   int difference = 10 - outarray.length;
+  for (int x=0; x<difference; x++)
+  {
+      int thisindex = x+4;
+      outarray[thisindex] = "";
+  }
+}
 String[] inarray = outarray.clone();
 outarray[index]="";
 
@@ -232,8 +242,27 @@ setRecentFiles(outarray);
    public String getRecentFile5()
   {
       return RecentFile5;
+  }  
+     public String getRecentFile6()
+  {
+      return RecentFile6;
+  } 
+     public String getRecentFile7()
+  {
+      return RecentFile7;
+  } 
+   public String getRecentFile8()
+  {
+      return RecentFile8;
   }   
-   
+   public String getRecentFile9()
+  {
+      return RecentFile9;
+  } 
+   public String getRecentFile10()
+  {
+      return RecentFile10;
+  }   
   public void addjButtonNewWebsiteTestActionListener(ActionListener listener)
     {
     jButtonNewFile.addActionListener(listener);
@@ -269,6 +298,18 @@ String outarray[];
 
 outarray = recentfiles.split(",");
 
+
+if (outarray.length<10)
+{
+   // starts as 5... increase to 10 legacy hack
+  
+   int difference = 10 - outarray.length;
+  for (int x=0; x<difference; x++)
+  {
+      int thisindex = x+4;
+      outarray[thisindex] = "";
+  }
+}
 String[] inarray = outarray.clone();
 // if added filename already exists, sort name to top only
 Boolean SortIt = false;
@@ -287,7 +328,7 @@ if (SortIt == false)
 {
     
   
-    System.arraycopy(inarray, 0, outarray, 1, 4);
+    System.arraycopy(inarray, 0, outarray, 1, 9);
  outarray[0] = filename;
 
 }
@@ -344,7 +385,26 @@ catch (Exception e) {
   {
       jLabelRecentFile5.addMouseListener(listener);
   }
-    
+     public void addRecentFile6MouseListener(MouseListener listener)
+  {
+      jLabelRecentFile6.addMouseListener(listener);
+  }
+    public void addRecentFile7MouseListener(MouseListener listener)
+  {
+      jLabelRecentFile7.addMouseListener(listener);
+  }
+     public void addRecentFile8MouseListener(MouseListener listener)
+  {
+      jLabelRecentFile8.addMouseListener(listener);
+  }
+     public void addRecentFile9MouseListener(MouseListener listener)
+  {
+      jLabelRecentFile9.addMouseListener(listener);
+  }
+    public void addRecentFile10MouseListener(MouseListener listener)
+  {
+      jLabelRecentFile10.addMouseListener(listener);
+  }
     
     public String[] getRecentFiles()
     {
@@ -373,7 +433,6 @@ catch (Exception e) {
             break;
             case (2):
             jLabelRecentFile2.setForeground(Color.blue);
-            jLabelRecentFile2.setForeground(Color.blue);
             Font thisfont2 = jLabelRecentFile2.getFont();
             Map attributes2 = thisfont2.getAttributes();
             attributes2.put(TextAttribute.UNDERLINE, -1);
@@ -381,7 +440,6 @@ catch (Exception e) {
             attributes2.clear();
             break;
             case (3):
-            jLabelRecentFile3.setForeground(Color.blue);
             jLabelRecentFile3.setForeground(Color.blue);
             Font thisfont3 = jLabelRecentFile3.getFont();
             Map attributes3 = thisfont3.getAttributes();
@@ -391,7 +449,6 @@ catch (Exception e) {
             break;
             case (4):
             jLabelRecentFile4.setForeground(Color.blue);
-            jLabelRecentFile4.setForeground(Color.blue);
             Font thisfont4 = jLabelRecentFile4.getFont();
             Map attributes4 = thisfont4.getAttributes();
             attributes4.put(TextAttribute.UNDERLINE, -1);
@@ -400,14 +457,52 @@ catch (Exception e) {
             break;
             case (5):
             jLabelRecentFile5.setForeground(Color.blue);
-            jLabelRecentFile5.setForeground(Color.blue);
             Font thisfont5 = jLabelRecentFile5.getFont();
             Map attributes5 = thisfont5.getAttributes();
             attributes5.put(TextAttribute.UNDERLINE, -1);
             jLabelRecentFile5.setFont(thisfont5.deriveFont(attributes5));
             attributes5.clear();
             break;
-           
+            case (6):
+            jLabelRecentFile6.setForeground(Color.blue);
+            Font thisfont6 = jLabelRecentFile6.getFont();
+            Map attributes6 = thisfont6.getAttributes();
+            attributes6.put(TextAttribute.UNDERLINE, -1);
+            jLabelRecentFile6.setFont(thisfont6.deriveFont(attributes6));
+            attributes6.clear();
+            break;
+            case (7):
+            jLabelRecentFile7.setForeground(Color.blue);
+            Font thisfont7 = jLabelRecentFile7.getFont();
+            Map attributes7 = thisfont7.getAttributes();
+            attributes7.put(TextAttribute.UNDERLINE, -1);
+            jLabelRecentFile7.setFont(thisfont7.deriveFont(attributes7));
+            attributes7.clear();
+            break;
+            case (8):
+            jLabelRecentFile8.setForeground(Color.blue);
+            Font thisfont8 = jLabelRecentFile8.getFont();
+            Map attributes8 = thisfont8.getAttributes();
+            attributes8.put(TextAttribute.UNDERLINE, -1);
+            jLabelRecentFile8.setFont(thisfont8.deriveFont(attributes8));
+            attributes8.clear();
+            break;
+             case (9):
+            jLabelRecentFile9.setForeground(Color.blue);
+            Font thisfont9 = jLabelRecentFile9.getFont();
+            Map attributes9 = thisfont9.getAttributes();
+            attributes9.put(TextAttribute.UNDERLINE, -1);
+            jLabelRecentFile9.setFont(thisfont9.deriveFont(attributes9));
+            attributes9.clear();
+            break;
+              case (10):
+            jLabelRecentFile10.setForeground(Color.blue);
+            Font thisfont10 = jLabelRecentFile10.getFont();
+            Map attributes10 = thisfont10.getAttributes();
+            attributes10.put(TextAttribute.UNDERLINE, -1);
+            jLabelRecentFile10.setFont(thisfont10.deriveFont(attributes10));
+            attributes10.clear();
+            break;
                     
         }
     }
@@ -453,6 +548,41 @@ catch (Exception e) {
             jLabelRecentFile5.setFont(thisfont5.deriveFont(attributes5));
             attributes5.clear();
             break;
+             case (6):
+            Font thisfont6 = jLabelRecentFile6.getFont();
+            Map attributes6 = thisfont6.getAttributes();
+            attributes6.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            jLabelRecentFile6.setFont(thisfont6.deriveFont(attributes6));
+            attributes6.clear();
+            break;
+             case (7):
+            Font thisfont7 = jLabelRecentFile7.getFont();
+            Map attributes7 = thisfont7.getAttributes();
+            attributes7.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            jLabelRecentFile7.setFont(thisfont7.deriveFont(attributes7));
+            attributes7.clear();
+            break;
+             case (8):
+            Font thisfont8 = jLabelRecentFile8.getFont();
+            Map attributes8 = thisfont8.getAttributes();
+            attributes8.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            jLabelRecentFile8.setFont(thisfont8.deriveFont(attributes8));
+            attributes8.clear();
+            break;
+             case (9):
+            Font thisfont9 = jLabelRecentFile9.getFont();
+            Map attributes9 = thisfont9.getAttributes();
+            attributes9.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            jLabelRecentFile9.setFont(thisfont9.deriveFont(attributes9));
+            attributes9.clear();
+            break;
+             case (10):
+            Font thisfont10 = jLabelRecentFile10.getFont();
+            Map attributes10 = thisfont10.getAttributes();
+            attributes10.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+            jLabelRecentFile10.setFont(thisfont10.deriveFont(attributes10));
+            attributes10.clear();
+            break;
            
                     
         }
@@ -476,7 +606,21 @@ catch (Exception e) {
             case (5):
             jLabelRecentFile5.setForeground(Color.red);
             break;
-           
+            case (6):
+            jLabelRecentFile6.setForeground(Color.red);
+            break;
+            case (7):
+            jLabelRecentFile7.setForeground(Color.red);
+            break;
+            case (8):
+            jLabelRecentFile8.setForeground(Color.red);
+            break;
+            case (9):
+            jLabelRecentFile9.setForeground(Color.red);
+            break;
+            case (10):
+            jLabelRecentFile10.setForeground(Color.red);
+            break;
                     
         }
     }
@@ -511,7 +655,32 @@ catch (Exception e) {
          jLabelRecentFile5.setText(filename);
          RecentFile5 = filename;
        }
-
+   
+          if (count==6)
+       {
+         jLabelRecentFile6.setText(filename);
+         RecentFile6 = filename;
+       }
+                   if (count==7)
+       {
+         jLabelRecentFile7.setText(filename);
+         RecentFile7 = filename;
+       }
+                       if (count==8)
+       {
+         jLabelRecentFile8.setText(filename);
+         RecentFile8 = filename;
+       }
+                   if (count==9)
+       {
+         jLabelRecentFile9.setText(filename);
+         RecentFile9 = filename;
+       }
+                  if (count==10)
+       {
+         jLabelRecentFile10.setText(filename);
+         RecentFile10 = filename;
+       }
          count++;
      }
      StoreRecentFiles(filenames);
@@ -732,6 +901,11 @@ connection.setDoOutput(true);
         jPanelRecentFiles.add(jLabelRecentFile3);
         jPanelRecentFiles.add(jLabelRecentFile4);
         jPanelRecentFiles.add(jLabelRecentFile5);
+        jPanelRecentFiles.add(jLabelRecentFile6);
+        jPanelRecentFiles.add(jLabelRecentFile7);
+        jPanelRecentFiles.add(jLabelRecentFile8);
+        jPanelRecentFiles.add(jLabelRecentFile9);
+        jPanelRecentFiles.add(jLabelRecentFile10);
         
         
         jPanelDefaultEmailOptions = new JPanel(GridLayout);

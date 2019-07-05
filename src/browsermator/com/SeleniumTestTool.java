@@ -1763,7 +1763,7 @@ bugindex++;
         jSpinnerEcTimeout.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         jSpinnerEcTimeout.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerEcTimeout.setPreferredSize(new java.awt.Dimension(41, 21));
-        
+        setjSpinnerEcTimeout(STAppData.getEcTimeout());
         jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
         jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
         jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
@@ -2733,14 +2733,7 @@ public void addjButtonNewDataLoopActionListener(ActionListener listener) {
  
    setSMTPHostname(smtp_hostname);
    setEmailLoginName(login_name);
-   try
-   {
-   password = Protector.decrypt(password);
-   }
-   catch (Exception ex)
-   {
-       System.out.println("Exception getting email password: " + ex.toString());
-   }
+
    setEmailPassword(password);
    setEmailTo(to);
    setEmailFrom(from);
