@@ -45,13 +45,13 @@ public class SwitchToTabOrWindowAction extends BMAction
     {
         int int_index = 0;
        
-        if (this.Variable1!="")
+        if (!this.Variable1.equals(""))
         {
         int_index =  Integer.parseInt(this.Variable1);
         }
         try
         {
-       ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());
+       ArrayList<String> tabs_windows = new ArrayList<> (driver.getWindowHandles());
     driver.switchTo().window(tabs_windows.get(int_index));
     this.Pass = true;
         }

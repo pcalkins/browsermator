@@ -45,7 +45,7 @@ public class FindXPATHPassFailAction extends BMAction
          {
           wait = new WebDriverWait(driver, ec_Timeout);
         List<WebElement> element =  wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(this.Variable1)));   
- 
+
        if (element.size() > 0 && this.NOT == false)
     {
         this.Pass = true;
