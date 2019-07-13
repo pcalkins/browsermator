@@ -25,6 +25,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 
+
 public class RunAllTests extends SwingWorker<String, Integer>
 {
   
@@ -47,6 +48,7 @@ String BrowsermatorAppFolder;
 Map<String, Object> prefs;
 ProgressFrame popOutFrame;
 int EcTimeout;
+
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
@@ -389,7 +391,7 @@ public String doInBackground()
  }
   
  }
- 
+
     FillReport();  
      
     if (STAppData.getExitAfter())
@@ -794,27 +796,20 @@ options49.setBinary(chrome_path);
      break;
   case "Edge":
      
-                  thisDriver =  new File( WEBDRIVERSDIR+"edgedriver"+File.separator+"msedgedriver.exe");
-                  if (thisDriver.exists())
-                  {
-          setPermissions(thisDriver);
-        System.setProperty("webdriver.edge.driver", thisDriver.getAbsolutePath());  
-  
-   try
-   {
-     driver = new EdgeDriver();  
+       String windir = System.getenv("windir");
+       String edgeDriverPath = windir + "\\SysWOW64\\MicrosoftWebDriver.exe";
+  System.setProperty("webdriver.edge.driver", edgeDriverPath); 
+         try {
+         
+            driver = new EdgeDriver();
    }
      catch (Exception ex)
    {
        System.out.println ("Problem launching EdgeDriver: " + ex.toString());
-        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver." + ex.toString(), false,0, 0);
+        Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the Edge Driver. Location: "+edgeDriverPath+" Go to Settings > Update and Security > For Developer and then select Developer mode." + ex.toString(), false,0, 0);
     
    }
-                  }
-                  else
-                  {
-                    Prompter fallbackprompt = new Prompter ("No EdgeDriver Found", "You need to download the Microsoft Edgedriver and place it your user folder + BrowsermatorAppFolder + Webdrivers + edgedriver.  We do not have permission to distribute this file.", false,0,0);   
-                  }
+             
        break;
     
     }
