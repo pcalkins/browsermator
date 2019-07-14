@@ -327,7 +327,7 @@ mainPanel = new JPanel(new BorderLayout());
     mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     mainPanel.setVisible(true);
 
-   cloudFrame = new JFrame("BrowserMation File Cloud");
+   cloudFrame = new JFrame("BrowserMator File Cloud");
 
 
   

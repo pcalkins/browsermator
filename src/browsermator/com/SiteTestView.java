@@ -89,7 +89,8 @@ String CloudFile5;
     private JPanel jPanelNewOpen;
     private JPanel jPanelDefaultEmailOptions; 
     private JLabel jLabelEmailFormTitle;
-   
+    private JButton jButtonOpenFileCloud;
+    
     GridBagLayout GridLayout = new GridBagLayout();
     GridBagConstraints Constraints = new GridBagConstraints();
    
@@ -267,7 +268,10 @@ setRecentFiles(outarray);
     {
     jButtonNewFile.addActionListener(listener);
     } 
-
+  public void addjButtonOpenFileCloudActionListener(ActionListener listener)
+    {
+    jButtonOpenFileCloud.addActionListener(listener);
+    } 
   public void addJButtonOpenWebSiteTestActionListener(ActionListener listener)
   {
       jButtonOpenFile.addActionListener(listener);
@@ -879,7 +883,7 @@ connection.setDoOutput(true);
         jPanelNewOpen.add(Box.createRigidArea(new Dimension(5, 0)));
         jPanelNewOpen.add(jButtonOpenFile);
    
-        
+        jButtonOpenFileCloud = new JButton("Open Browsermator File Cloud");
         jPanelRecentFiles = new JPanel();
         jPanelRecentFiles.setLayout(new BoxLayout( jPanelRecentFiles , BoxLayout.Y_AXIS));
         jPanelRecentFiles.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -894,7 +898,8 @@ connection.setDoOutput(true);
         jPanelRecentFiles.add(jLabelRecentFile8);
         jPanelRecentFiles.add(jLabelRecentFile9);
         jPanelRecentFiles.add(jLabelRecentFile10);
-        
+        jPanelRecentFiles.add(Box.createVerticalGlue());
+        jPanelRecentFiles.add(jButtonOpenFileCloud);
         
         jPanelDefaultEmailOptions = new JPanel(GridLayout);
         JPanel spacer = new JPanel();

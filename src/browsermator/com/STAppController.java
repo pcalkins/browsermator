@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.193";
+public final String ProgramVersion = "1.6.194";
 public final String lastWebDriverUpdate = "060812019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -822,7 +822,14 @@ mainAppFrame.initComponents();
 //  
 //          });
           
-
+  Navigator.addjButtonOpenFileCloudActionListener(
+         new ActionListener()
+         {
+           public void actionPerformed (ActionEvent evt)
+  {   
+     OpenBrowserMatorCloud();
+  }
+         });
   Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
   {
