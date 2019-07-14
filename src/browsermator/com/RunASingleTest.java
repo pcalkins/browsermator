@@ -466,8 +466,16 @@ options49.setBinary(chrome_path);
      break;
    case "Edge":
 
-        String windir = System.getenv("windir");
-       String edgeDriverPath = windir + "\\SysWOW64\\MicrosoftWebDriver.exe";
+           String windir = System.getenv("windir");
+                boolean is64bit = false;
+    
+    is64bit = (System.getenv("ProgramFiles(x86)") != null);
+  String edgeDriverPath = windir + "\\SysWOW64\\MicrosoftWebDriver.exe";
+        if (!is64bit)
+        {
+     edgeDriverPath = windir + "\\System32\\MicrosoftWebDriver.exe";
+        }
+       
   System.setProperty("webdriver.edge.driver", edgeDriverPath); 
          try {
          
