@@ -68,7 +68,10 @@ public class ExecuteJavascriptAction extends BMAction {
                     js_TxtFile += s[i];
                     js_TxtFile += " ";
                 }   
-                try
+              
+               
+            }
+              try
                 {
                 ((JavascriptExecutor)driver).executeScript(js_TxtFile);
                 this.Pass = true;
@@ -78,8 +81,6 @@ public class ExecuteJavascriptAction extends BMAction {
                      System.out.println ("Exception when running Javascript: " + ex.toString());
             this.Pass = false;    
                 }
-               
-            }
             
             }
             catch (Exception ex)
@@ -88,6 +89,8 @@ public class ExecuteJavascriptAction extends BMAction {
             System.out.println(ex.toString());
             }
         }
+        else
+        {
         try
         {
         ((JavascriptExecutor)driver).executeScript(this.Variable1);
@@ -99,7 +102,7 @@ public class ExecuteJavascriptAction extends BMAction {
             this.Pass = false;
         }
         
-
+        }
  
     }
     
