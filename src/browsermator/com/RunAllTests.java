@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -689,7 +690,7 @@ public String doInBackground()
      case "Chrome":
          //legacy support
           ChromeOptions options = new ChromeOptions();  
-          
+                 options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
                  
