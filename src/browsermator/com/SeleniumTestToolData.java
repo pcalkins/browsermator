@@ -76,6 +76,8 @@ String EmailSubject;
 String SMTPHostName;
 String EmailLoginName;
 Boolean silentMode;
+String waitForLoad;
+String promptBehavior;
 
 public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
@@ -100,6 +102,8 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
     this.hasStoredArray = false;
    this.VarHashMap = new HashMap();
   this.TargetBrowser = "Chrome";
+  this.waitForLoad = "Yes";
+  this.promptBehavior = "Dismiss";
   this.OSType = "Windows32";
   this.Sessions = 1;
   this.changes = false;
@@ -461,6 +465,14 @@ catch (Exception e) {
          }
      }
  }
+      public String getWaitForLoad()
+    {
+        return waitForLoad;
+    }
+            public String getPromptBehavior()
+    {
+        return promptBehavior;
+    }
     public String getTargetBrowser()
     {
         return TargetBrowser;
@@ -686,6 +698,14 @@ else
          
          }
     }
+          public void setWaitForLoad (String in_waitForLoad)
+        {
+            waitForLoad = in_waitForLoad;
+        }
+          public void setPromptBehavior (String in_PromptBehavior)
+        {
+            promptBehavior = in_PromptBehavior;
+        }
         public void setTargetBrowser (String targetbrowser)
         {   
             if (!silentMode)

@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.198";
+public final String ProgramVersion = "1.6.201";
 public final String lastWebDriverUpdate = "060812019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -929,6 +929,8 @@ if (STAppData.testRunning)
 ArrayList<String> AllFieldValuesCheck = new ArrayList<>();
 AllFieldValuesCheck.add(STAppData.OSType);
 AllFieldValuesCheck.add(STAppData.getTargetBrowser());
+AllFieldValuesCheck.add(STAppData.getWaitForLoad());
+AllFieldValuesCheck.add(STAppData.getPromptBehavior());
 String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 AllFieldValuesCheck.add(stringWaitTime);
 String stringEcTimeout = String.valueOf(STAppData.getEcTimeout());
@@ -1642,6 +1644,14 @@ String TargetBrowser = STAppData.TargetBrowser;
 xmlfile.writeStartElement("TargetBrowser");
     xmlfile.writeCharacters(TargetBrowser);
     xmlfile.writeEndElement();   
+    String WaitForLoad = STAppData.waitForLoad;
+xmlfile.writeStartElement("WaitForLoad");
+    xmlfile.writeCharacters(WaitForLoad);
+    xmlfile.writeEndElement();   
+    String PromptBehavior = STAppData.promptBehavior;
+xmlfile.writeStartElement("PromptBehavior");
+    xmlfile.writeCharacters(PromptBehavior);
+    xmlfile.writeEndElement();   
 // xmlfile.writeAttribute("TargetBrowser", TargetBrowser);
    Integer EcTimeout = STAppData.getEcTimeout();
 String EcTimeoutString = EcTimeout.toString();
@@ -2128,6 +2138,8 @@ Navigator.addRecentFile(STAppData.filename);
        
 STAppData.AllFieldValues.add(STAppData.OSType);
 STAppData.AllFieldValues.add(STAppData.TargetBrowser);
+STAppData.AllFieldValues.add(STAppData.waitForLoad);
+STAppData.AllFieldValues.add(STAppData.promptBehavior);
 
 String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 STAppData.AllFieldValues.add(stringWaitTime);
@@ -3895,6 +3907,51 @@ File newfile = new File(path + ".js");
                                           
       }
     ); 
+             STAppFrame.addjComboBoxPromptBehaviorItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String PromptBehavior = ActionType.toString();
+           STAppFrame.setPromptBehaviorView(PromptBehavior);
+           STAppData.setPromptBehavior(PromptBehavior);
+    //      STAppData.changes = true;
+          
+         }
+        }
+        
+        });
+               STAppFrame.addjComboBoxPromptBehaviorItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String PromptBehavior = ActionType.toString();
+           STAppFrame.setPromptBehaviorView(PromptBehavior);
+           STAppData.setPromptBehavior(PromptBehavior);
+    //      STAppData.changes = true;
+          
+         }
+        }
+        
+        });
+         STAppFrame.addjComboBoxWaitForLoadItemListener( new ItemListener() {
+    
+        public void itemStateChanged (ItemEvent e )
+        {
+         if ((e.getStateChange() == ItemEvent.SELECTED)) {
+            Object ActionType = e.getItem();
+            String WaitForLoad = ActionType.toString();
+           STAppFrame.setWaitForLoadView(WaitForLoad);
+           STAppData.setWaitForLoad(WaitForLoad);
+    //      STAppData.changes = true;
+          
+         }
+        }
+        
+        });
        STAppFrame.addTargetBrowserItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
@@ -4282,7 +4339,7 @@ STAppFrame.saveState();
 
  public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData)
  {
-      RunASingleTest REFSYNCH = new RunASingleTest(STAppFrame, STAppData, bugtorun, thisbugview, STAppData.getTargetBrowser(), STAppData.getOSType());
+      RunASingleTest REFSYNCH = new RunASingleTest(STAppFrame, STAppData, bugtorun, thisbugview, STAppData.getTargetBrowser(), STAppData.getWaitForLoad(), STAppData.getPromptBehavior(), STAppData.getOSType());
     REFSYNCH.execute();
  }
  public void ExtractWebDrivers()

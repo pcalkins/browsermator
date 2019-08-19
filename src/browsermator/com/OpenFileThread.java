@@ -333,6 +333,8 @@ if (hasGUI)
 STAppData.AllFieldValues.clear();
 STAppData.AllFieldValues.add(STAppData.getOSType());
 STAppData.AllFieldValues.add(STAppData.getTargetBrowser());
+STAppData.AllFieldValues.add(STAppData.getWaitForLoad());
+STAppData.AllFieldValues.add(STAppData.getPromptBehavior());
 String stringWaitTime = String.valueOf(STAppData.getWaitTime());
 STAppData.AllFieldValues.add(stringWaitTime);
 String stringEcTimeout =  String.valueOf(STAppData.getEcTimeout());
@@ -519,6 +521,8 @@ for (Procedure thisproc: STAppData.BugArray)
   String EmailLoginName = "";
   String stPromptToClose = "false";
   String TargetBrowser = "Firefox";
+  String PromptBehavior = "Dismiss";
+  String WaitForLoad = "Yes";
   String WaitTime = "3";
   String Sessions = "1";
   String OSType = "Windows32";
@@ -643,6 +647,14 @@ try
     
       STAppData.setTargetBrowser(TargetBrowser);
    
+            break; 
+       case "PromptBehavior":
+     PromptBehavior = thisSettingsNodeValue;   
+      STAppData.setPromptBehavior(PromptBehavior);
+                    break; 
+       case "WaitForLoad":
+    WaitForLoad = thisSettingsNodeValue;   
+      STAppData.setWaitForLoad(WaitForLoad);
             break; 
             
            case "EcTimeout":

@@ -14,16 +14,22 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.SwingWorker;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 
@@ -48,7 +54,13 @@ String WEBDRIVERSDIR;
 String BrowsermatorAppFolder;
 Map<String, Object> prefs;
 ProgressFrame popOutFrame;
+String waitForLoad;
+String promptBehavior;
 int EcTimeout;
+ PageLoadStrategy PageLoadConstant= PageLoadStrategy.NORMAL;
+ UnexpectedAlertBehaviour promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
+ 
+ String stringPageLoadConstant = "normal";
 
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
@@ -68,10 +80,40 @@ int EcTimeout;
   this.chrome_main_path = FFprops.LoadChromeMainPath();
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
+  this.waitForLoad = STAppData.waitForLoad;
+  this.promptBehavior = STAppData.promptBehavior;
   this.OSType = STAppData.OSType;
   this.EcTimeout = 10;
   STAppFrame.showTaskGUI();
-
+   switch (promptBehavior)
+   {
+       case "Dismiss":
+           promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
+          
+           break;
+       case "Accept":
+         promptBehaviorConstant = UnexpectedAlertBehaviour.ACCEPT;
+         
+           break;
+       case "Ignore":
+             promptBehaviorConstant = UnexpectedAlertBehaviour.ACCEPT;
+           break;
+   }
+   switch (waitForLoad)
+   {
+       case "Yes":
+           PageLoadConstant = PageLoadStrategy.NORMAL;
+           stringPageLoadConstant = "normal";
+           break;
+       case "No":
+           PageLoadConstant = PageLoadStrategy.NONE;
+           stringPageLoadConstant = "none";
+           break;
+       case "Local DOM Only":
+           PageLoadConstant = PageLoadStrategy.EAGER;
+           stringPageLoadConstant = "eager";
+           break;
+   }
  setProgressListeners();
   
  
@@ -95,8 +137,24 @@ public RunAllTests (SeleniumTestToolData in_SiteTest)
  this.chrome_main_path = FFprops.LoadChromeMainPath();
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
+  this.waitForLoad = in_SiteTest.waitForLoad;
   this.OSType = in_SiteTest.OSType;
    this.EcTimeout = 10;
+   switch (waitForLoad)
+   {
+       case "Yes":
+           PageLoadConstant = PageLoadStrategy.NORMAL;
+           stringPageLoadConstant = "normal";
+           break;
+       case "No":
+           PageLoadConstant = PageLoadStrategy.NONE;
+           stringPageLoadConstant = "none";
+           break;
+       case "Local DOM Only":
+           PageLoadConstant = PageLoadStrategy.EAGER;
+           stringPageLoadConstant = "eager";
+           break;
+   }
 popOutFrame = new ProgressFrame(in_SiteTest.short_filename);
  setProgressListeners(popOutFrame);
       
@@ -546,8 +604,8 @@ public String doInBackground()
 
 // FirefoxProfile profile = new FirefoxProfile();
 
- //DesiredCapabilities cap = DesiredCapabilities.firefox();
-   //     cap.setJavascriptEnabled(true);
+ DesiredCapabilities cap = DesiredCapabilities.firefox();
+      cap.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant); 
    //     cap.setCapability("marionette", false);
         
    //     profile.setPreference("dom.max_script_run_time", 1);
@@ -628,7 +686,10 @@ public String doInBackground()
   //     cap.setCapability("marionette", true);
         
  //      profile.setPreference("dom.max_script_run_time", 30);
-        driver = new FirefoxDriver();
+         FirefoxOptions options = new FirefoxOptions();
+         options.setUnhandledPromptBehaviour(promptBehaviorConstant);
+        options.setPageLoadStrategy(PageLoadConstant);
+        driver = new FirefoxDriver(options);
        
 
     //  driver =  new MarionetteDriver();
@@ -653,11 +714,14 @@ public String doInBackground()
      case "Internet Explorer-32":
             thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
           setPermissions(thisDriver);
-        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
+        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath()); 
+         InternetExplorerOptions IEOptions = new InternetExplorerOptions();
+         IEOptions.setUnhandledPromptBehaviour(promptBehaviorConstant);
+        IEOptions.setPageLoadStrategy(PageLoadConstant);
     // System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
      try
      {
-     driver = new InternetExplorerDriver();
+     driver = new InternetExplorerDriver(IEOptions);
      }
      catch (Exception ex)
      {
@@ -672,11 +736,13 @@ public String doInBackground()
             thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
-      
+        InternetExplorerOptions IEOptions64 = new InternetExplorerOptions();
+        IEOptions64.setUnhandledPromptBehaviour(promptBehaviorConstant);
+        IEOptions64.setPageLoadStrategy(PageLoadConstant);
    //  System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
      try
      {
-     driver = new InternetExplorerDriver();
+     driver = new InternetExplorerDriver(IEOptions64);
      }
      catch (Exception ex)
              {
@@ -688,14 +754,16 @@ public String doInBackground()
              }
      break;
      case "Chrome":
-         //legacy support
+       
           ChromeOptions options = new ChromeOptions();  
-                 options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
+                 options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
+                 options.setPageLoadStrategy(PageLoadConstant);
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
                  
                  options.setExperimentalOption("prefs", prefs);  
                  options.addArguments("--dns-prefetch-disable");
+     
              if (chrome_main_path!=null) {
             
    
@@ -808,9 +876,12 @@ options49.setBinary(chrome_path);
         }
        
   System.setProperty("webdriver.edge.driver", edgeDriverPath); 
+     EdgeOptions edgeOptions = new EdgeOptions();
+   
+      edgeOptions.setPageLoadStrategy(stringPageLoadConstant);
          try {
          
-            driver = new EdgeDriver();
+            driver = new EdgeDriver(edgeOptions);
    }
      catch (Exception ex)
    {

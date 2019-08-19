@@ -12,14 +12,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.SwingWorker;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 
 
 
@@ -40,7 +44,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     String BrowsermatorAppFolder;
     String WEBDRIVERSDIR;
      Map<String, Object> prefs;
-  public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String OSType)
+     String waitForLoad;
+   PageLoadStrategy PageLoadConstant= PageLoadStrategy.NORMAL;
+   String stringPageLoadConstant;
+   String promptBehavior;
+   
+  public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String in_waitForLoad, String in_promptBehavior, String OSType)
           {
               prefs = new HashMap<String, Object>();
               this.STAppFrame = in_STAppFrame;
@@ -48,6 +57,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.bugtorun = in_bugtorun;
               this.thisbugview = in_thisbugview;
               this.targetbrowser = targetbrowser;
+              this.waitForLoad = in_waitForLoad;
+              this.promptBehavior = in_promptBehavior;
               this.OSType = OSType;
             
               STAppData.cancelled = false;
@@ -75,7 +86,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     this.chrome_main_path = FFprops.LoadChromeMainPath();
    thisbugview.JButtonRunTest.setText("Running...");
   
-    RunSingleTest(bugtorun, thisbugview, targetbrowser, OSType);
+    RunSingleTest(bugtorun, thisbugview, targetbrowser, waitForLoad, promptBehavior, OSType);
     String donetext = "Run";
      return donetext;
  }
@@ -158,12 +169,27 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
 }  
  }
  
- public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, String TargetBrowser, String OSType)
+ public void RunSingleTest(Procedure bugtorun, ProcedureView thisbugview, String TargetBrowser, String in_waitForLoad, String in_PromptBehavior, String OSType)
  {
      prefs = new HashMap<String, Object>();
   STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
   STAppData.initVarLists();
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
+   switch (in_waitForLoad)
+   {
+       case "Yes":
+           PageLoadConstant = PageLoadStrategy.NORMAL;
+           stringPageLoadConstant = "normal";
+           break;
+       case "No":
+           PageLoadConstant = PageLoadStrategy.NONE;
+           stringPageLoadConstant = "none";
+           break;
+       case "Local DOM Only":
+           PageLoadConstant = PageLoadStrategy.EAGER;
+           stringPageLoadConstant = "eager";
+           break;
+   }
     switch (TargetBrowser)
    {
      
@@ -304,7 +330,9 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
   //     cap.setCapability("marionette", true);
         
  //      profile.setPreference("dom.max_script_run_time", 30);
-        driver = new FirefoxDriver();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setPageLoadStrategy(PageLoadConstant);
+        driver = new FirefoxDriver(options);
        
 
     //  driver =  new MarionetteDriver();
@@ -331,9 +359,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
           setPermissions(thisDriver);
         System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
     // System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
+        InternetExplorerOptions IEOptions = new InternetExplorerOptions();
+        IEOptions.setPageLoadStrategy(PageLoadConstant);
+        
      try
      {
-     driver = new InternetExplorerDriver();
+     driver = new InternetExplorerDriver(IEOptions);
      }
      catch (Exception ex)
      {
@@ -350,9 +381,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
         System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
       
    //  System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
+          InternetExplorerOptions IEOptions64 = new InternetExplorerOptions();
+        IEOptions64.setPageLoadStrategy(PageLoadConstant);
+        
      try
      {
-     driver = new InternetExplorerDriver();
+     driver = new InternetExplorerDriver(IEOptions64);
      }
      catch (Exception ex)
              {
@@ -367,6 +401,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
          //legacy support
           ChromeOptions options = new ChromeOptions();  
           options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
+          options.setPageLoadStrategy(PageLoadConstant);
              prefs.put("profile.default_content_setting_values.notifications", 2);
                  options.setExperimentalOption("prefs", prefs);
              if (chrome_main_path!=null) {
@@ -477,11 +512,14 @@ options49.setBinary(chrome_path);
         {
      edgeDriverPath = windir + "\\System32\\MicrosoftWebDriver.exe";
         }
+       EdgeOptions edgeOptions = new EdgeOptions();
+     
        
+      edgeOptions.setPageLoadStrategy(stringPageLoadConstant);
   System.setProperty("webdriver.edge.driver", edgeDriverPath); 
          try {
-         
-            driver = new EdgeDriver();
+        
+            driver = new EdgeDriver(edgeOptions);
    }
      catch (Exception ex)
    {
@@ -559,6 +597,7 @@ options49.setBinary(chrome_path);
     
    }
     }
+
    int WaitTime = 0;
    int EcTimeout = 10;
   WaitTime = STAppData.getWaitTime();
