@@ -95,8 +95,8 @@ int EcTimeout;
          promptBehaviorConstant = UnexpectedAlertBehaviour.ACCEPT;
          
            break;
-       case "Ignore":
-             promptBehaviorConstant = UnexpectedAlertBehaviour.ACCEPT;
+       case "Fail":
+             promptBehaviorConstant = UnexpectedAlertBehaviour.IGNORE;
            break;
    }
    switch (waitForLoad)
@@ -602,17 +602,10 @@ public String doInBackground()
     try
     {
 
-// FirefoxProfile profile = new FirefoxProfile();
-
- DesiredCapabilities cap = DesiredCapabilities.firefox();
-      cap.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant); 
-   //     cap.setCapability("marionette", false);
-        
-   //     profile.setPreference("dom.max_script_run_time", 1);
-        driver = new FirefoxDriver();
-    
-
-    //  driver =  new MarionetteDriver();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setUnhandledPromptBehaviour(promptBehaviorConstant);
+       options.setPageLoadStrategy(PageLoadConstant);
+        driver = new FirefoxDriver(options);
     }
     catch (Exception ex)
     {
@@ -676,23 +669,13 @@ public String doInBackground()
 
     try
     {
-// DesiredCapabilities cap = DesiredCapabilities.firefox();
-  //      cap.setJavascriptEnabled(false);
 
-  //     FirefoxProfile profile = new FirefoxProfile();
-
- // DesiredCapabilities cap = DesiredCapabilities.firefox();
-  //    cap.setJavascriptEnabled(true);
-  //     cap.setCapability("marionette", true);
-        
- //      profile.setPreference("dom.max_script_run_time", 30);
          FirefoxOptions options = new FirefoxOptions();
          options.setUnhandledPromptBehaviour(promptBehaviorConstant);
         options.setPageLoadStrategy(PageLoadConstant);
         driver = new FirefoxDriver(options);
        
 
-    //  driver =  new MarionetteDriver();
     }
     catch (Exception ex)
     {
@@ -707,7 +690,10 @@ public String doInBackground()
      
      case "Silent Mode (HTMLUnit)":
   
-     driver = new HtmlUnitDriver();  
+   DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
+   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
+     driver = new HtmlUnitDriver(capabilities);  
    if (driver==null){System.out.println("driver null");}
      break;
      
@@ -718,18 +704,14 @@ public String doInBackground()
          InternetExplorerOptions IEOptions = new InternetExplorerOptions();
          IEOptions.setUnhandledPromptBehaviour(promptBehaviorConstant);
         IEOptions.setPageLoadStrategy(PageLoadConstant);
-    // System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
+ 
      try
      {
      driver = new InternetExplorerDriver(IEOptions);
      }
      catch (Exception ex)
      {
-    
-     
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver:" + ex.toString(), false,0,0);
-         
-          
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver:" + ex.toString(), false,0,0);        
      }
      break;
      case "Internet Explorer-64":
@@ -739,7 +721,6 @@ public String doInBackground()
         InternetExplorerOptions IEOptions64 = new InternetExplorerOptions();
         IEOptions64.setUnhandledPromptBehaviour(promptBehaviorConstant);
         IEOptions64.setPageLoadStrategy(PageLoadConstant);
-   //  System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
      try
      {
      driver = new InternetExplorerDriver(IEOptions64);
@@ -747,9 +728,7 @@ public String doInBackground()
      catch (Exception ex)
              {
      
-    
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver: " +ex.toString(), false,0,0);
-       
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver: " +ex.toString(), false,0,0);  
           
              }
      break;
@@ -757,7 +736,7 @@ public String doInBackground()
        
           ChromeOptions options = new ChromeOptions();  
                  options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
-                 options.setPageLoadStrategy(PageLoadConstant);
+                // options.setPageLoadStrategy(PageLoadConstant);  not supported quite yet
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
                  
@@ -879,6 +858,7 @@ options49.setBinary(chrome_path);
      EdgeOptions edgeOptions = new EdgeOptions();
    
       edgeOptions.setPageLoadStrategy(stringPageLoadConstant);
+      // edgeOptions.setUnhandledPromptBehaviour... to be implemented?
          try {
          
             driver = new EdgeDriver(edgeOptions);

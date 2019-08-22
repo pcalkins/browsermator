@@ -24,6 +24,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 
@@ -46,6 +48,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      Map<String, Object> prefs;
      String waitForLoad;
    PageLoadStrategy PageLoadConstant= PageLoadStrategy.NORMAL;
+    UnexpectedAlertBehaviour promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
    String stringPageLoadConstant;
    String promptBehavior;
    
@@ -62,20 +65,9 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.OSType = OSType;
             
               STAppData.cancelled = false;
-    //             BMPATH = "";
-   //  try
-   //  {
-   
-  //     BMPATH = new File(RunAllTests.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
-   
-  
-  //   }
-  //   catch (Exception ex)
-  //   {
-  //     Prompter fallbackprompt2 = new Prompter ("Driver Error", "Could not locate jar folder: " + BMPATH + " Error: " + ex.toString(), false,0,0);     
-  //   }
+
      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-   WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;        
+     WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;        
           }
     public String doInBackground()
  {
@@ -175,6 +167,20 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
   STAppFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
   STAppData.initVarLists();
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
+   switch (in_PromptBehavior)
+   {
+       case "Dismiss":
+           promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
+          
+           break;
+       case "Accept":
+         promptBehaviorConstant = UnexpectedAlertBehaviour.ACCEPT;
+         
+           break;
+       case "Fail":
+             promptBehaviorConstant = UnexpectedAlertBehaviour.IGNORE;
+           break;
+   }
    switch (in_waitForLoad)
    {
        case "Yes":
@@ -246,17 +252,12 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     try
     {
 
-// FirefoxProfile profile = new FirefoxProfile();
-
- //DesiredCapabilities cap = DesiredCapabilities.firefox();
-   //     cap.setJavascriptEnabled(true);
-   //     cap.setCapability("marionette", false);
-        
-   //     profile.setPreference("dom.max_script_run_time", 1);
-        driver = new FirefoxDriver();
+     FirefoxOptions options = new FirefoxOptions();
+         options.setUnhandledPromptBehaviour(promptBehaviorConstant);
+        options.setPageLoadStrategy(PageLoadConstant);
+        driver = new FirefoxDriver(options);
     
 
-    //  driver =  new MarionetteDriver();
     }
     catch (Exception ex)
     {
@@ -320,22 +321,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
 
     try
     {
-// DesiredCapabilities cap = DesiredCapabilities.firefox();
-  //      cap.setJavascriptEnabled(false);
-
-  //     FirefoxProfile profile = new FirefoxProfile();
-
- // DesiredCapabilities cap = DesiredCapabilities.firefox();
-  //    cap.setJavascriptEnabled(true);
-  //     cap.setCapability("marionette", true);
-        
- //      profile.setPreference("dom.max_script_run_time", 30);
-        FirefoxOptions options = new FirefoxOptions();
+     FirefoxOptions options = new FirefoxOptions();
+         options.setUnhandledPromptBehaviour(promptBehaviorConstant);
         options.setPageLoadStrategy(PageLoadConstant);
         driver = new FirefoxDriver(options);
-       
-
-    //  driver =  new MarionetteDriver();
     }
     catch (Exception ex)
     {
@@ -349,64 +338,61 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
      
      case "Silent Mode (HTMLUnit)":
-  
-     driver = new HtmlUnitDriver();  
+  DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
+   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
+     driver = new HtmlUnitDriver(capabilities);  
    
      break;
      
      case "Internet Explorer-32":
-            thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
+                thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
           setPermissions(thisDriver);
-        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
-    // System.setProperty("webdriver.ie.driver", BMPATH+File.separator+"lib"+File.separator+"iedriverserver_win32"+File.separator+"IEDriverServer.exe");
-        InternetExplorerOptions IEOptions = new InternetExplorerOptions();
+        System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath()); 
+         InternetExplorerOptions IEOptions = new InternetExplorerOptions();
+         IEOptions.setUnhandledPromptBehaviour(promptBehaviorConstant);
         IEOptions.setPageLoadStrategy(PageLoadConstant);
-        
+ 
      try
      {
      driver = new InternetExplorerDriver(IEOptions);
      }
      catch (Exception ex)
      {
-         System.out.println ("Exception launching Internet Explorer driver: " + ex.toString());
-     
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
-          FallbackDriver("HTMLUnit");
-          
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver:" + ex.toString(), false,0,0);        
      }
      break;
      case "Internet Explorer-64":
-            thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
+              thisDriver =  new File(WEBDRIVERSDIR+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
           setPermissions(thisDriver);
         System.setProperty("webdriver.ie.driver", thisDriver.getAbsolutePath());  
-      
-   //  System.setProperty("webdriver.ie.driver",BMPATH+File.separator+ "lib"+File.separator+"iedriverserver_win64"+File.separator+"IEDriverServer.exe");
-          InternetExplorerOptions IEOptions64 = new InternetExplorerOptions();
+        InternetExplorerOptions IEOptions64 = new InternetExplorerOptions();
+        IEOptions64.setUnhandledPromptBehaviour(promptBehaviorConstant);
         IEOptions64.setPageLoadStrategy(PageLoadConstant);
-        
      try
      {
      driver = new InternetExplorerDriver(IEOptions64);
      }
      catch (Exception ex)
              {
-             System.out.println ("Exception launching Internet Explorer-64 driver: " + ex.toString());
-    
-         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch the IEdriver, will fallback to HTMLUnitDriver", false,0,0);
-          FallbackDriver("HTMLUnit");
+     
+         Prompter fallbackprompt = new Prompter ("Driver Error", "Could not launch IEdriver: " +ex.toString(), false,0,0);  
           
              }
      break;
      case "Chrome":
-         //legacy support
-          ChromeOptions options = new ChromeOptions();  
-          options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.DISMISS);
-          options.setPageLoadStrategy(PageLoadConstant);
-             prefs.put("profile.default_content_setting_values.notifications", 2);
-                 options.setExperimentalOption("prefs", prefs);
+       ChromeOptions options = new ChromeOptions();  
+                 options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
+               //  options.setPageLoadStrategy(PageLoadConstant); not supported quite yet
+                 prefs.put("profile.default_content_setting_values.notifications", 2);
+                // prefs.put("--dns-prefetch-disable", );
+                 
+                 options.setExperimentalOption("prefs", prefs);  
+                 options.addArguments("--dns-prefetch-disable");
+     
              if (chrome_main_path!=null) {
-    
-              
+            
+   
 options.setBinary(chrome_main_path);
 
 
@@ -503,7 +489,7 @@ options49.setBinary(chrome_path);
      break;
    case "Edge":
 
-           String windir = System.getenv("windir");
+        String windir = System.getenv("windir");
                 boolean is64bit = false;
     
     is64bit = (System.getenv("ProgramFiles(x86)") != null);
@@ -512,13 +498,14 @@ options49.setBinary(chrome_path);
         {
      edgeDriverPath = windir + "\\System32\\MicrosoftWebDriver.exe";
         }
-       EdgeOptions edgeOptions = new EdgeOptions();
-     
        
-      edgeOptions.setPageLoadStrategy(stringPageLoadConstant);
   System.setProperty("webdriver.edge.driver", edgeDriverPath); 
+     EdgeOptions edgeOptions = new EdgeOptions();
+   
+      edgeOptions.setPageLoadStrategy(stringPageLoadConstant);
+      // edgeOptions.setUnhandledPromptBehaviour... to be implemented?
          try {
-        
+         
             driver = new EdgeDriver(edgeOptions);
    }
      catch (Exception ex)

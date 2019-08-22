@@ -1916,7 +1916,7 @@ bugindex++;
         jComboBoxWaitForLoad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Yes", "No", "Local DOM Only" }));
         jLabelPromptBehavior = new JLabel("Unhandled Prompts:");
         jComboBoxPromptBehavior = new JComboBox();
-        jComboBoxPromptBehavior.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dismiss", "Accept", "Ignore" }));
+        jComboBoxPromptBehavior.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dismiss", "Accept", "Fail" }));
         
         jPanelNorth.add(jButtonNewBug);
         jPanelNorth.add(jButtonNewDataLoop);
@@ -1940,8 +1940,7 @@ bugindex++;
         jPanelSouth.add(jButtonBrowseForFireFoxExe);
         jPanelSouth.add(jLabelWaitForLoad);
         jPanelSouth.add(jComboBoxWaitForLoad);
-     
-          jPanelSouth.add(jLabelPromptBehavior);
+        jPanelSouth.add(jLabelPromptBehavior);
         jPanelSouth.add(jComboBoxPromptBehavior);
         jPanelSouth.add(jCheckBoxPromptToClose);
         JPanel jPanelSouth2 = new JPanel();
@@ -2286,6 +2285,7 @@ public void setjCheckBoxIncludeScreenshotsEnabled(boolean enabled)
     {
         jCheckBoxPromptToClose.addActionListener(listener);
     }
+    
  public void addjComboBoxWaitForLoadItemListener (ItemListener listener)
 {
   jComboBoxWaitForLoad.addItemListener(listener);

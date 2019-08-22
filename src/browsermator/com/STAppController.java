@@ -57,8 +57,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.201";
-public final String lastWebDriverUpdate = "060812019";
+public final String ProgramVersion = "1.6.202";
+public final String lastWebDriverUpdate = "08232019";
 public boolean DriverUpdateFail = false;
 public String loginName;
 public String loginPassword;
@@ -3922,21 +3922,7 @@ File newfile = new File(path + ".js");
         }
         
         });
-               STAppFrame.addjComboBoxPromptBehaviorItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-         if ((e.getStateChange() == ItemEvent.SELECTED)) {
-            Object ActionType = e.getItem();
-            String PromptBehavior = ActionType.toString();
-           STAppFrame.setPromptBehaviorView(PromptBehavior);
-           STAppData.setPromptBehavior(PromptBehavior);
-    //      STAppData.changes = true;
-          
-         }
-        }
-        
-        });
+
          STAppFrame.addjComboBoxWaitForLoadItemListener( new ItemListener() {
     
         public void itemStateChanged (ItemEvent e )
