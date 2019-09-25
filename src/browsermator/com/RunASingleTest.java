@@ -24,8 +24,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
+
 
 
 
@@ -338,10 +337,11 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      break;
      
      case "Silent Mode (HTMLUnit)":
-  DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
-  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
-   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
-     driver = new HtmlUnitDriver(capabilities);  
+         //not implemented yet
+//  DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+//  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
+//   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
+     driver = new HtmlUnitDriver();  
    
      break;
      

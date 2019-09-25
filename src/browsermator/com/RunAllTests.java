@@ -602,10 +602,12 @@ public String doInBackground()
     try
     {
 
+
         FirefoxOptions options = new FirefoxOptions();
         options.setUnhandledPromptBehaviour(promptBehaviorConstant);
        options.setPageLoadStrategy(PageLoadConstant);
         driver = new FirefoxDriver(options);
+
     }
     catch (Exception ex)
     {
@@ -689,11 +691,11 @@ public String doInBackground()
      break;
      
      case "Silent Mode (HTMLUnit)":
-  
-   DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
-  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
-   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
-     driver = new HtmlUnitDriver(capabilities);  
+  //not implemented yet
+//   DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+//  capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, promptBehaviorConstant);
+//   capabilities.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, PageLoadConstant);
+     driver = new HtmlUnitDriver();  
    if (driver==null){System.out.println("driver null");}
      break;
      

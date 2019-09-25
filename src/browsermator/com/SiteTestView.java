@@ -630,47 +630,56 @@ catch (Exception e) {
       if (count==2)
       {
          jLabelRecentFile2.setText(filename);
+          jLabelRecentFile2.setForeground(Color.blue);
          RecentFile2 = filename;
       }  
        if (count==3)
        {
          jLabelRecentFile3.setText(filename);
+          jLabelRecentFile3.setForeground(Color.blue);
          RecentFile3 = filename;
        }
        if (count==4)
        {
          jLabelRecentFile4.setText(filename);
+          jLabelRecentFile4.setForeground(Color.blue);
          RecentFile4 = filename;
        }
        if (count==5)
        {
          jLabelRecentFile5.setText(filename);
+          jLabelRecentFile5.setForeground(Color.blue);
          RecentFile5 = filename;
        }
    
           if (count==6)
        {
          jLabelRecentFile6.setText(filename);
+          jLabelRecentFile6.setForeground(Color.blue);
          RecentFile6 = filename;
        }
                    if (count==7)
        {
          jLabelRecentFile7.setText(filename);
+          jLabelRecentFile7.setForeground(Color.blue);
          RecentFile7 = filename;
        }
                        if (count==8)
        {
          jLabelRecentFile8.setText(filename);
+          jLabelRecentFile8.setForeground(Color.blue);
          RecentFile8 = filename;
        }
                    if (count==9)
        {
          jLabelRecentFile9.setText(filename);
+          jLabelRecentFile9.setForeground(Color.blue);
          RecentFile9 = filename;
        }
                   if (count==10)
        {
          jLabelRecentFile10.setText(filename);
+          jLabelRecentFile10.setForeground(Color.blue);
          RecentFile10 = filename;
        }
          count++;
