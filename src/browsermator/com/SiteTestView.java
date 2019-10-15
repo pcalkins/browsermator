@@ -90,11 +90,14 @@ String CloudFile5;
     private JPanel jPanelDefaultEmailOptions; 
     private JLabel jLabelEmailFormTitle;
     private JButton jButtonOpenFileCloud;
-    
+    private JPanel jPanelDownloadDir;
     GridBagLayout GridLayout = new GridBagLayout();
     GridBagConstraints Constraints = new GridBagConstraints();
    
-   
+ 
+   private JButton jButtonBrowseForDownloadDir;
+   private JLabel jLabelDownloadDir;
+   private JTextField jTextFieldDownloadDir;
     
    SiteTestView() {
    RecentFile1 = "";
@@ -141,8 +144,10 @@ catch (Exception e) {
 			System.out.println("Exception loading config settings: " + e);
 		} 
 String recentfiles = applicationProps.getProperty("recentfiles");
+String downloadPath = applicationProps.getProperty("downloaddir");
 String[] RFilesArray = recentfiles.split(",");
    setRecentFiles(RFilesArray);
+   setjTextFieldDownloadDir(downloadPath);
         
     }
   public final void CreateConfigFile()
@@ -272,6 +277,11 @@ setRecentFiles(outarray);
     {
     jButtonOpenFileCloud.addActionListener(listener);
     } 
+    public void addjButtonBrowseForDownloadDirActionListener(ActionListener listener)
+    {
+    jButtonBrowseForDownloadDir.addActionListener(listener);
+  
+    } 
   public void addJButtonOpenWebSiteTestActionListener(ActionListener listener)
   {
       jButtonOpenFile.addActionListener(listener);
@@ -280,7 +290,10 @@ setRecentFiles(outarray);
   {
       jButtonSaveEmailConfig.addActionListener(listener);
   }
-  
+   public void setjTextFieldDownloadDir(String _downloaddir)
+   {
+       jTextFieldDownloadDir.setText(_downloaddir);
+   }
     public String getSMTPHostname ()
     {
         String SMTPHostname = jTextFieldSMTPHostName.getText();
@@ -881,8 +894,9 @@ connection.setDoOutput(true);
         jLabelSubject.setText("Title/Subject:");
         jLabelVersion.setText("Config file browsermator_config.properties is missing....");     
         jLabelRecentFiles.setText("Recent Files:");
-     
-           
+       
+       
+        
         jPanelNewOpen = new JPanel();
         jPanelNewOpen.setLayout(new BoxLayout( jPanelNewOpen , BoxLayout.X_AXIS));
         jPanelNewOpen.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
@@ -894,8 +908,10 @@ connection.setDoOutput(true);
    
         jButtonOpenFileCloud = new JButton("Open Browsermator File Cloud");
         jPanelRecentFiles = new JPanel();
+       
         jPanelRecentFiles.setLayout(new BoxLayout( jPanelRecentFiles , BoxLayout.Y_AXIS));
         jPanelRecentFiles.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
         jPanelRecentFiles.add(jLabelRecentFiles);
         jPanelRecentFiles.add(jLabelRecentFile1);
         jPanelRecentFiles.add(jLabelRecentFile2);
@@ -909,8 +925,18 @@ connection.setDoOutput(true);
         jPanelRecentFiles.add(jLabelRecentFile10);
         jPanelRecentFiles.add(Box.createVerticalGlue());
         jPanelRecentFiles.add(jButtonOpenFileCloud);
-        
+      
+      
         jPanelDefaultEmailOptions = new JPanel(GridLayout);
+        
+        jPanelDownloadDir = new JPanel();
+        jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox");
+        jTextFieldDownloadDir = new JTextField(40);
+        jButtonBrowseForDownloadDir = new JButton("Browse");
+        jPanelDownloadDir.add(jLabelDownloadDir);
+        jPanelDownloadDir.add(jTextFieldDownloadDir);
+        jPanelDownloadDir.add(jButtonBrowseForDownloadDir);
+       
         JPanel spacer = new JPanel();
           Constraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
           AddToGrid(jLabelEmailFormTitle, 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST); 
@@ -928,6 +954,8 @@ connection.setDoOutput(true);
           AddToGrid(jTextFieldSubject, 6, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
           AddToGrid(jButtonSaveEmailConfig, 7, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
           AddToGrid(jLabelVersion, 8, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
+          
+          AddToGrid (jPanelDownloadDir, 7, 2, 1,1, 0.0, 0.0, GridBagConstraints.WEST);
           AddToGrid(spacer, 9, 2, 1, 1, 0.99, 0.99, GridBagConstraints.EAST);
           
     

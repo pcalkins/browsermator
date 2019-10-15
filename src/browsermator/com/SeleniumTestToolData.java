@@ -78,6 +78,7 @@ String EmailLoginName;
 Boolean silentMode;
 String waitForLoad;
 String promptBehavior;
+String DownDir;
 
 public final String UNIQUE_LOG_DIR;
 Map<String, List<String[]>> DataFileHashMap = new HashMap();
@@ -128,6 +129,7 @@ this.SMTPHostName = "";
 this.EmailLoginName = "";
 this.silentMode = false;
 this.EcTimeout = 10;
+this.DownDir = "";
 
     try{
       loadGlobalEmailSettings();
@@ -969,8 +971,10 @@ else
  VarLists.put(varname, new ArrayList<>());
  
       }
- 
- 
+    public void setDownDir(String in_DownDir)
+        {
+            DownDir = in_DownDir;
+        }
          public void setOSType(String in_OSType)
         {
         

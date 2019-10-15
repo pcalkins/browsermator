@@ -21,6 +21,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
@@ -50,7 +51,8 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     UnexpectedAlertBehaviour promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
    String stringPageLoadConstant;
    String promptBehavior;
-   
+    String downloadDir = "";
+    
   public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String in_waitForLoad, String in_promptBehavior, String OSType)
           {
               prefs = new HashMap<String, Object>();
@@ -75,6 +77,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
     this.chrome_main_path = FFprops.LoadChromeMainPath();
+     this.downloadDir = FFprops.LoadDownloadDir();
    thisbugview.JButtonRunTest.setText("Running...");
   
     RunSingleTest(bugtorun, thisbugview, targetbrowser, waitForLoad, promptBehavior, OSType);
@@ -252,6 +255,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     {
 
      FirefoxOptions options = new FirefoxOptions();
+     if (!"".equals(downloadDir))
+        {
+                FirefoxProfile profile = new FirefoxProfile();
+profile.setPreference("browser.download.dir", downloadDir);
+profile.setPreference("browser.download.folderList", 2);
+profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
+    options.setProfile(profile);
+        }          
+     options.addPreference("dom.webnotifications.enabled", false);
          options.setUnhandledPromptBehaviour(promptBehaviorConstant);
         options.setPageLoadStrategy(PageLoadConstant);
         driver = new FirefoxDriver(options);
@@ -321,6 +333,15 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     try
     {
      FirefoxOptions options = new FirefoxOptions();
+       if (!"".equals(downloadDir))
+        {
+                FirefoxProfile profile = new FirefoxProfile();
+profile.setPreference("browser.download.dir", downloadDir);
+profile.setPreference("browser.download.folderList", 2);
+profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
+    options.setProfile(profile);
+        }        
+     options.addPreference("dom.webnotifications.enabled", false);
          options.setUnhandledPromptBehaviour(promptBehaviorConstant);
         options.setPageLoadStrategy(PageLoadConstant);
         driver = new FirefoxDriver(options);
@@ -384,6 +405,10 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
        ChromeOptions options = new ChromeOptions();  
                  options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
                //  options.setPageLoadStrategy(PageLoadConstant); not supported quite yet
+                     if (!"".equals(downloadDir))
+                 {
+                 prefs.put("download.default_directory", downloadDir);
+                 }
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
                  

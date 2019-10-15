@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.6.204";
+public final String ProgramVersion = "1.7.205";
 public final String lastWebDriverUpdate = "09212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -830,6 +830,18 @@ mainAppFrame.initComponents();
      OpenBrowserMatorCloud();
   }
          });
+   Navigator.addjButtonBrowseForDownloadDirActionListener(
+         new ActionListener()
+         {
+           public void actionPerformed (ActionEvent evt)
+  {   
+   File thisDir =  BrowseForDownloadDir();
+ BrowserMatorConfig theseProps = new BrowserMatorConfig();
+ theseProps.setKeyValue("downloaddir", thisDir.getAbsolutePath());
+ Navigator.setjTextFieldDownloadDir(thisDir.getAbsolutePath());
+  }
+         });
+  
   Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
   {
@@ -901,6 +913,7 @@ mainAppFrame.initComponents();
       newProps.setProperty("email_login_name", "");
       newProps.setProperty("smtp_hostname", "");
      newProps.setProperty("recentfiles", " , , , , , , , , , , ");
+  
               try {
   
 
@@ -1420,7 +1433,20 @@ STAppFrame.ShowStoredVarControls(false);
   
    
 
- 
+  public File BrowseForDownloadDir()
+  {
+           final JFileChooser fc = new JFileChooser();
+      fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      fc.setDialogTitle("Select Download Directory");
+       fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+       fc.setAcceptAllFileFilterUsed(false);
+      int returnVal = fc.showOpenDialog(mainAppFrame);
+         File chosenDir = fc.getSelectedFile();
+  
+   
+     return chosenDir; 
+       
+  }
   public File[] BrowseForFile()
   {
        
@@ -2303,6 +2329,10 @@ actionindex = Integer.parseInt(parts[1])-1;
        
        switch(commandText)
             {
+           case "changedownloaddir":
+               STAppData.setDownDir(newValue);
+               break;
+               
            case "silentmode":
                STAppData.setSilentMode(true);
                break;
@@ -2472,7 +2502,9 @@ actionindex = Integer.parseInt(parts[1])-1;
       
        switch(commandText)
             {
-            
+               case "changedownloaddir":
+               STAppData.setDownDir(newValue);
+               break;
              case "silentmode":
                STAppData.setSilentMode(true);
                break;

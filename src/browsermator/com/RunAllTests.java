@@ -24,12 +24,11 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 
@@ -61,7 +60,7 @@ int EcTimeout;
  UnexpectedAlertBehaviour promptBehaviorConstant = UnexpectedAlertBehaviour.DISMISS;
  
  String stringPageLoadConstant = "normal";
-
+ String downloadDir = "";
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
@@ -78,6 +77,7 @@ int EcTimeout;
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
   this.chrome_main_path = FFprops.LoadChromeMainPath();
+  this.downloadDir = FFprops.LoadDownloadDir();
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.waitForLoad = STAppData.waitForLoad;
@@ -135,6 +135,7 @@ public RunAllTests (SeleniumTestToolData in_SiteTest)
   this.firefox_path = FFprops.LoadFirefoxPath();
   this.chrome_path = FFprops.LoadChromePath();
  this.chrome_main_path = FFprops.LoadChromeMainPath();
+  this.downloadDir = FFprops.LoadDownloadDir();
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.waitForLoad = in_SiteTest.waitForLoad;
@@ -604,8 +605,19 @@ public String doInBackground()
 
 
         FirefoxOptions options = new FirefoxOptions();
+    
+        if (!"".equals(downloadDir))
+        {
+                FirefoxProfile profile = new FirefoxProfile();
+profile.setPreference("browser.download.dir", downloadDir);
+profile.setPreference("browser.download.folderList", 2);
+profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
+    options.setProfile(profile);
+        }        
+options.addPreference("dom.webnotifications.enabled", false);
         options.setUnhandledPromptBehaviour(promptBehaviorConstant);
        options.setPageLoadStrategy(PageLoadConstant);
+   
         driver = new FirefoxDriver(options);
 
     }
@@ -673,8 +685,19 @@ public String doInBackground()
     {
 
          FirefoxOptions options = new FirefoxOptions();
+         
+            if (!"".equals(downloadDir))
+            {
+                   FirefoxProfile profile = new FirefoxProfile();
+profile.setPreference("browser.download.dir", downloadDir);
+profile.setPreference("browser.download.folderList", 2);
+profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
+    options.setProfile(profile);
+            }
+         options.addPreference("dom.webnotifications.enabled", false);
          options.setUnhandledPromptBehaviour(promptBehaviorConstant);
         options.setPageLoadStrategy(PageLoadConstant);
+      
         driver = new FirefoxDriver(options);
        
 
@@ -741,7 +764,10 @@ public String doInBackground()
                 // options.setPageLoadStrategy(PageLoadConstant);  not supported quite yet
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
-                 
+                 if (!"".equals(downloadDir))
+                 {
+                 prefs.put("download.default_directory", downloadDir);
+                 }
                  options.setExperimentalOption("prefs", prefs);  
                  options.addArguments("--dns-prefetch-disable");
      

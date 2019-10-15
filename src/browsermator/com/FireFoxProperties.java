@@ -22,6 +22,7 @@ public class FireFoxProperties {
     String targetbrowser;
     JFileChooser FindFireFoxExe;
     String BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+    String downloadDir="";
   public FireFoxProperties(String in_tb)
   {
   this.targetbrowser = in_tb;
@@ -101,6 +102,35 @@ catch (Exception e) {
    
         
   }
+    public String LoadDownloadDir()
+    {
+              String ret_val = "";
+               Properties applicationProps = new Properties();
+  
+try
+{
+         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
+             applicationProps.load(input);
+             
+            
+         }
+         catch (Exception e)
+         {
+             System.out.println("error loading chrome path:" + e.toString());
+           
+             
+         }
+}
+catch (Exception e) {
+			System.out.println("Exception loading download dir: " + e);
+                        
+		} 
+      ret_val = applicationProps.getProperty("downloaddir", "");
+   return ret_val;
+ 
+   
+        
+    }
     public String LoadChromeMainPath()
     {
         String ret_val = "";
