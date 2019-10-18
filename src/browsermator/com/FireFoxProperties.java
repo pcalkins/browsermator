@@ -107,8 +107,7 @@ catch (Exception e) {
               String ret_val = "";
                Properties applicationProps = new Properties();
   
-try
-{
+
          try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
              applicationProps.load(input);
              
@@ -116,15 +115,13 @@ try
          }
          catch (Exception e)
          {
-             System.out.println("error loading chrome path:" + e.toString());
+             System.out.println("error loading config:" + e.toString());
            
              
          }
-}
-catch (Exception e) {
-			System.out.println("Exception loading download dir: " + e);
-                        
-		} 
+
+
+
       ret_val = applicationProps.getProperty("downloaddir", "");
    return ret_val;
  
