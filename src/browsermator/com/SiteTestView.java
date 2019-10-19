@@ -90,7 +90,9 @@ String CloudFile5;
     private JPanel jPanelDefaultEmailOptions; 
     private JLabel jLabelEmailFormTitle;
     private JButton jButtonOpenFileCloud;
-    private JPanel jPanelDownloadDir;
+  
+    
+    
     GridBagLayout GridLayout = new GridBagLayout();
     GridBagConstraints Constraints = new GridBagConstraints();
    
@@ -98,6 +100,19 @@ String CloudFile5;
    private JButton jButtonBrowseForDownloadDir;
    private JLabel jLabelDownloadDir;
    private JTextField jTextFieldDownloadDir;
+     private JPanel jPanelDownloadDir;
+     
+      private JButton jButtonBrowseForFireFox;
+   private JLabel jLabelFirefoxDir;
+   private JTextField jTextFieldFirefoxDir;
+     private JPanel jPanelFirefoxDir;
+     
+      private JButton jButtonBrowseForChrome;
+   private JLabel jLabelChromeDir;
+   private JTextField jTextFieldChromeDir;
+     private JPanel jPanelChromeDir;
+     private JPanel jPanelBrowse;
+    private JPanel jPanelCenter;
     
    SiteTestView() {
    RecentFile1 = "";
@@ -145,9 +160,13 @@ catch (Exception e) {
 		} 
 String recentfiles = applicationProps.getProperty("recentfiles");
 String downloadPath = applicationProps.getProperty("downloaddir");
+String chromePath = applicationProps.getProperty("chrome_main_exe");
+String firefoxPath = applicationProps.getProperty("firefox_exe");
 String[] RFilesArray = recentfiles.split(",");
    setRecentFiles(RFilesArray);
    setjTextFieldDownloadDir(downloadPath);
+    setjTextFieldFirefox(firefoxPath);
+     setjTextFieldChrome(chromePath);
         
     }
   public final void CreateConfigFile()
@@ -282,6 +301,16 @@ setRecentFiles(outarray);
     jButtonBrowseForDownloadDir.addActionListener(listener);
   
     } 
+      public void addjButtonBrowseForChromeActionListener(ActionListener listener)
+    {
+    jButtonBrowseForChrome.addActionListener(listener);
+  
+    } 
+        public void addjButtonBrowseForFirefoxActionListener(ActionListener listener)
+    {
+    jButtonBrowseForFireFox.addActionListener(listener);
+  
+    } 
   public void addJButtonOpenWebSiteTestActionListener(ActionListener listener)
   {
       jButtonOpenFile.addActionListener(listener);
@@ -293,6 +322,14 @@ setRecentFiles(outarray);
    public void setjTextFieldDownloadDir(String _downloaddir)
    {
        jTextFieldDownloadDir.setText(_downloaddir);
+   }
+      public void setjTextFieldFirefox(String _path)
+   {
+     this.jTextFieldFirefoxDir.setText(_path);
+   }
+         public void setjTextFieldChrome(String _path)
+   {
+       jTextFieldChromeDir.setText(_path);
    }
     public String getSMTPHostname ()
     {
@@ -910,7 +947,31 @@ connection.setDoOutput(true);
         jPanelRecentFiles = new JPanel();
        
         jPanelRecentFiles.setLayout(new BoxLayout( jPanelRecentFiles , BoxLayout.Y_AXIS));
-        jPanelRecentFiles.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+   //     jPanelRecentFiles.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+          jPanelDownloadDir = new JPanel();
+        jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox");
+        jTextFieldDownloadDir = new JTextField(40);
+        jButtonBrowseForDownloadDir = new JButton("Browse");
+        jPanelDownloadDir.add(jLabelDownloadDir);
+        jPanelDownloadDir.add(jTextFieldDownloadDir);
+        jPanelDownloadDir.add(jButtonBrowseForDownloadDir);
+       
+         jPanelFirefoxDir = new JPanel();
+        jLabelFirefoxDir = new JLabel("Firefox Executable Location (May be needed for custom install folder)");
+        jTextFieldFirefoxDir = new JTextField(40);
+        jButtonBrowseForFireFox = new JButton("Browse");
+        jPanelFirefoxDir.add(jLabelFirefoxDir);
+        jPanelFirefoxDir.add(jTextFieldFirefoxDir);
+        jPanelFirefoxDir.add(jButtonBrowseForFireFox);
+        
+          jPanelChromeDir = new JPanel();
+        jLabelChromeDir = new JLabel("Chrome Executable Location (May be needed for custom install folder)");
+        jTextFieldChromeDir = new JTextField(40);
+        jButtonBrowseForChrome = new JButton("Browse");
+        jPanelChromeDir.add(jLabelChromeDir);
+        jPanelChromeDir.add(jTextFieldChromeDir);
+        jPanelChromeDir.add(jButtonBrowseForChrome);
         
         jPanelRecentFiles.add(jLabelRecentFiles);
         jPanelRecentFiles.add(jLabelRecentFile1);
@@ -923,20 +984,15 @@ connection.setDoOutput(true);
         jPanelRecentFiles.add(jLabelRecentFile8);
         jPanelRecentFiles.add(jLabelRecentFile9);
         jPanelRecentFiles.add(jLabelRecentFile10);
-        jPanelRecentFiles.add(Box.createVerticalGlue());
+        jPanelRecentFiles.add(Box.createRigidArea(new Dimension(10, 10)));
+            
         jPanelRecentFiles.add(jButtonOpenFileCloud);
       
-      
-        jPanelDefaultEmailOptions = new JPanel(GridLayout);
-        
-        jPanelDownloadDir = new JPanel();
-        jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox");
-        jTextFieldDownloadDir = new JTextField(40);
-        jButtonBrowseForDownloadDir = new JButton("Browse");
-        jPanelDownloadDir.add(jLabelDownloadDir);
-        jPanelDownloadDir.add(jTextFieldDownloadDir);
-        jPanelDownloadDir.add(jButtonBrowseForDownloadDir);
        
+       
+   
+        
+            jPanelDefaultEmailOptions = new JPanel(GridLayout);
         JPanel spacer = new JPanel();
           Constraints.insets = new Insets(2,2,2,2); //top, left, bottom, right
           AddToGrid(jLabelEmailFormTitle, 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST); 
@@ -954,20 +1010,53 @@ connection.setDoOutput(true);
           AddToGrid(jTextFieldSubject, 6, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
           AddToGrid(jButtonSaveEmailConfig, 7, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
           AddToGrid(jLabelVersion, 8, 1, 1, 1, 0.1, 0.1, GridBagConstraints.WEST);
-          
-          AddToGrid (jPanelDownloadDir, 7, 2, 1,1, 0.0, 0.0, GridBagConstraints.WEST);
+       //   AddToGrid(jPanelChromeDir, 1, 2, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
+       //   AddToGrid(jPanelFirefoxDir, 2, 2, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
+       //   AddToGrid(jPanelDownloadDir, 3, 2, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
           AddToGrid(spacer, 9, 2, 1, 1, 0.99, 0.99, GridBagConstraints.EAST);
           
-    
+          jPanelCenter = new JPanel(GridLayout);
+            jPanelBrowse = new JPanel();
+       
+         jPanelBrowse.setLayout(new BoxLayout(  jPanelBrowse  , BoxLayout.Y_AXIS));
+         jPanelBrowse.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+          jPanelBrowse.add(jPanelChromeDir);
+          jPanelBrowse.add(jPanelFirefoxDir);
+          jPanelBrowse.add(jPanelDownloadDir);
+           AddToCenterGrid(jPanelRecentFiles, 0, 1, 1,10, 0.1, 0.1, GridBagConstraints.WEST);
+          AddToCenterGrid(jPanelBrowse, 11, 1, 1, 3, 0.1, 0.1, GridBagConstraints.WEST);
+//   AddToCenterGrid(jPanelChromeDir, 11, 1, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
+          //     AddToCenterGrid(jPanelFirefoxDir, 12, 1, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
+          //       AddToCenterGrid(jPanelDownloadDir, 13, 1, 1,1, 0.1, 0.1, GridBagConstraints.WEST);
+ 
+     
+    //        jPanelCenter.setLayout(new BoxLayout( jPanelCenter , BoxLayout.Y_AXIS));
+   //    jPanelCenter.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    //     jPanelCenter.add(jPanelRecentFiles);
+   //      jPanelCenter.add(jPanelChromeDir);
+   //     jPanelCenter.add(jPanelFirefoxDir);
+   //     jPanelCenter.add(jPanelDownloadDir);
+      
       
          add(jPanelNewOpen, BorderLayout.NORTH);
-         add(jPanelRecentFiles, BorderLayout.CENTER);
+         add(jPanelCenter, BorderLayout.CENTER);
          add(jPanelDefaultEmailOptions, BorderLayout.SOUTH);
          
          pack();
         
         
-  }   
+  } 
+  public final void AddToCenterGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int anchor_value)
+     {
+         Constraints.gridx = column;
+         Constraints.gridy = row;
+         Constraints.gridwidth = width;
+         Constraints.gridheight = height;
+         Constraints.weightx = weightx;
+         Constraints.weighty = weighty;
+         Constraints.anchor = anchor_value;
+         jPanelCenter.add(component, Constraints);
+       }  
     public final void AddToGrid( Component component, int row, int column, int width, int height, double weightx, double weighty, int anchor_value)
      {
          Constraints.gridx = column;

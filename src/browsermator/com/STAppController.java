@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.206";
+public final String ProgramVersion = "1.7.207";
 public final String lastWebDriverUpdate = "09212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -831,7 +831,8 @@ mainAppFrame.initComponents();
   }
          });
    Navigator.addjButtonBrowseForDownloadDirActionListener(
-         new ActionListener()
+       
+           new ActionListener()
          {
            public void actionPerformed (ActionEvent evt)
   {   
@@ -841,6 +842,26 @@ mainAppFrame.initComponents();
  Navigator.setjTextFieldDownloadDir(thisDir.getAbsolutePath());
   }
          });
+     Navigator.addjButtonBrowseForChromeActionListener(
+          new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+       String TargetBrowser = "Chrome";
+    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
+    FFProperties.BrowseforFFPath();
+  Navigator.setjTextFieldChrome(FFProperties.LoadChromeMainPath());
+    }
+});
+       Navigator.addjButtonBrowseForFirefoxActionListener(
+         new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+       String TargetBrowser = "Firefox";
+    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
+    FFProperties.BrowseforFFPath();
+    Navigator.setjTextFieldFirefox(FFProperties.LoadFirefoxPath());
+    }
+});
   
   Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
@@ -2329,8 +2350,7 @@ actionindex = Integer.parseInt(parts[1])-1;
        
        switch(commandText)
             {
-           case "changedownloaddir":
-           
+           case "changedownloaddir":         
  BrowserMatorConfig theseProps = new BrowserMatorConfig();
  theseProps.setKeyValue("downloaddir", newValue);
                break;
