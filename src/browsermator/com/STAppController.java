@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.207";
+public final String ProgramVersion = "1.7.208";
 public final String lastWebDriverUpdate = "09212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -838,9 +838,12 @@ mainAppFrame.initComponents();
   {   
    File thisDir =  BrowseForDownloadDir();
  BrowserMatorConfig theseProps = new BrowserMatorConfig();
+ if (thisDir!=null)
+ {
  theseProps.setKeyValue("downloaddir", thisDir.getAbsolutePath());
- Navigator.setjTextFieldDownloadDir(thisDir.getAbsolutePath());
-  }
+  Navigator.setjTextFieldDownloadDir(thisDir.getAbsolutePath());
+ } 
+ }
          });
      Navigator.addjButtonBrowseForChromeActionListener(
           new ActionListener() {
@@ -1459,7 +1462,16 @@ STAppFrame.ShowStoredVarControls(false);
            final JFileChooser fc = new JFileChooser();
       fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       fc.setDialogTitle("Select Download Directory");
+       BrowserMatorConfig theseProps = new BrowserMatorConfig();
+        String lastused_open_dir = theseProps.getKeyValue("downloaddir");
+      if (lastused_open_dir!=null)
+      {
+      fc.setCurrentDirectory(new File(lastused_open_dir));
+      }
+      else
+      {
        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+      }
        fc.setAcceptAllFileFilterUsed(false);
       int returnVal = fc.showOpenDialog(mainAppFrame);
          File chosenDir = fc.getSelectedFile();
