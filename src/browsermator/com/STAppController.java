@@ -57,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.209";
+public final String ProgramVersion = "1.7.210";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -927,8 +927,8 @@ mainAppFrame.initComponents();
 
        newProps.setProperty("main_window_locationY", "0");
       newProps.setProperty("main_window_locationX", "0");
-      newProps.setProperty("main_window_sizeWidth", "1000");
-      newProps.setProperty("main_window_sizeHeight", "800");   
+      newProps.setProperty("main_window_sizeWidth", "1060");
+      newProps.setProperty("main_window_sizeHeight", "950");   
    
       newProps.setProperty("email_subject", "");
       newProps.setProperty("email_to", "");
@@ -2995,7 +2995,7 @@ catch (Exception e) {
    String smtp_hostname = applicationProps.getProperty("smtp_hostname");
    String login_name = applicationProps.getProperty("email_login_name");
    String password = applicationProps.getProperty("email_login_password");
-   if (!"".equals(password))
+   if (!"".equals(password) && password!=null)
    {
    try
    {
@@ -3009,13 +3009,31 @@ catch (Exception e) {
    String to = applicationProps.getProperty("email_to");
    String from = applicationProps.getProperty("email_from");
    String subject = applicationProps.getProperty("email_subject");
-
+   if (smtp_hostname!=null)
+   {
    Navigator.setSMTPHostname(smtp_hostname);
+   }
+   if (login_name!=null)
+   {
    Navigator.setEmailLoginName(login_name);
+   }
+   if (password!=null)
+   {
    Navigator.setEmailPassword(password);
+   }
+   if (to!=null)
+   {
    Navigator.setEmailTo(to);
+   }
+   if (from!=null)
+   {
    Navigator.setEmailFrom(from);
+   }
+   if (subject!=null)
+   {
    Navigator.setSubject(subject);
+   }
+  
    Navigator.setVersion(this.ProgramVersion);
   
 	}

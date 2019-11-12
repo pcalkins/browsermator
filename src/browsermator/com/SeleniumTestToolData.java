@@ -416,6 +416,8 @@ catch (Exception e) {
  
    setSMTPHostname(smtp_hostname);
    setEmailLoginName(login_name);
+   if (password!=null)
+   {
    try
    {
    password = Protector.decrypt(password);
@@ -423,6 +425,7 @@ catch (Exception e) {
    catch (Exception ex)
    {
        System.out.println("Exception getting email password: " + ex.toString());
+   }
    }
    setEmailPassword(password);
    setEmailTo(to);

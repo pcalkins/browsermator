@@ -1130,6 +1130,7 @@ if (!"Dataloop".equals(thisbug.Type))
     { 
       try
        {
+           
      File full_scrn = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
      full_scrn.deleteOnExit();
    ThisAction.ScreenshotBase64 = "<img src=\"file:///" + full_scrn.getAbsolutePath() + "\" id = \"Screenshot" + bug_ID + "-" + action_ID + "\" style = \"display: none;\" class = \"report_screenshots\"></img>";
