@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.211";
+public final String ProgramVersion = "1.7.212";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -817,9 +817,9 @@ mainAppFrame.initComponents();
     public void actionPerformed (ActionEvent evt)
     {
        String TargetBrowser = "Chrome";
-    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
-    FFProperties.BrowseforFFPath();
-  Navigator.setjTextFieldChrome(FFProperties.LoadChromeMainPath());
+   
+    appConfig.BrowseforBrowserPath(TargetBrowser);
+  Navigator.setjTextFieldChrome(appConfig.getKeyValue(TargetBrowser));
     }
 });
        Navigator.addjButtonBrowseForFirefoxActionListener(
@@ -827,9 +827,9 @@ mainAppFrame.initComponents();
     public void actionPerformed (ActionEvent evt)
     {
        String TargetBrowser = "Firefox";
-    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
-    FFProperties.BrowseforFFPath();
-    Navigator.setjTextFieldFirefox(FFProperties.LoadFirefoxPath());
+    appConfig.BrowseforBrowserPath(TargetBrowser);
+    
+    Navigator.setjTextFieldFirefox(appConfig.getKeyValue(TargetBrowser));
     }
 });
   
@@ -3020,19 +3020,9 @@ catch (Exception e) {
 			System.out.println("Exception loading firefox path: " + e);
                         
 		} 
-
-   
- 
- 
-   
         
   }
-  public void WriteFireFoxPathToProperties(String pathtofirefox)
-  {
-     
-  appConfig.setKeyValue("firefox_exe", pathtofirefox);
- 
-  }    
+
 public void setSaveMenuState(boolean enabled)
 {
     mainAppFrame.setSaveMenuItemEnabled(enabled);
@@ -3878,8 +3868,8 @@ new ActionListener() {
     public void actionPerformed (ActionEvent evt)
     {
        String TargetBrowser = STAppData.getTargetBrowser();
-    FireFoxProperties FFProperties = new FireFoxProperties(TargetBrowser);
-    FFProperties.BrowseforFFPath();
+   appConfig.BrowseforBrowserPath(TargetBrowser);
+   
  
     }
 });

@@ -43,7 +43,7 @@ WebDriver driver;
 String firefox_path;
 String chrome_path;
 String chrome_main_path;
-FireFoxProperties FFprops;
+
 BrowserMatorReport BrowserMatorReport;
 Boolean RUNWITHGUI;
 Boolean paused = false;
@@ -61,6 +61,8 @@ int EcTimeout;
  
  String stringPageLoadConstant = "normal";
  String downloadDir = "";
+ BrowserMatorConfig appConfig;
+ 
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
  prefs = new HashMap<String, Object>();
@@ -73,11 +75,11 @@ int EcTimeout;
   STAppData.RefreshData();
   STAppFrame.UpdateDisplay();
   RUNWITHGUI = true;
-  FFprops = new FireFoxProperties(targetbrowser);
-  this.firefox_path = FFprops.LoadFirefoxPath();
-  this.chrome_path = FFprops.LoadChromePath();
-  this.chrome_main_path = FFprops.LoadChromeMainPath();
-  this.downloadDir = FFprops.LoadDownloadDir();
+  appConfig = new BrowserMatorConfig();
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+  this.chrome_main_path = appConfig.getKeyValue("Chrome");
+  this.downloadDir = appConfig.getKeyValue("downloaddir");
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.waitForLoad = STAppData.waitForLoad;
@@ -131,11 +133,12 @@ public RunAllTests (SeleniumTestToolData in_SiteTest)
        STAppData.RefreshData();
      RUNWITHGUI = false;
     
-  FFprops = new FireFoxProperties(targetbrowser);
-  this.firefox_path = FFprops.LoadFirefoxPath();
-  this.chrome_path = FFprops.LoadChromePath();
- this.chrome_main_path = FFprops.LoadChromeMainPath();
-  this.downloadDir = FFprops.LoadDownloadDir();
+  
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+  this.chrome_main_path = appConfig.getKeyValue("Chrome");
+  this.downloadDir = appConfig.getKeyValue("downloaddir");
+  
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
   this.waitForLoad = in_SiteTest.waitForLoad;
@@ -1892,10 +1895,11 @@ while(thisContinuePrompt.isVisible() == true){
   STAppData.RefreshData();
   STAppFrame.UpdateDisplay();
   RUNWITHGUI = true;
-  FFprops = new FireFoxProperties(targetbrowser);
-  this.firefox_path = FFprops.LoadFirefoxPath();
-  this.chrome_path = FFprops.LoadChromePath();
-  this.chrome_main_path = FFprops.LoadChromeMainPath();
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+  this.chrome_main_path = appConfig.getKeyValue("Chrome");
+  this.downloadDir = appConfig.getKeyValue("downloaddir");
+  
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.OSType = STAppData.OSType;
@@ -1915,10 +1919,11 @@ while(thisContinuePrompt.isVisible() == true){
        STAppData.RefreshData();
      RUNWITHGUI = false;
     
-  FFprops = new FireFoxProperties(targetbrowser);
-  this.firefox_path = FFprops.LoadFirefoxPath();
-  this.chrome_path = FFprops.LoadChromePath();
- this.chrome_main_path = FFprops.LoadChromeMainPath();
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+  this.chrome_main_path = appConfig.getKeyValue("Chrome");
+  this.downloadDir = appConfig.getKeyValue("downloaddir");
+  
     this.STAppData.cancelled = false;
   this.targetbrowser = STAppData.TargetBrowser;
   this.OSType = STAppData.OSType;

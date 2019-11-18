@@ -769,8 +769,8 @@ connection.setDoOutput(true);
   
 String recentfiles = appConfig.getKeyValue("recentfiles");
 String downloadPath = appConfig.getKeyValue("downloaddir");
-String chromePath = appConfig.getKeyValue("chrome_main_exe");
-String firefoxPath = appConfig.getKeyValue("firefox_exe");
+String chromePath = appConfig.getKeyValue("Chrome");
+String firefoxPath = appConfig.getKeyValue("Firefox");
 
 
 

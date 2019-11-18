@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.Properties;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 
 /**
  *
@@ -21,7 +23,7 @@ public class BrowserMatorConfig {
         String userdir;
      FileWriter writer;
       String BrowsermatorAppFolder;
-
+     JFileChooser BrowserBrowser;
       BrowserMatorConfig()
       {
     this.BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
@@ -68,6 +70,49 @@ if (file_exists == false)
 			System.out.println("Exception writing key: " + key + "value: " +value + "ex: " + e);
 		}      
       }
+        public void BrowseforBrowserPath(String targetbrowser)
+  {
+         //   System.out.println("Cannot find binary for Firefox");
+  
+      switch (targetbrowser)
+      {
+              case "Chrome 49":
+      
+       BrowserBrowser = new JFileChooser("Browse for Chrome49 executable");
+ 
+ BrowserBrowser.setDialogTitle("Browse for Chrome executable (for manual installs on XP.)");
+      break;
+              case "Firefox":
+       
+ BrowserBrowser = new JFileChooser("Browse for Firefox executable");
+ BrowserBrowser.setDialogTitle("Browse for Firefox executable (If Selenium had a problem loading Firefox this may fix it.)");        
+        break;
+        
+              case "Chrome":
+                BrowserBrowser= new JFileChooser("Browse for Chrome executable");
+ 
+BrowserBrowser.setDialogTitle("Browse for Chrome executable.");      
+      }
+                
+      
+ JPanel newJPanel = new JPanel();
+ 
+ int returnVal = BrowserBrowser.showOpenDialog(newJPanel);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = BrowserBrowser.getSelectedFile();   
+   
+   setKeyValue(targetbrowser, file.getAbsolutePath());
+  
+ // Prompter closeDown = new Prompter("Restart to Update Path", "Close and re-open the Browsermator to update executable path.", false,0, 0);
+  
+  
+            }
+            else
+            {
+            
+            }
+  }
         public final void CreateConfigFile()
   {
   

@@ -34,7 +34,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
     ProcedureView thisbugview;
     String targetbrowser;
     String OSType;
-    FireFoxProperties FFprops;
+   
     String firefox_path;
     String chrome_path;
     String chrome_main_path;
@@ -52,7 +52,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    String stringPageLoadConstant;
    String promptBehavior;
     String downloadDir = "";
-    
+    BrowserMatorConfig appConfig;
   public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String in_waitForLoad, String in_promptBehavior, String OSType)
           {
               prefs = new HashMap<String, Object>();
@@ -64,20 +64,21 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
               this.waitForLoad = in_waitForLoad;
               this.promptBehavior = in_promptBehavior;
               this.OSType = OSType;
-            
+              
               STAppData.cancelled = false;
 
      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-     WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;        
+     WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;   
+     appConfig = new BrowserMatorConfig();     
           }
     public String doInBackground()
  {
      STAppData.testRunning = true;
-      FFprops = new FireFoxProperties(this.targetbrowser);
-  this.firefox_path = FFprops.LoadFirefoxPath();
-  this.chrome_path = FFprops.LoadChromePath();
-    this.chrome_main_path = FFprops.LoadChromeMainPath();
-     this.downloadDir = FFprops.LoadDownloadDir();
+  
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+    this.chrome_main_path = appConfig.getKeyValue("Chrome");
+     this.downloadDir = appConfig.getKeyValue("downloaddir");
    thisbugview.JButtonRunTest.setText("Running...");
   
     RunSingleTest(bugtorun, thisbugview, targetbrowser, waitForLoad, promptBehavior, OSType);
@@ -96,17 +97,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    catch (Exception ex)
     {
       
-        if (ex.toString().contains("Cannot find firefox"))
-        {
-       FFprops.BrowseforFFPath();
-  
-            }
-            
-            else
-            {
-            
-            }
-   
+
         thisbugview.JButtonRunTest.setText("Run"); 
       
     }
