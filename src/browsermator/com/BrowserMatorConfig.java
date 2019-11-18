@@ -25,7 +25,15 @@ public class BrowserMatorConfig {
       BrowserMatorConfig()
       {
     this.BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
-
+ Boolean file_exists = false;
+    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
+if(f.exists() && !f.isDirectory()) { 
+   file_exists = true;
+}
+if (file_exists == false)
+{
+    CreateConfigFile();
+}
           this.userdir = System.getProperty("user.home");
       this.applicationProps = new Properties();    
         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
@@ -60,6 +68,38 @@ public class BrowserMatorConfig {
 			System.out.println("Exception writing key: " + key + "value: " +value + "ex: " + e);
 		}      
       }
+        public final void CreateConfigFile()
+  {
+  
+      File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
+      Properties newProps = new Properties();
+
+       newProps.setProperty("main_window_locationY", "0");
+      newProps.setProperty("main_window_locationX", "0");
+      newProps.setProperty("main_window_sizeWidth", "1060");
+      newProps.setProperty("main_window_sizeHeight", "950");   
+   
+      newProps.setProperty("email_subject", "");
+      newProps.setProperty("email_to", "");
+      newProps.setProperty("email_login_password", "");
+      newProps.setProperty("email_from", "");
+      newProps.setProperty("email_login_name", "");
+      newProps.setProperty("smtp_hostname", "");
+     newProps.setProperty("recentfiles", " , , , , , , , , , , ");
+  
+              try {
+  
+
+    
+    FileWriter writer = new FileWriter(newconfig);
+    newProps.store(writer, "browsermator_settings");
+    writer.close();
+} 
+
+    catch (Exception e) {
+			System.out.println("Exception writing config: " + e);
+		}    
       
+  }
      
 }

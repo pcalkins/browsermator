@@ -8,7 +8,6 @@ package browsermator.com;
 import com.opencsv.CSVReader;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -85,9 +83,10 @@ Map<String, List<String[]>> DataFileHashMap = new HashMap();
 String BrowsermatorAppFolder;
      boolean hasSentStoredVars;
      int  EcTimeout;
-     
+  BrowserMatorConfig appConfig;   
 public SeleniumTestToolData (ArrayList<Procedure> BugArray)
         {
+     appConfig = new BrowserMatorConfig();
      this.hasSentStoredVars = false;
   
          BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
@@ -391,28 +390,14 @@ public void setAllFieldValues(ArrayList<String> allfieldvalues)
 }
       public final void loadGlobalEmailSettings() throws IOException 
  {
-     Properties applicationProps = new Properties();
-   
-try
-{
-         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
-             applicationProps.load(input);
-         }
-         catch (Exception e)
-         {
-             System.out.println(e);
-         }
-}
-catch (Exception e) {
-			System.out.println("Exception loading email70: " + e);
-		} 
 
-   String smtp_hostname = applicationProps.getProperty("smtp_hostname");
-   String login_name = applicationProps.getProperty("email_login_name");
-   String password = applicationProps.getProperty("email_login_password");
-   String to = applicationProps.getProperty("email_to");
-   String from = applicationProps.getProperty("email_from");
-   String subject = applicationProps.getProperty("email_subject");
+
+   String smtp_hostname = appConfig.getKeyValue("smtp_hostname");
+   String login_name = appConfig.getKeyValue("email_login_name");
+   String password = appConfig.getKeyValue("email_login_password");
+   String to = appConfig.getKeyValue("email_to");
+   String from = appConfig.getKeyValue("email_from");
+   String subject = appConfig.getKeyValue("email_subject");
  
    setSMTPHostname(smtp_hostname);
    setEmailLoginName(login_name);

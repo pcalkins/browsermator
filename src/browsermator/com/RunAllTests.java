@@ -770,6 +770,7 @@ profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
                  }
                  options.setExperimentalOption("prefs", prefs);  
                  options.addArguments("--dns-prefetch-disable");
+         //      options.addArguments("--auto-open-devtools-for-tabs");
      
              if (chrome_main_path!=null) {
             

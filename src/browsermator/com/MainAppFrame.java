@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 // import javax.swing.JDesktopPane;
@@ -32,6 +31,7 @@ import javax.swing.UIManager;
  * @author Pete
  */
 public class MainAppFrame extends JFrame {
+      BrowserMatorConfig appConfig;
       Properties newProps = new Properties();
       String filename;
       String short_filename;
@@ -104,16 +104,10 @@ private ButtonGroup LookAndFeelGroup;
  {
      aboutMenuItem.addActionListener(listener);
  }
-  public void setWindowProps(FileInputStream input)
+  public void setWindowProps(BrowserMatorConfig _appConfig)
           {
-              try
-              {
-            newProps.load(input);
-              }
-              catch (Exception ex)
-              {
-                  System.out.println ("Exception loading config : " + ex.toString());
-              }
+              appConfig = _appConfig;
+              newProps = appConfig.applicationProps;
                 int winLocY =  Integer.parseInt(newProps.getProperty("main_window_locationY", "0"));
    int winLocX =   Integer.parseInt(newProps.getProperty("main_window_locationX", "0"));
    int winWidth =  Integer.parseInt(newProps.getProperty("main_window_sizeWidth", "1200"));

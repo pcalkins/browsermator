@@ -13,9 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -24,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
-import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -55,7 +51,7 @@ String CloudFile2;
 String CloudFile3;
 String CloudFile4;
 String CloudFile5;
- String BrowsermatorAppFolder;
+
  
     private JButton jButtonNewFile;
     private JButton jButtonOpenFile;
@@ -113,8 +109,9 @@ String CloudFile5;
      private JPanel jPanelChromeDir;
      private JPanel jPanelBrowse;
     private JPanel jPanelCenter;
+    BrowserMatorConfig appConfig;
     
-   SiteTestView() {
+   SiteTestView(BrowserMatorConfig _appConfig) {
    RecentFile1 = "";
    RecentFile2 = "";
    RecentFile3 = "";
@@ -130,116 +127,27 @@ String CloudFile5;
    CloudFile3 = "";
    CloudFile4 = "";
    CloudFile5 = "";
-   BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
+
+   
+   
+    appConfig = _appConfig;
   
-    initializeComponents();
-    jTextFieldSMTPHostName.setText("");
-    jTextFieldEmailPassword.setText("");
-    
-             Properties applicationProps = new Properties();
-             Boolean file_exists = false;
-      
-
-  
-try
-{
-    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-if(f.exists() && !f.isDirectory()) { 
-   file_exists = true;
-}
-if (file_exists == false)
-{
-    CreateConfigFile();
-}
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-catch (Exception e) {
-			System.out.println("Exception loading config settings: " + e);
-		} 
-String recentfiles = applicationProps.getProperty("recentfiles");
-if (recentfiles==null) {   CreateConfigFile(); 
-recentfiles = " , , , , , , , , , "; }
-
-String downloadPath = applicationProps.getProperty("downloaddir");
-String chromePath = applicationProps.getProperty("chrome_main_exe");
-String firefoxPath = applicationProps.getProperty("firefox_exe");
 
 
- String[] RFilesArray = recentfiles.split(",");
-
-
-setRecentFiles(RFilesArray);
-   setjTextFieldDownloadDir(downloadPath);
-    setjTextFieldFirefox(firefoxPath);
-     setjTextFieldChrome(chromePath);
         
     }
-   public final void CreateConfigFile()
-  {
-  
-      File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-      Properties newProps = new Properties();
-
-       newProps.setProperty("main_window_locationY", "0");
-      newProps.setProperty("main_window_locationX", "0");
-      newProps.setProperty("main_window_sizeWidth", "1060");
-      newProps.setProperty("main_window_sizeHeight", "950");   
-   
-      newProps.setProperty("email_subject", "");
-      newProps.setProperty("email_to", "");
-      newProps.setProperty("email_login_password", "");
-      newProps.setProperty("email_from", "");
-      newProps.setProperty("email_login_name", "");
-      newProps.setProperty("smtp_hostname", "");
-     newProps.setProperty("recentfiles", " , , , , , , , , , , ");
-  
-              try {
-  
-
-    
-    FileWriter writer = new FileWriter(newconfig);
-    newProps.store(writer, "browsermator_settings");
-    writer.close();
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception writing config: " + e);
-		}    
-      
-  }
+ 
   public void RemoveRecentFile(int index)
   {
     
-            Properties applicationProps = new Properties();
-       String userdir = System.getProperty("user.home");
-try
-{
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-catch (Exception e) {
-			System.out.println("Exception loading config settings: " + e);
-		} 
-String recentfiles = applicationProps.getProperty("recentfiles");
+   
+String recentfiles = appConfig.getKeyValue("recentfiles");
 
 String outarray[];
 
 outarray = recentfiles.split(",");
 index--;
-//if (outarray.length<10)
-//{
-//   // starts as 5... increase to 10 legacy hack... *does not work*
-//  
-//   int difference = 10 - outarray.length;
-//  for (int x=0; x<difference; x++)
-//  {
-//      int thisindex = x+4;
-//      outarray[thisindex] = "";
-//  }
-//}
+//legacy files have 5 values... decided not to hack it to 10.  Config needs dynamic way to store recents with "more" option,scrollable, and clear.
 String[] inarray = outarray.clone();
 outarray[index]="";
 
@@ -353,31 +261,13 @@ setRecentFiles(outarray);
     }
     public void addRecentFile (String filename)
     {
-            Properties applicationProps = new Properties();
-            String userdir = System.getProperty("user.home");
-try
-{
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-String recentfiles = applicationProps.getProperty("recentfiles");
+ 
+String recentfiles = appConfig.getKeyValue("recentfiles");
 
 String outarray[];
 
 outarray = recentfiles.split(",");
 
-
-//if (outarray.length<10)
-//{
-//   // starts as 5... increase to 10 legacy hack...*does not work*
-//  
-//   int difference = 10 - outarray.length;
-//  for (int x=0; x<difference; x++)
-//  {
-//      int thisindex = x+4;
-//      outarray[thisindex] = "";
-//  }
-//}
 String[] inarray = outarray.clone();
 // if added filename already exists, sort name to top only
 Boolean SortIt = false;
@@ -403,8 +293,6 @@ if (SortIt == false)
 else
 {
 //outarray[dupcheckindex] goes to outarray[0]...anything under dupcheckindex, adds 1, anything else stays same
-    
-
  
     for (int x=0; x<outarray.length; x++)
  {
@@ -425,10 +313,6 @@ else
     setRecentFiles(outarray);
 }
 setRecentFiles(outarray);
-}
-catch (Exception e) {
-			System.out.println("Exception loading config settings: " + e);
-		} 
 
 
 }
@@ -754,19 +638,9 @@ catch (Exception e) {
     {
         if (filenames.length>0)
         {
-           Properties applicationProps = new Properties();
-           String userdir = System.getProperty("user.home");
-try
-{
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-catch (Exception e) {
-			System.out.println("Exception loading email settings: " + e);
-		} 
+       
 
-        File configFile = new File(BrowsermatorAppFolder + "browsermator_config.properties");
+    
  String commastringfilenames = filenames[0];
  int ccount = 0;
  for (String filename: filenames)
@@ -777,18 +651,11 @@ catch (Exception e) {
      }
      ccount++;
  }
-try {
-  
-    applicationProps.setProperty("recentfiles", commastringfilenames);
-    
-    FileWriter writer = new FileWriter(configFile);
-    applicationProps.store(writer, "recentfiles");
-    writer.close();
-} 
 
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		}   
+  
+    appConfig.setKeyValue("recentfiles", commastringfilenames);
+    
+      
 }
     }
     public String getEmailLoginName ()
@@ -899,7 +766,15 @@ connection.setDoOutput(true);
       }
   public void initializeComponents()
   {
+  
+String recentfiles = appConfig.getKeyValue("recentfiles");
+String downloadPath = appConfig.getKeyValue("downloaddir");
+String chromePath = appConfig.getKeyValue("chrome_main_exe");
+String firefoxPath = appConfig.getKeyValue("firefox_exe");
 
+
+
+     
         jTextFieldSMTPHostName = new JTextField(20);
         jTextFieldEmailLoginName = new JTextField(20);  
         jTextFieldEmailTo = new JTextField(20);
@@ -931,7 +806,9 @@ connection.setDoOutput(true);
         jLabelRecentFile8 = new JLabel();
         jLabelRecentFile9 = new JLabel();
         jLabelRecentFile10 = new JLabel();
-    
+         jTextFieldSMTPHostName.setText("");
+    jTextFieldEmailPassword.setText("");
+  
         jLabelEmailFormTitle.setText("Email Configuration:");
         
         jLabelSMTPHostName.setText("SMTPHostname:");
@@ -969,6 +846,7 @@ connection.setDoOutput(true);
           jPanelDownloadDir = new JPanel();
         jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox");
         jTextFieldDownloadDir = new JTextField(40);
+      
         jButtonBrowseForDownloadDir = new JButton("Browse");
         jPanelDownloadDir.add(jLabelDownloadDir);
         jPanelDownloadDir.add(jTextFieldDownloadDir);
@@ -1058,7 +936,13 @@ connection.setDoOutput(true);
          add(jPanelNewOpen, BorderLayout.NORTH);
          add(jPanelCenter, BorderLayout.CENTER);
          add(jPanelDefaultEmailOptions, BorderLayout.SOUTH);
-         
+              String[] RFilesArray = recentfiles.split(",");
+
+
+setRecentFiles(RFilesArray);
+   setjTextFieldDownloadDir(downloadPath);
+    setjTextFieldFirefox(firefoxPath);
+     setjTextFieldChrome(chromePath);
          pack();
         
         

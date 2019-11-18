@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -57,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.210";
+public final String ProgramVersion = "1.7.211";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -80,6 +79,7 @@ Boolean EXITAFTER = false;
 String PTPCLOUDDIRUSERLIST;
 Boolean deletemap = false;
 String mapPath = "";
+BrowserMatorConfig appConfig;
   public STAppController(String[] args) throws PropertyVetoException {
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
@@ -116,10 +116,12 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                 System.out.println("Failed to create directory!");
             }
         }
+          appConfig = new BrowserMatorConfig();
       ExtractWebDrivers();
-   
+ 
      mainAppFrame = new MainAppFrame(); 
-    Navigator = new SiteTestView();
+    Navigator = new SiteTestView(appConfig);
+    Navigator.initializeComponents();
     if (args.length>0) { 
    
         CheckArgs(args);}
@@ -131,31 +133,11 @@ UNIQUE_LOG_DIR = BrowsermatorAppFolder + "BrowsermatorUniqueLogFolder" + File.se
                   this.loginName = "";
     this.loginPassword = "";
 
-         Boolean file_exists = false;
-           
-    try
-{
-    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-if(f.exists() && !f.isDirectory()) { 
-   file_exists = true;
-}
-if (file_exists == false)
-{
-    CreateConfigFile();
-}
-     
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-  mainAppFrame.setWindowProps(input);
+
+
+  mainAppFrame.setWindowProps(appConfig);
  
  
-    input.close();
-
-    
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} 
     
    // super.setExtendedState( super.getExtendedState()|JFrame.MAXIMIZED_BOTH );
    //  super.setVisible(true);
@@ -203,39 +185,24 @@ if (file_exists == false)
       
 
         
-    if (MDIViewClasses.size()==0)
+    if (MDIViewClasses.isEmpty())
     {
-            Properties newProps = new Properties();
+           
          Boolean file_exists = false;
        
-    try
-{
-    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
-
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-   newProps.load(input);
  
    
       
-      newProps.setProperty("main_window_locationY", Integer.toString(windowEvent.getWindow().getY()));
-      newProps.setProperty("main_window_locationX", Integer.toString(windowEvent.getWindow().getX()));
-      newProps.setProperty("main_window_sizeWidth", Integer.toString(windowEvent.getWindow().getWidth()));
-      newProps.setProperty("main_window_sizeHeight", Integer.toString(windowEvent.getWindow().getHeight()));
-    
-    
-    FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
-    newProps.store(writer, "browsermator_settings");
-    writer.close();
-   
-    
+      appConfig.setKeyValue("main_window_locationY", Integer.toString(windowEvent.getWindow().getY()));
+      appConfig.setKeyValue("main_window_locationX", Integer.toString(windowEvent.getWindow().getX()));
+      appConfig.setKeyValue("main_window_sizeWidth", Integer.toString(windowEvent.getWindow().getWidth()));
+      appConfig.setKeyValue("main_window_sizeHeight", Integer.toString(windowEvent.getWindow().getHeight()));
+
+    System.exit(0);
 } 
 
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} 
-      System.exit(0);
-    }
-        }
+ 
+        };
     });
           
   
@@ -837,10 +804,10 @@ mainAppFrame.initComponents();
            public void actionPerformed (ActionEvent evt)
   {   
    File thisDir =  BrowseForDownloadDir();
- BrowserMatorConfig theseProps = new BrowserMatorConfig();
+
  if (thisDir!=null)
  {
- theseProps.setKeyValue("downloaddir", thisDir.getAbsolutePath());
+ appConfig.setKeyValue("downloaddir", thisDir.getAbsolutePath());
   Navigator.setjTextFieldDownloadDir(thisDir.getAbsolutePath());
  } 
  }
@@ -919,39 +886,7 @@ mainAppFrame.initComponents();
  
   }
  
-   public final void CreateConfigFile()
-  {
-  
-      File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-      Properties newProps = new Properties();
-
-       newProps.setProperty("main_window_locationY", "0");
-      newProps.setProperty("main_window_locationX", "0");
-      newProps.setProperty("main_window_sizeWidth", "1060");
-      newProps.setProperty("main_window_sizeHeight", "950");   
-   
-      newProps.setProperty("email_subject", "");
-      newProps.setProperty("email_to", "");
-      newProps.setProperty("email_login_password", "");
-      newProps.setProperty("email_from", "");
-      newProps.setProperty("email_login_name", "");
-      newProps.setProperty("smtp_hostname", "");
-     newProps.setProperty("recentfiles", " , , , , , , , , , , ");
-  
-              try {
-  
-
-    
-    FileWriter writer = new FileWriter(newconfig);
-    newProps.store(writer, "browsermator_settings");
-    writer.close();
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception writing config: " + e);
-		}    
-      
-  }
+ 
   public int CheckToSaveChanges(SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, Boolean savenow) 
   {
   if (SHOWGUI)
@@ -1193,36 +1128,18 @@ return 1;
       
 
         
-    if (MDIViewClasses.size()==0)
+    if (MDIViewClasses.isEmpty())
     {
-            Properties newProps = new Properties();
-         Boolean file_exists = false;
-            
-    try
-{
-    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
-
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-   newProps.load(input);
+       
  
-   
       
-      newProps.setProperty("main_window_locationY", Integer.toString(mainAppFrame.getY()));
-      newProps.setProperty("main_window_locationX", Integer.toString(mainAppFrame.getX()));
-      newProps.setProperty("main_window_sizeWidth", Integer.toString(mainAppFrame.getWidth()));
-      newProps.setProperty("main_window_sizeHeight", Integer.toString(mainAppFrame.getHeight()));
+      appConfig.setKeyValue("main_window_locationY", Integer.toString(mainAppFrame.getY()));
+      appConfig.setKeyValue("main_window_locationX", Integer.toString(mainAppFrame.getX()));
+      appConfig.setKeyValue("main_window_sizeWidth", Integer.toString(mainAppFrame.getWidth()));
+      appConfig.setKeyValue("main_window_sizeHeight", Integer.toString(mainAppFrame.getHeight()));
     
     
-    FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
-    newProps.store(writer, "browsermator_settings");
-    writer.close();
    
-    
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} 
       System.exit(0);
     } 
    
@@ -1462,8 +1379,8 @@ STAppFrame.ShowStoredVarControls(false);
            final JFileChooser fc = new JFileChooser();
       fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       fc.setDialogTitle("Select Download Directory");
-       BrowserMatorConfig theseProps = new BrowserMatorConfig();
-        String lastused_open_dir = theseProps.getKeyValue("downloaddir");
+     
+        String lastused_open_dir = appConfig.getKeyValue("downloaddir");
       if (lastused_open_dir!=null)
       {
       fc.setCurrentDirectory(new File(lastused_open_dir));
@@ -1489,9 +1406,9 @@ STAppFrame.ShowStoredVarControls(false);
 fc.setMultiSelectionEnabled(true);
 
  FileNameExtensionFilter filefilter = new FileNameExtensionFilter("Browsermator file (*.browsermation)","browsermation");
- BrowserMatorConfig theseProps = new BrowserMatorConfig();
 
-      String lastused_open_dir = theseProps.getKeyValue("lastused_open_dir");
+
+      String lastused_open_dir = appConfig.getKeyValue("lastused_open_dir");
       if (lastused_open_dir!=null)
       {
       fc.setCurrentDirectory(new File(lastused_open_dir));
@@ -1500,7 +1417,7 @@ fc.setMultiSelectionEnabled(true);
 fc.setPreferredSize(new Dimension(800,600));
 int returnVal = fc.showOpenDialog(mainAppFrame);
        File chosenDir = fc.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_open_dir", chosenDir.getAbsolutePath());
+ appConfig.setKeyValue ("lastused_open_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File[] files = fc.getSelectedFiles();   
   
@@ -1582,9 +1499,9 @@ public void OpenBrowserMatorCloud()
     }
 };
 File file=null;
-  BrowserMatorConfig theseProps = new BrowserMatorConfig();
+ 
 
-      String lastused_save_dir = theseProps.getKeyValue("lastused_save_dir");
+      String lastused_save_dir = appConfig.getKeyValue("lastused_save_dir");
       if (lastused_save_dir!=null)
       {
       fc.setCurrentDirectory(new File(lastused_save_dir));
@@ -1613,7 +1530,7 @@ File file=null;
     }
  returnVal = fc.showSaveDialog(STAppFrame);
       File chosenDir = fc.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_save_dir", chosenDir.getAbsolutePath());
+ appConfig.setKeyValue ("lastused_save_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
                 String filestring = file.toString();
@@ -2363,8 +2280,8 @@ actionindex = Integer.parseInt(parts[1])-1;
        switch(commandText)
             {
            case "changedownloaddir":         
- BrowserMatorConfig theseProps = new BrowserMatorConfig();
- theseProps.setKeyValue("downloaddir", newValue);
+ 
+ appConfig.setKeyValue("downloaddir", newValue);
                break;
                
            case "silentmode":
@@ -2537,8 +2454,8 @@ actionindex = Integer.parseInt(parts[1])-1;
        switch(commandText)
             {
                case "changedownloaddir":
-             BrowserMatorConfig theseProps = new BrowserMatorConfig();
-             theseProps.setKeyValue("downloaddir", newValue);
+           
+             appConfig.setKeyValue("downloaddir", newValue);
                break;
              case "silentmode":
                STAppData.setSilentMode(true);
@@ -2977,24 +2894,13 @@ actionindex = Integer.parseInt(parts[1])-1;
   }
     public final void LoadGlobalEmailSettings() throws IOException 
  {
-     Properties applicationProps = new Properties();
-   
-     
-try
-{
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-catch (Exception e) {
-			System.out.println("Exception loading email settings: " + e);
-		} 
 
 
 
-   String smtp_hostname = applicationProps.getProperty("smtp_hostname");
-   String login_name = applicationProps.getProperty("email_login_name");
-   String password = applicationProps.getProperty("email_login_password");
+
+   String smtp_hostname = appConfig.getKeyValue("smtp_hostname");
+   String login_name = appConfig.getKeyValue("email_login_name");
+   String password = appConfig.getKeyValue("email_login_password");
    if (!"".equals(password) && password!=null)
    {
    try
@@ -3006,9 +2912,9 @@ catch (Exception e) {
                System.out.println("decrypt error" + e.toString());
            }
    }
-   String to = applicationProps.getProperty("email_to");
-   String from = applicationProps.getProperty("email_from");
-   String subject = applicationProps.getProperty("email_subject");
+   String to = appConfig.getKeyValue("email_to");
+   String from = appConfig.getKeyValue("email_from");
+   String subject = appConfig.getKeyValue("email_subject");
    if (smtp_hostname!=null)
    {
    Navigator.setSMTPHostname(smtp_hostname);
@@ -3044,34 +2950,30 @@ catch (Exception e) {
  
 
 
-    File configFile = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-     FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-
-try {
-    Properties props = new Properties();
-   props.load(input);
-    props.setProperty("smtp_hostname", Navigator.getSMTPHostname() );
-    props.setProperty("email_login_name", Navigator.getEmailLoginName() );
+    appConfig.setKeyValue("smtp_hostname", Navigator.getSMTPHostname() );
+    appConfig.setKeyValue("email_login_name", Navigator.getEmailLoginName() );
     String password = Navigator.getEmailPassword();
     if (!"".equals(password))
     {
+        try
+        {
     password = Protector.encrypt(password);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception encrypting password: " + ex.toString());
+            password = "";
+        }
     }
-    props.setProperty("email_login_password", password );
-    props.setProperty("email_to", Navigator.getEmailTo() );
-    props.setProperty("email_from", Navigator.getEmailFrom() );
-    props.setProperty("email_subject", Navigator.getSubject() );
+    appConfig.setKeyValue("email_login_password", password );
+    appConfig.setKeyValue("email_to", Navigator.getEmailTo() );
+    appConfig.setKeyValue("email_from", Navigator.getEmailFrom() );
+    appConfig.setKeyValue("email_subject", Navigator.getSubject() );
     
-    FileWriter writer = new FileWriter(configFile);
-    props.store(writer, "browsermator_settings");
-    writer.close();
+    
      JOptionPane.showMessageDialog (null, "Email Settings Saved", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
     
-} 
 
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} 
  }
   public static void main(String[] args) { 
   try
@@ -3128,31 +3030,8 @@ catch (Exception e) {
   public void WriteFireFoxPathToProperties(String pathtofirefox)
   {
      
-      Properties applicationProps = new Properties();
-      try
-{
-
-      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-applicationProps.load(input);
-input.close();
-}
-      catch (Exception ex)
-      {
-          
-      }
-      applicationProps.setProperty("firefox_exe", pathtofirefox);
-           try {
-       FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
-    applicationProps.store(writer, "browsermator_settings");
-    writer.close();
-         
-  
-   
-} 
-
-    catch (Exception e) {
-			System.out.println("Exception writing firefox path: " + e);
-		}      
+  appConfig.setKeyValue("firefox_exe", pathtofirefox);
+ 
   }    
 public void setSaveMenuState(boolean enabled)
 {
@@ -3174,27 +3053,9 @@ public void addJMenuViewItem (JMenuItem item_to_add)
    public void LoadNameAndPassword()
   {
    
-          Properties applicationProps = new Properties();
-   
-try
-{
-         try (FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties")) {
-             applicationProps.load(input);
-         }
-         catch (Exception e)
-         {
-             System.out.println("error name and pw config:" + e.toString());
-           
-             
-         }
-}
-catch (Exception e) {
-			System.out.println("Exception loading name and pw config: " + e);
-                        
-		} 
-
-    this.loginName = applicationProps.getProperty("loginName");
-    String temppassword = applicationProps.getProperty("loginPassword");
+     
+    this.loginName = appConfig.getKeyValue("loginName");
+    String temppassword = appConfig.getKeyValue("loginPassword");
    if (temppassword==null || temppassword=="")
    {
     this.loginName = "";
@@ -3220,31 +3081,13 @@ catch (Exception e) {
    public void SaveNameAndPassword(String in_loginName, String in_Password)
   {
     
-      Properties applicationProps = new Properties();
+   
       this.loginName = in_loginName;
       this.loginPassword = in_Password;
-      try
-{
-    Boolean file_exists = false;
-    
-    File f = new File(BrowsermatorAppFolder+ "browsermator_config.properties");
-if(f.exists() && !f.isDirectory()) { 
-   file_exists = true;
-}
-if (file_exists == false)
-{
-    CreateConfigFile();
-}
-      FileInputStream input = new FileInputStream(BrowsermatorAppFolder + "browsermator_config.properties");
-  
-applicationProps.load(input);
-input.close();
-}
-      catch (Exception ex)
-      {
-         System.out.println ("exception loading config: " + ex.toString()); 
-      }
-      applicationProps.setProperty("loginName", in_loginName);
+
+
+   
+      appConfig.setKeyValue("loginName", in_loginName);
       String encPassword = "";
       try
       {
@@ -3255,20 +3098,9 @@ input.close();
           System.out.println("error encrypting login pw: " + ex.toString());
           
       }
-      applicationProps.setProperty("loginPassword", encPassword);
-      
-           try {
-       FileWriter writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
-    applicationProps.store(writer, "browsermator_settings");
-    writer.close();
-         
-  
-   
-} 
+      appConfig.setKeyValue("loginPassword", encPassword);
+ 
 
-    catch (Exception e) {
-			System.out.println("Exception writing login details: " + e);
-		}      
   }  
    
     public void LookUpUser(String name, String password)
@@ -3392,9 +3224,9 @@ return "Unable to connect browsermator.com.";
    public File BrowseForJSFileAction ()
    {
            final JFileChooser CSVFileChooser = new JFileChooser();
-   BrowserMatorConfig theseProps = new BrowserMatorConfig();
+  
 
-      String lastJSOpenDir = theseProps.getKeyValue("lastused_js_open_dir");
+      String lastJSOpenDir = appConfig.getKeyValue("lastused_js_open_dir");
        if (lastJSOpenDir!=null)
         {
         CSVFileChooser.setCurrentDirectory(new File(lastJSOpenDir));
@@ -3405,7 +3237,7 @@ return "Unable to connect browsermator.com.";
 CSVFileChooser.setPreferredSize(new Dimension(800,600));
 int returnVal = CSVFileChooser.showOpenDialog(mainAppFrame);
         File chosenDir = CSVFileChooser.getCurrentDirectory();
- theseProps.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
+ appConfig.setKeyValue ("lastused_js_open_dir", chosenDir.getAbsolutePath());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = CSVFileChooser.getSelectedFile();   
 
@@ -4416,21 +4248,11 @@ STAppFrame.saveState();
  public void ExtractWebDrivers()
  {
      Boolean file_exists = false;
-        try
-{
-    File f = new File(BrowsermatorAppFolder + "browsermator_config.properties");
-if(f.exists() && !f.isDirectory()) { 
-   file_exists = true;
-}
-if (file_exists == false)
-{
-    CreateConfigFile();
-}
 
 
-       BrowserMatorConfig configCheck = new BrowserMatorConfig();
-    String versionstored = configCheck.getKeyValue("version");
-    String lastWebDriverUpdateStored = configCheck.getKeyValue("lastWebDriverUpdate");
+     
+    String versionstored = appConfig.getKeyValue("version");
+    String lastWebDriverUpdateStored = appConfig.getKeyValue("lastWebDriverUpdate");
     if (versionstored==null) {versionstored = "";}
     if (lastWebDriverUpdateStored==null) {lastWebDriverUpdateStored="";}
        if (!lastWebDriverUpdateStored.equals(this.lastWebDriverUpdate))
@@ -4461,14 +4283,9 @@ if (file_exists == false)
               
             } 
         }
-   if (DriverUpdateFail==false) { configCheck.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);}
+   if (DriverUpdateFail==false) { appConfig.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);}
     }
-} 
 
-    catch (Exception e) {
-			System.out.println("Exception: " + e);
-                        DriverUpdateFail = true;
-		} 
   
  }
  public void WriteResource (String dirname, String filename)
