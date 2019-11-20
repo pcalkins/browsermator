@@ -52,7 +52,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
    String stringPageLoadConstant;
    String promptBehavior;
     String downloadDir = "";
-    BrowserMatorConfig appConfig;
+    BrowserMatorConfig appConfig = new BrowserMatorConfig();
   public RunASingleTest (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData, Procedure in_bugtorun, ProcedureView in_thisbugview, String targetbrowser, String in_waitForLoad, String in_promptBehavior, String OSType)
           {
               prefs = new HashMap<String, Object>();
@@ -69,7 +69,7 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
 
      BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
      WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;   
-     appConfig = new BrowserMatorConfig();     
+   
           }
     public String doInBackground()
  {

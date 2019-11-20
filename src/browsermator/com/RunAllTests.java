@@ -61,7 +61,8 @@ int EcTimeout;
  
  String stringPageLoadConstant = "normal";
  String downloadDir = "";
- BrowserMatorConfig appConfig;
+ BrowserMatorConfig appConfig = new BrowserMatorConfig();;
+
  
  public RunAllTests (SeleniumTestTool in_STAppFrame, SeleniumTestToolData in_STAppData)
  {
@@ -75,7 +76,7 @@ int EcTimeout;
   STAppData.RefreshData();
   STAppFrame.UpdateDisplay();
   RUNWITHGUI = true;
-  appConfig = new BrowserMatorConfig();
+
   this.firefox_path = appConfig.getKeyValue("Firefox");
   this.chrome_path = appConfig.getKeyValue("Chrome 49");
   this.chrome_main_path = appConfig.getKeyValue("Chrome");
@@ -124,6 +125,11 @@ int EcTimeout;
  
 public RunAllTests (SeleniumTestToolData in_SiteTest)
  {
+     
+  this.firefox_path = appConfig.getKeyValue("Firefox");
+  this.chrome_path = appConfig.getKeyValue("Chrome 49");
+  this.chrome_main_path = appConfig.getKeyValue("Chrome");
+  this.downloadDir = appConfig.getKeyValue("downloaddir");
      prefs = new HashMap<String, Object>();
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
    WEBDRIVERSDIR = BrowsermatorAppFolder + "Webdrivers" + File.separator;
@@ -134,10 +140,7 @@ public RunAllTests (SeleniumTestToolData in_SiteTest)
      RUNWITHGUI = false;
     
   
-  this.firefox_path = appConfig.getKeyValue("Firefox");
-  this.chrome_path = appConfig.getKeyValue("Chrome 49");
-  this.chrome_main_path = appConfig.getKeyValue("Chrome");
-  this.downloadDir = appConfig.getKeyValue("downloaddir");
+
   
     this.STAppData.cancelled = false;
   this.targetbrowser = in_SiteTest.TargetBrowser;
@@ -167,7 +170,7 @@ popOutFrame = new ProgressFrame(in_SiteTest.short_filename);
      if (RUNWITHGUI) {  STAppFrame.Pause(); } else {popOutFrame.Pause();}
         this.paused = true;
     }
-  public synchronized void Continue() {
+  public void Continue() {
     if (RUNWITHGUI) {  STAppFrame.Continue();} else {popOutFrame.Continue();}
         this.paused = false;
          synchronized(this) {
