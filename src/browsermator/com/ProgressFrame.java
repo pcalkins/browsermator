@@ -34,6 +34,31 @@ public class ProgressFrame {
   {
     title = in_title;
   }
+  public void initNoButtons(String _text)
+  {
+     mainFrame = new JFrame(title); 
+      JTextFieldProgress = new javax.swing.JTextField("Launching Browser");
+       JTextFieldProgress.setPreferredSize(new Dimension(300, 20));
+       JTextFieldProgress.setText(_text);
+         JPanel jPanelSouth2 = new JPanel();
+        jPanelSouth2.add(JTextFieldProgress);
+         JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout( contentPanel , BoxLayout.Y_AXIS));
+        contentPanel.add(jPanelSouth2);
+          mainFrame.add(contentPanel);
+       mainFrame.pack();
+                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+     
+        int x = (int) rect.getMaxX() - mainFrame.getWidth();
+        int y = (int) rect.getMaxY() - mainFrame.getHeight();
+    //   setResizable(false);
+     y = y-38;
+        mainFrame.setLocation(x, y); 
+                mainFrame.setVisible(true);
+             mainFrame.pack();
+  }
   public void initFrame()
   {
       mainFrame = new JFrame(title);

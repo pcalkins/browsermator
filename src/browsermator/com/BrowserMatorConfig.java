@@ -5,6 +5,9 @@
  */
 package browsermator.com;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -118,10 +121,17 @@ BrowserBrowser.setDialogTitle("Browse for Chrome executable.");
   
       File newconfig = new File(BrowsermatorAppFolder + "browsermator_config.properties");
       Properties newProps = new Properties();
-
+             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+     
+        int x = (int) rect.getMaxX() - 1328;
+        if (x<0){x=0;}
+        String stringX = Integer.toString(x);
+        
        newProps.setProperty("main_window_locationY", "0");
-      newProps.setProperty("main_window_locationX", "0");
-      newProps.setProperty("main_window_sizeWidth", "1060");
+      newProps.setProperty("main_window_locationX", stringX);
+      newProps.setProperty("main_window_sizeWidth", "1328");
       newProps.setProperty("main_window_sizeHeight", "950");   
    
       newProps.setProperty("email_subject", "");

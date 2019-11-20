@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.214";
+public final String ProgramVersion = "1.7.215";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -4237,9 +4237,7 @@ STAppFrame.saveState();
  }
  public void ExtractWebDrivers()
  {
-     Boolean file_exists = false;
-
-
+    
      
     String versionstored = appConfig.getKeyValue("version");
     String lastWebDriverUpdateStored = appConfig.getKeyValue("lastWebDriverUpdate");
@@ -4252,8 +4250,10 @@ STAppFrame.saveState();
   
     if (updateIT)
     {
+       ProgressFrame waitprompt = new ProgressFrame("Extracting webdrivers");
+       waitprompt.initNoButtons("Extracting Webdrivers...");
        
-           Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
+         //  Prompter waitprompt = new Prompter ("Extracting webdrivers", "We've detected that Selenium automation webdrivers need to be extracted or updated. This could take a minute or two.", false,0,0);
  WriteResource ("chromedriver_linux32", "chromedriver");
  WriteResource ("chromedriver_linux64", "chromedriver");    
  WriteResource ("chromedriver_mac64", "chromedriver");
@@ -4274,6 +4274,7 @@ STAppFrame.saveState();
             } 
         }
    if (DriverUpdateFail==false) { appConfig.setKeyValue("lastWebDriverUpdate", this.lastWebDriverUpdate);}
+  waitprompt.mainFrame.dispose();
     }
 
   
