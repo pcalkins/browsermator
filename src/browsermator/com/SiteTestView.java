@@ -862,7 +862,7 @@ String firefoxPath = appConfig.getKeyValue("Firefox");
    //     jPanelRecentFiles.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
           jPanelDownloadDir = new JPanel();
-        jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox");
+        jLabelDownloadDir = new JLabel("Download Directory for Chrome/Firefox:");
         jTextFieldDownloadDir = new JLabel("Default");
       
         jButtonBrowseForDownloadDir = new JButton("Browse");

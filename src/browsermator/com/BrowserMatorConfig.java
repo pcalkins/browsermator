@@ -91,12 +91,7 @@ if (file_exists == false)
   
       switch (targetbrowser)
       {
-              case "Chrome 49":
       
-       BrowserBrowser = new JFileChooser("Browse for Chrome49 executable");
- 
- BrowserBrowser.setDialogTitle("Browse for Chrome executable (for manual installs on XP.)");
-      break;
               case "Firefox":
        
  BrowserBrowser = new JFileChooser("Browse for Firefox executable");
