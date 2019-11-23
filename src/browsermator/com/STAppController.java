@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.217";
+public final String ProgramVersion = "1.7.218";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -812,6 +812,7 @@ mainAppFrame.initComponents();
  } 
  }
          });
+   
      Navigator.addjButtonBrowseForChromeActionListener(
           new ActionListener() {
     public void actionPerformed (ActionEvent evt)
@@ -860,6 +861,17 @@ mainAppFrame.initComponents();
     Navigator.setjTextFieldChrome("Default");
     }
 });
+     Navigator.addjButtonClearDownloadDirActionListener(
+       
+           new ActionListener()
+         {
+           public void actionPerformed (ActionEvent evt)
+  {   
+     appConfig.removeKey("DownloadDir");
+    
+    Navigator.setjTextFieldDownloadDir("Default");
+ }
+         });
   
   Navigator.addjButtonNewWebsiteTestActionListener(
   new ActionListener()
