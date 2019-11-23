@@ -95,7 +95,7 @@ String stringactionindex = Integer.toString(this.index+1);
   //    this.ActionPanelLeft.add(this.JLabelIndex);
   //    this.ActionPanelLeft.add(this.JButtonDragIt);
      this.jComboBoxDriver = new JComboBox();  
-     jComboBoxDriver.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+     jComboBoxDriver.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Edge", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
         theseActionSettings.add(new ActionSettings(JLabelIndex, 0, 1, 0.0, GridBagConstraints.WEST));
        theseActionSettings.add(new ActionSettings(JButtonDragIt, 1, 1, 0.0, GridBagConstraints.WEST));

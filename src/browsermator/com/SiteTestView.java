@@ -99,13 +99,15 @@ String CloudFile5;
      private JPanel jPanelDownloadDir;
      
       private JButton jButtonBrowseForFireFox;
+      private JButton jButtonClearFirefox;
    private JLabel jLabelFirefoxDir;
-   private JTextField jTextFieldFirefoxDir;
+   private JLabel jTextFieldFirefoxDir;
      private JPanel jPanelFirefoxDir;
      
       private JButton jButtonBrowseForChrome;
+      private JButton jButtonClearChrome;
    private JLabel jLabelChromeDir;
-   private JTextField jTextFieldChromeDir;
+   private JLabel jTextFieldChromeDir;
      private JPanel jPanelChromeDir;
      private JPanel jPanelBrowse;
     private JPanel jPanelCenter;
@@ -228,9 +230,19 @@ setRecentFiles(outarray);
     jButtonBrowseForChrome.addActionListener(listener);
   
     } 
+         public void addjButtonClearChromeActionListener(ActionListener listener)
+    {
+    jButtonClearChrome.addActionListener(listener);
+  
+    } 
         public void addjButtonBrowseForFirefoxActionListener(ActionListener listener)
     {
     jButtonBrowseForFireFox.addActionListener(listener);
+  
+    } 
+        public void addjButtonClearFirefoxActionListener(ActionListener listener)
+    {
+    jButtonClearFirefox.addActionListener(listener);
   
     } 
   public void addJButtonOpenWebSiteTestActionListener(ActionListener listener)
@@ -853,20 +865,24 @@ String firefoxPath = appConfig.getKeyValue("Firefox");
         jPanelDownloadDir.add(jButtonBrowseForDownloadDir);
        
          jPanelFirefoxDir = new JPanel();
-        jLabelFirefoxDir = new JLabel("Firefox Executable Location (May be needed for custom install folder)");
-        jTextFieldFirefoxDir = new JTextField(40);
+        jLabelFirefoxDir = new JLabel("Firefox Executable Location (May be needed for custom install folder):");
+        jTextFieldFirefoxDir = new JLabel("Default");
         jButtonBrowseForFireFox = new JButton("Browse");
+        jButtonClearFirefox = new JButton("Default");
         jPanelFirefoxDir.add(jLabelFirefoxDir);
         jPanelFirefoxDir.add(jTextFieldFirefoxDir);
         jPanelFirefoxDir.add(jButtonBrowseForFireFox);
+        jPanelFirefoxDir.add(jButtonClearFirefox);
         
           jPanelChromeDir = new JPanel();
-        jLabelChromeDir = new JLabel("Chrome Executable Location (May be needed for custom install folder)");
-        jTextFieldChromeDir = new JTextField(40);
+        jLabelChromeDir = new JLabel("Chrome Executable Location (May be needed for custom install folder):");
+        jButtonClearChrome = new JButton("Default");
+        jTextFieldChromeDir = new JLabel("Default");
         jButtonBrowseForChrome = new JButton("Browse");
         jPanelChromeDir.add(jLabelChromeDir);
         jPanelChromeDir.add(jTextFieldChromeDir);
         jPanelChromeDir.add(jButtonBrowseForChrome);
+        jPanelChromeDir.add(jButtonClearChrome);
         
         jPanelRecentFiles.add(jLabelRecentFiles);
         jPanelRecentFiles.add(jLabelRecentFile1);
@@ -941,8 +957,14 @@ String firefoxPath = appConfig.getKeyValue("Firefox");
 
 setRecentFiles(RFilesArray);
    setjTextFieldDownloadDir(downloadPath);
+   if(firefoxPath!=null)
+   {
     setjTextFieldFirefox(firefoxPath);
-     setjTextFieldChrome(chromePath);
+   }
+     if(chromePath!=null)
+   {
+   setjTextFieldChrome(chromePath);
+   }
          pack();
         
         

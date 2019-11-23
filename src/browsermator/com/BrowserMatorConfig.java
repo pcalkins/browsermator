@@ -60,6 +60,18 @@ if (file_exists == false)
           return value;
           
       }
+      public void removeKey (String key)
+      {
+          applicationProps.remove(key);
+             try {
+       writer = new FileWriter(BrowsermatorAppFolder + "browsermator_config.properties");
+    applicationProps.store(writer, "browsermator_settings");
+    writer.close();
+    }
+                catch (Exception e) {
+			System.out.println("Exception deleteing key: " + e.toString());
+		}  
+      }
       public void setKeyValue (String key, String value)
       {
            applicationProps.setProperty(key, value);

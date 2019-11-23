@@ -1847,7 +1847,7 @@ bugindex++;
         
       
 
-        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Chrome 49", "Edge", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
+        jComboBoxTargetBrowser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chrome", "Firefox", "Internet Explorer-32", "Internet Explorer-64", "Edge", "Silent Mode (HTMLUnit)", "Firefox/IE/Chrome" }));
 
         jCheckBoxOSTypeWindows32.setText("Windows - 32");
         jCheckBoxOSTypeWindows32.setEnabled(false);

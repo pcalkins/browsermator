@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.215";
+public final String ProgramVersion = "1.7.217";
 public final String lastWebDriverUpdate = "10212019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -819,7 +819,11 @@ mainAppFrame.initComponents();
        String TargetBrowser = "Chrome";
    
     appConfig.BrowseforBrowserPath(TargetBrowser);
-  Navigator.setjTextFieldChrome(appConfig.getKeyValue(TargetBrowser));
+    String newPath = appConfig.getKeyValue(TargetBrowser);
+    if (newPath!=null)
+    {
+  Navigator.setjTextFieldChrome(newPath);
+    }
     }
 });
        Navigator.addjButtonBrowseForFirefoxActionListener(
@@ -827,9 +831,33 @@ mainAppFrame.initComponents();
     public void actionPerformed (ActionEvent evt)
     {
        String TargetBrowser = "Firefox";
+   
     appConfig.BrowseforBrowserPath(TargetBrowser);
-    
+         String newPath = appConfig.getKeyValue(TargetBrowser);
+    if (newPath!=null)
+    {
     Navigator.setjTextFieldFirefox(appConfig.getKeyValue(TargetBrowser));
+    }
+    }
+});
+             Navigator.addjButtonClearFirefoxActionListener(
+         new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+     
+    appConfig.removeKey("Firefox");
+    
+    Navigator.setjTextFieldFirefox("Default");
+    }
+});
+                         Navigator.addjButtonClearChromeActionListener(
+         new ActionListener() {
+    public void actionPerformed (ActionEvent evt)
+    {
+     
+    appConfig.removeKey("Chrome");
+    
+    Navigator.setjTextFieldChrome("Default");
     }
 });
   
@@ -3869,7 +3897,14 @@ new ActionListener() {
     {
        String TargetBrowser = STAppData.getTargetBrowser();
    appConfig.BrowseforBrowserPath(TargetBrowser);
-   
+   if ("Firefox".equals(TargetBrowser))
+   {
+   Navigator.setjTextFieldFirefox(appConfig.getKeyValue(TargetBrowser));
+   }
+   if ("Chrome".equals(TargetBrowser))
+   {
+       Navigator.setjTextFieldChrome(appConfig.getKeyValue(TargetBrowser)); 
+   }
  
     }
 });
