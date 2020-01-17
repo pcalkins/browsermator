@@ -34,7 +34,15 @@ public class Protector {
         pbeCipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(SALT, 20));
         return base64Encode(pbeCipher.doFinal(property.getBytes("UTF-8")));
     }
-
+  public static String encryptLocal(String property, String machineID) throws GeneralSecurityException, UnsupportedEncodingException {
+       SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+        char[] localPass = machineID.toCharArray();
+       SecretKey key = keyFactory.generateSecret(new PBEKeySpec(localPass));
+        Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+ 
+        pbeCipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(SALT, 20));
+        return base64Encode(pbeCipher.doFinal(property.getBytes("UTF-8")));
+    }
     private static String base64Encode(byte[] bytes) {
       
         return DatatypeConverter.printBase64Binary(bytes);
@@ -44,8 +52,16 @@ public class Protector {
        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
        SecretKey key = keyFactory.generateSecret(new PBEKeySpec(PASSWORD));
         Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
-
+ 
         pbeCipher.init(Cipher.DECRYPT_MODE, key, new PBEParameterSpec(SALT, 20));
+        return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
+    }
+     public static String decryptLocal(String property, String machineID) throws GeneralSecurityException, IOException {
+       SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+         char[] localPass = machineID.toCharArray();
+       SecretKey key = keyFactory.generateSecret(new PBEKeySpec(localPass));
+        Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+       pbeCipher.init(Cipher.DECRYPT_MODE, key, new PBEParameterSpec(SALT, 20));
         return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
     }
 

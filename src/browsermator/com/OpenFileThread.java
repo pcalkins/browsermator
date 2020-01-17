@@ -689,7 +689,8 @@ try
  EmailPassword = thisSettingsNodeValue;
   try
    {
-   unepassword = Protector.decrypt(EmailPassword);
+          String machineID = this.mainAppController.appConfig.ReturnMachineSerialNumber();
+   unepassword = Protector.decryptLocal(EmailPassword, machineID);
    }
    catch (GeneralSecurityException | IOException e)
            {

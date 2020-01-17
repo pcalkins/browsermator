@@ -56,8 +56,8 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.219";
-public final String lastWebDriverUpdate = "10212019";
+public final String ProgramVersion = "1.7.221";
+public final String lastWebDriverUpdate = "12172019";
 public boolean DriverUpdateFail = false;
 public String loginName;
 public String loginPassword;
@@ -1705,7 +1705,8 @@ EmailPassword = STAppFrame.getEmailPassword();
 String une = "";
       try
       {
-     une = Protector.encrypt(EmailPassword);
+             String machineID = appConfig.ReturnMachineSerialNumber();
+     une = Protector.encryptLocal(EmailPassword, machineID);
       }
       catch (Exception e)
       {
@@ -2945,7 +2946,8 @@ actionindex = Integer.parseInt(parts[1])-1;
    {
    try
    {
-   password = Protector.decrypt(password);
+       String machineID = appConfig.ReturnMachineSerialNumber();
+   password = Protector.decryptLocal(password, machineID);
    }
    catch (GeneralSecurityException | IOException e)
            {
@@ -2997,7 +2999,8 @@ actionindex = Integer.parseInt(parts[1])-1;
     {
         try
         {
-    password = Protector.encrypt(password);
+               String machineID = appConfig.ReturnMachineSerialNumber();
+    password = Protector.encryptLocal(password, machineID);
         }
         catch (Exception ex)
         {
@@ -3096,7 +3099,8 @@ public void addJMenuViewItem (JMenuItem item_to_add)
    {
        try
     {
-     this.loginPassword = Protector.decrypt(temppassword);
+        String machineID = appConfig.ReturnMachineSerialNumber();
+     this.loginPassword = Protector.decryptLocal(temppassword, machineID);
     }
     catch (Exception ex)
     {
@@ -3121,7 +3125,8 @@ public void addJMenuViewItem (JMenuItem item_to_add)
       String encPassword = "";
       try
       {
-       encPassword = Protector.encrypt(in_Password);
+          String machineID = appConfig.ReturnMachineSerialNumber();
+       encPassword = Protector.encryptLocal(in_Password, machineID);
       }
       catch (Exception ex)
       {

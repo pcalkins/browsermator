@@ -405,7 +405,8 @@ public void setAllFieldValues(ArrayList<String> allfieldvalues)
    {
    try
    {
-   password = Protector.decrypt(password);
+          String machineID =appConfig.ReturnMachineSerialNumber();
+   password = Protector.decryptLocal(password, machineID);
    }
    catch (Exception ex)
    {
