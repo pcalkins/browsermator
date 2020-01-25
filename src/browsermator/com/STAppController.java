@@ -56,7 +56,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.221";
+public final String ProgramVersion = "1.7.222";
 public final String lastWebDriverUpdate = "12172019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -3673,7 +3673,7 @@ File newfile = new File(path + ".js");
                ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
          
                    STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);       
-               STAppData.AddActionToArray(thisActionToAdd, newbug);
+               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
                     thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
            

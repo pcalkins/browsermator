@@ -44,7 +44,6 @@ public class CloseCurrentTabOrWindowAction extends BMAction
     {
 try
 {
-
 ((JavascriptExecutor)driver).executeScript("close();");
     for (String winHandle : driver.getWindowHandles()) {
   driver.switchTo().window(winHandle); 

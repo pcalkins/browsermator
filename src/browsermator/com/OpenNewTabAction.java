@@ -58,9 +58,15 @@ public class OpenNewTabAction extends BMAction {
 // Actions actions = new Actions(driver); 
 //  actions.keyDown(Keys.CONTROL).sendKeys("t").keyUp(Keys.CONTROL).build().perform();  
         Set<String> tab_handles = driver.getWindowHandles();
-        int number_of_tabs = tab_handles.size();
-        int new_tab_index = number_of_tabs-1;
-        driver.switchTo().window(tab_handles.toArray()[new_tab_index].toString()); 
+        String current_handle = driver.getWindowHandle();
+       for (String handle:tab_handles)
+       {
+           if (handle!=current_handle)
+           {
+                driver.switchTo().window(handle); 
+           }
+       }
+       
         this.Pass = true;
       }
       catch (Exception ex)

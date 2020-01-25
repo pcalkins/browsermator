@@ -18,7 +18,7 @@ public class OpenNewTabActionView extends ActionView {
     
        
         
-       this.JLabelVariable1 = new JLabel("Open New Tab");
+       this.JLabelVariable1 = new JLabel("Open New Tab and Switch To It");
 theseActionSettings.add(new ActionSettings(JLabelVariable1, 2, 6, 1.0, GridBagConstraints.WEST));
   theseActionSettings.add(new ActionSettings(JButtonOK, 8, 1, 0.0, GridBagConstraints.WEST));
    theseActionSettings.add(new ActionSettings(JButtonDelete, 9, 1, 0.0, GridBagConstraints.WEST));

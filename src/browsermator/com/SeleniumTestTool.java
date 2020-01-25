@@ -1687,7 +1687,8 @@ bugindex++;
       public void AddActionViewToArray (ActionView actionview, ProcedureView newbugview)
 {
     int at_index = newbugview.getJComboBoxAddAtPosition();
-    if (at_index>0) {at_index--;
+    if (at_index>0)
+         { at_index--;
             newbugview.ActionsViewList.add(at_index, actionview);
              actionview.index = at_index;
              RefreshActionViewIndexes(newbugview.ActionsViewList);

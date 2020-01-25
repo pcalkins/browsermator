@@ -891,7 +891,8 @@ else
                 }
            public void AddActionToArray(BMAction action, Procedure newbug, ProcedureView newbugview)
            {
-                        int at_index = newbugview.getJComboBoxAddAtPosition();
+          
+               int at_index = newbugview.getJComboBoxAddAtPosition();
              if (at_index>0) {at_index--;}
            newbug.ActionsList.add(at_index, action);
             action.index = at_index;
