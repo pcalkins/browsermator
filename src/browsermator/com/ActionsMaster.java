@@ -5,7 +5,8 @@
  */
 package browsermator.com;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
@@ -14,130 +15,441 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 
 public class ActionsMaster {
-    HashMap<String, BMAction> ActionHashMap;
-    HashMap<String, BMAction> PassFailActionHashMap;
-    HashMap<String, ActionView> ActionViewHashMap;
-    HashMap<String, ActionView> PassFailActionViewHashMap;   
+    Set<String> ActionHashMap;
+    Set<String> PassFailActionHashMap;
+ 
     WebDriverWait dummywait;
+  
     ActionsMaster()
     {
-        ActionHashMap = new <String, BMAction>HashMap();
-  
-    ActionViewHashMap = new <String, ActionView>HashMap();
-      PassFailActionHashMap = new <String, BMAction>HashMap(); 
+      ActionHashMap = new HashSet();
+      PassFailActionHashMap = new HashSet();
     
-    PassFailActionViewHashMap = new <String, ActionView>HashMap();
-    ActionViewHashMap.put("Back Button", new BackActionView());
-    ActionViewHashMap.put("Click at Button Text", new ClickAtButtonTextActionView());
-    ActionViewHashMap.put("Click at HREF", new ClickAtHREFActionView());
-    ActionViewHashMap.put("Click at ID", new ClickAtIDActionView());
-    ActionViewHashMap.put("Click at Image SRC", new ClickAtImageSRCActionView());
-    ActionViewHashMap.put("Click at Link Text", new ClickAtLinkTextActionView());
-    ActionViewHashMap.put("Click at Name", new ClickAtNameActionView());
-    ActionViewHashMap.put("Click at XPATH", new ClickXPATHActionView());
-    ActionViewHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowActionView());
-    ActionViewHashMap.put("Down Arrow Key", new DownArrowKeyActionView());
-    ActionViewHashMap.put("Drag From ID to ID", new DragAndDropActionView());
-    ActionViewHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByActionView());
-    ActionViewHashMap.put("Enter Key", new EnterKeyActionView());
-    ActionViewHashMap.put("Escape Key", new EscapeKeyActionView());
-    ActionViewHashMap.put("Execute Javascript", new ExecuteJavascriptActionView());
-    ActionViewHashMap.put("Forward Action", new ForwardActionView());
-    ActionViewHashMap.put("Go to URL", new GoActionView());
-    ActionViewHashMap.put("Left Arrow Key", new LeftArrowKeyActionView());
-    ActionViewHashMap.put("Next Tab", new NextTabActionView());
-    ActionViewHashMap.put("Open New Tab", new OpenNewTabActionView());
-    ActionViewHashMap.put("Pause", new PauseActionView());
-    ActionViewHashMap.put("Pause with Continue Button", new PauseContinueActionView());
-    ActionViewHashMap.put("Right Arrow Key", new RightArrowKeyActionView());
-    ActionViewHashMap.put("Right-Click", new RightClickActionView());
-    ActionViewHashMap.put("Set Cookie", new SetCookieActionView());
-    
-    ActionViewHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHActionView());
-    ActionViewHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHActionView());
-    ActionViewHashMap.put("Switch Driver", new SwitchDriverActionView());
-    ActionViewHashMap.put("Switch To Frame", new SwitchToFrameActionView());
-    ActionViewHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowActionView());
-    // legacy support for Type at ID
-    ActionViewHashMap.put("Type at ID", new TypeAtIDActionView());
-    ActionViewHashMap.put("Type at Input ID", new TypeAtIDActionView());
-    ActionViewHashMap.put("Type at Input Name", new TypeAtInputNameActionView());
-    ActionViewHashMap.put("Type at XPATH", new TypeAtXPATHActionView());
-    ActionViewHashMap.put("Type Password at ID", new TypePasswordAtIDActionView());
-    ActionViewHashMap.put("Type Password at Input Name", new TypePasswordAtInputNameActionView());
-    ActionViewHashMap.put("Type Password at XPATH", new TypePasswordAtXPATHActionView());
-    ActionViewHashMap.put("Up Arrow Key", new UpArrowKeyActionView());
-    
-  ActionHashMap.put("Back Button", new BackAction());
-  ActionHashMap.put("Click at Button Text", new ClickAtButtonTextAction("", false, false));
-  ActionHashMap.put("Click at HREF", new ClickAtHREFAction("", false, false));
-  ActionHashMap.put("Click at ID", new ClickAtIDAction("", false, false));
-  ActionHashMap.put("Click at Image SRC", new ClickAtImageSRCAction("", false, false));
-  ActionHashMap.put("Click at Link Text", new ClickAtLinkTextAction("", false, false));
-  ActionHashMap.put("Click at Name", new ClickAtNameAction("", false, false));
-  ActionHashMap.put("Click at XPATH", new ClickXPATHAction("", false, false));
-  ActionHashMap.put("Close Current Tab or Window", new CloseCurrentTabOrWindowAction());
-  ActionHashMap.put("Down Arrow Key", new DownArrowKeyAction());
-  ActionHashMap.put("Drag From ID to ID", new DragAndDropAction("", ""));
-  ActionHashMap.put("Drag From XPATH Distance X and Y Pixels", new DragAndDropByAction("", ""));
-  ActionHashMap.put("Enter Key", new EnterKeyAction());
-  ActionHashMap.put("Escape Key", new EscapeKeyAction());
-  ActionHashMap.put("Execute Javascript", new ExecuteJavascriptAction(""));
-  ActionHashMap.put("Forward Action", new ForwardAction());
-  ActionHashMap.put("Go to URL", new GoAction(""));
-  ActionHashMap.put("Left Arrow Key", new LeftArrowKeyAction());
-  ActionHashMap.put("Next Tab", new NextTabAction());
-  ActionHashMap.put("Open New Tab", new OpenNewTabAction());
-  ActionHashMap.put("Pause", new PauseAction("", ""));
-  ActionHashMap.put("Pause with Continue Button", new PauseContinueAction());
-  ActionHashMap.put("Right Arrow Key", new RightArrowKeyAction());
-  ActionHashMap.put("Right-Click", new RightClickAction());
-  ActionHashMap.put("Set Cookie", new SetCookieAction("", ""));
-  ActionHashMap.put("Store Link as Variable by XPATH", new StoreLinkAsVarByXPATHAction("", ""));
-  ActionHashMap.put("Store Links as URL List by XPATH", new StoreLinksAsArrayByXPATHAction("", ""));
-  ActionHashMap.put("Switch Driver", new SwitchDriverAction());
-  ActionHashMap.put("Switch To Frame", new SwitchToFrameAction(""));
-  ActionHashMap.put("Switch To Tab or Window", new SwitchToTabOrWindowAction(""));
+  ActionHashMap.add("Back Button");
+  ActionHashMap.add("Click at Button Text");
+  ActionHashMap.add("Click at HREF");
+  ActionHashMap.add("Click at ID");
+  ActionHashMap.add("Click at Image SRC");
+  ActionHashMap.add("Click at Link Text");
+  ActionHashMap.add("Click at Name");
+  ActionHashMap.add("Click at XPATH");
+  ActionHashMap.add("Close Current Tab or Window");
+  ActionHashMap.add("Down Arrow Key");
+  ActionHashMap.add("Drag From ID to ID");
+  ActionHashMap.add("Drag From XPATH Distance X and Y Pixels");
+  ActionHashMap.add("Enter Key");
+  ActionHashMap.add("Escape Key");
+  ActionHashMap.add("Execute Javascript");
+  ActionHashMap.add("Forward Action");
+  ActionHashMap.add("Go to URL");
+  ActionHashMap.add("Left Arrow Key");
+  ActionHashMap.add("Next Tab");
+  ActionHashMap.add("Open New Tab");
+  ActionHashMap.add("Paste at XPATH");
+  ActionHashMap.add("Paste Password at XPATH");
+  ActionHashMap.add("Pause");
+  ActionHashMap.add("Pause with Continue Button");
+  ActionHashMap.add("Right Arrow Key");
+  ActionHashMap.add("Right-Click");
+  ActionHashMap.add("Set Cookie");
+  ActionHashMap.add("Store Link as Variable by XPATH");
+  ActionHashMap.add("Store Links as URL List by XPATH");
+  ActionHashMap.add("Switch Driver");
+  ActionHashMap.add("Switch To Frame");
+  ActionHashMap.add("Switch To Tab or Window");
   //legacy support for Type at ID
-  ActionHashMap.put("Type at ID", new TypeAtIDAction("", "", false));
-  ActionHashMap.put("Type at Input ID", new TypeAtIDAction("", "", false));
-  ActionHashMap.put("Type at Input Name", new TypeAtInputNameAction("","", false));
-  ActionHashMap.put("Type at XPATH", new TypeAtXPATHAction("", "", false));
-  ActionHashMap.put("Type Password at ID", new TypePasswordAtIDAction("", "", false));
-  ActionHashMap.put("Type Password at Input Name", new TypePasswordAtInputNameAction("", "", false));
-  ActionHashMap.put("Type Password at XPATH", new TypePasswordAtXPATHAction("", "", false));
-  ActionHashMap.put("Up Arrow Key", new UpArrowKeyAction());
-  
-   PassFailActionViewHashMap.put("Yes/No Prompt", new YesNoPromptPassFailActionView());
-   PassFailActionViewHashMap.put("Find Text", new FindTextPassFailActionView());
-   PassFailActionViewHashMap.put("Find HREF", new FindHREFPassFailActionView());
-   PassFailActionViewHashMap.put("Find IFrame SRC", new FindIFrameSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Find Image SRC", new FindImageSRCPassFailActionView());
+  ActionHashMap.add("Type at ID");
+  ActionHashMap.add("Type at Input ID");
+  ActionHashMap.add("Type at Input Name");
+  ActionHashMap.add("Type at XPATH");
+  ActionHashMap.add("Type Password at ID");
+  ActionHashMap.add("Type Password at Input Name");
+  ActionHashMap.add("Type Password at XPATH");
+  ActionHashMap.add("Up Arrow Key");
 
-   PassFailActionViewHashMap.put("Find Page Title", new FindPAGETITLEPassFailActionView());
-   PassFailActionViewHashMap.put("Find XPATH", new FindXPATHPassFailActionView());
-   PassFailActionViewHashMap.put("Do NOT Find Text", new NOTFindTextPassFailActionView());
-   PassFailActionViewHashMap.put("Do NOT Find HREF", new NOTFindHREFPassFailActionView());
-   PassFailActionViewHashMap.put("Do NOT Find IFrame SRC", new NOTFindIFrameSRCPassFailActionView());
- 
-
- 
-   PassFailActionViewHashMap.put("Do NOT Find Image SRC", new NOTFindImageSRCPassFailActionView());
-   PassFailActionViewHashMap.put("Do NOT Find Page Title", new NOTFindPAGETITLEPassFailActionView());
-   PassFailActionViewHashMap.put("Do NOT Find XPATH", new NOTFindXPATHPassFailActionView());
-   
- PassFailActionHashMap.put("Yes/No Prompt", new YesNoPromptPassFailAction(""));
- PassFailActionHashMap.put("Find Text", new FindTextPassFailAction("", false));
- PassFailActionHashMap.put("Find HREF", new FindHREFPassFailAction("", false));
- PassFailActionHashMap.put("Find IFrame SRC", new FindIFrameSRCPassFailAction("", false));
- PassFailActionHashMap.put("Find Image SRC", new FindImageSRCPassFailAction("", false));
- PassFailActionHashMap.put("Find Page Title", new FindPAGETITLEPassFailAction("", false));
- PassFailActionHashMap.put("Find XPATH", new FindXPATHPassFailAction("", false));
- PassFailActionHashMap.put("Do NOT Find Text", new FindTextPassFailAction("", true));
- PassFailActionHashMap.put("Do NOT Find HREF", new FindHREFPassFailAction("", true));
- PassFailActionHashMap.put("Do NOT Find IFrame SRC", new FindIFrameSRCPassFailAction("", true));
- PassFailActionHashMap.put("Do NOT Find Image SRC", new FindImageSRCPassFailAction("", true));
- PassFailActionHashMap.put("Do NOT Find Page Title", new FindPAGETITLEPassFailAction("", true));
- PassFailActionHashMap.put("Do NOT Find XPATH", new FindXPATHPassFailAction("", true));
+ PassFailActionHashMap.add("Yes/No Prompt");
+ PassFailActionHashMap.add("Find Text");
+ PassFailActionHashMap.add("Find HREF");
+ PassFailActionHashMap.add("Find IFrame SRC");
+ PassFailActionHashMap.add("Find Image SRC");
+ PassFailActionHashMap.add("Find Page Title");
+ PassFailActionHashMap.add("Find XPATH");
+ PassFailActionHashMap.add("Do NOT Find Text");
+ PassFailActionHashMap.add("Do NOT Find HREF");
+ PassFailActionHashMap.add("Do NOT Find IFrame SRC");
+ PassFailActionHashMap.add("Do NOT Find Image SRC");
+ PassFailActionHashMap.add("Do NOT Find Page Title");
+ PassFailActionHashMap.add("Do NOT Find XPATH");
   }
+    public BMAction CreatePassFailAction (String actionKey)
+    {
+          BMAction retVal = new YesNoPromptPassFailAction("");
+        
+        switch (actionKey){
+          
+            case "Yes/No Prompt":
+                  retVal = new YesNoPromptPassFailAction("");
+                  break;
+            case "Find Text":
+                retVal = new FindTextPassFailAction("", false);
+                break;
+            case "Find HREF":
+                retVal = new FindHREFPassFailAction("", false);
+                break;
+            case "Find IFrame SRC":
+                retVal = new FindIFrameSRCPassFailAction("", false);
+                break;
+            case "Find Image SRC":
+                retVal = new FindImageSRCPassFailAction("", false);
+                break;
+            case "Find Page Title":
+                retVal = new FindPAGETITLEPassFailAction("", false);
+                break;
+            case "Find XPATH":
+                retVal = new FindXPATHPassFailAction("", false);
+                break;
+            case "Do NOT Find Text":
+                retVal = new FindTextPassFailAction("", true);
+                break;
+            case "Do NOT Find HREF":
+                retVal = new FindHREFPassFailAction("", true);
+                break;
+            case "Do NOT Find IFrame SRC":
+                retVal = new FindIFrameSRCPassFailAction("", true);
+                break;
+            case "Do NOT Find Image SRC":
+                retVal = new FindImageSRCPassFailAction("", true);
+                break;
+            case "Do NOT Find Page Title":
+                retVal = new FindPAGETITLEPassFailAction("", true);
+                break;
+            case "Do NOT Find XPATH":
+                retVal = new FindXPATHPassFailAction("", true);
+                break;
+                  default:
+                System.out.println("KEY ACTION PASS FAIL NOT FOUND");
+                break;
+        }
+        return retVal;
+    }
+      public ActionView CreatePassFailActionView (String actionKey)
+    {
+          ActionView retVal =new YesNoPromptPassFailActionView();
+        
+        switch (actionKey){
+          
+            case "Yes/No Prompt":
+                  retVal = new YesNoPromptPassFailActionView();
+                  break;
+            case "Find Text":
+                retVal = new FindTextPassFailActionView();
+                break;
+            case "Find HREF":
+                retVal = new FindHREFPassFailActionView();
+                break;
+            case "Find IFrame SRC":
+                retVal = new FindIFrameSRCPassFailActionView();
+                break;
+            case "Find Image SRC":
+                retVal = new FindImageSRCPassFailActionView();
+                break;
+            case "Find Page Title":
+                retVal = new FindPAGETITLEPassFailActionView();
+                break;
+            case "Find XPATH":
+                retVal = new FindXPATHPassFailActionView();
+                break;
+            case "Do NOT Find Text":
+                retVal = new NOTFindTextPassFailActionView();
+                break;
+            case "Do NOT Find HREF":
+                retVal = new NOTFindHREFPassFailActionView();
+                break;
+            case "Do NOT Find IFrame SRC":
+                retVal = new NOTFindIFrameSRCPassFailActionView();
+                break;
+            case "Do NOT Find Image SRC":
+                retVal = new NOTFindImageSRCPassFailActionView();
+                break;
+            case "Do NOT Find Page Title":
+                retVal = new NOTFindPAGETITLEPassFailActionView();
+                break;
+            case "Do NOT Find XPATH":
+                retVal = new NOTFindXPATHPassFailActionView();
+                break;
+                  default:
+                System.out.println("KEY ACTION PASS FAIL VIEW NOT FOUND");
+                break;
+        }
+        return retVal;
+    }
+    public BMAction CreateAction(String actionKey)
+    {
+        BMAction retVal = new BackAction();
+        
+        switch (actionKey){
+          
+            case "Back Button":
+                   retVal = new BackAction();
+                   break;  
+            case "Click at Button Text":
+                retVal = new ClickAtButtonTextAction("", false, false);
+                break;
+            case "Click at HREF":
+                retVal = new ClickAtHREFAction("", false, false);
+                break;
+            case "Click at ID":
+                retVal = new ClickAtIDAction("", false, false);
+                break;
+            case "Click at Image SRC":
+                retVal = new ClickAtImageSRCAction("", false, false);
+                break;
+            case "Click at Link Text":
+                retVal = new ClickAtLinkTextAction("", false, false);
+                break;
+                
+            case "Click at Name":
+                retVal = new ClickAtNameAction("", false, false);
+                break;
+            case "Click at XPATH":
+                retVal = new ClickXPATHAction("", false, false);
+                break;
+            case "Close Current Tab or Window":
+                retVal = new CloseCurrentTabOrWindowAction();
+                break;
+            case "Down Arrow Key":
+                retVal = new DownArrowKeyAction();
+                break;
+            case "Drag From ID to ID":
+                retVal = new DragAndDropAction("", "");
+                break;
+            case "Drag From XPATH Distance X and Y Pixels":
+                retVal = new DragAndDropByAction("", "");
+                break;
+            case "Enter Key":
+                retVal = new EnterKeyAction();
+                break;
+            case "Escape Key":
+                retVal = new EscapeKeyAction();
+                break;
+            case "Execute Javascript":
+                retVal = new ExecuteJavascriptAction("");
+                break;
+            case "Forward Action":
+                retVal = new ForwardAction();
+                break;
+            case "Go to URL":
+                retVal = new GoAction("");
+                break;
+            case "Left Arrow Key":
+                retVal = new LeftArrowKeyAction();
+                break;
+            case "Next Tab":
+                retVal = new NextTabAction();
+                break;
+            case "Open New Tab":
+                retVal = new OpenNewTabAction();
+                break;
+            case "Paste at XPATH":
+                retVal = new PasteAtXPATHAction("", "", false);
+                break;
+            case "Paste Password at XPATH":
+                retVal = new PastePasswordAtXPATHAction("", "", false);
+                break;
+            case "Pause":
+                retVal = new PauseAction("", "");
+                break;
+            case "Pause with Continue Button":
+                retVal = new PauseContinueAction();
+                break;
+            case "Right Arrow Key":
+                retVal = new RightArrowKeyAction();
+                break;
+            case "Right-Click":
+                retVal = new RightClickAction();
+                break;
+            case "Set Cookie":
+                retVal = new SetCookieAction("", "");
+                break;
+            case "Store Link as Variable by XPATH":
+                retVal = new StoreLinkAsVarByXPATHAction("", "");
+                break;
+            case "Store Links as URL List by XPATH":
+                retVal = new StoreLinksAsArrayByXPATHAction("", "");
+                break;
+            case "Switch Driver":
+                retVal = new SwitchDriverAction();
+                break;
+            case "Switch To Frame":
+                retVal = new SwitchToFrameAction("");
+                break;
+            case "Switch To Tab or Window":
+                retVal = new SwitchToTabOrWindowAction("");
+                break;
+  //legacy support for Type at ID
+            case "Type at ID":
+                retVal = new TypeAtIDAction("", "", false);
+                break;
+            case "Type at Input ID":
+                retVal = new TypeAtIDAction("", "", false);
+                break;
+            case "Type at Input Name":
+                retVal = new TypeAtInputNameAction("","", false);
+                break;
+            case "Type at XPATH":
+                retVal = new TypeAtXPATHAction("", "", false);
+                break;
+            case "Type Password at ID":
+                retVal = new TypePasswordAtIDAction("", "", false);
+                break;
+            case "Type Password at Input Name":
+                retVal = new TypePasswordAtInputNameAction("", "", false);
+                break;
+            case "Type Password at XPATH":
+                retVal = new TypePasswordAtXPATHAction("", "", false);
+                break;
+            case "Up Arrow Key":
+                retVal = new UpArrowKeyAction();
+                break;
+            default:
+                System.out.println("KEY ACTION NOT FOUND");
+                break;
+        }
+    
+      return retVal;  
+    }
+    public ActionView CreateActionView (String actionKey)
+    {
+        ActionView retVal = new BackActionView();
+    switch (actionKey){
+          
+            case "Back Button":
+                   retVal = new BackActionView();
+                   break;  
+            case "Click at Button Text":
+                retVal = new ClickAtButtonTextActionView();
+                break;
+            case "Click at HREF":
+                retVal = new ClickAtHREFActionView();
+                break;
+            case "Click at ID":
+                retVal = new ClickAtIDActionView();
+                break;
+            case "Click at Image SRC":
+                retVal = new ClickAtImageSRCActionView();
+                break;
+            case "Click at Link Text":
+                retVal = new ClickAtLinkTextActionView();
+                break;
+                
+            case "Click at Name":
+                retVal = new ClickAtNameActionView();
+                break;
+            case "Click at XPATH":
+                retVal = new ClickXPATHActionView();
+                break;
+            case "Close Current Tab or Window":
+                retVal = new CloseCurrentTabOrWindowActionView();
+                break;
+            case "Down Arrow Key":
+                retVal = new DownArrowKeyActionView();
+                break;
+            case "Drag From ID to ID":
+                retVal = new DragAndDropActionView();
+                break;
+            case "Drag From XPATH Distance X and Y Pixels":
+                retVal = new DragAndDropByActionView();
+                break;
+            case "Enter Key":
+                retVal = new EnterKeyActionView();
+                break;
+            case "Escape Key":
+                retVal = new EscapeKeyActionView();
+                break;
+            case "Execute Javascript":
+                retVal = new ExecuteJavascriptActionView();
+                break;
+            case "Forward Action":
+                retVal = new ForwardActionView();
+                break;
+            case "Go to URL":
+                retVal = new GoActionView();
+                break;
+            case "Left Arrow Key":
+                retVal = new LeftArrowKeyActionView();
+                break;
+            case "Next Tab":
+                retVal = new NextTabActionView();
+                break;
+            case "Open New Tab":
+                retVal = new OpenNewTabActionView();
+                break;
+            case "Paste at XPATH":
+                retVal = new PasteAtXPATHActionView();
+                break;
+             case "Paste Password at XPATH":
+                retVal = new PastePasswordAtXPATHActionView();
+                break;
+            case "Pause":
+                retVal = new PauseActionView();
+                break;
+            case "Pause with Continue Button":
+                retVal = new PauseContinueActionView();
+                break;
+            case "Right Arrow Key":
+                retVal = new RightArrowKeyActionView();
+                break;
+            case "Right-Click":
+                retVal = new RightClickActionView();
+                break;
+            case "Set Cookie":
+                retVal = new SetCookieActionView();
+                break;
+            case "Store Link as Variable by XPATH":
+                retVal = new StoreLinkAsVarByXPATHActionView();
+                break;
+            case "Store Links as URL List by XPATH":
+                retVal = new StoreLinksAsArrayByXPATHActionView();
+                break;
+            case "Switch Driver":
+                retVal = new SwitchDriverActionView();
+                break;
+            case "Switch To Frame":
+                retVal = new SwitchToFrameActionView();
+                break;
+            case "Switch To Tab or Window":
+                retVal = new SwitchToTabOrWindowActionView();
+                break;
+  //legacy support for Type at ID
+            case "Type at ID":
+                retVal = new TypeAtIDActionView();
+                break;
+            case "Type at Input ID":
+                retVal = new TypeAtIDActionView();
+                break;
+            case "Type at Input Name":
+                retVal = new TypeAtInputNameActionView();
+                break;
+            case "Type at XPATH":
+                retVal = new TypeAtXPATHActionView();
+                break;
+            case "Type Password at ID":
+                retVal = new TypePasswordAtIDActionView();
+                break;
+            case "Type Password at Input Name":
+                retVal = new TypePasswordAtInputNameActionView();
+                break;
+            case "Type Password at XPATH":
+                retVal = new TypePasswordAtXPATHActionView();
+                break;
+            case "Up Arrow Key":
+                retVal = new UpArrowKeyActionView();
+                break;
+            default:
+                System.out.println("KEY ACTIONVIEW NOT FOUND");
+                break;
+        }
+    return retVal; 
+        
+    }
 }

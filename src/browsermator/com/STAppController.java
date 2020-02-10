@@ -27,7 +27,6 @@ import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.JComponent;
@@ -56,7 +55,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "1.7.222";
+public final String ProgramVersion = "2.0.002-alpha";
 public final String lastWebDriverUpdate = "12172019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -80,7 +79,9 @@ String PTPCLOUDDIRUSERLIST;
 Boolean deletemap = false;
 String mapPath = "";
 BrowserMatorConfig appConfig;
+ActionsMaster NewActionsMaster;
   public STAppController(String[] args) throws PropertyVetoException {
+      NewActionsMaster = new ActionsMaster();
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
      PTPCLOUDDIRUSERLIST = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator + "UserLists" + File.separator;
@@ -3449,6 +3450,9 @@ File newfile = new File(path + ".js");
        public void AddNewHandlers (SeleniumTestTool STAppFrame, SeleniumTestToolData STAppData, ProcedureView newbugview, Procedure newbug)
       {
         
+            
+           
+             
                
          newbugview.addJSpinnerLimitListener(new ChangeListener() {
 
@@ -3662,15 +3666,14 @@ File newfile = new File(path + ".js");
           
             Object ActionType = e.getItem();
             String ActionToAdd = ActionType.toString();
-            ActionsMaster newActionsMaster = new ActionsMaster();
-            HashMap<String, BMAction> ActionHashMap = newActionsMaster.ActionHashMap;
-            HashMap<String, ActionView> ActionViewHashMap = newActionsMaster.ActionViewHashMap;
+        
+          
             
             newbugview.JComboBoxDoActions.setSelectedIndex(0);
-           if (ActionHashMap.containsKey(ActionToAdd))
+           if (NewActionsMaster.ActionHashMap.contains(ActionToAdd))
            {
-               BMAction thisActionToAdd = ActionHashMap.get(ActionToAdd);
-               ActionView thisActionViewToAdd = ActionViewHashMap.get(ActionToAdd);
+               BMAction thisActionToAdd = NewActionsMaster.CreateAction(ActionToAdd);
+               ActionView thisActionViewToAdd = NewActionsMaster.CreateActionView(ActionToAdd);
          
                    STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);       
                STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
@@ -3695,15 +3698,12 @@ File newfile = new File(path + ".js");
           
              Object PassFailActionType = e.getItem();
              String PassFailActionToAdd = PassFailActionType.toString();
-             ActionsMaster newActionsMaster = new ActionsMaster();
-             HashMap<String, BMAction> PassFailActionHashMap = newActionsMaster.PassFailActionHashMap;
-             HashMap<String, ActionView> PassFailActionViewHashMap = newActionsMaster.PassFailActionViewHashMap;
-             
+            
              newbugview.JComboBoxPassFailActions.setSelectedIndex(0);
-             if (PassFailActionHashMap.containsKey(PassFailActionToAdd))
+             if (NewActionsMaster.PassFailActionHashMap.contains(PassFailActionToAdd))
              {
-                 BMAction thisActionToAdd = PassFailActionHashMap.get(PassFailActionToAdd);
-               ActionView thisActionViewToAdd = PassFailActionViewHashMap.get(PassFailActionToAdd);
+                 BMAction thisActionToAdd = NewActionsMaster.CreatePassFailAction(PassFailActionToAdd);
+               ActionView thisActionViewToAdd = NewActionsMaster.CreatePassFailActionView(PassFailActionToAdd);
          
           
            STAppFrame.AddActionViewToArray(thisActionViewToAdd, newbugview);         

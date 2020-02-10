@@ -135,7 +135,7 @@ JComboBox jComboBoxAddAtPosition;
  List<String> URLListRunTimeEntries;
   Object[] columnnames = {""};
   Integer rowcount;
-
+ ActionsMaster NewActionsMaster;
    static final Comparator<String> URLLIST_ORDER = 
                                         new Comparator<String>() {
             public int compare(String list_item1, String list_item2) {
@@ -202,21 +202,23 @@ sortmodel = new SortedComboBoxModel<>(URLLIST_ORDER);
      JComboBoxBugSeverity.addItem("Medium");
      JComboBoxBugSeverity.addItem("High");
   JComboBoxDoActions.addItem("Choose an Action");
-  ActionsMaster ActionNames = new ActionsMaster();
-  HashMap<String, BMAction> ActionHashMap = ActionNames.ActionHashMap;
-SortedSet<String> action_keys = new TreeSet<>(ActionHashMap.keySet());
+  NewActionsMaster = new ActionsMaster();
+
+SortedSet<String> action_keys = new TreeSet<>(NewActionsMaster.ActionHashMap);
 for (String action_name : action_keys) 
 {
+    if (!action_name.equals("Type at ID"))
+    {
  JComboBoxDoActions.addItem(action_name);
- 
+    }
 }
  
- HashMap<String, BMAction> PassFailActionHashMap = ActionNames.PassFailActionHashMap;
+
  
 
      JComboBoxPassFailActions.addItem("Choose a Pass/Fail Condition");
 
-SortedSet<String> passfailaction_keys = new TreeSet<>(PassFailActionHashMap.keySet());
+SortedSet<String> passfailaction_keys = new TreeSet<>( NewActionsMaster.PassFailActionHashMap);
 for (String passfailaction_name : passfailaction_keys) 
 {
  JComboBoxPassFailActions.addItem(passfailaction_name);
@@ -691,16 +693,11 @@ ActionScrollPane.setVisible(true);
       String ActionType = ACT.Type;
 
   
-  ActionsMaster NewActionsMaster = new ActionsMaster();
-   
-   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionHashMap.containsKey(ActionType))
+ 
+    if (NewActionsMaster.ActionHashMap.contains(ActionType))
            {
-               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) NewActionsMaster.CreateAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) NewActionsMaster.CreateActionView(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
             
@@ -714,10 +711,10 @@ ActionScrollPane.setVisible(true);
           
            }      
  
-     if (thisPassFailActionHashMap.containsKey(ActionType))
+     if (NewActionsMaster.PassFailActionHashMap.contains(ActionType))
              {
-               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) NewActionsMaster.CreatePassFailAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) NewActionsMaster.CreatePassFailActionView(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
             

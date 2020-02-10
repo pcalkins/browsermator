@@ -301,16 +301,13 @@ rightpart = parts[1];
      //   System.out.println("Load/decrypt error: " + e.toString());
        }
    }
-   ActionsMaster NewActionsMaster = new ActionsMaster();
+ 
    
-   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionHashMap.containsKey(ActionType))
+  
+    if (mainAppController.NewActionsMaster.ActionHashMap.contains(ActionType))
            {
-               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreateAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreateActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
@@ -322,10 +319,10 @@ rightpart = parts[1];
                
            }      
  
-     if (thisPassFailActionHashMap.containsKey(ActionType))
+     if (mainAppController.NewActionsMaster.PassFailActionHashMap.contains(ActionType))
              {
-               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreatePassFailAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreatePassFailActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);

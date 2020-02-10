@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
@@ -985,21 +984,19 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
      //   System.out.println("Load/decrypt error: " + e.toString());
        }
    }
-  ActionsMaster NewActionsMaster = new ActionsMaster();
-   
-   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
+  
    
       if (hasGUI)
     {
   
    newbugview.ActionScrollPane.setViewportView(new JPanel());
-    if (thisActionHashMap.containsKey(ActionType))
+    if (mainAppController.NewActionsMaster.ActionHashMap.contains(ActionType))
            {
-               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+              // BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreateAction(ActionType);
+               
+             //  ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+              ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreateActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -1009,10 +1006,10 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
             newbugview.refreshjComboBoxAddAtPosition();
            }      
  
-     if (thisPassFailActionHashMap.containsKey(ActionType))
+     if (mainAppController.NewActionsMaster.PassFailActionHashMap.contains(ActionType))
              {
-               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreatePassFailAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreatePassFailActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
            thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
@@ -1024,28 +1021,20 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     }
       else
       {
-           if (thisActionHashMap.containsKey(ActionType))
+           if (mainAppController.NewActionsMaster.ActionHashMap.contains(ActionType))
            {
-               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreateAction(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-             //  thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-            //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-            //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
                STAppData.AddActionToArray(thisActionToAdd, newbug);
               
            }      
  
-     if (thisPassFailActionHashMap.containsKey(ActionType))
+     if (mainAppController.NewActionsMaster.PassFailActionHashMap.contains(ActionType))
              {
-               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreatePassFailAction(ActionType);
+            
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-            // thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-            //   thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, NewProcedure, NewProcedureView);
-            //   STAppFrame.AddActionViewToArray (thisActionViewToAdd, NewProcedureView);
+             
                STAppData.AddActionToArray(thisActionToAdd, newbug);
                
              }

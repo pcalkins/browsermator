@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -1928,11 +1929,12 @@ bugindex++;
         jPanelNorth.add(jComboBoxStoredVariables);
         jPanelNorth.add(jButtonPlaceStoredVariable);
         jPanelNorth.add(jButtonGutsView);
-      
+         jPanelSouth.setLayout(new BoxLayout(jPanelSouth, BoxLayout.LINE_AXIS));
+         jPanelSouth.add(Box.createHorizontalGlue());
         jPanelSouth.add(jButtonDoStuff);
    
         jPanelSouth.add(jLabelPauseTime);
-        
+       
         jPanelSouth.add(jSpinnerWaitTime);
         jPanelSouth.add(jLabelEcTimeout);
         jPanelSouth.add(jSpinnerEcTimeout);
@@ -1945,7 +1947,7 @@ bugindex++;
         jPanelSouth.add(jComboBoxPromptBehavior);
         jPanelSouth.add(jCheckBoxPromptToClose);
         JPanel jPanelSouth2 = new JPanel();
-        
+       jPanelSouth.setLayout(new BoxLayout(jPanelSouth, BoxLayout.LINE_AXIS));
         jPanelSouth2.add(jLabelTasks);
    
   jButtonPause = new JButton("Pause");
@@ -1955,10 +1957,11 @@ bugindex++;
      jButtonClearUniqueList = new JButton("Clear Unique List");
   
      SouthButtonPanel = new JPanel();
+   //  SouthButtonPanel.setLayout(new BoxLayout(SouthButtonPanel, BoxLayout.LINE_AXIS));
         SouthButtonPanel.add(jButtonContinue);
         SouthButtonPanel.add(jButtonPause);
         SouthButtonPanel.add(jButtonCancel);
-        JTextFieldProgress.setPreferredSize(new Dimension(600, 20));
+        JTextFieldProgress.setPreferredSize(new Dimension(600, 30));
         jPanelSouth2.add(JTextFieldProgress);
         JPanel jPanelAllSouth = new JPanel();
         jPanelAllSouth.setLayout(new BoxLayout( jPanelAllSouth , BoxLayout.Y_AXIS));

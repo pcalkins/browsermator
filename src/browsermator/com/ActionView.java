@@ -18,7 +18,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -28,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentListener;
@@ -41,6 +41,7 @@ public abstract class ActionView implements Listenable, Initializable{
    JPasswordField JTextFieldPassword;
    JTextField JTextFieldVariable1;
    JTextField JTextFieldVariable2;
+   JTextArea JTextAreaVariable2;
    JTextField JTextFieldVariableVARINDEX;
    JLabel JLabelVariable1;
    JLabel JLabelVariable2;
@@ -689,15 +690,12 @@ if (!potentialDrag) return;
   
   ActionsMaster NewActionsMaster = new ActionsMaster();
    
-   HashMap<String, BMAction> thisActionHashMap = NewActionsMaster.ActionHashMap;
-   HashMap<String, ActionView> thisActionViewHashMap = NewActionsMaster.ActionViewHashMap;
-   HashMap<String, BMAction> thisPassFailActionHashMap = NewActionsMaster.PassFailActionHashMap;
-   HashMap<String, ActionView> thisPassFailActionViewHashMap = NewActionsMaster.PassFailActionViewHashMap;
-    if (thisActionHashMap.containsKey(ActionType))
+  
+    if (NewActionsMaster.ActionHashMap.contains(ActionType))
            {
                STAppFrame.saveState();
-               BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = NewActionsMaster.CreateAction(ActionType);
+               ActionView thisActionViewToAdd = NewActionsMaster.CreateActionView(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
             
@@ -709,11 +707,11 @@ if (!potentialDrag) return;
              this_bugview.refreshjComboBoxAddAtPosition();
            }      
  
-     if (thisPassFailActionHashMap.containsKey(ActionType))
+     if (NewActionsMaster.PassFailActionHashMap.contains(ActionType))
              {
                  STAppFrame.saveState();
-               BMAction thisActionToAdd = (BMAction) thisPassFailActionHashMap.get(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) thisPassFailActionViewHashMap.get(ActionType);
+               BMAction thisActionToAdd = (BMAction) NewActionsMaster.CreatePassFailAction(ActionType);
+               ActionView thisActionViewToAdd = (ActionView) NewActionsMaster.CreatePassFailActionView(ActionType);
                thisActionToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
                thisActionViewToAdd.SetVars(ACT.Variable1, ACT.Variable2, ACT.Password, ACT.BoolVal1, ACT.BoolVal2, ACT.Locked);
            

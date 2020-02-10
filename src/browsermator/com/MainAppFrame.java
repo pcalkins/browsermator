@@ -239,11 +239,15 @@ super.setSize(Width-300,Height-300);
    
   
   }
-  
-  LookAndFeelOptions[0].setSelected( true );
-      
-
-      
+  if (LookAndFeelOptions.length>1)
+  {
+  LookAndFeelOptions[1].setSelected( true );
+  }
+  else
+  {
+   LookAndFeelOptions[0].setSelected( true );   
+  }
+       
 
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Save");
