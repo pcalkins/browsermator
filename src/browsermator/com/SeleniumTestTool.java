@@ -1807,13 +1807,13 @@ bugindex++;
         MainScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         MainScrollPane.setName(""); // NOI18N
         jLabelEcTimeout.setText("EC Timeout:");
-        jSpinnerEcTimeout.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
-        jSpinnerEcTimeout.setMinimumSize(new java.awt.Dimension(41, 21));
-        jSpinnerEcTimeout.setPreferredSize(new java.awt.Dimension(41, 21));
+     //   jSpinnerEcTimeout.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
+      //  jSpinnerEcTimeout.setMinimumSize(new java.awt.Dimension(41, 21));
+      //  jSpinnerEcTimeout.setPreferredSize(new java.awt.Dimension(41, 21));
         setjSpinnerEcTimeout(STAppData.getEcTimeout());
-        jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
-        jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
-        jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
+     //   jSpinnerWaitTime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
+     //   jSpinnerWaitTime.setMinimumSize(new java.awt.Dimension(41, 21));
+     //   jSpinnerWaitTime.setPreferredSize(new java.awt.Dimension(41, 21));
 
         jLabelPauseTime.setText("Pause time (seconds)");
 
@@ -2009,12 +2009,12 @@ separator30.setMaximumSize( new Dimension(Integer.MAX_VALUE, 10) );
         jPanelEast.add(jCheckBoxEmailReport);
         jPanelEast.add(jCheckBoxEmailReportFail);
        jPanelEast.add(jLabelSMTPHostname);
-      jTextFieldSMTPHostName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
-       jTextFieldEmailLoginName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
-        jTextFieldEmailPassword.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
-          jTextFieldEmailTo.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
-           jTextFieldEmailFrom.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
-           jTextFieldSubject.setMaximumSize( new Dimension(Integer.MAX_VALUE, 20) );
+     jTextFieldSMTPHostName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 30) );
+       jTextFieldEmailLoginName.setMaximumSize( new Dimension(Integer.MAX_VALUE, 30) );
+        jTextFieldEmailPassword.setMaximumSize( new Dimension(Integer.MAX_VALUE, 30) );
+          jTextFieldEmailTo.setMaximumSize( new Dimension(Integer.MAX_VALUE, 30) );
+           jTextFieldEmailFrom.setMaximumSize( new Dimension(Integer.MAX_VALUE,30) );
+           jTextFieldSubject.setMaximumSize( new Dimension(Integer.MAX_VALUE,30) );
                
         jPanelEast.add(jTextFieldSMTPHostName);
         jPanelEast.add(jLabelEmailLoginName);

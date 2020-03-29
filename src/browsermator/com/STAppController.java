@@ -37,6 +37,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.event.ChangeEvent;
@@ -55,7 +57,7 @@ public final SiteTestView Navigator;
 public JDesktopPane SeleniumToolDesktop;
 public final String UNIQUE_LOG_DIR;
 private int CurrentMDIWindowIndex;
-public final String ProgramVersion = "2.0.002-alpha";
+public final String ProgramVersion = "2.0.010";
 public final String lastWebDriverUpdate = "12172019";
 public boolean DriverUpdateFail = false;
 public String loginName;
@@ -81,6 +83,16 @@ String mapPath = "";
 BrowserMatorConfig appConfig;
 ActionsMaster NewActionsMaster;
   public STAppController(String[] args) throws PropertyVetoException {
+       try {
+    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+            UIManager.setLookAndFeel(info.getClassName());
+            break;
+        }
+    }
+} catch (Exception e) {
+    // If Nimbus is not available, you can set the GUI to another look and feel.
+}
       NewActionsMaster = new ActionsMaster();
       BrowsermatorAppFolder =   System.getProperty("user.home")+File.separator+"BrowsermatorAppFolder"+File.separator;
       PTPUSERCLOUDDIR = System.getProperty("user.home") + File.separator + "PTPCloudFiles" + File.separator;
@@ -2780,16 +2792,7 @@ actionindex = Integer.parseInt(parts[1])-1;
    {
       String update_name = MDIDataClasses.get(MDI_CLASS_INDEX).filename;
    
-        for (int jm = 0; jm<mainAppFrame.getjMenuViewItemCount(); jm++)
-       {
-        String thisFileItemString = mainAppFrame.getjMenuViewItem(jm);  
-        
-                       if (thisFileItemString.equals(old_name))
-                       {
-                       mainAppFrame.setjMenuViewItemText(jm, update_name);
-                       }
-                   
-                }  
+      
    }
    public void RemoveWindow (int MDI_CLASS_INDEX)
    {
@@ -2797,16 +2800,7 @@ actionindex = Integer.parseInt(parts[1])-1;
        {
        String removedWindow = MDIDataClasses.get(MDI_CLASS_INDEX).filename;
    
-        for (int jm = 0; jm<mainAppFrame.getjMenuViewItemCount(); jm++)
-       {
-        String thisFileItemString = mainAppFrame.getjMenuViewItem(jm);
-        
-                       if (thisFileItemString.equals(removedWindow))
-                       {
-                       mainAppFrame.removejMenuViewItem(jm);
-                       }
-                   
-                }
+      
             MDIViewClasses.remove(MDI_CLASS_INDEX);
             MDIDataClasses.remove(MDI_CLASS_INDEX);
        }
@@ -2850,17 +2844,8 @@ actionindex = Integer.parseInt(parts[1])-1;
                      String twoslashes = "\\" + "\\";
                      thisopenfile = thisopenfile_raw.replace(twoslashes, "\\");
        JMenuItem newfileitem = new JMenuItem(thisopenfile);
-      Boolean hasitem = false;
-       for (int jm = 0; jm<mainAppFrame.getjMenuViewItemCount(); jm++)
-       {
-       if (mainAppFrame.getjMenuViewItem(jm).equals(thisopenfile))
-       {
-           hasitem = true;
-       }
-       }
-       if (!hasitem)
-       {       
-       mainAppFrame.addjMenuViewItem(newfileitem);
+ 
+   
        newfileitem.addActionListener(new ActionListener() {
         
        @Override
@@ -2913,7 +2898,7 @@ actionindex = Integer.parseInt(parts[1])-1;
          
         }
     });
-       }
+      
        
  
        
@@ -3071,18 +3056,8 @@ public void setSaveMenuState(boolean enabled)
 {
     mainAppFrame.setSaveMenuItemEnabled(enabled);
 }
-public int getJMenuViewItemCount()
-{
-    return mainAppFrame.getjMenuViewItemCount();
-}
-public String getJMenuViewItem(int index)
-{
-   return  mainAppFrame.getjMenuViewItem(index);
-}
-public void addJMenuViewItem (JMenuItem item_to_add)
-{
-    mainAppFrame.addjMenuViewItem(item_to_add);
-}
+
+
 
    public void LoadNameAndPassword()
   {

@@ -4,6 +4,9 @@ package browsermator.com;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,8 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.SwingWorker;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -421,42 +426,42 @@ public String doInBackground()
        STAppFrame.setRunButtonEnabled(true);
     }
      }
-
-    boolean closecaught = false;
+// complicated close then try/catch stuff doesn't seem to be necessary anymore... 
+ //   boolean closecaught = false;
    
- try
- {
-   if (driver!=null) {  driver.close(); }
- }
- catch (Exception e)
- {
-     closecaught = true;
-     System.out.println(e.toString());
-     try {
-                driver.quit();
-            }
-            catch (Exception exce)
-            {
+// try
+// {
+//   if (driver!=null) {  driver.close(); }
+// }
+// catch (Exception e)
+// {
+   //  closecaught = true;
+   //  System.out.println(e.toString());
+   //  try {
+   //             driver.quit();
+   //         }
+   //         catch (Exception exce)
+   //         {
                
-                System.out.println("Exception quitting" + exce.toString());
-            }
- }
- if (closecaught)
- {
+   //             System.out.println("Exception quitting" + exce.toString());
+  //          }
+ //}
+// if (closecaught)
+// {
  
- }
- else
- {
+// }
+// else
+// {
      try
  {
-   driver.quit();
+   if (driver != null) { driver.quit();}
  }
  catch (Exception ex)
  {
      // don't worry it should close
  }
   
- }
+// }
 
     FillReport();  
      
@@ -909,6 +914,13 @@ options49.setBinary(chrome_path);
     
     }
     int WaitTime = 0;
+       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+       Rectangle graphicsConfigurationBounds = ge.getMaximumWindowBounds();
+       int desiredWidth =  graphicsConfigurationBounds.width - 400;
+       int desiredHeight =  graphicsConfigurationBounds.height;
+       driver.manage().window().setPosition(new Point(0,0));
+       driver.manage().window().setSize(new Dimension(desiredWidth,desiredHeight));
 
   WaitTime = STAppData.getWaitTime();
    EcTimeout = STAppData.getEcTimeout();
@@ -1934,7 +1946,14 @@ while(thisContinuePrompt.isVisible() == true){
    popOutFrame = new ProgressFrame(STAppData.short_filename);
  setProgressListeners(popOutFrame);
      }
-     
+     try
+     {
+       Thread.sleep(5000);  
+     }
+     catch (Exception ex)
+     {
+       System.out.println ("Exception while sleeping before runagain:" + ex.toString());  
+     }
       
         RunAllActions(STAppFrame, STAppData, targetbrowser, OSType);
        

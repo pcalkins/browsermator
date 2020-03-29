@@ -11,20 +11,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.util.Properties;
-import javax.swing.ButtonGroup;
-// import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+
 
 /**
  *
@@ -35,10 +29,7 @@ public class MainAppFrame extends JFrame {
       Properties newProps = new Properties();
       String filename;
       String short_filename;
-      private JRadioButtonMenuItem LookAndFeelOptions[];
- //     public final SiteTestView Navigator;
-// public JDesktopPane SeleniumToolDesktop;
-private ButtonGroup LookAndFeelGroup;
+
      private JMenuBar menuBar;
      private JMenu fileMenu;
      private JMenu editMenu;
@@ -47,8 +38,7 @@ private ButtonGroup LookAndFeelGroup;
      private JMenuItem saveMenuItem;
      private JMenuItem exitMenuItem;
      private JMenuItem closeMenuItem;
-     private JMenu jMenuView;
-     private JMenu jMenuThemes;
+
      private JMenu helpMenu;
      private JMenuItem contentsMenuItem;
      private JMenuItem aboutMenuItem;
@@ -58,7 +48,7 @@ private ButtonGroup LookAndFeelGroup;
       private JMenuItem browseCloudMenuItem;
           private JMenuItem importMenuItem;
          
-          private UIManager.LookAndFeelInfo LAFOptions[];
+      
   public MainAppFrame()
   {
           super ("Browsermator");
@@ -70,31 +60,8 @@ private ButtonGroup LookAndFeelGroup;
    
      
   }
- public void addjMenuViewItem(JMenuItem newfileitem)
- {
-     jMenuView.add(newfileitem);
- }
- public void removejMenuViewItem(int index)
- {
-     jMenuView.remove(index);
- }
- public int getjMenuViewItemCount()
- {
-     int ret_val = 0;
-     ret_val = jMenuView.getItemCount();
-     return ret_val;
- }
- public void setjMenuViewItemText(int index, String update_name)
- {
-     jMenuView.getItem(index).setText(update_name);
- }
-     
- public String getjMenuViewItem(int index)
- {
-     String ret_val;
-     ret_val = jMenuView.getItem(index).getText();
-     return ret_val;
- }
+
+
 
  public void addExitMenuActionListener(ActionListener listener)
  {
@@ -162,7 +129,7 @@ super.setSize(Width-300,Height-300);
     }
           @SuppressWarnings("unchecked")
     public void initComponents() {
-   
+  
       menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -171,8 +138,7 @@ super.setSize(Width-300,Height-300);
         saveMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         newFileItem = new javax.swing.JMenuItem();
-        jMenuView = new javax.swing.JMenu();
-        jMenuThemes = new javax.swing.JMenu();
+    
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -206,47 +172,8 @@ super.setSize(Width-300,Height-300);
            saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));  
            openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); 
            closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));  
-                  LAFOptions = UIManager.getInstalledLookAndFeels();
-   LookAndFeelOptions = new JRadioButtonMenuItem[LAFOptions.length];
-   LookAndFeelGroup = new ButtonGroup();
- 
-  for (int count = 0; count<LAFOptions.length; count++)
-  {    
-     LookAndFeelOptions[count] = new JRadioButtonMenuItem(LAFOptions[count].getName());
-     jMenuThemes.add(LookAndFeelOptions[count]);
-     LookAndFeelGroup.add(LookAndFeelOptions[count]);
-     LookAndFeelOptions[count].addItemListener( new ItemListener() {
-    
-        public void itemStateChanged (ItemEvent e )
-        {
-            for (int count = 0; count < LAFOptions.length; count++ )
-            {
-                if (LookAndFeelOptions[count].isSelected())
-                try
-                {
-                  
-                    UIManager.setLookAndFeel(LAFOptions[count].getClassName());
-                    SwingUtilities.updateComponentTreeUI( getContentPane()  );
-                }
-                catch (Exception exception)
-                {
-                    exception.printStackTrace();
-                }
-            }
-        }
-    });
-     
-   
   
-  }
-  if (LookAndFeelOptions.length>1)
-  {
-  LookAndFeelOptions[1].setSelected( true );
-  }
-  else
-  {
-   LookAndFeelOptions[0].setSelected( true );   
-  }
+
        
 
         saveMenuItem.setMnemonic('s');
@@ -280,13 +207,7 @@ super.setSize(Width-300,Height-300);
         menuBar.add(editMenu);
 
       
-        jMenuThemes.setText("Themes");
-        
-        
-        jMenuView.setText("View");
-       
-        menuBar.add(jMenuView);
-        jMenuView.add(jMenuThemes);
+    
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 

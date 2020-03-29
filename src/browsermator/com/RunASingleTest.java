@@ -6,13 +6,18 @@
 package browsermator.com;
 
 import java.awt.Cursor;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.SwingWorker;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -111,20 +116,14 @@ public class RunASingleTest extends SwingWorker <String, Integer> {
      {
  try
         {
-        driver.close();
+       if (driver!=null) { driver.quit(); }
         }
         catch(Exception e)
         {
             System.out.println(e.toString());
-            try {
-                driver.quit();
-            }
-            catch (Exception ex)
-            {
-                System.out.println(ex.toString());
-            }
+         
         }
-   driver.quit();
+  
      }
 
           ArrayList<ActionView> ActionView = thisbugview.ActionsViewList;
@@ -600,7 +599,13 @@ options49.setBinary(chrome_path);
     
    }
     }
-
+   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+       Rectangle graphicsConfigurationBounds = ge.getMaximumWindowBounds();
+       int desiredWidth =  graphicsConfigurationBounds.width - 400;
+       int desiredHeight =  graphicsConfigurationBounds.height;
+       driver.manage().window().setPosition(new Point(0,0));
+       driver.manage().window().setSize(new Dimension(desiredWidth,desiredHeight));
    int WaitTime = 0;
    int EcTimeout = 10;
   WaitTime = STAppData.getWaitTime();
@@ -908,20 +913,14 @@ while(thisContinuePrompt.isVisible() == true){
    
         try
         {
-        driver.close();
+       if (driver!=null) { driver.close(); }
         }
         catch(Exception e)
         {
             System.out.println(e.toString());
-           try {
-                driver.quit();
-            }
-            catch (Exception ex)
-            {
-                System.out.println(ex.toString());
-            }
+     
         }
-    driver.quit();
+
      } 
     
  } 

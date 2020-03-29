@@ -363,6 +363,7 @@ try
 {
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 DocumentBuilder builder = factory.newDocumentBuilder();
 
 doc = builder.parse(file.getAbsolutePath());

@@ -1,7 +1,12 @@
 package browsermator.com;
 
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -400,38 +405,14 @@ public class SwitchDriverAction extends BMAction
 
  try
  {
-   if (RunThread.driver!=null) {  RunThread.driver.close(); }
+   if (RunThread.driver!=null) {  RunThread.driver.quit(); Thread.sleep(2000);}
  }
  catch (Exception e)
  {
-     closecaught = true;
-     System.out.println(e.toString());
-     try {
-                RunThread.driver.quit();
-            }
-            catch (Exception exce)
-            {
-               
-                System.out.println("Exception quitting" + exce.toString());
-            }
- }
- if (closecaught)
- {
- 
- }
- else
- {
-     try
- {
-   RunThread.driver.quit();
- }
- catch (Exception ex)
- {
-     // don't worry it should close
- }
+  System.out.println("Exception when quitting driver on switch: " + e.toString());
   
  } 
-
+ 
   File thisDriver =  new File( WEBDRIVERSDIR+"geckodriver-win32"+File.separator+"geckodriver.exe");
   switch (this.Variable1)
   {
@@ -766,6 +747,13 @@ options49.setBinary(chrome_path);
        break;
           
   }
+         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+       Rectangle graphicsConfigurationBounds = ge.getMaximumWindowBounds();
+       int desiredWidth =  graphicsConfigurationBounds.width - 400;
+       int desiredHeight =  graphicsConfigurationBounds.height;
+       RunThread.driver.manage().window().setPosition(new Point(0,0));
+       RunThread.driver.manage().window().setSize(new Dimension(desiredWidth,desiredHeight));
         this.Pass = true;
     }
 
