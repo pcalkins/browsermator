@@ -113,8 +113,7 @@ String CloudFile5;
      private JPanel jPanelBrowse;
     private JPanel jPanelCenter;
     BrowserMatorConfig appConfig;
-    public String chromeversion;
-    
+      
    SiteTestView(BrowserMatorConfig _appConfig) {
    RecentFile1 = "";
    RecentFile2 = "";
@@ -135,7 +134,7 @@ String CloudFile5;
    
    
     appConfig = _appConfig;
-    chromeversion = "(v81)";
+ 
   
 
 
@@ -885,7 +884,7 @@ String firefoxPath = appConfig.getKeyValue("Firefox");
         jPanelFirefoxDir.add(jButtonClearFirefox);
         
           jPanelChromeDir = new JPanel();
-        jLabelChromeDir = new JLabel("Chrome " + chromeversion + " Executable Location (May be needed for custom install folder):");
+        jLabelChromeDir = new JLabel("Chrome Executable Location (May be needed for custom install folder):");
         jButtonClearChrome = new JButton("Default");
         jTextFieldChromeDir = new JLabel("Default");
         jButtonBrowseForChrome = new JButton("Browse");
