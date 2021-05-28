@@ -394,7 +394,7 @@ profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
      case "Chrome":
        ChromeOptions options = new ChromeOptions();  
                  options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
-               //  options.setPageLoadStrategy(PageLoadConstant); not supported quite yet
+                 options.setPageLoadStrategy(PageLoadConstant); 
                      if (!"".equals(downloadDir))
                  {
                  prefs.put("download.default_directory", downloadDir);

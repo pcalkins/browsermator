@@ -772,7 +772,7 @@ profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "...");
        
           ChromeOptions options = new ChromeOptions();  
                  options.setUnhandledPromptBehaviour(promptBehaviorConstant);             
-                // options.setPageLoadStrategy(PageLoadConstant);  not supported quite yet
+                 options.setPageLoadStrategy(PageLoadConstant); 
                  prefs.put("profile.default_content_setting_values.notifications", 2);
                 // prefs.put("--dns-prefetch-disable", );
                  if (!"".equals(downloadDir))
