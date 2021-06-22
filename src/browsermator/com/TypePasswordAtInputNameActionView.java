@@ -41,7 +41,11 @@ public class TypePasswordAtInputNameActionView extends ActionView
                
    });
   
-
+addJCheckBoxBoolVal1ActionListener((ActionEvent e) -> {
+          STAppFrame.saveState();   
+     action.setBoolVal1(JCheckBoxBoolVal1.isSelected());
+          
+       });
 
      addJTextFieldVariable1DocListener(
              new DocumentListener()
