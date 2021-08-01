@@ -12,7 +12,8 @@ The licenses are appended as follows:
 Distribution of Browsermator code or binaries via the World Wide Web is strictly prohibited except 
 for sites owned by Pete Calkins or the public GitHub repository.
 At the time of this writing those sites are:
-http://www.browsermator.com 
+https://www.browsermator.com 
+https://www.thebrowserbots.com
 https://github.com/pcalkins/browsermator
 https://github.com/petecalkins/browsermator/
 
