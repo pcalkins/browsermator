@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.SwingWorker;
 import javax.xml.parsers.DocumentBuilder;
@@ -80,14 +81,20 @@ public String doInBackground()
   public void ImportNewWindow (Document doc, int MDI_INDEX)
   {
 int current_number_of_procedures = STAppFrame.BugViewArray.size();
+
  try
 {
    NodeList ProcedureList = doc.getElementsByTagName("Procedure");
    
+
+   boolean hasDataloop = false;
+   boolean hasURLList = false;
+
 for (int i = 0; i < ProcedureList.getLength(); ++i)
 {
     
-    
+   Procedure newbug = new Procedure();
+   ProcedureView newbugview = new ProcedureView();
  
    
     Element Procedure = (Element) ProcedureList.item(i);
@@ -104,8 +111,9 @@ for (int i = 0; i < ProcedureList.getLength(); ++i)
     if ("Dataloop".equals(ProcType))
     {
         
-        
+        hasDataloop = true;
         String DataFile = "";
+
         if (Procedure.hasAttribute("DataLoopFile"))
                 {
                     DataFile = Procedure.getAttribute("DataLoopFile");
@@ -166,9 +174,9 @@ rightpart = parts[1];
     }
     
       int last_added_bug_index = STAppFrame.BugViewArray.size()-1;
-   ProcedureView newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
+    newbugview = STAppFrame.BugViewArray.get(last_added_bug_index);
    newbugview.populateJComboBoxStoredArrayLists(STAppData.VarLists);
-   Procedure newbug = STAppData.BugArray.get(last_added_bug_index);
+   newbug = STAppData.BugArray.get(last_added_bug_index);
       mainAppController.AddNewHandlers(STAppFrame, STAppData, newbugview, newbug);
  
       if (Procedure.hasAttribute("Random"))
@@ -302,21 +310,22 @@ rightpart = parts[1];
        }
    }
  
-   
-  
+ 
+   newbugview.ActionScrollPane.setViewportView(new JPanel());
     if (mainAppController.NewActionsMaster.ActionHashMap.contains(ActionType))
            {
+              // BMAction thisActionToAdd = (BMAction) thisActionHashMap.get(ActionType);
                BMAction thisActionToAdd = (BMAction) mainAppController.NewActionsMaster.CreateAction(ActionType);
-               ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreateActionView(ActionType);
+               
+             //  ActionView thisActionViewToAdd = (ActionView) thisActionViewHashMap.get(ActionType);
+              ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreateActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-               thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-            
-               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
-                  MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
-             
-               
+               thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray (thisActionViewToAdd, newbugview);
+               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+            newbugview.refreshjComboBoxAddAtPosition();
            }      
  
      if (mainAppController.NewActionsMaster.PassFailActionHashMap.contains(ActionType))
@@ -325,18 +334,30 @@ rightpart = parts[1];
                ActionView thisActionViewToAdd = (ActionView) mainAppController.NewActionsMaster.CreatePassFailActionView(ActionType);
                thisActionToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
                thisActionViewToAdd.SetVars(Variable1, Variable2, Password, RealBoolVal1, RealBoolVal2, boolLOCKED);
-              thisActionViewToAdd.AddListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, MDIViewClasses.get(MDI_INDEX), MDIDataClasses.get(MDI_INDEX), newbug, newbugview);
-            
-               MDIViewClasses.get(MDI_INDEX).AddActionViewToArray(thisActionViewToAdd, newbugview);
-                  MDIDataClasses.get(MDI_INDEX).AddActionToArray(thisActionToAdd, newbug);
-               
+           thisActionViewToAdd.AddListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               thisActionViewToAdd.AddLoopListeners(thisActionToAdd, STAppFrame, STAppData, newbug, newbugview);
+               STAppFrame.AddActionViewToArray (thisActionViewToAdd, newbugview);
+               STAppData.AddActionToArray(thisActionToAdd, newbug, newbugview);
+            newbugview.refreshjComboBoxAddAtPosition();
              }
-            
-// MDIClasses.get(MDI_INDEX).UpdateDisplay();
-        }   
+    }
+   
+
+ 
+ 
   
-    }  
+
+        }   
+
+    
+
+    if (hasDataloop)
+ {
+    
+    STAppFrame.setJButtonFlattenFileEnabled(true); 
+    
+ 
+ }  
     }
 catch (Exception e)
         {
